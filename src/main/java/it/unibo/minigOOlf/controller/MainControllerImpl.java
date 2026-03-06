@@ -10,13 +10,18 @@ public class MainControllerImpl implements MainController, ActionListener{
     private final int FPS = 60;
     private Timer timer;
 
+    private long lastTime = 0;
+
     public MainControllerImpl() {
         this.timer = new Timer(1000/FPS, this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) { // main loop
-        System.out.println("timer is running: " + System.nanoTime());
+        long currentTime = System.nanoTime();
+        long elapsed = currentTime - lastTime;
+        System.out.println("timer is running, elapsed: " + elapsed);
+        lastTime = currentTime;
     }
 
     @Override
