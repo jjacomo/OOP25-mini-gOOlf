@@ -4,6 +4,9 @@ import it.unibo.minigOOlf.controller.MainControllerImpl;
 
 public class App {
     public static void main(String[] args) {
-        new MainControllerImpl().loop();
+        new MainControllerImpl().start();
+        while(true){
+
+        }
     }
 }
