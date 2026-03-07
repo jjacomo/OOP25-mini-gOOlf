@@ -3,6 +3,10 @@ package it.unibo.minigOOlf.view;
 import javax.swing.JFrame;
 
 
+/**
+ * La finestra principale dove cambieranno le varie scene.
+ */
+
 public class MainWindow extends JFrame {
     
     public MainWindow() {

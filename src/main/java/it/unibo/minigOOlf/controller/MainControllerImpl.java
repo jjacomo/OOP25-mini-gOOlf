@@ -11,8 +11,6 @@ public class MainControllerImpl implements MainController, ActionListener{
     private Timer timer;
     private long lastTime = 0;
 
-    private long lastTime = 0;
-
     public MainControllerImpl() {
         
         this.timer = new Timer(1000/FPS, this);
@@ -24,10 +22,7 @@ public class MainControllerImpl implements MainController, ActionListener{
         long elapsed = currentTime - lastTime;
         System.out.println("timer is running, elapsed: " + elapsed);
         lastTime = currentTime;
-<<<<<<< HEAD
         
-=======
->>>>>>> f24a6b34e56aed5fd2d87182e3b9ab800aec4887
     }
 
     @Override
