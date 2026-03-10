@@ -1,5 +1,3 @@
-package it.unibo.minigOOlf;
-
 import it.unibo.minigOOlf.controller.MainControllerImpl;
 
 public class App {
