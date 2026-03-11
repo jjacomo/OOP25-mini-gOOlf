@@ -1,8 +1,7 @@
 package it.unibo.minigOOlf.view;
 
-//import *.Position;
-//TODO
+import java.awt.Point;
 
 public interface GameInput {
-    //void enableShot(Position BallPosition);
+    void enableShot(Point BallPosition);
 }
