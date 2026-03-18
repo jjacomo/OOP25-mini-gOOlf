@@ -1,0 +1,66 @@
+classDiagram
+
+class Vector2D {
+  +double x
+  +double y
+  +add(Vector2D v) Vector2D
+  +subtract(Vector2D v) Vector2D
+  +multiply(double s) Vector2D
+  +magnitude() double
+  +normalize() Vector2D
+}
+
+class Ball {
+  +Vector2D position
+  +Vector2D velocity
+  +double radius
+  +applyForce(Vector2D force)
+  +stop()
+}
+
+class PhysicsEngine {
+  +update(Ball ball, GameMap map, double dt)
+}
+
+class GameMap {
+  +List~Surface~ surfaces
+  +Hole hole
+  +getTerrainAt(Vector2D position) Terrain
+}
+
+class Surface {
+  +Rectangle bounds
+  +Terrain terrain
+  +int layer
+  +contains(Vector2D point) boolean
+}
+
+class Terrain {
+  <<abstract>>
+  +double friction
+}
+
+class Grass
+class Sand
+class Ice
+
+class Hole {
+  +Vector2D position
+  +double radius
+  +contains(Ball ball) boolean
+}
+
+PhysicsEngine --> Ball
+PhysicsEngine --> GameMap
+
+GameMap --> Surface
+GameMap --> Hole
+
+Surface --> Terrain
+
+Terrain <|-- Grass
+Terrain <|-- Sand
+Terrain <|-- Ice
+
+Ball --> Vector2D
+Hole --> Vector2D
