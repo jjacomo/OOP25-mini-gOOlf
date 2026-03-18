@@ -1,0 +1,1 @@
+3 ore : creare record position, migliorare e aggiungere metodi alle interfacce per la visualizzazione del tiro
