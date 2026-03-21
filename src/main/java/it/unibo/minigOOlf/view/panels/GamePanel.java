@@ -57,7 +57,7 @@ public class GamePanel extends JPanel {
         // A "wrapperpanel" that contains the field area, so it can be forced to the 16:9 ratio
 
         JPanel centerWrapper = new JPanel(new GridBagLayout());
-        centerWrapper.setBackground(Color.BLACK); 
+        centerWrapper.setBackground(Color.WHITE); 
         centerWrapper.add(fieldArea);
         this.add(centerWrapper, BorderLayout.CENTER);
 
