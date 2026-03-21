@@ -9,7 +9,7 @@ import java.awt.*;
  * 
  * @author dani
  * 
- * TODO: Add the varios buttons, ecc...
+ * TODO: Add the variuos buttons, ecc...
  */
 
 
