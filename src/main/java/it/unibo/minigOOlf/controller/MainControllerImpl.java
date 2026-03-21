@@ -2,6 +2,7 @@ package it.unibo.minigOOlf.controller;
 
 import java.awt.event.*;
 import javax.swing.Timer;
+import it.unibo.minigOOlf.view.MainWindow;
 
 // import java.util.concurrent.LinkedBlockingQueue;
 // import javax.swing.text.View;
@@ -10,9 +11,10 @@ public class MainControllerImpl implements MainController, ActionListener{
     private final int FPS = 60;
     private Timer timer;
     private long lastTime = 0;
+    private MainWindow mainWindow;
 
     public MainControllerImpl() {
-        
+        this.mainWindow = new MainWindow(this);
         this.timer = new Timer(1000/FPS, this);
     }
 
@@ -23,6 +25,9 @@ public class MainControllerImpl implements MainController, ActionListener{
         System.out.println("timer is running, elapsed: " + elapsed);
         lastTime = currentTime;
         
+        if(this.mainWindow != null) {
+            this.mainWindow.repaint();
+        }
     }
 
     @Override
