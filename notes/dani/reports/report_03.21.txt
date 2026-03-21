@@ -1,0 +1,14 @@
+Report - 03/21 - 6 ore
+
+Ciao allora ho cominciato a scrivere la mia parte, ho fatto qualche modifica iniziale:  
+- Commenti riscritti in inglese e formattati correttamente
+- Creato il sotto-package it.unibo.minigOOlf.view.panels, dove dentro ho creato le classi dei vari pannelli: GamePanel, LeaderBoardPanel, ecc.. (per ora sono tutte TO DO, soprattutto quelle avanzate, ovviamente…
+- Sistemato il MainWindow con il MainControler, ora non è solo di test!
+- Messo le dimensioni minime della finestra
+- Cominciato a scrivere la classe GamePanel, ho messo 2 “sotto-panel” : uiPanel per avere la parte di UI (poi con @Fede decidiamo come renderla, se possibile sarebbe figo poterlo fare in sovraimpressione al campo, per ora ho messo una semplice barra in cima con del testo. Le altre due sono per il campo di gioco vero e proprio (fieldarea). 
+- Ho provato molto alla buona a simulare il blocco dell’aspetto a 16:9, so già che Jack dirà che fa cagare, e sinceramente concordo ahahha, boh vediamo se si riesce a fare di meglio, per ora è lì solo per prova.
+- Aggiunto anche il mio schema UML + ovviamente questo file, probabilmente ne farò uno ogni volta che metto mano al progetto, anche per ricordarmi io cosa ho fatto ma così sapete anche voi insomma ;)
+
+Curiosità/tips:
+- Ho scoperto un comando di git: git restore -> serve quando avete fatto delle modifiche in locale che non volete pushare ma che non volete cancellare a mano o non potete fare CTRL + Z. (L’altra volta mi ha salvato in locale del codice di prova che oggi non volevo mettere, con git restore ero riallineato all’ultimo pull, senza le mie modifiche).
+- Ho installato un’estensione moooolto banale, si chiama TODO Highlight di "Wayou Liu” fa quello che dice insomma.
