@@ -1,12 +1,14 @@
 package it.unibo.minigOOlf.view.panels;
 
 import javax.swing.*;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 
 /**
  * One of the possibile scenes, this is the menu where the user can choose the n° of
  * players, therefore it starts a singleplayer or a multiplayer match.
+ * 
+ * @author dani
+ * 
  * TODO: only when the core singleplayer is working!
  */
 

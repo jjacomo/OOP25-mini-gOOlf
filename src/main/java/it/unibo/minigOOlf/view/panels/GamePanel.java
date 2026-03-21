@@ -1,24 +1,25 @@
 package it.unibo.minigOOlf.view.panels;
 
 import javax.swing.*;
-
 import it.unibo.minigOOlf.controller.MainController;
-
 import java.awt.*;
 
 /**
  * One of the possibile scenes, this one is where the game is played. 
+ * 
+ * @author dani
+ * 
  */
 
 public class GamePanel extends JPanel {
-    private static final int WIDTH = 800; // This is just the starting resolution, should be a fixed size
-    private static final int HEIGHT = 600;
+    private static final int START_WIDTH = 800; // This is just the starting resolution, should be a fixed size
+    private static final int START_HEIGHT = 600;
     private final MainController controller;
 
     public GamePanel(MainController controller) {
         this.controller = controller;
-        
-        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setBackground(new Color(34, 139, 34)); 
         
     }
