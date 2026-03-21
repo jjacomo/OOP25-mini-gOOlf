@@ -2,9 +2,12 @@ package it.unibo.minigOOlf.view;
 
 import javax.swing.JFrame;
 
+import it.unibo.minigOOlf.view.panels.GamePanel;
+
 
 /**
- * La finestra principale dove cambieranno le varie scene.
+ * The window in which the scenes (such as the MenuPanel or GamePanel) 
+ * are choosen to be displayed.
  */
 
 public class MainWindow extends JFrame {
