@@ -1,0 +1,20 @@
+Report - 03/22 - 2 ore
+
+- Ho creato l'interfaccia DynamicBody nel package physics. 
+  Ball dovra' ereditare da questo per implementare i getters e setters di velocita' e posizione;
+  In questo modo si possono avere diverse implementazioni di Ball (e altri oggetti che si muovono?)
+
+- Creata interfaccia GameMap ancora vuota
+
+- Creata interfaccia Surface con metodi getFriction, contains(vector2d) e getZIndex() da cui estendere
+  tutte le superfici con forme diverse (potrebbe avere senso pattern factory)
+
+- Creata prima implementazione di Surface con RectangularSurface.
+  RectangularSurface e' composta da util.Rectangle (semplice implementazione di un rettangolo)
+
+TODO:
+Finire interfaccia GameMap e farne una implementazione.
+Cercare di disegnare a schermo rettangoli resizable.
+
+BTW:
+Per ora uso Vector2d anche per la posizione. Questo potrebbe cambiare in futuro

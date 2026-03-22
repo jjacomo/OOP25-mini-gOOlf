@@ -1,5 +1,5 @@
 package it.unibo.minigOOlf.model;
 
-public class elimina {
+public interface GameMap {
 
 }
