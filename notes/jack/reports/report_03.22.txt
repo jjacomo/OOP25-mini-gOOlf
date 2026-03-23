@@ -1,4 +1,4 @@
-Report - 03/22 - 2 ore
+Report - 03/22 - 3 ore
 
 - Ho creato l'interfaccia DynamicBody nel package physics. 
   Ball dovra' ereditare da questo per implementare i getters e setters di velocita' e posizione;

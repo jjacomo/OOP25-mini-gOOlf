@@ -1,0 +1,10 @@
+Report - 03/23 - 3 ore
+
+- Aggiunto il metodo getSurfaceAt(Vector2d position) all'interfaccia GameMap
+- Creata una semplice implementazione di GameMap (senza ancora il metodo getSurfaceAt)
+
+
+TODO:
+
+BTW:
+Per ora uso Vector2d anche per la posizione. Questo potrebbe cambiare in futuro
