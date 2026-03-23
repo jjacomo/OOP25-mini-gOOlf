@@ -15,8 +15,16 @@ public class GameMapImpl implements GameMap{
 
     @Override
     public Surface getSurfaceAt(Vector2D position) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSurfaceAt'");
+        Surface highestSurface;
+        try {
+            highestSurface = surfaces.stream()
+                .filter(s -> s.contains(position))
+                .max((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
+                .orElseThrow(() -> new IllegalStateException("No surface found at the given position"));
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException("No surface found at the given position: " + position, e);
+        }
+        return highestSurface;
     }
     
 
