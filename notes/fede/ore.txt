@@ -1,1 +1,3 @@
 3 ore : creare record position, migliorare e aggiungere metodi alle interfacce per la visualizzazione del tiro
+4 ore: sistemato i TODO che avevo messo, creato una base di shot da visualizzare nel JPanel, quando verrà creata la GUI
+        e il Vector2D lo modificherò
