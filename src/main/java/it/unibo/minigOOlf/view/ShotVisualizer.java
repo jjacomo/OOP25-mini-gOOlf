@@ -1,6 +1,6 @@
 package it.unibo.minigOOlf.view;
 
-import it.unibo.minigOOlf.util.Vector2D;
+//import it.unibo.minigOOlf.util.Vector2D;
 
 /**
  * an interface used to get the input
@@ -14,7 +14,7 @@ public interface ShotVisualizer {
 	 * updates the line that shows the direction and the power of a shot
 	 * @param direction
 	 */
-	void updateShotIntent(Vector2D direction);
+	//void updateShotIntent(Vector2D direction);
 
 
 	
