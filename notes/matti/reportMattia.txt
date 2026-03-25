@@ -1,0 +1,7 @@
+Report - 25/03 - 3 ore
+
+- Creato il package obstacles per gestire i vari ostacoli
+- Iniziata e completata la classe astratta Obstacle: funge da modello base per tutti gli ostacoli del livello
+- Iniziata la classe WallObstacle che estende Obstacle: gestisce tutti gli ostacoli rettangolari (compresi i 
+    muri di confine della mappa)
+- Creata una classe temporanea Ball: serve per rimuovere gli errori in attesa che venga creata la vera classe della pallina
