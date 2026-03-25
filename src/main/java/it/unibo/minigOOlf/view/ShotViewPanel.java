@@ -1,4 +1,4 @@
-package it.unibo.minigOOlf.view;
+/*package it.unibo.minigOOlf.view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -18,7 +18,7 @@ import it.unibo.minigOOlf.util.Vector2D;
  * Accumula lo stato del tiro (direzione, potenza) e lo espone
  * tramite pollShot() al game loop di MainControllerImpl.
  * @author fede
- */
+ 
 public class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +48,7 @@ public class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     /**
      * @param controller il MainController del gioco
-     */
+     
     public ShotViewPanel(final MainController controller) {
         super();
         this.addMouseListener(this.mouseListener);
@@ -105,7 +105,7 @@ public class ShotViewPanel extends JPanel implements ShotVisualizer {
      * Aggiorna l'indicatore visivo di direzione e potenza del tiro.
      * Chiamato dal ShotListener durante il drag del mouse.
      * NON chiama repaint(): ci pensa il game loop.
-     */
+     
     public void updateShotIntent(final Vector2D direction) {
         synchronized (this) {
             this.direction = direction.getOppositeVector();
@@ -116,7 +116,7 @@ public class ShotViewPanel extends JPanel implements ShotVisualizer {
      * Abilita un nuovo tiro, impostando la posizione della pallina.
      *
      * @param ballPosition posizione della pallina sullo schermo
-     */
+     
     public void enableShot(final Point ballPosition) {
         this.mouseListener.setEnable(true);
         this.applicationPoint = ballPosition;
@@ -126,7 +126,7 @@ public class ShotViewPanel extends JPanel implements ShotVisualizer {
      * Chiamato dal ShotListener al mouseReleased.
      * NON chiama il controller direttamente: segna che c'è un tiro pronto.
      * Il game loop lo leggerà tramite pollShot().
-     */
+     *
     public void shoot() {
         if (validShot()) {
             synchronized (this) {
@@ -146,7 +146,7 @@ public class ShotViewPanel extends JPanel implements ShotVisualizer {
      * Se c'è un tiro pronto, lo restituisce e resetta lo stato interno.
      *
      * @return Optional con il vettore del tiro, o empty se nessun tiro disponibile
-     */
+     *
     public Optional<Vector2D> pollShot() {
         synchronized (this) {
             if (this.shotReady && this.direction != null) {
@@ -162,7 +162,7 @@ public class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     /**
      * @return true se il tiro corrente è valido (supera la potenza minima)
-     */
+     *
     private boolean validShot() {
         if (this.direction == null) {
             return false;
@@ -170,3 +170,4 @@ public class ShotViewPanel extends JPanel implements ShotVisualizer {
         return this.direction.getSquareModule() > SQUARE_MINIMUM_SHOT_POWER;
     }
 }
+*/
