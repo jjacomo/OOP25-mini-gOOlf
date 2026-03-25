@@ -2,6 +2,8 @@ package it.unibo.minigOOlf.view.panels;
 
 import javax.swing.*;
 import it.unibo.minigOOlf.controller.MainController;
+import it.unibo.minigOOlf.model.logic.GameState;
+import it.unibo.minigOOlf.view.input.ShotViewPanel;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -18,7 +20,13 @@ public class GamePanel extends JPanel {
     private static final int START_HEIGHT = 1080;
     private final MainController controller;
 
-    public GamePanel(MainController controller) {
+    // Placeholder ball position — will come from the physics model later.
+    private static final Point BALL_START = new Point(110, 110);
+
+    // The transparent overlay for shot input and power indicator.
+    private final ShotViewPanel shotViewPanel;
+
+    public GamePanel(MainController controller, GameState gameState) {
         this.controller = controller;
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT)); 
         this.setLayout(new BorderLayout());
@@ -28,10 +36,9 @@ public class GamePanel extends JPanel {
          * TODO: To work later with @fedesparvo1-a11y to determine how to personalize this, just an example for now
          *  */ 
 
-
         JPanel uiPanel = new JPanel();
         uiPanel.setBackground(Color.DARK_GRAY);
-        JLabel turnoLabel = new JLabel("Player Pippo | Shots: 1");
+        JLabel turnoLabel = new JLabel(gameState.getCurrentPlayer().toString());
         turnoLabel.setForeground(Color.WHITE);
         uiPanel.add(turnoLabel);
         this.add(uiPanel, BorderLayout.NORTH);
@@ -58,7 +65,18 @@ public class GamePanel extends JPanel {
 
         JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE); 
-        centerWrapper.add(fieldArea);
+
+        // Use a JLayeredPane to overlay ShotViewPanel on top of the field area.
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
+        fieldArea.setBounds(0, 0, START_WIDTH, START_HEIGHT);
+        layeredPane.add(fieldArea, JLayeredPane.DEFAULT_LAYER);
+
+        shotViewPanel = new ShotViewPanel(gameState);
+        shotViewPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
+        layeredPane.add(shotViewPanel, JLayeredPane.PALETTE_LAYER);
+
+        centerWrapper.add(layeredPane);
         this.add(centerWrapper, BorderLayout.CENTER);
 
         // FIXME: First attempt at forcing the 16:9 ratio, maybe needs to be redone
@@ -71,15 +89,31 @@ public class GamePanel extends JPanel {
                 int expectedHeight = (int) (w * 9.0 / 16.0);
                 int expectedWidth = (int) (h * 16.0 / 9.0);
 
+                Dimension fieldSize;
                 if (expectedHeight > h) {
-                    fieldArea.setPreferredSize(new Dimension(expectedWidth, h));
+                    fieldSize = new Dimension(expectedWidth, h);
                 } else {
-                    fieldArea.setPreferredSize(new Dimension(w, expectedHeight));
+                    fieldSize = new Dimension(w, expectedHeight);
                 }
-                centerWrapper.revalidate();
 
+                fieldArea.setPreferredSize(fieldSize);
+                fieldArea.setBounds(0, 0, fieldSize.width, fieldSize.height);
+                layeredPane.setPreferredSize(fieldSize);
+                layeredPane.setBounds(0, 0, fieldSize.width, fieldSize.height);
+                shotViewPanel.setBounds(0, 0, fieldSize.width, fieldSize.height);
+                centerWrapper.revalidate();
             }    
         });
+
+        // Enable shot input for the first turn.
+        shotViewPanel.enableShot(BALL_START);
     }
 
+    /**
+     * Called by the controller once the ball has stopped moving.
+     * Re-enables shot input for the current player.
+     */
+    public void onBallStopped() {
+        shotViewPanel.enableShot(BALL_START); // TODO: get real ball position from model
+    }
 }
