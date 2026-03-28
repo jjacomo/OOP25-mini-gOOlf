@@ -1,10 +1,6 @@
-<<<<<<< HEAD:src/main/java/it/unibo/minigOOlf/model/RectangularSurface.java
-package it.unibo.minigoolf.model;
-=======
 package it.unibo.minigoolf.model.surfaces;
-
 import java.awt.Color;
->>>>>>> 2cbb57ae078d99b49a9daad7701efb4b2428958b:src/main/java/it/unibo/minigOOlf/model/surfaces/RectangularSurface.java
+
 
 import it.unibo.minigoolf.util.Rectangle;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
