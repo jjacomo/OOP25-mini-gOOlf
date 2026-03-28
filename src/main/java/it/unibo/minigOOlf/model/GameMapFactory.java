@@ -1,5 +1,8 @@
 package it.unibo.minigOOlf.model;
 
+import it.unibo.minigOOlf.model.surfaces.RectangularSurface;
+import it.unibo.minigOOlf.model.surfaces.Surface;
+
 /**
  * Factory interface for creating game map instances.
  * 

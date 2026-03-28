@@ -1,5 +1,6 @@
-package it.unibo.minigOOlf.model;
+package it.unibo.minigOOlf.model.surfaces;
 
+import java.awt.Color;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
@@ -32,4 +33,11 @@ public interface Surface {
      * @return the z-index as an integer
      */
     int getZIndex();
+
+    /**
+     * Returns the color of this surface for rendering purposes.
+     *
+     * @return the color of the surface
+     */
+    Color getColor();
 }

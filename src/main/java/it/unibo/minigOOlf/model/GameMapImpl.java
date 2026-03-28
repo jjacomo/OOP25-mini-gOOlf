@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import it.unibo.minigOOlf.model.surfaces.Surface;
+
 public class GameMapImpl implements GameMap{
 
     List<Surface> surfaces = new ArrayList<>();
