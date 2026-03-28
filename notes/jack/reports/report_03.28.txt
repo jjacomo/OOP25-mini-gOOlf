@@ -1,0 +1,11 @@
+Report - 03/23 - 1 ore
+
+- Creata GameMapFactory per la creazione di livelli diversi
+    NOTA: se le mappe diventano complesse (molti oggetti) considera l'opzione del pattern builder
+- Creata TestGameMapFactory per creare una mappa test (forse nome ambiguo)
+
+TODO:
+Dovrei fare in modo da non usare magic numbers in TestGameMapFactory;
+Metti TestGameMapFactory in controller e visualizza a schermo (scalabile);
+Riguarda i commenti della javadoc;
+
