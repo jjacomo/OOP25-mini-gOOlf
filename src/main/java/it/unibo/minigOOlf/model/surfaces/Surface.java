@@ -1,5 +1,10 @@
+<<<<<<< HEAD:src/main/java/it/unibo/minigOOlf/model/Surface.java
 package it.unibo.minigoolf.model;
+=======
+package it.unibo.minigoolf.model.surfaces;
+>>>>>>> 2cbb57ae078d99b49a9daad7701efb4b2428958b:src/main/java/it/unibo/minigOOlf/model/surfaces/Surface.java
 
+import java.awt.Color;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
@@ -32,4 +37,11 @@ public interface Surface {
      * @return the z-index as an integer
      */
     int getZIndex();
+
+    /**
+     * Returns the color of this surface for rendering purposes.
+     *
+     * @return the color of the surface
+     */
+    Color getColor();
 }
