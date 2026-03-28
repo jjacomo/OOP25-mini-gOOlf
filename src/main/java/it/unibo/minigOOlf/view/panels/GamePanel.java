@@ -1,7 +1,7 @@
-package it.unibo.minigOOlf.view.panels;
+package it.unibo.minigoolf.view.panels;
 
 import javax.swing.*;
-import it.unibo.minigOOlf.controller.MainController;
+import it.unibo.minigoolf.controller.MainController;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

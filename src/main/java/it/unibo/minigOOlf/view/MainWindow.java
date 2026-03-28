@@ -1,9 +1,9 @@
-package it.unibo.minigOOlf.view;
+package it.unibo.minigoolf.view;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
-import it.unibo.minigOOlf.controller.MainController;
-import it.unibo.minigOOlf.view.panels.GamePanel;
+import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.view.panels.GamePanel;
 
 /**
  * The window in which the scenes (such as the MenuPanel or GamePanel) 

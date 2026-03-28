@@ -2,7 +2,7 @@ Report - 03/21 - 6 ore
 
 Ciao allora ho cominciato a scrivere la mia parte, ho fatto qualche modifica iniziale:  
 - Commenti riscritti in inglese e formattati correttamente
-- Creato il sotto-package it.unibo.minigOOlf.view.panels, dove dentro ho creato le classi dei vari pannelli: GamePanel, LeaderBoardPanel, ecc.. (per ora sono tutte TO DO, soprattutto quelle avanzate, ovviamente…
+- Creato il sotto-package it.unibo.minigoolf.view.panels, dove dentro ho creato le classi dei vari pannelli: GamePanel, LeaderBoardPanel, ecc.. (per ora sono tutte TO DO, soprattutto quelle avanzate, ovviamente…
 - Sistemato il MainWindow con il MainControler, ora non è solo di test!
 - Messo le dimensioni minime della finestra
 - Cominciato a scrivere la classe GamePanel, ho messo 2 “sotto-panel” : uiPanel per avere la parte di UI (poi con @Fede decidiamo come renderla, se possibile sarebbe figo poterlo fare in sovraimpressione al campo, per ora ho messo una semplice barra in cima con del testo. Le altre due sono per il campo di gioco vero e proprio (fieldarea). 

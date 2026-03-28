@@ -1,4 +1,4 @@
-package it.unibo.minigOOlf.model.obstacles;
+package it.unibo.minigoolf.model.obstacles;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 

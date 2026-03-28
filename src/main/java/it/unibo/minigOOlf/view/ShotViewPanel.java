@@ -1,4 +1,4 @@
-/*package it.unibo.minigOOlf.view;
+/*package it.unibo.minigoolf.view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -9,8 +9,8 @@ import java.awt.Stroke;
 import java.util.Optional;
 import javax.swing.JPanel;
 
-import it.unibo.minigOOlf.controller.MainController;
-import it.unibo.minigOOlf.util.Vector2D;
+import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * Lascio i commenti in italiano perchè tanto so già che dovrò modificarla in futuro

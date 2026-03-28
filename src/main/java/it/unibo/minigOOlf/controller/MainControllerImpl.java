@@ -1,8 +1,8 @@
-package it.unibo.minigOOlf.controller;
+package it.unibo.minigoolf.controller;
 
 import java.awt.event.*;
 import javax.swing.Timer;
-import it.unibo.minigOOlf.view.MainWindow;
+import it.unibo.minigoolf.view.MainWindow;
 
 // import java.util.concurrent.LinkedBlockingQueue;
 // import javax.swing.text.View;

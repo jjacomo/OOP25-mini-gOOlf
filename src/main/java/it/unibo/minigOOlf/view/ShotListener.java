@@ -1,4 +1,4 @@
-package it.unibo.minigOOlf.view;
+package it.unibo.minigoolf.view;
 
 import java.awt.Point;
 import java.awt.event.MouseAdapter;

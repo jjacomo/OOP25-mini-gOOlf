@@ -1,6 +1,6 @@
-package it.unibo.minigOOlf;
+package it.unibo.minigoolf;
 
-import it.unibo.minigOOlf.controller.MainControllerImpl;
+import it.unibo.minigoolf.controller.MainControllerImpl;
 
 
 public class App {

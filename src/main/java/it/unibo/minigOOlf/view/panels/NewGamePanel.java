@@ -1,4 +1,4 @@
-package it.unibo.minigOOlf.view.panels;
+package it.unibo.minigoolf.view.panels;
 
 import javax.swing.*;
 import java.awt.*;

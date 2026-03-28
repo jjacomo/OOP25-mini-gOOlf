@@ -1,4 +1,4 @@
-package it.unibo.minigOOlf.util;
+package it.unibo.minigoolf.util;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 

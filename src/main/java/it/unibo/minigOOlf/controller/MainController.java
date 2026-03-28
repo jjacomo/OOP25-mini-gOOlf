@@ -1,4 +1,4 @@
-package it.unibo.minigOOlf.controller;
+package it.unibo.minigoolf.controller;
 
 public interface MainController {
     void start();

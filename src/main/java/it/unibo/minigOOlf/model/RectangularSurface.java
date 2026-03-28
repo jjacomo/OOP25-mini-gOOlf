@@ -1,6 +1,6 @@
-package it.unibo.minigOOlf.model;
+package it.unibo.minigoolf.model;
 
-import it.unibo.minigOOlf.util.Rectangle;
+import it.unibo.minigoolf.util.Rectangle;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**

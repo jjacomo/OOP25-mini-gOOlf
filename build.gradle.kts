@@ -46,7 +46,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("it.unibo.minigOOlf.App")
+    mainClass.set("it.unibo.minigoolf.App")
 }
 
 tasks.withType<Test>().configureEach {

@@ -1,4 +1,4 @@
-package it.unibo.minigOOlf.model.physics;
+package it.unibo.minigoolf.model.physics;
 
 // consider using a custom Vector2D to avoid external dependencies
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;

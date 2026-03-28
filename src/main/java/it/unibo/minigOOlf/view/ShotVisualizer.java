@@ -1,6 +1,6 @@
-package it.unibo.minigOOlf.view;
+package it.unibo.minigoolf.view;
 
-//import it.unibo.minigOOlf.util.Vector2D;
+//import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * an interface used to get the input
