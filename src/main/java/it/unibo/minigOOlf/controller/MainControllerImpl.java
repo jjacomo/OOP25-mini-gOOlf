@@ -7,15 +7,15 @@ import it.unibo.minigoolf.view.MainWindow;
 // import java.util.concurrent.LinkedBlockingQueue;
 // import javax.swing.text.View;
 
-public class MainControllerImpl implements MainController, ActionListener{
+public class MainControllerImpl implements MainController, ActionListener {
     private final int FPS = 60;
     private Timer timer;
-    private long lastTime = 0;
+    private long lastTime;
     private MainWindow mainWindow;
 
     public MainControllerImpl() {
         this.mainWindow = new MainWindow(this);
-        this.timer = new Timer(1000/FPS, this);
+        this.timer = new Timer(1000 / FPS, this);
     }
 
     @Override
@@ -24,8 +24,8 @@ public class MainControllerImpl implements MainController, ActionListener{
         long elapsed = currentTime - lastTime;
         System.out.println("timer is running, elapsed: " + elapsed);
         lastTime = currentTime;
-        
-        if(this.mainWindow != null) {
+
+        if (this.mainWindow != null) {
             this.mainWindow.repaint();
         }
     }
