@@ -1,6 +1,5 @@
 package it.unibo.minigoolf.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +23,25 @@ import it.unibo.minigoolf.util.Rectangle;
  *   <li><strong>Secondary Surface:</strong> 100×200 units, position (100,50), friction 0.65, z-index 0, blue color</li>
  * </ul>
  * 
+ * @author jack
+ * 
  * @see GameMapFactory
  * @see GameMap
  * @see RectangularSurface
  * @see Surface
- * 
- * @author jack
  */
 public class TestGameMapFactory implements GameMapFactory {
+ 
+    private static final double MAIN_SURFACE_X = 0;
+    private static final double MAIN_SURFACE_Y = 0;
+    private static final double MAIN_SURFACE_WIDTH = 500;
+    private static final double MAIN_SURFACE_HEIGHT = 800;
+    private static final int MAIN_SURFACE_Z_INDEX = 0;
+    private static final double SECOND_SURFACE_X = 100;
+    private static final double SECOND_SURFACE_Y = 50;
+    private static final double SECOND_SURFACE_WIDTH = 100;
+    private static final double SECOND_SURFACE_HEIGHT = 200;
+    private static final int SECOND_SURFACE_Z_INDEX = 1;
 
     /**
      * Builds a simple test game map with a single flat rectangular surface.
@@ -47,11 +57,14 @@ public class TestGameMapFactory implements GameMapFactory {
      */
     @Override
     public GameMap buildGameMap() {
-        List<Surface> surfaces = new ArrayList<>();
-        surfaces.add(new RectangularSurface(new Rectangle(new Vector2D(0, 0), 500, 800),
-                SurfaceType.GRASS.getFriction(), 0, SurfaceType.GRASS.getColor()));
-        surfaces.add(new RectangularSurface(new Rectangle(new Vector2D(100, 50), 100, 200),
-                SurfaceType.SAND.getFriction(), 1, SurfaceType.SAND.getColor()));
+        final List<Surface> surfaces = new ArrayList<>();
+        surfaces.add(new RectangularSurface(
+                new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH, MAIN_SURFACE_HEIGHT),
+                SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getColor()));
+        surfaces.add(new RectangularSurface(
+                new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
+                        SECOND_SURFACE_HEIGHT),
+                SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getColor()));
         return new GameMapImpl(surfaces);
     }
 }

@@ -11,14 +11,14 @@ package it.unibo.minigoolf.model;
  * <p>Implementations should follow the Factory Pattern to enable flexible map creation
  * without tightly coupling map construction logic to client code.</p>
  * 
+ * @author jack
+ * 
  * @see GameMap
  * @see RectangularSurface
  * @see Surface
- * 
- * @author jack
  */
 public interface GameMapFactory {
-    
+
     /**
      * Builds and returns a new game map instance.
      * 

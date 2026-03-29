@@ -1,28 +1,17 @@
-<<<<<<< HEAD
 Report - 03/23 - 2 ore
-=======
-Report - 03/23 - 1 ore
->>>>>>> fix-input
 
 - Creata GameMapFactory per la creazione di livelli diversi
     NOTA: se le mappe diventano complesse (molti oggetti) considera l'opzione del pattern builder
 - Creata TestGameMapFactory per creare una mappa test (forse nome ambiguo)
-<<<<<<< HEAD
 - Spostato tutto il codice delle superfici nel package surfaces
 - Creato enum SurfaceType con tutte le costanti per ogni tipo di superficie tra cui anche il colore
 - in TestGameMapFactory ho usato le costanti di SurfaceType invece di magic numbers
-=======
->>>>>>> fix-input
 
 TODO:
 Dovrei fare in modo da non usare magic numbers in TestGameMapFactory;
 Metti TestGameMapFactory in controller e visualizza a schermo (scalabile);
 Riguarda i commenti della javadoc;
-<<<<<<< HEAD
 Invece del colore per ogni superficie sarebbe bello avere delle texture;
 
 BTW:
 usato git cherry-pick perche' avevo fatto un commit in un branch sbagliato e volevo committare in master solo le mie modifiche (non tutto il branch)
-=======
-
->>>>>>> fix-input
