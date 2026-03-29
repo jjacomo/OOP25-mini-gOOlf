@@ -4,10 +4,10 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import java.awt.Point;
 
 /**
- * Utility class wrapping Apache Commons Math Vector2D.
- * Provides helper methods for 2D vector operations used in shot input and physics.
+ * CLASSE TEMPORANEA l'ho importata solo per capire se il problema fosse del mio codice o dei metodi del vettore,
+ * la rimuoverò appena avrò fatto la classe dei test
  *
- * @author fede / dani
+ * @author fede
  */
 public class Vec2D {
 
