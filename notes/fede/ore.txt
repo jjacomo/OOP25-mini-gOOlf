@@ -6,4 +6,5 @@
         creato una classe generica di player, per ora ho preso una classe vector2d generica per vedere il colpo, poi la cancellerò
         e userò i metodi dalla libreria dove possibile. Ho fatto delle piccole modifiche a MainWindow 
 
-DA FARE PROSSIMA VOLTA: migliora il GameState
+2 ore: sistemato per bene i problemi dell'input e modificato il MainControllerImpl affinchè fosse in grado di leggere ad ogni tick
+        l'input dell'utente
