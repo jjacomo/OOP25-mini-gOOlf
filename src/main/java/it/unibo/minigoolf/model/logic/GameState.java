@@ -1,6 +1,6 @@
-package it.unibo.minigOOlf.model.logic;
+package it.unibo.minigoolf.model.logic;
 
-import it.unibo.minigOOlf.util.Vec2D;
+import it.unibo.minigoolf.util.Vec2D;
  
 import java.util.ArrayList;
 import java.util.Collections;

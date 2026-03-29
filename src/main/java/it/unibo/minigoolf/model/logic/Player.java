@@ -1,4 +1,4 @@
-package it.unibo.minigOOlf.model.logic;
+package it.unibo.minigoolf.model.logic;
 
 /**
  * Represents a single player in the minigolf game.

@@ -4,7 +4,7 @@ package it.unibo.minigoolf.model;
 import it.unibo.minigoolf.model.surfaces.RectangularSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 =======
-package it.unibo.minigOOlf.model;
+package it.unibo.minigoolf.model;
 >>>>>>> fix-input
 
 /**

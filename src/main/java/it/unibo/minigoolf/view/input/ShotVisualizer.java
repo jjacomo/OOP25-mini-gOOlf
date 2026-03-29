@@ -1,6 +1,6 @@
-package it.unibo.minigOOlf.view.input;
+package it.unibo.minigoolf.view.input;
 
-import it.unibo.minigOOlf.util.Vec2D;
+import it.unibo.minigoolf.util.Vec2D;
  
 /**
  * Interface implemented by the panel that draws the shot-intent indicator

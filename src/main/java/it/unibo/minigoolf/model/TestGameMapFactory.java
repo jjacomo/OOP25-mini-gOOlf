@@ -1,22 +1,15 @@
-<<<<<<< HEAD
 package it.unibo.minigoolf.model;
-=======
-package it.unibo.minigOOlf.model;
->>>>>>> fix-input
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-<<<<<<< HEAD
 import it.unibo.minigoolf.model.surfaces.RectangularSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.SurfaceType;
 import it.unibo.minigoolf.util.Rectangle;
-=======
-import it.unibo.minigOOlf.util.Rectangle;
->>>>>>> fix-input
 
 /**
  * Test implementation of the GameMapFactory interface.
