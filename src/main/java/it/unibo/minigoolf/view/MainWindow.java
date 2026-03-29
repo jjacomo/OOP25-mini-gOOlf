@@ -5,17 +5,21 @@ import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.view.panels.GamePanel;
 
 import javax.swing.JFrame;
-import java.awt.*;
+import java.awt.Dimension;
+import java.io.Serial;
 
 /**
  * The main application window.
  * Hosts the panel that is currently active.
  *
- * @author dani
+ * @author dani and fede
  */
-public class MainWindow extends JFrame {
+public final class MainWindow extends JFrame {
 
-    private static final int MIN_WIDTH  = 800;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private static final int MIN_WIDTH = 800;
     private static final int MIN_HEIGHT = 600;
 
     private final GamePanel gamePanel;
@@ -24,10 +28,10 @@ public class MainWindow extends JFrame {
      * @param controller the main controller
      * @param gameState  the shared game-state instance
      */
-    public MainWindow(MainController controller, GameState gameState) {
+    public MainWindow(final MainController controller, final GameState gameState) {
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         this.setTitle("MinigOOlf");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.gamePanel = new GamePanel(controller, gameState);
         this.add(gamePanel);
@@ -37,7 +41,9 @@ public class MainWindow extends JFrame {
     }
 
     /**
-     *  @return the active GamePanel
+     * Returns the active GamePanel.
+     *
+     * @return the game panel
      */
     public GamePanel getGamePanel() {
         return gamePanel;

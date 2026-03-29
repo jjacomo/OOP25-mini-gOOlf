@@ -6,33 +6,36 @@ package it.unibo.minigoolf.model.logic;
  *
  * @author fede
  */
-public class Player {
- 
+public final class Player {
+
     private final String name;
     private int shots;
- 
+
     /**
      * @param name the display name of this player
      */
-    public Player(String name) {
+    public Player(final String name) {
         this.name = name;
-        this.shots = 0;
     }
- 
-    /** 
-     * @return this player's display name 
+
+    /**
+     * Returns this player's display name.
+     *
+     * @return the name
      */
     public String getName() {
         return name;
     }
- 
-    /** 
-     * @return the number of shots this player has taken on the current hole 
+
+    /**
+     * Returns the number of shots this player has taken on the current hole.
+     *
+     * @return the shot count
      */
     public int getShots() {
         return shots;
     }
- 
+
     /**
      * Increments the shot counter by one.
      * Called by GameState every time a valid shot is made.
@@ -40,14 +43,15 @@ public class Player {
     public void addShot() {
         this.shots++;
     }
- 
+
     /**
-     * Resets the shot counter to zero (e.g. when moving to the next hole).
+     * Resets the shot counter to zero (example: when moving to the next hole).
      */
     public void resetShots() {
         this.shots = 0;
     }
- 
+
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return name + " | Shots: " + shots;

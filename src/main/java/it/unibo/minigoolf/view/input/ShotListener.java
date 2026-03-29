@@ -11,51 +11,55 @@ import java.awt.event.MouseEvent;
  *
  * @author fede
  */
-public class ShotListener extends MouseAdapter implements ShotInput {
+public final class ShotListener extends MouseAdapter implements ShotInput {
 
     private final ShotVisualizer visualizer;
 
-    //Where the drag started (null when no drag is in progress)
-    private Point startingPoint = null;
+    /** Where the drag started (null when no drag is in progress). */
+    private Point startingPoint;
 
-    //Whether this listener is accepting input
-    private boolean enable = false;
+    /** Whether this listener is accepting input. */
+    private boolean enable;
 
     /**
      * @param visualizer the panel that draws the indicator and handles shots
      */
-    public ShotListener(ShotVisualizer visualizer) {
+    public ShotListener(final ShotVisualizer visualizer) {
         this.visualizer = visualizer;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public synchronized void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
         if (this.enable) {
             this.startingPoint = e.getPoint();
         }
     }
 
+    /** {@inheritDoc} */
     @Override
-    public synchronized void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent e) {
         if (this.enable && this.startingPoint != null) {
             // Build the raw drag vector (start → current cursor position)
-            Vec2D raw = new Vec2D(this.startingPoint, e.getPoint());
+            final Vec2D raw = new Vec2D(this.startingPoint, e.getPoint());
             // Negate it: dragging the club backward means shooting the ball forward
-            Vec2D shotDirection = raw.getOppositeVector();
+            final Vec2D shotDirection = raw.getOppositeVector();
             this.visualizer.updateShotIntent(shotDirection);
         }
     }
 
+    /** {@inheritDoc} */
     @Override
-    public synchronized void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent e) {
         if (this.enable && this.startingPoint != null) {
             this.visualizer.shoot();
             this.startingPoint = null;
         }
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void setEnable(boolean enable) {
+    public void setEnable(final boolean enable) {
         this.enable = enable;
         if (!enable) {
             // Clear any in-progress drag so stale state does not bleed into the next turn.

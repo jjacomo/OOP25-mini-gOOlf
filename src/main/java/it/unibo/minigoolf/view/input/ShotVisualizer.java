@@ -3,7 +3,7 @@ package it.unibo.minigoolf.view.input;
 import it.unibo.minigoolf.util.Vec2D;
  
 /**
- * Interface implemented by the panel that draws the shot-intent indicator
+ * Interface implemented by the panel that draws the shot-intent indicator.
  *
  * @author fede
  */
@@ -21,4 +21,3 @@ public interface ShotVisualizer {
      */
     void shoot();
 }
- 

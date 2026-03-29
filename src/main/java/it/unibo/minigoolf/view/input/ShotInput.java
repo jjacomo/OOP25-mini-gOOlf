@@ -1,17 +1,17 @@
 package it.unibo.minigoolf.view.input;
 
 /**
- * an input interface which accepts a new shot only when enabled
- * @author fede
+ * An input interface that accepts a new shot only when enabled.
  *
+ * @author fede
  */
-
 public interface ShotInput {
-    
+
     /**
-	 * enables this part
-	 * @param enable
-	 */
-    public void setEnable(boolean enable);
+     * Enables or disables this input.
+     *
+     * @param enable true to accept input, false to ignore it
+     */
+    void setEnable(boolean enable);
 
 }

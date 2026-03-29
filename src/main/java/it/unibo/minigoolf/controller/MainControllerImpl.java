@@ -10,37 +10,37 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Optional;
 
-// import java.util.concurrent.LinkedBlockingQueue;
-// import javax.swing.text.View;
-
-public class MainControllerImpl implements MainController, ActionListener {
+/**
+ * Main controller — owns the game loop (Swing Timer at 60 Hz).
+ *
+ * @author dani
+ */
+public final class MainControllerImpl implements MainController, ActionListener {
 
     private static final int FPS = 60;
 
     private final Timer timer;
-    private long lastTime = 0;
 
     private final GameState gameState;
     private final MainWindow mainWindow;
 
+    /**
+     * Creates the controller, the game state and the main window.
+     */
     public MainControllerImpl() {
-        //TODO: qua poi faremo scrivere al player il proprio nickname
+        // TODO: let the player write their own nickname
         this.gameState = new GameState(List.of("Player 1"));
-
         this.mainWindow = new MainWindow(this, gameState);
         this.timer = new Timer(1000 / FPS, this);
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void actionPerformed(ActionEvent e) {
-        long currentTime = System.nanoTime();
-        long elapsed = currentTime - lastTime; // nanoseconds since last tick
-        lastTime = currentTime;
-
-        //process shot from GameState 
-        Optional<Vec2D> shot = gameState.update();
+    public void actionPerformed(final ActionEvent e) {
+        // Process shot from GameState.
+        final Optional<Vec2D> shot = gameState.update();
         if (shot.isPresent()) {
-            handleShot(shot.get(), elapsed);
+            handleShot(shot.get());
         }
 
         mainWindow.repaint();
@@ -48,37 +48,27 @@ public class MainControllerImpl implements MainController, ActionListener {
 
     /**
      * Placeholder for physics processing of a shot.
-     * //TODO sistemalo quando la fisica sarà pronta
+     * TODO: replace when physics is ready
      *
      * @param shot the shot vector
-     * @param elapsed nanoseconds elapsed since the last tick
      */
-    private void handleShot(Vec2D shot, long elapsed) {
-        System.out.printf("[SHOT] player=%s  vector=%s  power=%.1f%n",
-            gameState.getCurrentPlayer().getName(),
-            shot,
-            shot.getModule());
-
-        // TODO: quando la fisica sarà pronta verrà chiamato quando la pallina sarà ferma
-        // per ora la stoppo forzatamente
+    private void handleShot(final Vec2D shot) {
+        // TODO: when physics is ready this will be called only when the ball stops.
+        // For now we stop it immediately.
         gameState.onBallStopped();
         mainWindow.getGamePanel().onBallStopped();
-
-        if (this.mainWindow != null) {
-            this.mainWindow.repaint();
-        }
+        mainWindow.repaint();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void start() {
-        System.out.println("Start");
-        lastTime = System.nanoTime();
         timer.start();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void stop() {
-        System.out.println("Stop");
         timer.stop();
     }
 }
