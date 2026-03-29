@@ -29,8 +29,6 @@ public class MainControllerImpl implements MainController, ActionListener {
 
         this.mainWindow = new MainWindow(this, gameState);
         this.timer = new Timer(1000 / FPS, this);
-        // this.mainWindow = new MainWindow(this); // da jack: ho pullato e ho visto sta roba, penso sia un errore, perche' ci sono gia' le due righe sopra.
-        // this.timer = new Timer(1000 / FPS, this);
     }
 
     @Override
