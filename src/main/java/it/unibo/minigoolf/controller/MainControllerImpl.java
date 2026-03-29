@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Main controller — owns the game loop (Swing Timer at 60 Hz).
+ * Main controller.
  *
- * @author dani
+ * @author dani and fede
  */
 public final class MainControllerImpl implements MainController, ActionListener {
 
