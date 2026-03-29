@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 package it.unibo.minigoolf.model;
 
 import it.unibo.minigoolf.model.surfaces.RectangularSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
+=======
+package it.unibo.minigOOlf.model;
+>>>>>>> fix-input
 
 /**
  * Factory interface for creating game map instances.

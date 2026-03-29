@@ -1,3 +1,10 @@
 3 ore : creare record position, migliorare e aggiungere metodi alle interfacce per la visualizzazione del tiro
 4 ore: sistemato i TODO che avevo messo, creato una base di shot da visualizzare nel JPanel, quando verrà creata la GUI
         e il Vector2D lo modificherò
+
+4 ore: spostato le classi per gestire il colpo in input in una cartella e ho risolto i problemi che davano, 
+        creato una classe generica di player, per ora ho preso una classe vector2d generica per vedere il colpo, poi la cancellerò
+        e userò i metodi dalla libreria dove possibile. Ho fatto delle piccole modifiche a MainWindow 
+
+2 ore: sistemato per bene i problemi dell'input e modificato il MainControllerImpl affinchè fosse in grado di leggere ad ogni tick
+        l'input dell'utente

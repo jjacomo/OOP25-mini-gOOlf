@@ -1,4 +1,4 @@
-package it.unibo.minigoolf.view;
+package it.unibo.minigoolf.view.input;
 
 /**
  * an input interface which accepts a new shot only when enabled
