@@ -9,26 +9,16 @@ import java.awt.event.MouseEvent;
 /**
  * Mouse listener that translates drag gestures into shot vectors.
  *
- * Flow:
- *  1. mousePressed  → record the starting point (where the drag begins)
- *  2. mouseDragged  → compute the vector from start to current pos,
- *                     negate it (drag away from ball = shoot forward),
- *                     and send it to the ShotVisualizer for live preview.
- *  3. mouseReleased → tell the ShotVisualizer to commit the shot.
- *
- * Can be enabled/disabled via {@link ShotInput#setEnable(boolean)} so that
- * input is ignored while the ball is still moving.
- *
  * @author fede
  */
 public class ShotListener extends MouseAdapter implements ShotInput {
 
     private final ShotVisualizer visualizer;
 
-    /** Where the drag started (null when no drag is in progress). */
+    //Where the drag started (null when no drag is in progress)
     private Point startingPoint = null;
 
-    /** Whether this listener is accepting input. */
+    //Whether this listener is accepting input
     private boolean enable = false;
 
     /**
@@ -37,10 +27,6 @@ public class ShotListener extends MouseAdapter implements ShotInput {
     public ShotListener(ShotVisualizer visualizer) {
         this.visualizer = visualizer;
     }
-
-    // ------------------------------------------------------------------ //
-    //  MouseAdapter overrides                                              //
-    // ------------------------------------------------------------------ //
 
     @Override
     public synchronized void mousePressed(MouseEvent e) {
@@ -67,10 +53,6 @@ public class ShotListener extends MouseAdapter implements ShotInput {
             this.startingPoint = null;
         }
     }
-
-    // ------------------------------------------------------------------ //
-    //  ShotInput                                                           //
-    // ------------------------------------------------------------------ //
 
     @Override
     public void setEnable(boolean enable) {

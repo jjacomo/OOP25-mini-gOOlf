@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
  
 /**
- * Central game-state class for a minigolf match.
+ * Central game logic for a minigolf match.
  *
  * The game loop in MainControllerImpl calls the method update() once per tick.
  *
