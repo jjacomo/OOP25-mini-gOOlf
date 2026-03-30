@@ -1,4 +1,4 @@
-package it.unibo.minigoolf.model;
+package it.unibo.minigoolf.model.map;
 
 /**
  * Factory interface for creating game map instances.

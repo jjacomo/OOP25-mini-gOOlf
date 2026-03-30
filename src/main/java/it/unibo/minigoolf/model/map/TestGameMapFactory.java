@@ -1,4 +1,4 @@
-package it.unibo.minigoolf.model;
+package it.unibo.minigoolf.model.map;
 
 import java.util.ArrayList;
 import java.util.List;
