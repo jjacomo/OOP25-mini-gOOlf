@@ -1,0 +1,10 @@
+Report - 03/30 - 1 ora (vabbe' sarebbero 30min)
+
+- Spostato tutto il codice della mappa di gioco nel package model.map
+- Creata interfaccia Ball
+- aggiunto tag javadoc 'author' alle mie classi
+
+TODO:
+Metti TestGameMapFactory in controller e visualizza a schermo (scalabile);
+Riguarda i commenti della javadoc;
+Invece del colore per ogni superficie sarebbe bello avere delle texture;
