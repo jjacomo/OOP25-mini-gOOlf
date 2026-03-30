@@ -6,6 +6,8 @@ import it.unibo.minigoolf.model.surfaces.Surface;
 
 /**
  * Represents a game map in the mini-golf game, providing access to surfaces at specific positions.
+ * 
+ * @author jack
  */
 public interface GameMap {
     /**

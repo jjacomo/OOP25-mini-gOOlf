@@ -27,6 +27,8 @@ public final class RectangularSurface implements Surface {
      * @param friction the friction coefficient applied on this surface
      * @param zIndex the rendering layer index; higher values are rendered on top
      * @param color the color of the surface for rendering
+     * 
+     * @author jack
      */
     // could use a factory pattern for different shapes of surfaces in the future
     public RectangularSurface(final Rectangle bounds, final double friction, final int zIndex, final Color color) { 

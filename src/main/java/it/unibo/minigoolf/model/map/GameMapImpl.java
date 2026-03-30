@@ -11,6 +11,8 @@ import it.unibo.minigoolf.model.surfaces.Surface;
  * Implementation of the GameMap interface.
  * Manages a collection of surfaces and provides methods to query surfaces at
  * specific positions.
+ * 
+ * @author jack
  */
 public final class GameMapImpl implements GameMap {
 

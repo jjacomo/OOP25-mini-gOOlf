@@ -8,6 +8,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
  *
  * <p>This interface is used by physics simulation components to read and update
  * the motion state of moving objects.</p>
+ * 
+ * @author jack
  */
 public interface DynamicBody {
 

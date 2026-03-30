@@ -6,6 +6,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 /**
  * Represents a surface in the game world that can affect physics and rendering.
  * Surfaces have friction properties that must be applied to the ball.
+ * 
+ * @author jack
  */
 public interface Surface {
 
