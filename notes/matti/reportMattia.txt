@@ -1,7 +1,19 @@
 Report - 25/03 - 3 ore
-
 - Creato il package obstacles per gestire i vari ostacoli
-- Iniziata e completata la classe astratta Obstacle: funge da modello base per tutti gli ostacoli del livello
+- Iniziata e completata la classe AbstractObstacle: funge da modello base per tutti gli ostacoli del livello
 - Iniziata la classe WallObstacle che estende Obstacle: gestisce tutti gli ostacoli rettangolari (compresi i 
     muri di confine della mappa)
 - Creata una classe temporanea Ball: serve per rimuovere gli errori in attesa che venga creata la vera classe della pallina
+- Aggiunti i commenti della JavaDoc alla classe AbstractObstacle
+
+Report - 28/03 - 2 ore
+- Risolti alcuni problemi riguardo la compilazione con ./greadlew build nelle classi AbstractObstacle
+
+Report - 01/04 - 4 ore
+- Completata la classe WallObstacle: gestisce tutti gli ostacoli rettangolari e cambia la direzione della pallina
+    a seguito di una collisione.
+- Aggiunti i commenti della JavaDoc alla classe WallObstacle e sistemati quelli già presenti nella classe AbstractObstacle
+- Rimossa la classe temporanea Ball ed importata quella ufficiale da it.unibo.minigoolf.model.Ball
+
+TODO:
+- Iniziare la classe RoundObstacle
