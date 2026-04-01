@@ -1,4 +1,4 @@
-package it.unibo.minigoolf.model;
+package it.unibo.minigoolf.model.ball;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 

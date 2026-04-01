@@ -1,0 +1,13 @@
+Report - 01/04 - 0.5 ore
+
+- Spostato codice della palla (interfaccia e implementazione nel package ball)
+- Aggiustato di conseguenza le import in model.obstacles.AbstractObstacle e model.obstacles.WallObstacle
+- Implementata (incompleta) interfaccia Ball con model.ball.BallImpl
+
+TODO:
+Metti TestGameMapFactory in controller e visualizza a schermo (scalabile);
+Riguarda i commenti della javadoc;
+Invece del colore per ogni superficie sarebbe bello avere delle texture;
+
+Metodi per calcolare l'attrito palla-superficie;
+Sempre nel controller applicare la velocita', update della posizione...

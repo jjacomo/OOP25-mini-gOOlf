@@ -1,7 +1,7 @@
 package it.unibo.minigoolf.model.obstacles;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import it.unibo.minigoolf.model.Ball;
+import it.unibo.minigoolf.model.ball.Ball;
 /**
  * Represents a generic obstacle in the game world.
  * Obstacles can have different shapes and interact with the ball,
