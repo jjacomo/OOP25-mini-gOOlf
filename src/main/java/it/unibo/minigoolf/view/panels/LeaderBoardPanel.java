@@ -11,8 +11,6 @@ import java.awt.*;
  * 
  * TODO:  only after the basegame is working!
  */ 
-
-
 public class LeaderBoardPanel extends JPanel {
 
 }

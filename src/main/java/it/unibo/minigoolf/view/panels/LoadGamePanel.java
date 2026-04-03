@@ -11,8 +11,6 @@ import java.awt.*;
  * 
  * TODO: implement it only when @fedesparvo1-a11y is ready to do the save-load mechanic, after basegame is working!
  */
-
-
 public class LoadGamePanel extends JPanel {
 
 }

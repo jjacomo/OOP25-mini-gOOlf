@@ -11,8 +11,6 @@ import java.awt.*;
  * 
  * TODO: Add the variuos buttons, ecc...
  */
-
-
 public class MenuPanel extends JPanel {
 
 }

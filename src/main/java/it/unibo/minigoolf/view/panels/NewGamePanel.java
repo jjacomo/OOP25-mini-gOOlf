@@ -11,8 +11,6 @@ import java.awt.*;
  * 
  * TODO: only when the core singleplayer is working!
  */
-
-
 public class NewGamePanel extends JPanel {
 
 }
