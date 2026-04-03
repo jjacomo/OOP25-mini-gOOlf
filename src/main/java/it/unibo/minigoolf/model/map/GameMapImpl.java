@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.surfaces.Surface;
 
 /**
@@ -19,13 +20,18 @@ public final class GameMapImpl implements GameMap {
     /** The list of surfaces in the game map. */
     private List<Surface> surfaces = new ArrayList<>();
 
+    /** The ball in the game map. */
+    private Ball ball;
+
     /**
      * Constructs a GameMapImpl with the given list of surfaces.
      * 
      * @param surfaces the list of surfaces
+     * @param ball the ball in the game map
      */
-    public GameMapImpl(final List<Surface> surfaces) {
+    public GameMapImpl(final List<Surface> surfaces, final Ball ball) {
         this.surfaces = surfaces;
+        this.ball = ball;
     }
 
     /**
@@ -53,5 +59,13 @@ public final class GameMapImpl implements GameMap {
      */
     public List<Surface> getSurfaces() {
         return surfaces;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Ball getBall() {
+        return ball;
     }
 }

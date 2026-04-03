@@ -17,9 +17,8 @@ public class BallImpl implements Ball{
      * @param velocity the initial velocity of the ball
      * @param radius the radius of the ball
      */
-    public BallImpl(Vector2D position, Vector2D velocity, double radius) {
+    public BallImpl(Vector2D position, double radius) {
         this.position = position;
-        this.velocity = velocity;
         this.radius = radius;
     }
 

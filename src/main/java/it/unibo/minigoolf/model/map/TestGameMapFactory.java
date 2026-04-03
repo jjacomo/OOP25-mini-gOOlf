@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import it.unibo.minigoolf.model.ball.Ball;
+import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.surfaces.RectangularSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.SurfaceType;
@@ -42,6 +44,8 @@ public class TestGameMapFactory implements GameMapFactory {
     private static final double SECOND_SURFACE_WIDTH = 100;
     private static final double SECOND_SURFACE_HEIGHT = 200;
     private static final int SECOND_SURFACE_Z_INDEX = 1;
+    private static final double BALL_RADIUS = 10;
+    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(50, 50);
 
     /**
      * Builds a simple test game map with a single flat rectangular surface.
@@ -65,6 +69,6 @@ public class TestGameMapFactory implements GameMapFactory {
                 new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
                         SECOND_SURFACE_HEIGHT),
                 SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getColor()));
-        return new GameMapImpl(surfaces);
+        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS));
     }
 }
