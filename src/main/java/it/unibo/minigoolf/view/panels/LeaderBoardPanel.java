@@ -1,7 +1,6 @@
 package it.unibo.minigoolf.view.panels;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
 
 /**
  * One of the possibile scenes, this is the leaderboard, a table with

@@ -1,7 +1,6 @@
 package it.unibo.minigoolf.view.panels;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
 
 /**
  * One of the possibile scenes, this is the menu where the user can choose the n° of
@@ -12,6 +11,6 @@ import java.awt.*;
  * TODO: only when the core singleplayer is working!
  */
 public class NewGamePanel extends JPanel {
-
+    
 }
 

@@ -1,7 +1,6 @@
 package it.unibo.minigoolf.view.panels;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
 
 /**
  * One of the possibile scenes, just a credits scene with the contribution of every 
@@ -12,7 +11,7 @@ import java.awt.*;
  * TODO: It is a very optional class, do it only at the end.
  */
 public class CreditsPanel extends JPanel {
-
+    
 }
 
 

@@ -1,7 +1,6 @@
 package it.unibo.minigoolf.view.panels;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
 
 /**
  * One of the possibile scenes, this is the main menu where the user can start a new game,
@@ -12,5 +11,5 @@ import java.awt.*;
  * TODO: Add the variuos buttons, ecc...
  */
 public class MenuPanel extends JPanel {
-
+    
 }
