@@ -16,7 +16,6 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.Serial;
 
 /**
  * One of the possible scenes, this one is where the game is played.
@@ -25,7 +24,9 @@ import java.io.Serial;
  */
 public class GamePanel extends JPanel {
 
-    @Serial
+    /**
+     * Serial version UID.
+     */
     private static final long serialVersionUID = 1L;
 
     /** Starting resolution width (placeholder, should be a fixed size). */

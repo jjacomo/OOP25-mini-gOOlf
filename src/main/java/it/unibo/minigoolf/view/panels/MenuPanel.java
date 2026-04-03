@@ -5,11 +5,12 @@ import javax.swing.JPanel;
 /**
  * One of the possibile scenes, this is the main menu where the user can start a new game,
  * check the leaderboard,...
- * 
- * @author dani
- * 
- * TODO: Add the variuos buttons, ecc...
+ * * @author dani
+ * * TODO: Add the variuos buttons, ecc...
  */
 public class MenuPanel extends JPanel {
-    
+    /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 }
