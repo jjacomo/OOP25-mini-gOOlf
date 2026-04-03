@@ -3,9 +3,10 @@ package it.unibo.minigoolf.model.ball;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
- * Implementation of the Ball interface representing a golf ball with position, velocity, and radius.
+ * Implementation of the Ball interface representing a golf ball with position,
+ * velocity, and radius.
  */
-public class BallImpl implements Ball{
+public class BallImpl implements Ball {
     private Vector2D position;
     private Vector2D velocity;
     private final double radius;
@@ -14,10 +15,9 @@ public class BallImpl implements Ball{
      * Constructs a new BallImpl with the specified position, velocity, and radius.
      *
      * @param position the initial position of the ball
-     * @param velocity the initial velocity of the ball
-     * @param radius the radius of the ball
+     * @param radius   the radius of the ball
      */
-    public BallImpl(Vector2D position, double radius) {
+    public BallImpl(final Vector2D position, final double radius) {
         this.position = position;
         this.radius = radius;
     }
@@ -58,7 +58,7 @@ public class BallImpl implements Ball{
      * @param position the new position as a Vector2D
      */
     @Override
-    public void setPosition(Vector2D position) {
+    public void setPosition(final Vector2D position) {
         this.position = position;
     }
 
@@ -68,7 +68,7 @@ public class BallImpl implements Ball{
      * @param velocity the new velocity as a Vector2D
      */
     @Override
-    public void setVelocity(Vector2D velocity) {
+    public void setVelocity(final Vector2D velocity) {
         this.velocity = velocity;
     }
 

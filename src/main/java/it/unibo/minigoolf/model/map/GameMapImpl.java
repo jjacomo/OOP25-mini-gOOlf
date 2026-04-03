@@ -1,6 +1,5 @@
 package it.unibo.minigoolf.model.map;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -18,10 +17,10 @@ import it.unibo.minigoolf.model.surfaces.Surface;
 public final class GameMapImpl implements GameMap {
 
     /** The list of surfaces in the game map. */
-    private List<Surface> surfaces = new ArrayList<>();
+    private final List<Surface> surfaces;
 
     /** The ball in the game map. */
-    private Ball ball;
+    private final Ball ball;
 
     /**
      * Constructs a GameMapImpl with the given list of surfaces.

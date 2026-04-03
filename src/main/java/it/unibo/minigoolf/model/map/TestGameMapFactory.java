@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.surfaces.RectangularSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
