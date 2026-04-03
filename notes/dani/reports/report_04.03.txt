@@ -1,0 +1,5 @@
+Report - 03/21 - 9 ore. //le ore le metto cumulative, quindi 6 dell'altra volta + 3 oggi (in realtà ho tenuto conto anche del "renaming" in minigoolf e qualche fix di spotbugs fatto qualche giorno fa)
+
+- Pulito un bel po' di errori di formattazione riguardo ai commenti Javadoc, utilizzo di import con *, ecc... insomma solo lavoro di pulizia.
+- Ho modificato la classe App, quella da dove parte il gioco per intenderci, in base a quello che c'era scritto in spotbugs, ora non dovrebbe dare errori
+
