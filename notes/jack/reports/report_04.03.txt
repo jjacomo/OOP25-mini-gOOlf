@@ -1,0 +1,12 @@
+Report - 03/04 - 0.5 ore
+
+- Aggiunta Ball a GameMap (e GameMapImpl)
+- Cambiato il costruttore di Ball (ho tolto la velocita; dal costruttore), la palla viene sempre creata con v_iniziale=0
+
+TODO:
+Metti TestGameMapFactory in controller e visualizza a schermo (scalabile);
+Riguarda i commenti della javadoc;
+Invece del colore per ogni superficie sarebbe bello avere delle texture;
+
+Metodi per calcolare l'attrito palla-superficie;
+Sempre nel controller applicare la velocita', update della posizione...
