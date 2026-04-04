@@ -14,6 +14,11 @@ public abstract class AbstractObstacle {
      * The position of the obstacle in the 2D space.
      */
     private final Vector2D position;
+    /**
+     * The tolerance threshold used for collision detection 
+     * to prevent precision errors in edge cases.
+     */
+    protected static final double EPSILON = 1e-10;
 
     /**
      * Constructs a new Obstacle at the specified position.

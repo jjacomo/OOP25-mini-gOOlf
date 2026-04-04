@@ -17,10 +17,13 @@ Report - 01/04 - 4 ore
 - Aggiunti i commenti della JavaDoc alla classe WallObstacle e sistemati quelli già presenti nella classe AbstractObstacle
 - Rimossa la classe temporanea Ball ed importata quella ufficiale da it.unibo.minigoolf.model.Ball
 
-Report - 04/04 - 2.5 ore
+Report - 04/04 - 3 ore
 - Migliorata la lettura del codice della classe WallObstacle
 - Sistemati tutti gli errori segnalati da SpotBugs attualmente presenti nelle classi WallObstacle e AbstractObstacle
+- Iniziata la classe RoundObstacle: gestisce tutti gli ostacoli rotondi e cambia la direzione della pallina
+  a seguito di una collisione.
 
 TODO:
-- Iniziare la classe RoundObstacle
+- Continuare la classe RoundObstacle
 - Creare l'interfaccia Obstacle
+- Spostare i metodi comuni tra gli ostacoli in AbstractObstacle
