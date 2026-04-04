@@ -2,6 +2,7 @@ package it.unibo.minigoolf.model.obstacles;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import it.unibo.minigoolf.model.ball.Ball;
+
 /**
  * Represents a generic obstacle in the game world.
  * Obstacles can have different shapes and interact with the ball,
@@ -12,14 +13,14 @@ public abstract class AbstractObstacle {
     /**
      * The position of the obstacle in the 2D space.
      */
-    protected Vector2D position;
+    private final Vector2D position;
 
     /**
      * Constructs a new Obstacle at the specified position.
      *
      * @param position the 2D vector representing the coordinates of the obstacle
      */
-    public AbstractObstacle(Vector2D position) {
+    public AbstractObstacle(final Vector2D position) {
         this.position = position;
     }
 
