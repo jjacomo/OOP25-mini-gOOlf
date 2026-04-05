@@ -6,7 +6,6 @@ import it.unibo.minigoolf.util.Vec2D;
 import javax.swing.JPanel;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -58,15 +57,23 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     /** The ShotListener that translates mouse events into Vec2D values. */
     private final transient ShotListener shotListener;
 
-    /** The game state that receives confirmed shots. */
+    /**
+     * The game state that receives confirmed shots.
+     * Stored by reference intentionally: this panel is a view component that
+     * shares state with the controller; defensive copying is not appropriate here.
+     */
+    @SuppressWarnings("EI_EXPOSE_REP2")
     private final transient GameState gameState;
 
     private transient Vec2D currentDirection;
     private transient Point ballScreenPos;
 
     /**
+     * Creates a new ShotViewPanel linked to the given game state.
+     *
      * @param gameState the shared game-state instance
      */
+    @SuppressWarnings("EI_EXPOSE_REP2")
     public ShotViewPanel(final GameState gameState) {
         this.gameState = gameState;
         this.shotListener = new ShotListener(this);
@@ -183,16 +190,12 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     }
 
     /**
-     * @return true if the current drag vector is above the minimum power threshold
+     * Returns true if the current drag vector is above the minimum power threshold.
+     *
+     * @return true if the shot is valid
      */
     private boolean isValidShot() {
         return currentDirection != null
             && currentDirection.getSquareModule() >= MIN_SQUARE_POWER;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Dimension getPreferredSize() {
-        return super.getPreferredSize();
     }
 }

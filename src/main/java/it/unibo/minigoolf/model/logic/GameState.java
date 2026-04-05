@@ -51,7 +51,7 @@ public final class GameState {
      *
      * @return the current player
      */
-    public Player getCurrentPlayer() {
+    public synchronized Player getCurrentPlayer() {
         return players.get(currentPlayerIndex);
     }
 

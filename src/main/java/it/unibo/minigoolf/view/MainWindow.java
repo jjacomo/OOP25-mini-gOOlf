@@ -25,6 +25,8 @@ public final class MainWindow extends JFrame {
     private final GamePanel gamePanel;
 
     /**
+     * Creates and displays the main application window.
+     *
      * @param controller the main controller
      * @param gameState  the shared game-state instance
      */
@@ -42,9 +44,12 @@ public final class MainWindow extends JFrame {
 
     /**
      * Returns the active GamePanel.
+     * Note: the panel is returned by reference since it is a shared UI component
+     * that cannot be defensively copied.
      *
      * @return the game panel
      */
+    @SuppressWarnings("EI_EXPOSE_REP")
     public GamePanel getGamePanel() {
         return gamePanel;
     }

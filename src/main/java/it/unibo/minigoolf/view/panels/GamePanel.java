@@ -22,6 +22,7 @@ import java.awt.event.ComponentEvent;
  *
  * @author dani and fede
  */
+@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
 public class GamePanel extends JPanel {
 
     /**
@@ -54,10 +55,13 @@ public class GamePanel extends JPanel {
     private final ShotViewPanel shotViewPanel;
 
     /**
+     * Creates the game panel with shot overlay.
+     * Note: calls to Swing layout methods in the constructor are intentional
+     * and standard practice for JPanel subclasses.
+     *
      * @param controller the main controller (reserved for future use)
      * @param gameState  the shared game-state instance
      */
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     public GamePanel(final MainController controller, final GameState gameState) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());

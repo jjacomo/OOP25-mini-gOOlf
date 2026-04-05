@@ -5,6 +5,7 @@ package it.unibo.minigoolf.view.input;
  *
  * @author fede
  */
+@FunctionalInterface
 public interface ShotInput {
 
     /**
@@ -13,5 +14,4 @@ public interface ShotInput {
      * @param enable true to accept input, false to ignore it
      */
     void setEnable(boolean enable);
-
 }
