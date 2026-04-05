@@ -23,6 +23,10 @@ Report - 04/04 - 3 ore
 - Iniziata la classe RoundObstacle: gestisce tutti gli ostacoli rotondi e cambia la direzione della pallina
   a seguito di una collisione.
 
+Report - 05/04 - 1 ore
+- Aggiunto il metodo isColliding nella classe RoundObstacle
+- Sistemati alcuni commenti della classe WallObstacle
+
 TODO:
 - Continuare la classe RoundObstacle
 - Creare l'interfaccia Obstacle

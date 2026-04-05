@@ -22,10 +22,17 @@ public final class RoundObstacle extends AbstractObstacle {
         super(position);
         this.radius = radius;
     }
-
-
+    
+    /**
+     * Checks if the ball is currently colliding with the circular obstacle.
+     *
+	 * @param ball the ball to be checked for collision
+     * @return true if the ball collides with the obstacle, false otherwise
+     */
+    @Override
     public boolean isColliding(final Ball ball) {
-        return true;
+        final double distance = ball.getPosition().distance(this.getPosition());
+        return distance <= (ball.getRadius() + this.radius);
     }
 
     public void resolveCollision(final Ball ball) {
