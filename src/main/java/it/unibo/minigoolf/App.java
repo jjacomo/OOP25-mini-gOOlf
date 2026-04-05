@@ -3,12 +3,12 @@ package it.unibo.minigoolf;
 import it.unibo.minigoolf.controller.MainControllerImpl;
 
 /**
- * Entry point from where the game starts.
+ * Game engine.
  */
 public final class App {
 
     /**
-     * Private constructor to hide the implicit public one. Known as utility class.
+     * Private constructor made to hide the implicit public one.
      */
     private App() {
     }
