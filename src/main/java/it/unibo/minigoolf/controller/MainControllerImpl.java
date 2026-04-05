@@ -50,9 +50,9 @@ public final class MainControllerImpl implements MainController, ActionListener 
      * Placeholder for physics processing of a shot.
      * TODO: replace when physics is ready
      *
-     * @param shot the shot vector
+     * @param ignored the shot vector (unused until physics is implemented)
      */
-    private void handleShot(final Vec2D shot) {
+    private void handleShot(final Vec2D ignored) {
         // TODO: when physics is ready this will be called only when the ball stops.
         // For now we stop it immediately.
         gameState.onBallStopped();

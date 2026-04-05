@@ -22,8 +22,7 @@ import java.awt.event.ComponentEvent;
  *
  * @author dani and fede
  */
-@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-public class GamePanel extends JPanel {
+public final class GamePanel extends JPanel {
 
     /**
      * Serial version UID.
@@ -56,8 +55,6 @@ public class GamePanel extends JPanel {
 
     /**
      * Creates the game panel with shot overlay.
-     * Note: calls to Swing layout methods in the constructor are intentional
-     * and standard practice for JPanel subclasses.
      *
      * @param controller the main controller (reserved for future use)
      * @param gameState  the shared game-state instance
