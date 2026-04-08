@@ -1,0 +1,9 @@
+
+
+- Fatto lo scaling degli oggetti all'interno del pannello fieldArea: in realtà era molto più facile del previsto, 
+la libreria graphics2d ha già un metodo chiamato g2d.scale.
+- Ho ridimensionato le dimensioni della finestra quando parte: prima era a 1920x1080 ma immagino che a voi occupi tutto lo schermo... l'ho fatto con una risoluzione
+insolita (960x540) sembra strana ma è per mantenere il rapporto 16:9. Comunque le potete cambiare anche voi per i test se volete, si trova nella classe GamePanel
+subito all'inizio, sono due costanti: START_WIDTH e START_HEIGHT.
+-
+

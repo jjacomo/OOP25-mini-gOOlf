@@ -30,8 +30,8 @@ public final class GamePanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /** Starting resolution width (placeholder, should be a fixed size). */
-    private static final int START_WIDTH = 1920;
-    private static final int START_HEIGHT = 1080;
+    private static final int START_WIDTH = 960;
+    private static final int START_HEIGHT = 540;
 
     // Placeholder ball position — will come from the physics model later.
     private static final Point BALL_START = new Point(110, 110);
@@ -78,6 +78,10 @@ public final class GamePanel extends JPanel {
             protected void paintComponent(final Graphics g) {
                 super.paintComponent(g);
                 final Graphics2D g2d = (Graphics2D) g;
+                // Used g2d.scale method to scale the elements that appear in the fieldArea
+                double scaleX = (double) getWidth() / START_WIDTH;
+                double scaleY = (double) getHeight() / START_HEIGHT;
+                g2d.scale(scaleX, scaleY);
                 // A test ball to see how it appears with the Graphics2D library
                 g2d.setColor(Color.WHITE);
                 g2d.fillOval(BALL_X, BALL_Y, BALL_SIZE, BALL_SIZE);
