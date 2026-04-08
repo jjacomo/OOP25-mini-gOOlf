@@ -1,7 +1,6 @@
 package it.unibo.minigoolf.view;
 
 import it.unibo.minigoolf.controller.MainController;
-import it.unibo.minigoolf.controller.MainControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
@@ -45,7 +44,6 @@ public final class MainWindow extends JFrame {
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        
         this.gamePanel = new GamePanel(controller, gameState);
         this.menuPanel = new MenuPanel(controller); 
 
@@ -61,6 +59,7 @@ public final class MainWindow extends JFrame {
 
     /**
      * Allows to change the panel through the cardLayout.
+     * 
      * @param name the name assigned to the according panel ("MENU", "GAME", ....)
      */
     public void showScene(final String name) {

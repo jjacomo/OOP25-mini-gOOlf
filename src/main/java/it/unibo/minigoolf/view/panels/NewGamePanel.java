@@ -8,7 +8,7 @@ import javax.swing.JPanel;
  * * @author dani
  * * TODO: only when the core singleplayer is working!
  */
-public class NewGamePanel extends JPanel {
+public final class NewGamePanel extends JPanel {
     /**
      * Serial version UID.
      */
