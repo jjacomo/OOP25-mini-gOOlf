@@ -28,7 +28,7 @@ public final class MainWindow extends JFrame {
      * Creates and displays the main application window.
      *
      * @param controller the main controller
-     * @param gameState  the shared game-state instance
+     * @param gameState  the shared state of the game instance
      */
     public MainWindow(final MainController controller, final GameState gameState) {
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
@@ -44,12 +44,10 @@ public final class MainWindow extends JFrame {
 
     /**
      * Returns the active GamePanel.
-     * Note: the panel is returned by reference since it is a shared UI component
-     * that cannot be defensively copied.
      *
      * @return the game panel
      */
-    @SuppressWarnings("EI_EXPOSE_REP")
+    @SuppressWarnings("EI_EXPOSE_REP")//TODO: find a way to remove this
     public GamePanel getGamePanel() {
         return gamePanel;
     }

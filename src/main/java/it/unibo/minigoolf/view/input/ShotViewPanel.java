@@ -60,9 +60,9 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     /**
      * The game state that receives confirmed shots.
      * Stored by reference intentionally: this panel is a view component that
-     * shares state with the controller; defensive copying is not appropriate here.
+     * shares state with the controller.
      */
-    @SuppressWarnings("EI_EXPOSE_REP2")
+    @SuppressWarnings("EI_EXPOSE_REP2")//TODO: find a way to remove this 
     private final transient GameState gameState;
 
     private transient Vec2D currentDirection;
@@ -73,7 +73,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
      *
      * @param gameState the shared game-state instance
      */
-    @SuppressWarnings("EI_EXPOSE_REP2")
+    @SuppressWarnings("EI_EXPOSE_REP2")//TODO: find a way to remove this
     public ShotViewPanel(final GameState gameState) {
         this.gameState = gameState;
         this.shotListener = new ShotListener(this);
@@ -140,7 +140,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     /**
      * Draws the dashed coloured line from the ball position in the shot direction.
-     * Does nothing if there is no drag.
+     * Does nothing if there isn't any drag.
      *
      * @param g the Graphics context
      */
@@ -190,7 +190,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     }
 
     /**
-     * Returns true if the current drag vector is above the minimum power threshold.
+     * Returns true if the current drag vector is above the minimum power.
      *
      * @return true if the shot is valid
      */
