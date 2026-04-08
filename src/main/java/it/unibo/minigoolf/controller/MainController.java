@@ -17,4 +17,10 @@ public interface MainController {
      * Stops the game loop.
      */
     void stop();
+
+    /**
+     * Handles the transition from the menu to the actual game.
+     * Starts the timer and switches the view.
+     */
+    void startGame();
 }
