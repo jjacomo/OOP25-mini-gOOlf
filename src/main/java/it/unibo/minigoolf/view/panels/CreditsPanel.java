@@ -8,7 +8,7 @@ import javax.swing.JPanel;
  * * @author dani
  * * TODO: It is a very optional class, do it only at the end.
  */
-public class CreditsPanel extends JPanel {
+public final class CreditsPanel extends JPanel {
     /**
      * Serial version UID.
      */

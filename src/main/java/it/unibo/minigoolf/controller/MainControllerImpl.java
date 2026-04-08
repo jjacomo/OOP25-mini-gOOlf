@@ -62,6 +62,13 @@ public final class MainControllerImpl implements MainController, ActionListener 
 
     /** {@inheritDoc} */
     @Override
+    public void startGame() {
+        this.start();
+        this.mainWindow.showScene("GAME");
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void start() {
         timer.start();
     }
@@ -71,4 +78,5 @@ public final class MainControllerImpl implements MainController, ActionListener 
     public void stop() {
         timer.stop();
     }
+
 }

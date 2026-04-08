@@ -8,7 +8,7 @@ import javax.swing.JPanel;
  * * @author dani
  * * TODO: implement it only when @fedesparvo1-a11y is ready to do the save-load mechanic, after basegame is working!
  */
-public class LoadGamePanel extends JPanel {
+public final class LoadGamePanel extends JPanel {
     /**
      * Serial version UID.
      */

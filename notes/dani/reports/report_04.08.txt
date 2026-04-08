@@ -1,0 +1,26 @@
+Report - 04/08 - 12.5 ore
+
+- Fatto lo scaling degli oggetti all'interno del pannello fieldArea: in realtà era molto più facile del previsto, 
+la libreria graphics2d ha già un metodo chiamato g2d.scale.
+- Ho ridimensionato le dimensioni della finestra quando parte: prima era a 1920x1080 ma immagino che a voi occupi tutto lo schermo... l'ho fatto con una risoluzione
+insolita (960x540) sembra strana ma è per mantenere il rapporto 16:9. Comunque le potete cambiare anche voi per i test se volete, si trova nella classe GamePanel
+subito all'inizio, sono due costanti: START_WIDTH e START_HEIGHT.
+- Se vedete il mio ultimo commit, sono riuscito a far partire il menu! è bruttissimo, però fa il suo dovere: adesso il gioco parte da questo panello, quindi se viene
+premuto il tasto [start game], il pannello cambia in quello di sempre, il gamePanel. Ho dovuto modificare un paio di cose anche nel mainControllerImpl e la sua interfaccia,
+in realtà una cosa di nota nuova che ho aggiunto è il metodo startGame, che fa partire il timer e cambia la finestra, in teoria è meglio così per il futuro, forse però
+quando dovrò creare gli altri panelli dovrò vedere se ha senso creare altri metodi sempre qua oppure creare una classe a parte che gestisce questi cambi, TODO: ci 
+guarderò la prossima volta. 
+- Ovviamente spotbugs si è lamentato delle nuove modifiche ma son riuscito a risolvere le più rognose, ne ho ancora un paio ma per delle cagate (alcuni magic number che
+non saranno magic number in futuro) e qualche commento javadoc da sistemare. 
+- Per quanto riguarda i magic number, forse sarebbe figo fare un file dove mettere costanti che però potrebbero cambiare a piacere (avere un solo posto dove poter 
+cambiare ad esempio la risoluzione con cui parte il gioco, il menu, ecc..). Stavo quasi pensando di implementare nel gioco la possibilità di farli settare anche
+dall'utente, ma è una feature che non abbiamo menzionato, nel caso ci penserò alla fine se proprio non avremo altro da aggiungere e se è facile da realizzare.
+
+** NOTA IMPORTANTE! **
+Probabilmente ne parleremo la prossima volta che ci vediamo per parlare del progetto (mercoledì prossimo?) però ve lo anticipo qui: con la questione dello scaling,
+si è aperta la questione di come gestire le coordinate per pallina ed ostacoli, vogliamo quindi usare dei pixel o un altro metodo? Per nel caso dei pixel, forse
+@jjacomo e @MattiaDambrosio5 dovrete aggiustarvi a questa modifica, l'ho mandata in privato a Fede perchè mi sa che a lui serve per forza, comunque ne discutiamo
+tanto per lo scaling ho letteralmente aggiunto 3 righe di codice quindi nel caso cambiasse qualcosa (ma non credo) non è difficile da mettere a posto.
+
+Ok mi sono un po' letto la vostra roba e in teoria usando vector2D non dovrebbe creare problemi, comunque appunto ne parliamo la prossima volta.
+

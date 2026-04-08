@@ -8,7 +8,7 @@ import javax.swing.JPanel;
  * * @author dani
  * * TODO:  only after the basegame is working!
  */ 
-public class LeaderBoardPanel extends JPanel {
+public final class LeaderBoardPanel extends JPanel {
     /**
      * Serial version UID.
      */
