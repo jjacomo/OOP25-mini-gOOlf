@@ -24,6 +24,10 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    // Logical resolution — the coordinate space the model works in.
+    private static final int LOGICAL_WIDTH = 1920;
+    private static final int LOGICAL_HEIGHT = 1080;
+
     /** Minimum squared power for a shot to be accepted. */
     private static final double MIN_SQUARE_POWER = 100.0;
 
@@ -62,7 +66,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
      * Stored by reference intentionally: this panel is a view component that
      * shares state with the controller.
      */
-    @SuppressWarnings("EI_EXPOSE_REP2")//TODO: find a way to remove this 
+    @SuppressWarnings("EI_EXPOSE_REP2") //TODO: find a way to remove this
     private final transient GameState gameState;
 
     private transient Vec2D currentDirection;
@@ -73,7 +77,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
      *
      * @param gameState the shared game-state instance
      */
-    @SuppressWarnings("EI_EXPOSE_REP2")//TODO: find a way to remove this
+    @SuppressWarnings("EI_EXPOSE_REP2") //TODO: find a way to remove this
     public ShotViewPanel(final GameState gameState) {
         this.gameState = gameState;
         this.shotListener = new ShotListener(this);
@@ -84,6 +88,20 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
 
         // Make this panel transparent so the field is visible underneath.
         this.setOpaque(false);
+    }
+
+    /**
+     * Converts a physical mouse point to logical coordinates.
+     * Physical coordinates come from MouseEvent; logical ones are what the model uses.
+     *
+     * @param physical the raw point from a MouseEvent
+     *
+     * @return the point in logical space
+     */
+    public Point toLogical(final Point physical) {
+        final double factorX = (double) LOGICAL_WIDTH / getWidth();
+        final double factorY = (double) LOGICAL_HEIGHT / getHeight();
+        return new Point((int) (physical.x * factorX), (int) (physical.y * factorY));
     }
 
     /**
@@ -159,23 +177,26 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
             origin = new Point(ballScreenPos);
         }
 
-        // Clamp display length so the line doesn't go off the screen.
-        final Vec2D displayDir = dir.clampedTo(MAX_LINE_PIXELS);
-        final Point tip = displayDir.translate(origin);
-
-        // Line colour based on power.
-        final double squaredPower = dir.getSquareModule();
-        final Color lineColor;
-        if (squaredPower < LOW_THRESHOLD) {
-            lineColor = Color.GREEN;
-        } else if (squaredPower < MED_THRESHOLD) {
-            lineColor = Color.YELLOW;
-        } else {
-            lineColor = Color.RED;
-        }
-
         final Graphics2D g2d = (Graphics2D) g.create();
         try {
+            // Scale from logical to physical pixels so drawing matches the window size.
+            g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
+
+            // Clamp display length so the line doesn't go off the screen.
+            final Vec2D displayDir = dir.clampedTo(MAX_LINE_PIXELS);
+            final Point tip = displayDir.translate(origin);
+
+            // Line colour based on power.
+            final double squaredPower = dir.getSquareModule();
+            final Color lineColor;
+            if (squaredPower < LOW_THRESHOLD) {
+                lineColor = Color.GREEN;
+            } else if (squaredPower < MED_THRESHOLD) {
+                lineColor = Color.YELLOW;
+            } else {
+                lineColor = Color.RED;
+            }
+
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setStroke(DASHED_STROKE);
             g2d.setColor(lineColor);

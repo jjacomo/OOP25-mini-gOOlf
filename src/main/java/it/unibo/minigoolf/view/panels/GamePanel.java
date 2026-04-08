@@ -16,22 +16,22 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.Serial;
 
 /**
  * One of the possible scenes, this one is where the game is played.
  *
- * @author dani and fede
+ * @author dani
  */
-public final class GamePanel extends JPanel {
+@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
+public class GamePanel extends JPanel {
 
-    /**
-     * Serial version UID.
-     */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** Starting resolution width (placeholder, should be a fixed size). */
-    private static final int START_WIDTH = 960;
-    private static final int START_HEIGHT = 540;
+    private static final int START_WIDTH = 1920;
+    private static final int START_HEIGHT = 1080;
 
     // Placeholder ball position — will come from the physics model later.
     private static final Point BALL_START = new Point(110, 110);
@@ -54,8 +54,6 @@ public final class GamePanel extends JPanel {
     private final ShotViewPanel shotViewPanel;
 
     /**
-     * Creates the game panel with shot overlay.
-     *
      * @param controller the main controller (reserved for future use)
      * @param gameState  the shared game-state instance
      */
@@ -78,10 +76,9 @@ public final class GamePanel extends JPanel {
             protected void paintComponent(final Graphics g) {
                 super.paintComponent(g);
                 final Graphics2D g2d = (Graphics2D) g;
-                // Used g2d.scale method to scale the elements that appear in the fieldArea
-                double scaleX = (double) getWidth() / START_WIDTH;
-                double scaleY = (double) getHeight() / START_HEIGHT;
-                g2d.scale(scaleX, scaleY);
+                // Scale from logical (1920x1080) to actual panel size,
+                // so all coordinates match those used by ShotViewPanel.
+                g2d.scale((double) getWidth() / START_WIDTH, (double) getHeight() / START_HEIGHT);
                 // A test ball to see how it appears with the Graphics2D library
                 g2d.setColor(Color.WHITE);
                 g2d.fillOval(BALL_X, BALL_Y, BALL_SIZE, BALL_SIZE);
