@@ -23,4 +23,9 @@ public interface MainController {
      * Starts the timer and switches the view.
      */
     void startGame();
+
+    /**
+     * Handles the transition from the menu to the newGamePanel: the n* and names of players are selected here.
+     */
+    void goToNewGameMenu();
 }

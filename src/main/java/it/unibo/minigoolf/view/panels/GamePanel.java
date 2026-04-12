@@ -30,8 +30,8 @@ public class GamePanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /** Starting resolution width (placeholder, should be a fixed size). */
-    private static final int START_WIDTH = 1920;
-    private static final int START_HEIGHT = 1080;
+    private static final int START_WIDTH = 960;
+    private static final int START_HEIGHT = 540;
 
     // Placeholder ball position — will come from the physics model later.
     private static final Point BALL_START = new Point(110, 110);

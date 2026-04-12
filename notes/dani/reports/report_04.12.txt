@@ -1,0 +1,23 @@
+Report - 04/12 - 16 ore
+
+- Aggiunta la cartella resources sotto a src/main/ : questa cartella conterrà principalmente file di tipo immagine, (forse audio?) come ad esempio
+in questo primo caso il titolo (si l'ho aggiunto mi scocciava troppo non vederlo già ahahha). Qui mettermo anche lo sfondo, probabilmente le texture della mappa.
+
+- Cominciato a scrivere il NewGamePanel: esso è il pannello da dove verranno selezionati il numero ed i nomi dei giocatori: per ora fa schifo ma poi sistemo
+a livello grafico (probabilmente già la prossima volta, credo). Per quanto rigaurda la parte logica, dovrò sicuro interfacciarmi con @fedesparvo1-a11y per poter
+passare correttamente i nomi dei giocatori e quindi cominciare una nuova partita.
+
+- Per quanto riguarda lo stile dei menu, quasi quasi stavo pensado di tenere la finestra stile smartphone, nel senso mantenere sempre un layout verticale finchè
+si rimane nei pannelli dei menu, poi per il gioco stesso (e magari la leaderboard, dipende quante info dovrà visualizzare orizzontalmente ma vabbè ci pensiamo poi dopo)
+la main window va a 16:9. Cioè praticamente nei menu andrà al contrario, 9:16. **Aggiornamento** non si può fare, o almeno, è un casino. Praticamente usando
+il cardLayout, la risoluzione viene dettata dal pannello più grande, anche se non ancora visualizzato. Basta che mettiamo uno sfondo carino ai menu in orizzontale 
+e siamo a posto, era solo una mia questione estetica ma va bene così, troppo casino per una robina inutile in realtà.
+
+- Una nota per me: cercare di usare la maggior parte del tempo lo stesso layout: il GridBagLayout sembra quello più "potente" e figo.
+
+- Ho sistemato già in realtà un po' il NewGamePanel perchè mi faceva piuttosto cagare, ora è molto più carino, per ora manca ancora la logica come detto sopra.
+
+- Sicuro spotbugs avrà delle rogne in più, ci penso la prossima volta che sarà più di pulizia e fix.
+
+
+

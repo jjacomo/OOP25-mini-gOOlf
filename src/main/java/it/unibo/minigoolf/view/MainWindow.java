@@ -4,6 +4,7 @@ import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
+import it.unibo.minigoolf.view.panels.NewGamePanel;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -46,9 +47,11 @@ public final class MainWindow extends JFrame {
 
         this.gamePanel = new GamePanel(controller, gameState);
         this.menuPanel = new MenuPanel(controller); 
+        JPanel newGamePanel = new NewGamePanel(controller);
 
         // TODO: Later add the other panels
         mainContainer.add(menuPanel, "MENU");
+        mainContainer.add(newGamePanel, "NEW_GAME");
         mainContainer.add(gamePanel, "GAME");
         this.setContentPane(mainContainer);
         cardLayout.show(mainContainer, "MENU");
