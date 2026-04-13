@@ -36,5 +36,69 @@ public final class RoundObstacle extends AbstractObstacle {
     }
 
     public void resolveCollision(final Ball ball) {
+        final Vector2D ballPos = ball.getPosition();
+        final Vector2D obstaclePos = this.getPosition();
+        
+        // Vector from the center of the obstacle to the center of the ball
+        final Vector2D collisionVector = ballPos.subtract(obstaclePos);
+        final double distance = collisionVector.getNorm();
+        
+        final Vector2D normal = computeCollisionNormal(collisionVector, distance);
+        correctPosition(ball, ballPos, normal, distance);
+        reflectVelocity(ball, normal);
+    }
+
+    /**
+     * Computes the collision normal pointing from the obstacle to the ball.
+     * Handles the edge case where the centers perfectly overlap.
+     *
+     * @param collisionVector vector from obstacle center to ball center
+     * @param distance the distance between the two centers
+     * @return the normalized collision normal
+     */
+    private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance) {
+        if (distance < EPSILON) {
+            // If the centers are perfectly overlapping, we avoid division by zero.
+            // We push the ball in an arbitrary direction (upwards).
+            return new Vector2D(0, 1);
+        }
+        return collisionVector.normalize();
+    }
+
+    /**
+     * Corrects the ball's position to resolve penetration with the obstacle.
+     *
+     * @param ball the ball to correct
+     * @param ballPos the current position of the ball's center
+     * @param normal the collision normal
+     * @param distance the distance between the two centers
+     */
+    private void correctPosition(final Ball ball, final Vector2D ballPos,
+                                 final Vector2D normal, final double distance) {
+        // Penetration is calculated using the sum of the two radii
+        final double penetrationDepth = (ball.getRadius() + this.radius) - distance;
+        if (penetrationDepth > 0) {
+            ball.setPosition(ballPos.add(normal.scalarMultiply(penetrationDepth)));
+        }
+    }
+
+    /**
+     * Reflects the ball's velocity based on the collision normal.
+     *
+     * @param ball the ball whose velocity to reflect
+     * @param normal the collision normal
+     */
+    private void reflectVelocity(final Ball ball, final Vector2D normal) {
+        final Vector2D velocity = ball.getVelocity();
+        final double dotProduct = velocity.dotProduct(normal);
+        
+        // If the ball is already moving away, no reflection needed
+        if (dotProduct > 0) {
+            return;
+        }
+        
+        // Apply the reflection formula: v' = v - 2 * (v · n) * n
+        final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
+        ball.setVelocity(velocity.subtract(reflection));
     }
 }

@@ -27,7 +27,10 @@ Report - 05/04 - 1 ore
 - Aggiunto il metodo isColliding nella classe RoundObstacle
 - Sistemati alcuni commenti della classe WallObstacle
 
+Report - 13/04 - 3 ore
+- Completata la classe RoundObstacle
+- Aggiunti i commenti alla classe RoundObstacle
+
 TODO:
-- Continuare la classe RoundObstacle
 - Creare l'interfaccia Obstacle
 - Spostare i metodi comuni tra gli ostacoli in AbstractObstacle
