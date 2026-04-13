@@ -78,11 +78,10 @@ public final class MainControllerImpl implements MainController, ActionListener 
         this.start();
         this.mainWindow.showScene("GAME");
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void goToNewGameMenu() {
     this.mainWindow.showScene("NEW_GAME"); 
     }
-
 }

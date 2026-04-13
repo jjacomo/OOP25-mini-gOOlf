@@ -44,59 +44,56 @@ public final class NewGamePanel extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // N° of players
-        JPanel header = new JPanel();
+        final JPanel header = new JPanel();
         header.setOpaque(false);
-        JLabel instructionLabel = new JLabel("N° of players: ");
+        final JLabel instructionLabel = new JLabel("N° of players: ");
         instructionLabel.setForeground(Color.WHITE);
         header.add(instructionLabel);
         // Here the user inputs the n° and confirms with the button "OK"
         this.numInput = new JTextField("1", 3);
-        JButton confirmNumBtn = new JButton("OK");
+        final JButton confirmNumButton = new JButton("OK");
         header.add(numInput);
-        header.add(confirmNumBtn);
+        header.add(confirmNumButton);
         this.add(header, BorderLayout.NORTH);
 
         // Using the GridBagLayout
         this.namesContainer = new JPanel(new GridBagLayout());
         this.namesContainer.setOpaque(false);
-        
-        
+
         // If someone increases the max n° of playes, to scroll the text fields (maybe not necessary)
-        JScrollPane scrollPane = new JScrollPane(namesContainer);
+        final JScrollPane scrollPane = new JScrollPane(namesContainer);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
         this.add(scrollPane, BorderLayout.CENTER);
 
         // Start match button, for now it doesn't do anything.
-        JButton startBtn = new JButton("START MATCH");
-        this.add(startBtn, BorderLayout.SOUTH);
+        final JButton startButton = new JButton("START MATCH");
+        this.add(startButton, BorderLayout.SOUTH);
 
         // To limit the number of players, but could be redefined in the future
-        confirmNumBtn.addActionListener(e -> {
+        confirmNumButton.addActionListener(e -> {
             try {
-                int n = Integer.parseInt(numInput.getText());
+                final int n = Integer.parseInt(numInput.getText());
                 if (n > 0 && n <= MAX_PLAYERS) { 
                     generateFields(n);
                 } else {
                     JOptionPane.showMessageDialog(this, "Insert a number from 1 to 10.");
                 }
-            } catch (NumberFormatException ex) {
+            } catch (final NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "The number is not valid.");
             }
         });
-
         /* 
          Here I need something to pass the names to @fedesparvo1-a11y to initialize the game!
         */
-        
         // One default field always present (single player)
         generateFields(1);
     }
 
     /**
-     * This method initializes the number of text fields for the names of the players
-     * @param n
+     * This method initializes the number of text fields for the names of the players.
+     * @param n number of players.
      */
     private void generateFields(int n) {
         namesContainer.removeAll();
@@ -110,14 +107,13 @@ public final class NewGamePanel extends JPanel {
             int row = i / COLUMNS_COUNT;
             int col = i % COLUMNS_COUNT;
 
-            JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            final JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
             p.setOpaque(false);
-            
-            JLabel label = new JLabel("Player " + (i + 1) + ": ");
+
+            final JLabel label = new JLabel("Player " + (i + 1) + ": ");
             label.setForeground(Color.WHITE);
-            
-            
-            JTextField field = new JTextField(12);
+
+            final JTextField field = new JTextField(12);
             nameFields.add(field);
             
             p.add(label);

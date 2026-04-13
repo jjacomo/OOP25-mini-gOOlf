@@ -47,7 +47,7 @@ public final class MainWindow extends JFrame {
 
         this.gamePanel = new GamePanel(controller, gameState);
         this.menuPanel = new MenuPanel(controller); 
-        JPanel newGamePanel = new NewGamePanel(controller);
+        final JPanel newGamePanel = new NewGamePanel(controller);
 
         // TODO: Later add the other panels
         mainContainer.add(menuPanel, "MENU");

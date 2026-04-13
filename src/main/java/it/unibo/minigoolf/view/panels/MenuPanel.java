@@ -34,17 +34,16 @@ public final class MenuPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         // This helps using GridBagLayout so everything is allignerd vertically, will be used in menus
         final java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-        
-        gbc.gridx = 0;           
+
+        gbc.gridx = 0;    
         gbc.insets = new java.awt.Insets(10, 10, 10, 10); // Margin settings
         gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
         // To import the image for the title
-        ImageIcon logoIcon = new ImageIcon(getClass().getResource("/title.png"));
+        final ImageIcon logoIcon = new ImageIcon(getClass().getResource("/title.png"));
 
         // To scale the image of the title logo, tho maybe it's not necessary
-        Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);
-        JLabel titleLabel = new JLabel(new ImageIcon(scaledImage));
-        
+        final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);
+        final JLabel titleLabel = new JLabel(new ImageIcon(scaledImage));
 
         // Title
         gbc.gridx = 0;
@@ -52,6 +51,8 @@ public final class MenuPanel extends JPanel {
         gbc.insets = new java.awt.Insets(0, 0, 50, 0);
         gbc.anchor = java.awt.GridBagConstraints.CENTER;
         this.add(titleLabel, gbc);
+
+        // TODO: Implement something to unify the design of the buttons across all the UI, so no magic numbers are needed!
 
         // New game button
         final JButton newGameButton = new JButton("NEW GAME");
