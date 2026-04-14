@@ -1,0 +1,34 @@
+Dani:
+
+- Per quanto riguarda lo stile dei menu, quasi quasi stavo pensado di tenere la finestra stile smartphone, nel senso mantenere sempre un layout verticale finchè
+si rimane nei pannelli dei menu, poi per il gioco stesso (e magari la leaderboard, dipende quante info dovrà visualizzare orizzontalmente ma vabbè ci pensiamo poi dopo)
+la main window va a 16:9. Cioè praticamente nei menu andrà al contrario, 9:16. **Aggiornamento** non si può fare, o almeno, è un casino. Praticamente usando
+il cardLayout, la risoluzione viene dettata dal pannello più grande, anche se non ancora visualizzato. Basta che mettiamo uno sfondo carino ai menu in orizzontale 
+e siamo a posto, era solo una mia questione estetica ma va bene così, troppo casino per una robina inutile in realtà.
+
+
+- Per quanto riguarda i magic number, forse sarebbe figo fare un file dove mettere costanti che però 
+potrebbero cambiare a piacere (avere un solo posto dove poter cambiare ad esempio la risoluzione
+ con cui parte il gioco, il menu, ecc..). Stavo quasi pensando di implementare nel gioco la possibilità 
+ di farli settare anche dall'utente, ma è una feature che non abbiamo menzionato, nel caso ci penserò 
+ alla fine se proprio non avremo altro da aggiungere e se è facile da realizzare.
+- Probabilmente ne parleremo la prossima volta che ci vediamo per parlare del progetto (mercoledì 
+prossimo?) però ve lo anticipo qui: con la questione dello scaling, si è aperta la questione di 
+come gestire le coordinate per pallina ed ostacoli, vogliamo quindi usare dei pixel o un altro metodo?
+ Per nel caso dei pixel, forse@jjacomo e @MattiaDambrosio5 dovrete aggiustarvi a questa modifica, l'ho 
+ mandata in privato a Fede perchè mi sa che a lui serve per forza, comunque ne discutiamo tanto per lo 
+ scaling ho letteralmente aggiunto 3 righe di codice quindi nel caso cambiasse qualcosa (ma non credo) 
+ non è difficile da mettere a posto.
+
+Ok mi sono un po' letto la vostra roba e in teoria usando vector2D non dovrebbe creare problemi, comunque appunto ne parliamo la prossima volta.
+
+- Devo capire se si può già scrivere qualcosa della relazione: so che probabilmente la faremo tutta alla 
+fine, però in realtà finché ho le idee fresche su quello che ho scritto, e più o meno quello che ho 
+scritto credo non abbia bisogno di refactoring, quasi quasi comincerei a scrivere un po’ la mia parta, 
+buttare giù già qualche schema UML definitivo, poi appunto la maggior parte del lavoro di relazione la 
+famo alla fine.
+- Per il multiplayer, vogliamo limitare il numero di giocatori? Mi sembra che l’approccio generale in 
+questo tipo di progetto è essere sempre aperti a delle modifiche future, del tipo limitiamo a 4 giocatori,
+ però c’è la possibilità di aggiungere player in più con una piccola modifica.
+
+
