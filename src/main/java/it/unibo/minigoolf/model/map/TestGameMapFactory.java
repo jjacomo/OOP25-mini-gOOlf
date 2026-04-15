@@ -43,6 +43,11 @@ public class TestGameMapFactory implements GameMapFactory {
     private static final double SECOND_SURFACE_WIDTH = 100;
     private static final double SECOND_SURFACE_HEIGHT = 200;
     private static final int SECOND_SURFACE_Z_INDEX = 1;
+    private static final double THIRD_SURFACE_X = 440;
+    private static final double THIRD_SURFACE_Y = 100;
+    private static final double THIRD_SURFACE_WIDTH = 600;
+    private static final double THIRD_SURFACE_HEIGHT = 200;
+    private static final int THIRD_SURFACE_Z_INDEX = 2;
     private static final double BALL_RADIUS = 10;
     private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(50, 50);
 
@@ -68,6 +73,10 @@ public class TestGameMapFactory implements GameMapFactory {
                 new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
                         SECOND_SURFACE_HEIGHT),
                 SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getColor()));
+        surfaces.add(new RectangularSurface(
+                new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
+                        THIRD_SURFACE_HEIGHT),
+                SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getColor()));
         return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS));
     }
 }

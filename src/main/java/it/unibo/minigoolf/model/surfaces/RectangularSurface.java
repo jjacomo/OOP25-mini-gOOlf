@@ -59,4 +59,9 @@ public final class RectangularSurface implements Surface {
     public Color getColor() {
         return color;
     }
+
+    @Override
+    public Rectangle getBounds() {
+        return bounds;
+    }
 }

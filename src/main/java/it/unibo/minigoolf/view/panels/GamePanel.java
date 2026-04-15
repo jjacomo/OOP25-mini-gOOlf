@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+// import java.awt.Graphics;
+// import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
@@ -38,21 +38,21 @@ public final class GamePanel extends JPanel {
      * ALL game-object coordinates must live in this space so the two
      * layers (field drawing + shot overlay) stay perfectly aligned.
      */
-    private static final int LOGICAL_WIDTH = 1920;
-    private static final int LOGICAL_HEIGHT = 1080;
+    // private static final int LOGICAL_WIDTH = 1920;
+    // private static final int LOGICAL_HEIGHT = 1080;
 
     // Placeholder ball position in logical (1920×1080) coordinates — will come from the physics model later.
     private static final Point BALL_START = new Point(220, 220);
 
     // Magic numbers for the placeholder field drawing (logical 1920×1080 space).
-    private static final int BALL_X = 200;
-    private static final int BALL_Y = 200;
-    private static final int BALL_SIZE = 40;
-    private static final int OBSTACLE_X = 400;
-    private static final int OBSTACLE_Y = 300;
-    private static final int OBSTACLE_W = 200;
-    private static final int OBSTACLE_H = 400;
-    private static final int FIELD_GREEN = 153;
+    // private static final int BALL_X = 200;
+    // private static final int BALL_Y = 200;
+    // private static final int BALL_SIZE = 40;
+    // private static final int OBSTACLE_X = 400;
+    // private static final int OBSTACLE_Y = 300;
+    // private static final int OBSTACLE_W = 200;
+    // private static final int OBSTACLE_H = 400;
+    // private static final int FIELD_GREEN = 153;
 
     // Aspect ratio constants.
     private static final double ASPECT_W = 16.0;
@@ -60,6 +60,9 @@ public final class GamePanel extends JPanel {
 
     // The transparent overlay for shot input and power indicator.
     private final ShotViewPanel shotViewPanel;
+
+    // The panel where the map, ball and obstacles are drawn. 
+    private final MapPanel mapPanel = new MapPanel();
 
     /**
      * @param controller the main controller (reserved for future use)
@@ -79,26 +82,28 @@ public final class GamePanel extends JPanel {
 
         //* Here's the real area where the game runs: ball, map and obstacles need to be drawn here @jjacomo @MattiaDambrosio5 */
 
-        final JPanel fieldArea = new JPanel() {
-            @Override
-            protected void paintComponent(final Graphics g) {
-                super.paintComponent(g);
-                final Graphics2D g2d = (Graphics2D) g;
-                // Scale from logical (1920×1080) to actual panel size.
-                // This MUST match ShotViewPanel's own scale so that any coordinate
-                // used here (ball position, obstacles, …) maps to exactly the same
-                // physical pixel on screen as the shot-indicator overlay.
-                g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
-                // A test ball to see how it appears with the Graphics2D library
-                g2d.setColor(Color.WHITE);
-                g2d.fillOval(BALL_X, BALL_Y, BALL_SIZE, BALL_SIZE);
-                // A simple obstacle
-                g2d.setColor(Color.GRAY);
-                g2d.fillRect(OBSTACLE_X, OBSTACLE_Y, OBSTACLE_W, OBSTACLE_H);
-            }
-        };
+        // to remove when mapPanel will work
 
-        fieldArea.setBackground(new Color(0, FIELD_GREEN, 0));
+        // final JPanel fieldArea = new JPanel() {
+        //     @Override
+        //     protected void paintComponent(final Graphics g) {
+        //         super.paintComponent(g);
+        //         final Graphics2D g2d = (Graphics2D) g;
+        //         // Scale from logical (1920×1080) to actual panel size.
+        //         // This MUST match ShotViewPanel's own scale so that any coordinate
+        //         // used here (ball position, obstacles, …) maps to exactly the same
+        //         // physical pixel on screen as the shot-indicator overlay.
+        //         g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
+        //         // A test ball to see how it appears with the Graphics2D library
+        //         g2d.setColor(Color.WHITE);
+        //         g2d.fillOval(BALL_X, BALL_Y, BALL_SIZE, BALL_SIZE);
+        //         // A simple obstacle
+        //         g2d.setColor(Color.GRAY);
+        //         g2d.fillRect(OBSTACLE_X, OBSTACLE_Y, OBSTACLE_W, OBSTACLE_H);
+        //     }
+        // };
+
+        // fieldArea.setBackground(new Color(0, FIELD_GREEN, 140));
 
         // A "wrapperpanel" that contains the field area, so it can be forced to the 16:9 ratio
 
@@ -108,8 +113,8 @@ public final class GamePanel extends JPanel {
         // Use a JLayeredPane to overlay ShotViewPanel on top of the field area.
         final JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
-        fieldArea.setBounds(0, 0, START_WIDTH, START_HEIGHT);
-        layeredPane.add(fieldArea, JLayeredPane.DEFAULT_LAYER);
+        // fieldArea.setBounds(0, 0, START_WIDTH, START_HEIGHT);
+        layeredPane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
 
         // GameState implements ShotReceiver, so we pass only that narrow interface.
         shotViewPanel = new ShotViewPanel((ShotReceiver) gameState);
@@ -136,8 +141,11 @@ public final class GamePanel extends JPanel {
                     fieldSize = new Dimension(w, expectedHeight);
                 }
 
-                fieldArea.setPreferredSize(fieldSize);
-                fieldArea.setBounds(0, 0, fieldSize.width, fieldSize.height);
+                // mapPanel is the new fieldArea
+                // fieldArea.setPreferredSize(fieldSize);
+                // fieldArea.setBounds(0, 0, fieldSize.width, fieldSize.height);
+                mapPanel.setPreferredSize(fieldSize);
+                mapPanel.setBounds(0, 0, fieldSize.width, fieldSize.height);
                 layeredPane.setPreferredSize(fieldSize);
                 layeredPane.setBounds(0, 0, fieldSize.width, fieldSize.height);
                 shotViewPanel.setBounds(0, 0, fieldSize.width, fieldSize.height);

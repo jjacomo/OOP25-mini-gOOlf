@@ -1,5 +1,7 @@
 package it.unibo.minigoolf.model.map;
 
+import java.util.List;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import it.unibo.minigoolf.model.ball.Ball;
@@ -26,4 +28,7 @@ public interface GameMap {
      * @return the ball
      */
     Ball getBall();
+
+    List<Surface> getSurfaces();
+
 }

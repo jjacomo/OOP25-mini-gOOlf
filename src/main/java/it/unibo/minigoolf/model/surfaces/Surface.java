@@ -3,6 +3,8 @@ package it.unibo.minigoolf.model.surfaces;
 import java.awt.Color;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import it.unibo.minigoolf.util.Rectangle;
+
 /**
  * Represents a surface in the game world that can affect physics and rendering.
  * Surfaces have friction properties that must be applied to the ball.
@@ -42,4 +44,6 @@ public interface Surface {
      * @return the color of the surface
      */
     Color getColor();
+
+    Rectangle getBounds();
 }

@@ -11,7 +11,7 @@ import java.awt.Color;
 public enum SurfaceType {
     GRASS(0.25, "Grass", Color.GREEN),
     SAND(0.85, "Sand", Color.YELLOW),
-    DIRT(0.65, "Dirt", Color.ORANGE),
+    DIRT(0.65, "Dirt", Color.MAGENTA),
     ICE(0.05, "Ice", Color.CYAN);
 
     private final double friction;
