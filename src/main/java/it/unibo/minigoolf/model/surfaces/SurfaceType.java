@@ -4,31 +4,31 @@ import java.awt.Color;
 
 /**
  * Enumeration of different surface types in the mini-golf game.
- * Each surface type has a friction coefficient, a display name, and a color.
+ * Each surface type has a friction coefficient, a display name, and a texture path.
  * 
  * @author jack
  */
 public enum SurfaceType {
-    GRASS(0.25, "Grass", Color.GREEN),
-    SAND(0.85, "Sand", Color.YELLOW),
-    DIRT(0.65, "Dirt", Color.MAGENTA),
-    ICE(0.05, "Ice", Color.CYAN);
+    GRASS(0.25, "Grass", "surfaces/grass.png"),
+    SAND(0.85, "Sand", "surfaces/sand.png"),
+    DIRT(0.65, "Dirt", "surfaces/dirt.png"),
+    ICE(0.05, "Ice", "surfaces/ice.png");
 
     private final double friction;
     private final String name;
-    private final Color color;
+    private final String texturePath;
 
     /**
-     * Constructs a SurfaceType with the specified friction, name, and color.
+     * Constructs a SurfaceType with the specified friction, name, and texture path.
      * 
      * @param friction the friction coefficient
      * @param name the display name
-     * @param color the color representation
+     * @param texturePath the path to the texture image in resources
      */
-    SurfaceType(final double friction, final String name, final Color color) {
+    SurfaceType(final double friction, final String name, final String texturePath) {
         this.friction = friction;
         this.name = name;
-        this.color = color;
+        this.texturePath = texturePath;
     }
 
     /**
@@ -50,11 +50,11 @@ public enum SurfaceType {
     }
 
     /**
-     * Returns the color representation of this surface type.
+     * Returns the texture path for this surface type.
      * 
-     * @return the color
+     * @return the texture path
      */
-    public Color getColor() {
-        return color;
+    public String getTexturePath() {
+        return texturePath;
     }
 }

@@ -35,8 +35,8 @@ public class TestGameMapFactory implements GameMapFactory {
  
     private static final double MAIN_SURFACE_X = 0;
     private static final double MAIN_SURFACE_Y = 0;
-    private static final double MAIN_SURFACE_WIDTH = 500;
-    private static final double MAIN_SURFACE_HEIGHT = 800;
+    private static final double MAIN_SURFACE_WIDTH = 1920;
+    private static final double MAIN_SURFACE_HEIGHT = 1080;
     private static final int MAIN_SURFACE_Z_INDEX = 0;
     private static final double SECOND_SURFACE_X = 100;
     private static final double SECOND_SURFACE_Y = 50;
@@ -68,15 +68,15 @@ public class TestGameMapFactory implements GameMapFactory {
         final List<Surface> surfaces = new ArrayList<>();
         surfaces.add(new RectangularSurface(
                 new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH, MAIN_SURFACE_HEIGHT),
-                SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getColor()));
+                SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
         surfaces.add(new RectangularSurface(
                 new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
                         SECOND_SURFACE_HEIGHT),
-                SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getColor()));
+                SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getTexturePath()));
         surfaces.add(new RectangularSurface(
                 new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
                         THIRD_SURFACE_HEIGHT),
-                SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getColor()));
+                SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
         return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS));
     }
 }

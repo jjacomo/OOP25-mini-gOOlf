@@ -1,7 +1,5 @@
 package it.unibo.minigoolf.model.surfaces;
 
-import java.awt.Color;
-
 import it.unibo.minigoolf.util.Rectangle;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -19,7 +17,7 @@ public final class RectangularSurface implements Surface {
     private final double friction;
     private final Rectangle bounds;
     private final int zIndex;
-    private final Color color;
+    private final String texturePath;
 
     /**
      * @author jack
@@ -29,15 +27,15 @@ public final class RectangularSurface implements Surface {
      * @param bounds   the rectangle bounds defining the surface area
      * @param friction the friction coefficient applied on this surface
      * @param zIndex   the rendering layer index; higher values are rendered on top
-     * @param color    the color of the surface for rendering
+     * @param texturePath    the path to the texture image for rendering
      * 
      */
     // could use a factory pattern for different shapes of surfaces in the future
-    public RectangularSurface(final Rectangle bounds, final double friction, final int zIndex, final Color color) {
+    public RectangularSurface(final Rectangle bounds, final double friction, final int zIndex, final String texturePath) {
         this.bounds = bounds;
         this.friction = friction;
         this.zIndex = zIndex;
-        this.color = color;
+        this.texturePath = texturePath;
     }
 
     @Override
@@ -56,8 +54,8 @@ public final class RectangularSurface implements Surface {
     }
 
     @Override
-    public Color getColor() {
-        return color;
+    public String getTexturePath() {
+        return texturePath;
     }
 
     @Override

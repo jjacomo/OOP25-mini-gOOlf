@@ -1,4 +1,4 @@
-Report - 03/15 - 1h 15 min
+Report - 03/15 - 2h 30 min
 
 - Nell'interfaccia GameMap aggiunto metodo getSurfaces (che tra l'altro avevo gia' implementato in GameMapImpl)
 - Aggiunto nell'interfaccia Surface il metodo getBounds (solo che sono solo rettangoli) e implementato in 
@@ -11,10 +11,10 @@ Report - 03/15 - 1h 15 min
 - Commentato tutto il codice di fieldArea in GamePanel (sostituito da MapPanel).
     Prossimamente sara' da rimuovere
 - Aggiunta altra superficie a TestGameMapFactory
+- Rimosso completamente il colore e rimpiazzato con texture
 
 TODO:
 * Riguarda i commenti della javadoc;
-Invece del colore per ogni superficie sarebbe bello avere delle texture;
 
 * Metodi per calcolare l'attrito palla-superficie;
 * Sempre nel controller applicare la velocita', update della posizione...
@@ -22,3 +22,4 @@ Invece del colore per ogni superficie sarebbe bello avere delle texture;
 * Probabilmente da cambiare il modo in cui si passano gli oggetti da disegnare a MapPanel. 
     Per ora prende direttamente l'oggetto GameMap
 * Roba delle superfici da disegnare (interfaccia?)
+* Texture che non si resizano (non warpa l'immagine)

@@ -4,6 +4,13 @@ import javax.swing.JPanel;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.TestGameMapFactory;
@@ -18,9 +25,27 @@ public class MapPanel extends JPanel{
     private static final int LOGICAL_HEIGHT = 1080;
 
     private final GameMap map = new TestGameMapFactory().buildGameMap();
+    private final Map<String, BufferedImage> textureCache = new HashMap<>();
 
     public MapPanel() {
         this.setBounds(0, 0, START_WIDTH, START_HEIGHT);
+    }
+
+    private BufferedImage loadTexture(String texturePath) {
+        if (textureCache.containsKey(texturePath)) {
+            return textureCache.get(texturePath);
+        }
+        try {
+            // Simple file loading from src/main/resources/ (for development)
+            File file = new File("src/main/resources/" + texturePath);
+            BufferedImage image = ImageIO.read(file);
+            textureCache.put(texturePath, image);
+            return image;
+        } catch (IOException e) {
+            System.err.println("Failed to load texture: " + texturePath);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     protected void paintComponent(Graphics g) {
@@ -42,12 +67,16 @@ public class MapPanel extends JPanel{
         map.getSurfaces().stream()
                 .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
                 .forEach(surface -> {
-                    g2d.setColor(surface.getColor());
-                    Rectangle bounds = surface.getBounds(); // caso superfici rettangolari, oppure potrei fare una
-                                                            // interfaccia (pero' sembra complicato) per disegnare
-                                                            // superfici di forme diverse
-                    g2d.fillRect((int) bounds.position().getX(), (int) bounds.position().getY(),
-                            (int) bounds.width(), (int) bounds.height());
+                    BufferedImage texture = loadTexture(surface.getTexturePath());
+                    if (texture != null) {
+                        Rectangle bounds = surface.getBounds(); // caso superfici rettangolari, oppure potrei fare una
+                                                                // interfaccia (pero' sembra complicato) per disegnare
+                                                                // superfici di forme diverse
+                        g2d.drawImage(texture, (int) bounds.position().getX(), (int) bounds.position().getY(),
+                                (int) bounds.width(), (int) bounds.height(), null);
+                    } else {
+                        throw new IllegalStateException("Texture not found for surface: " + surface.getTexturePath());
+                    }
                 });
     }
 }

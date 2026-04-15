@@ -1,6 +1,5 @@
 package it.unibo.minigoolf.model.surfaces;
 
-import java.awt.Color;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import it.unibo.minigoolf.util.Rectangle;
@@ -39,11 +38,11 @@ public interface Surface {
     int getZIndex();
 
     /**
-     * Returns the color of this surface for rendering purposes.
+     * Returns the texture path of this surface for rendering purposes.
      *
-     * @return the color of the surface
+     * @return the texture path of the surface
      */
-    Color getColor();
+    String getTexturePath();
 
     Rectangle getBounds();
 }
