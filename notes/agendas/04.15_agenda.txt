@@ -32,3 +32,6 @@ questo tipo di progetto è essere sempre aperti a delle modifiche future, del ti
  però c’è la possibilità di aggiungere player in più con una piccola modifica.
 
 
+Jack:
+
+Vector2D; GameMap con ostacoli
