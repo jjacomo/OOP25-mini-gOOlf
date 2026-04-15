@@ -1,7 +1,6 @@
 package it.unibo.minigoolf.model.logic;
 
 import it.unibo.minigoolf.util.Vec2D;
-import it.unibo.minigoolf.view.input.ShotReceiver;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +14,7 @@ import java.util.Optional;
  *
  * @author fede
  */
-public final class GameState implements ShotReceiver{
+public final class GameState{
 
     /** Minimum squared length a shot vector must have to be considered valid. */
     private static final double MIN_SQUARE_POWER = 100.0;

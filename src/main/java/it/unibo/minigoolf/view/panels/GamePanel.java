@@ -2,7 +2,6 @@ package it.unibo.minigoolf.view.panels;
 
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.model.logic.GameState;
-import it.unibo.minigoolf.view.input.ShotReceiver;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
 import javax.swing.JLabel;
@@ -116,8 +115,7 @@ public final class GamePanel extends JPanel {
         // fieldArea.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
 
-        // GameState implements ShotReceiver, so we pass only that narrow interface.
-        shotViewPanel = new ShotViewPanel((ShotReceiver) gameState);
+        shotViewPanel = new ShotViewPanel(gameState);
         shotViewPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(shotViewPanel, JLayeredPane.PALETTE_LAYER);
 
