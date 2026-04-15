@@ -2,6 +2,7 @@ package it.unibo.minigoolf.view.panels;
 
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.model.logic.GameState;
+import it.unibo.minigoolf.view.input.ShotReceiver;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
 import javax.swing.JLabel;
@@ -23,8 +24,7 @@ import java.io.Serial;
  *
  * @author dani
  */
-@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-public class GamePanel extends JPanel {
+public final class GamePanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -33,17 +33,25 @@ public class GamePanel extends JPanel {
     private static final int START_WIDTH = 960;
     private static final int START_HEIGHT = 540;
 
-    // Placeholder ball position — will come from the physics model later.
-    private static final Point BALL_START = new Point(110, 110);
+    /**
+     * Logical resolution shared with ShotViewPanel.
+     * ALL game-object coordinates must live in this space so the two
+     * layers (field drawing + shot overlay) stay perfectly aligned.
+     */
+    private static final int LOGICAL_WIDTH = 1920;
+    private static final int LOGICAL_HEIGHT = 1080;
 
-    // Magic numbers for the placeholder field drawing.
-    private static final int BALL_X = 100;
-    private static final int BALL_Y = 100;
-    private static final int BALL_SIZE = 20;
-    private static final int OBSTACLE_X = 200;
-    private static final int OBSTACLE_Y = 150;
-    private static final int OBSTACLE_W = 100;
-    private static final int OBSTACLE_H = 200;
+    // Placeholder ball position in logical (1920×1080) coordinates — will come from the physics model later.
+    private static final Point BALL_START = new Point(220, 220);
+
+    // Magic numbers for the placeholder field drawing (logical 1920×1080 space).
+    private static final int BALL_X = 200;
+    private static final int BALL_Y = 200;
+    private static final int BALL_SIZE = 40;
+    private static final int OBSTACLE_X = 400;
+    private static final int OBSTACLE_Y = 300;
+    private static final int OBSTACLE_W = 200;
+    private static final int OBSTACLE_H = 400;
     private static final int FIELD_GREEN = 153;
 
     // Aspect ratio constants.
@@ -76,9 +84,11 @@ public class GamePanel extends JPanel {
             protected void paintComponent(final Graphics g) {
                 super.paintComponent(g);
                 final Graphics2D g2d = (Graphics2D) g;
-                // Scale from logical (1920x1080) to actual panel size,
-                // so all coordinates match those used by ShotViewPanel.
-                g2d.scale((double) getWidth() / START_WIDTH, (double) getHeight() / START_HEIGHT);
+                // Scale from logical (1920×1080) to actual panel size.
+                // This MUST match ShotViewPanel's own scale so that any coordinate
+                // used here (ball position, obstacles, …) maps to exactly the same
+                // physical pixel on screen as the shot-indicator overlay.
+                g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
                 // A test ball to see how it appears with the Graphics2D library
                 g2d.setColor(Color.WHITE);
                 g2d.fillOval(BALL_X, BALL_Y, BALL_SIZE, BALL_SIZE);
@@ -101,7 +111,8 @@ public class GamePanel extends JPanel {
         fieldArea.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(fieldArea, JLayeredPane.DEFAULT_LAYER);
 
-        shotViewPanel = new ShotViewPanel(gameState);
+        // GameState implements ShotReceiver, so we pass only that narrow interface.
+        shotViewPanel = new ShotViewPanel((ShotReceiver) gameState);
         shotViewPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(shotViewPanel, JLayeredPane.PALETTE_LAYER);
 

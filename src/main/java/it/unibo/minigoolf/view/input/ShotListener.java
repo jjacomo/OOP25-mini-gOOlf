@@ -14,6 +14,12 @@ import java.awt.event.MouseEvent;
 public final class ShotListener extends MouseAdapter implements ShotInput {
 
     private final ShotVisualizer visualizer;
+
+    /**
+     * Maximum distance (in logical pixels) from the ball centre
+     * within which a click is accepted as the start of a drag.
+     */
+    private static final double CLICK_RADIUS = 40.0;
  
     /**
      * Reference to the panel used to convert physical logical coordinates.
@@ -26,7 +32,7 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
  
     /** Whether this listener is accepting input. */
     private boolean enable;
- 
+
     /**
      * @param visualizer the panel that draws the indicator and handles shots
      */
@@ -34,13 +40,16 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
         this.visualizer = visualizer;
         this.panel = visualizer;
     }
- 
+
     /** {@inheritDoc} */
     @Override
     public void mousePressed(final MouseEvent e) {
         if (this.enable) {
-            // Convert physical click position to logical coordinates.
-            this.startingPoint = panel.toLogical(e.getPoint());
+            final Point logical = panel.toLogical(e.getPoint());
+            // Only start a drag if the click is close enough to the ball.
+            if (panel.isNearBall(logical, CLICK_RADIUS)) {
+                this.startingPoint = logical;
+            }
         }
     }
  

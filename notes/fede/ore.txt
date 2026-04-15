@@ -9,4 +9,4 @@
 2 ore: sistemato per bene i problemi dell'input e modificato il MainControllerImpl affinchè fosse in grado di leggere ad ogni tick
         l'input dell'utente
 
-1 ora: sistemazione build di gradlew
+4 ore: sistemazione build di gradlew
