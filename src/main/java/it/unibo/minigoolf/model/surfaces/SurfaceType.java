@@ -1,7 +1,5 @@
 package it.unibo.minigoolf.model.surfaces;
 
-import java.awt.Color;
-
 /**
  * Enumeration of different surface types in the mini-golf game.
  * Each surface type has a friction coefficient, a display name, and a texture path.
