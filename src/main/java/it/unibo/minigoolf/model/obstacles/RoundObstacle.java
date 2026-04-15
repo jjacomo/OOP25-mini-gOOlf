@@ -42,9 +42,12 @@ public final class RoundObstacle extends AbstractObstacle {
         // Vector from the center of the obstacle to the center of the ball
         final Vector2D collisionVector = ballPos.subtract(obstaclePos);
         final double distance = collisionVector.getNorm();
-        
+
         final Vector2D normal = computeCollisionNormal(collisionVector, distance);
-        correctPosition(ball, ballPos, normal, distance);
+
+        // Penetration is calculated using the sum of the two radii
+        final double penetrationDepth = (ball.getRadius() + this.radius) - distance;
+        correctPosition(ball, ballPos, normal, penetrationDepth);
         reflectVelocity(ball, normal);
     }
 
@@ -74,9 +77,7 @@ public final class RoundObstacle extends AbstractObstacle {
      * @param distance the distance between the two centers
      */
     private void correctPosition(final Ball ball, final Vector2D ballPos,
-                                 final Vector2D normal, final double distance) {
-        // Penetration is calculated using the sum of the two radii
-        final double penetrationDepth = (ball.getRadius() + this.radius) - distance;
+                                 final Vector2D normal, final double penetrationDepth) {
         if (penetrationDepth > 0) {
             ball.setPosition(ballPos.add(normal.scalarMultiply(penetrationDepth)));
         }
@@ -91,12 +92,10 @@ public final class RoundObstacle extends AbstractObstacle {
     private void reflectVelocity(final Ball ball, final Vector2D normal) {
         final Vector2D velocity = ball.getVelocity();
         final double dotProduct = velocity.dotProduct(normal);
-        
         // If the ball is already moving away, no reflection needed
         if (dotProduct > 0) {
             return;
         }
-        
         // Apply the reflection formula: v' = v - 2 * (v · n) * n
         final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
         ball.setVelocity(velocity.subtract(reflection));

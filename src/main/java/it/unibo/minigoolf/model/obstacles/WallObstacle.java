@@ -13,6 +13,7 @@ public final class WallObstacle extends AbstractObstacle {
     private final double maxX;
     private final double minY;
     private final double maxY;
+
     /**
      * Constructs a rectangular wall.
      * 
@@ -20,7 +21,6 @@ public final class WallObstacle extends AbstractObstacle {
      * @param width    the width of the wall
      * @param height   the height of the wall
      */
-
     public WallObstacle(final Vector2D position, final double width, final double height) {
         super(position);
         this.minX = position.getX();
@@ -69,7 +69,9 @@ public final class WallObstacle extends AbstractObstacle {
         final Vector2D collisionVector = ballPos.subtract(closestPoint);
         final double distance = collisionVector.getNorm();
         final Vector2D normal = computeCollisionNormal(ballPos, collisionVector, distance);
-        correctPosition(ball, ballPos, normal, distance);
+        final double penetrationDepth = ball.getRadius() - distance;
+
+        correctPosition(ball, ballPos, normal, penetrationDepth);
         reflectVelocity(ball, normal);
     }
 
@@ -109,6 +111,7 @@ public final class WallObstacle extends AbstractObstacle {
         final double minDist = Math.min(Math.min(dLeft, dRight), Math.min(dTop, dBottom));
         // Adaptive tolerance to handle any inaccuracies in dLato distance calculations
         final double tolerance = Math.max(EPSILON, Math.abs(minDist) * EPSILON);
+
         if (Math.abs(dLeft - minDist) <= tolerance) {
             accX -= 1;
         }
@@ -134,8 +137,7 @@ public final class WallObstacle extends AbstractObstacle {
      * @param distance the distance between ball center and closest point
      */
     private void correctPosition(final Ball ball, final Vector2D ballPos,
-                                 final Vector2D normal, final double distance) {
-        final double penetrationDepth = ball.getRadius() - distance;
+                                 final Vector2D normal, final double penetrationDepth) {
         if (penetrationDepth > 0) {
             ball.setPosition(ballPos.add(normal.scalarMultiply(penetrationDepth)));
         }
@@ -150,12 +152,13 @@ public final class WallObstacle extends AbstractObstacle {
     private void reflectVelocity(final Ball ball, final Vector2D normal) {
         final Vector2D velocity = ball.getVelocity();
         final double dotProduct = velocity.dotProduct(normal);
+        final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
+
         // If the ball is already moving away, no reflection needed
         if (dotProduct > 0) {
             return;
         }
         // Apply the reflection formula: v' = v - 2 * (v · n) * n
-        final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
         ball.setVelocity(velocity.subtract(reflection));
     }
 }
