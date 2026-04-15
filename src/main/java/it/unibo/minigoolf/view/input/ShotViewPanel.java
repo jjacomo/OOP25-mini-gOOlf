@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.view.input;
 
+import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.util.Vec2D;
 
 import javax.swing.JPanel;
@@ -61,22 +62,24 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     private final transient ShotListener shotListener;
 
     /**
-     * Receives confirmed shots from this view.
-     * Typed as {@link ShotReceiver} rather than the full {@code GameState} so that
-     * this panel stays decoupled from the rest of the model.
+     * The game state that receives confirmed shots.
+     * Stored by reference intentionally: this panel is a view component that
+     * shares state with the controller.
      */
-    private final transient ShotReceiver shotReceiver;
+    @SuppressWarnings("EI_EXPOSE_REP2") //TODO: find a way to remove this
+    private final transient GameState gameState;
 
     private transient Vec2D currentDirection;
     private transient Point ballScreenPos;
 
     /**
-     * Creates a new ShotViewPanel linked to the given shot receiver.
+     * Creates a new ShotViewPanel linked to the given game state.
      *
-     * @param shotReceiver the object that will receive confirmed shots
+     * @param gameState the shared game-state instance
      */
-    public ShotViewPanel(final ShotReceiver shotReceiver) {
-        this.shotReceiver = shotReceiver;
+    @SuppressWarnings("EI_EXPOSE_REP2") //TODO: find a way to remove this
+    public ShotViewPanel(final GameState gameState) {
+        this.gameState = gameState;
         this.shotListener = new ShotListener(this);
 
         // Register the listener for both click and drag events.
@@ -165,8 +168,8 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     @Override
     public synchronized void shoot() {
         if (isValidShot()) {
-            // Forward the shot to the receiver.
-            shotReceiver.setPendingShot(this.currentDirection);
+            // Forward the shot to GameState.
+            gameState.setPendingShot(this.currentDirection);
             // Block input so the user can't queue another shot.
             shotListener.setEnable(false);
         }
