@@ -40,7 +40,8 @@ Report - 16/04 - 4 ore
 - Migliorata la collisione in RoundObstacle
 - Creata l'interfaccia Obstacle
 - Iniziata la classe TriangleObstacle: gestisce tutti gli ostacoli triangolari e cambia la direzione della pallina
-
+- Spostata la costante EPSILON (minima tolleranza) dalle varie classi di ostacoli ad AbstractObstacle
+ 
 TODO:
 - Spostare i metodi comuni tra gli ostacoli in AbstractObstacle
 - Vedere come migliorare Vector2D

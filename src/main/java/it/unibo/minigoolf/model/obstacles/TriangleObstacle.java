@@ -3,9 +3,7 @@ package it.unibo.minigoolf.model.obstacles;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import it.unibo.minigoolf.model.ball.Ball;
 
-public class TriangleObstacle extends AbstractObstacle implements Obstacle{
-    private static final double EPSILON = 1e-10;
-    
+public class TriangleObstacle extends AbstractObstacle implements Obstacle{    
     private final Vector2D vertex1;
     private final Vector2D vertex2;
     private final Vector2D vertex3;
