@@ -44,5 +44,6 @@ public interface Surface {
      */
     String getTexturePath();
 
+    // da cambiare (Shape invece di Rectangle?)
     Rectangle getBounds();
 }
