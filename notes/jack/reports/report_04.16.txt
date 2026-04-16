@@ -1,0 +1,15 @@
+Report - 16/04 - 2h
+
+- Creata interfaccia Shapes; adesso Rectangle implementa Shapes (deve implementare contains)
+- In MapPanel adesso vengono disegnate Shapes generiche. Per farlo guarda che tipo di shape e' (java reflection) e disegna di conseguenza.
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Metodi per calcolare l'attrito palla-superficie;
+* Sempre nel controller applicare la velocita', update della posizione...
+
+* Probabilmente da cambiare il modo in cui si passano gli oggetti da disegnare a MapPanel. 
+    Per ora prende direttamente l'oggetto GameMap
+* Texture che non si resizano (non warpa l'immagine)
+* Riguarda codice in MapPanel per la resizabilita'

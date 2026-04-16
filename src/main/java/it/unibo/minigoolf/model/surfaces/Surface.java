@@ -2,7 +2,7 @@ package it.unibo.minigoolf.model.surfaces;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import it.unibo.minigoolf.util.Rectangle;
+import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
  * Represents a surface in the game world that can affect physics and rendering.
@@ -44,6 +44,10 @@ public interface Surface {
      */
     String getTexturePath();
 
-    // da cambiare (Shape invece di Rectangle?)
-    Rectangle getBounds();
+    /**
+     * Returns the shape representing the boundaries of this surface.
+     *
+     * @return the shape of the surface
+     */
+    Shape getBounds();
 }

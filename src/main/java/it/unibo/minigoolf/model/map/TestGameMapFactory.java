@@ -9,7 +9,7 @@ import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.surfaces.RectangularSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.SurfaceType;
-import it.unibo.minigoolf.util.Rectangle;
+import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
  * Test implementation of the GameMapFactory interface.

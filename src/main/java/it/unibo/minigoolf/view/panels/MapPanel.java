@@ -14,7 +14,8 @@ import javax.imageio.ImageIO;
 
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.TestGameMapFactory;
-import it.unibo.minigoolf.util.Rectangle;
+import it.unibo.minigoolf.util.shapes.Rectangle;
+import it.unibo.minigoolf.util.shapes.Shape;
 
 public class MapPanel extends JPanel{
     // mappa di test, per ora dichiarata qui, ma in futuro dovrebbe essere passata
@@ -69,14 +70,28 @@ public class MapPanel extends JPanel{
                 .forEach(surface -> {
                     BufferedImage texture = loadTexture(surface.getTexturePath());
                     if (texture != null) {
-                        Rectangle bounds = surface.getBounds(); // caso superfici rettangolari, oppure potrei fare una
-                                                                // interfaccia (pero' sembra complicato) per disegnare
-                                                                // superfici di forme diverse
-                        g2d.drawImage(texture, (int) bounds.position().getX(), (int) bounds.position().getY(),
-                                (int) bounds.width(), (int) bounds.height(), null);
+                        drawShape(surface.getBounds(), g2d, texture);
                     } else {
                         throw new IllegalStateException("Texture not found for surface: " + surface.getTexturePath());
                     }
                 });
+    }
+
+    /**
+     * Draws a shape with the given texture. This method handles different shape types
+     * by checking their concrete type and applying the appropriate drawing logic.
+     * 
+     * @param shape the shape to draw
+     * @param g2d the graphics context
+     * @param texture the texture to apply
+     */
+    private void drawShape(Shape shape, Graphics2D g2d, BufferedImage texture) {
+        if (shape instanceof Rectangle rect) {
+            g2d.drawImage(texture, (int) rect.position().getX(), (int) rect.position().getY(),
+                    (int) rect.width(), (int) rect.height(), null);
+        } else {
+            // For future shape types, add more cases here
+            throw new UnsupportedOperationException("Drawing not implemented for shape type: " + shape.getClass());
+        }
     }
 }

@@ -1,8 +1,8 @@
 package it.unibo.minigoolf.model.surfaces;
 
-import it.unibo.minigoolf.util.Rectangle;
-
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
+import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
  * A rectangular game surface with friction and layering properties.

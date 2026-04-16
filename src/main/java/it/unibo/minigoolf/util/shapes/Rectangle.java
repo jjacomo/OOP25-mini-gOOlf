@@ -1,4 +1,4 @@
-package it.unibo.minigoolf.util;
+package it.unibo.minigoolf.util.shapes;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -12,7 +12,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
  * @param height   the height of the rectangle
  * 
  */
-public record Rectangle(Vector2D position, double width, double height) {
+public record Rectangle(Vector2D position, double width, double height) implements Shape {
 
     /**
      * Checks if the given position is contained within this rectangle.
