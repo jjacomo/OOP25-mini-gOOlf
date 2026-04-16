@@ -1,4 +1,4 @@
-Ore totati: 11.5
+Ore totati: 22
 
 Report - 25/03 - 3 ore
 - Creato il package obstacles per gestire i vari ostacoli
@@ -31,6 +31,16 @@ Report - 13/04 - 3 ore
 - Completata la classe RoundObstacle
 - Aggiunti i commenti alla classe RoundObstacle
 
+Report - 15/04 - 2 ore
+- Sistemati alcuni commenti della JavaDoc
+- Iniziata classe Vector2D
+
+Report - 16/04 - 4 ore
+- Creata la classe Vector2D
+- Migliorata la collisione in RoundObstacle
+- Creata l'interfaccia Obstacle
+- Iniziata la classe TriangleObstacle: gestisce tutti gli ostacoli triangolari e cambia la direzione della pallina
+
 TODO:
-- Creare l'interfaccia Obstacle
 - Spostare i metodi comuni tra gli ostacoli in AbstractObstacle
+- Vedere come migliorare Vector2D

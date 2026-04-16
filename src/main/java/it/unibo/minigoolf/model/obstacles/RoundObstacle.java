@@ -7,7 +7,7 @@ import it.unibo.minigoolf.model.ball.Ball;
  * Represents a circular obstacle in the minigolf course.
  * This obstacle is defined by its center position and radius.
  */
-public final class RoundObstacle extends AbstractObstacle {
+public final class RoundObstacle extends AbstractObstacle implements Obstacle{
     private static final double EPSILON = 1e-10;
     
     private final double radius;
@@ -43,11 +43,13 @@ public final class RoundObstacle extends AbstractObstacle {
         final Vector2D collisionVector = ballPos.subtract(obstaclePos);
         final double distance = collisionVector.getNorm();
 
-        final Vector2D normal = computeCollisionNormal(collisionVector, distance);
+        final Vector2D normal = computeCollisionNormal(collisionVector, distance, ball.getVelocity());
 
         // Penetration is calculated using the sum of the two radii
         final double penetrationDepth = (ball.getRadius() + this.radius) - distance;
-        correctPosition(ball, ballPos, normal, penetrationDepth);
+        if (penetrationDepth > 0) {
+            correctPosition(ball, ballPos, normal, penetrationDepth);
+        }
         reflectVelocity(ball, normal);
     }
 
@@ -59,13 +61,12 @@ public final class RoundObstacle extends AbstractObstacle {
      * @param distance the distance between the two centers
      * @return the normalized collision normal
      */
-    private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance) {
-        if (distance < EPSILON) {
-            // If the centers are perfectly overlapping, we avoid division by zero.
-            // We push the ball in an arbitrary direction (upwards).
-            return new Vector2D(0, 1);
+    private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance, final Vector2D velocity) {
+        if (distance >= EPSILON) {
+            return collisionVector.normalize();
         }
-        return collisionVector.normalize();
+
+        return  velocity.scalarMultiply(-1).normalize();
     }
 
     /**
@@ -78,9 +79,7 @@ public final class RoundObstacle extends AbstractObstacle {
      */
     private void correctPosition(final Ball ball, final Vector2D ballPos,
                                  final Vector2D normal, final double penetrationDepth) {
-        if (penetrationDepth > 0) {
-            ball.setPosition(ballPos.add(normal.scalarMultiply(penetrationDepth)));
-        }
+        ball.setPosition(ballPos.add(normal.scalarMultiply(penetrationDepth)));
     }
 
     /**
