@@ -92,8 +92,10 @@ public class MapPanel extends JPanel{
      * @param g2d the graphics context
      * @param texture the texture to apply
      */
-    private void drawShape(Shape shape, Graphics2D g2d, BufferedImage texture) {
-        if (shape instanceof Rectangle rect) {
+    private void drawShape(Shape shape, Graphics2D g2d, BufferedImage texture) { //avrebbe senso farne una anceh senza texture?
+        if (shape instanceof Rectangle rect) { // ma poi in generale fai la review di sto codice (non e' che sarebbe
+                                               // meglio fare diverse funzioni invece che una sola che disegna tutte le
+                                               // superfici (che tra l'altro alcune hanno texture altre no))
             g2d.drawImage(texture, (int) rect.position().getX(), (int) rect.position().getY(),
                     (int) rect.width(), (int) rect.height(), null);
         } else if (shape instanceof Circle circ){

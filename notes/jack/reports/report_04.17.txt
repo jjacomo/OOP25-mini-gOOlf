@@ -1,4 +1,4 @@
-Report - 17/04 - 1h 30min
+Report - 17/04 - 2h
 
 - Creata Circle che implementa Shape
 - Cambiata implementazione di Ball che adesso usa Circle
@@ -15,4 +15,5 @@ TODO:
 * Texture che non si resizano (non warpa l'immagine)
 * Riguarda codice in MapPanel per la resizabilita'
 * Creare la buca
-* Disegnare Ball
+* Disegnare Ball meglio?
+* reviewa le ultime robe
