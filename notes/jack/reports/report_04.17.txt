@@ -1,7 +1,8 @@
-Report - 17/04 - 1h
+Report - 17/04 - 1h 30min
 
 - Creata Circle che implementa Shape
 - Cambiata implementazione di Ball che adesso usa Circle
+- Cercato di disegnare Ball (ci sono diversi problemi...)
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;
@@ -14,3 +15,4 @@ TODO:
 * Texture che non si resizano (non warpa l'immagine)
 * Riguarda codice in MapPanel per la resizabilita'
 * Creare la buca
+* Disegnare Ball

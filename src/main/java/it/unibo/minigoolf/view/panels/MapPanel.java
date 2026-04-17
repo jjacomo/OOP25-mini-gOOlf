@@ -2,6 +2,7 @@ package it.unibo.minigoolf.view.panels;
 
 import javax.swing.JPanel;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -14,6 +15,7 @@ import javax.imageio.ImageIO;
 
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.TestGameMapFactory;
+import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
 
@@ -75,6 +77,11 @@ public class MapPanel extends JPanel{
                         throw new IllegalStateException("Texture not found for surface: " + surface.getTexturePath());
                     }
                 });
+
+        // disegno la palla
+        // cosi' forse non e' bellissimo (c'e' probabilmente qualcosa da cambiare)
+        g2d.setColor(Color.WHITE);
+        drawShape(new Circle(map.getBall().getPosition(), map.getBall().getRadius()), g2d, null);
     }
 
     /**
@@ -89,6 +96,9 @@ public class MapPanel extends JPanel{
         if (shape instanceof Rectangle rect) {
             g2d.drawImage(texture, (int) rect.position().getX(), (int) rect.position().getY(),
                     (int) rect.width(), (int) rect.height(), null);
+        } else if (shape instanceof Circle circ){
+            g2d.fillOval((int) circ.position().getX(), (int) circ.position().getY(), (int) circ.radius() * 2,
+                    (int) circ.radius() * 2);
         } else {
             // For future shape types, add more cases here
             throw new UnsupportedOperationException("Drawing not implemented for shape type: " + shape.getClass());
