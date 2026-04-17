@@ -33,6 +33,13 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
         return distance <= (ball.getRadius() + this.radius);
     }
 
+    /**
+     * Resolves the collision between the rounnd obstacle and the ball by calculating the reflection 
+     * and correcting the ball's position to prevent overlap.
+     * 
+     * @param ball the ball on which to apply the collision physics
+     */
+    @Override
     public void resolveCollision(final Ball ball) {
         final Vector2D ballPos = ball.getPosition();
         final Vector2D obstaclePos = this.getPosition();

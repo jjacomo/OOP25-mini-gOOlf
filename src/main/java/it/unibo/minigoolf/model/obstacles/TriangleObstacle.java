@@ -24,9 +24,39 @@ public class TriangleObstacle extends AbstractObstacle implements Obstacle{
         this.vertex3 = vertex3;
     }
 
-    public void resolveCollision(final Ball ball) {};
+    /**
+     * Resolves the collision between the wall and the ball by calculating the reflection 
+     * and correcting the ball's position to prevent overlap.
+     * 
+     * @param ball the ball on which to apply the collision physics
+     */
+    @Override
+    public void resolveCollision(final Ball ball) {
+        final Vector2D ballPos = ball.getPosition();
+        final Vector2D closestPoint = getClosestPoint(ballPos);
+        final Vector2D collisionVector = ballPos.subtract(closestPoint);
+        final double distance = collisionVector.getNorm();
+        final Vector2D normal = computeCollisionNormal(collisionVector, distance);
+		final double penetrationDepth = ball.getRadius() - distance;
+
+        correctPosition(ball, ballPos, normal, penetrationDepth);
+        reflectVelocity(ball, normal);
+    }
 
     public boolean isColliding(final Ball ball) {
         return true;
+    }
+
+    private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance) {
+        return collisionVector.normalize();
+    }
+    
+    private void correctPosition(final Ball ball, final Vector2D ballPos,
+                                 final Vector2D normal, final double penetrationDepth) {}
+
+    private void reflectVelocity(final Ball ball, final Vector2D normal) {}
+
+    private Vector2D getClosestPoint(final Vector2D ballCenter) {
+        return vertex1;
     }
 }
