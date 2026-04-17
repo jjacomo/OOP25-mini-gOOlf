@@ -1,0 +1,16 @@
+Report - 17/04 - 1h
+
+- Creata Circle che implementa Shape
+- Cambiata implementazione di Ball che adesso usa Circle
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Metodi per calcolare l'attrito palla-superficie;
+* Sempre nel controller applicare la velocita', update della posizione...
+
+* Probabilmente da cambiare il modo in cui si passano gli oggetti da disegnare a MapPanel. 
+    Per ora prende direttamente l'oggetto GameMap
+* Texture che non si resizano (non warpa l'immagine)
+* Riguarda codice in MapPanel per la resizabilita'
+* Creare la buca

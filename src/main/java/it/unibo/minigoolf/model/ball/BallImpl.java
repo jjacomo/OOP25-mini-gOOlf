@@ -2,14 +2,15 @@ package it.unibo.minigoolf.model.ball;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import it.unibo.minigoolf.util.shapes.Circle;
+
 /**
  * Implementation of the Ball interface representing a golf ball with position,
  * velocity, and radius.
  */
 public class BallImpl implements Ball {
-    private Vector2D position;
     private Vector2D velocity;
-    private final double radius;
+    private Circle circle;
 
     /**
      * Constructs a new BallImpl with the specified position, velocity, and radius.
@@ -18,8 +19,7 @@ public class BallImpl implements Ball {
      * @param radius   the radius of the ball
      */
     public BallImpl(final Vector2D position, final double radius) {
-        this.position = position;
-        this.radius = radius;
+        this.circle = new Circle(position, radius);
     }
 
     /**
@@ -29,7 +29,7 @@ public class BallImpl implements Ball {
      */
     @Override
     public Vector2D getPosition() {
-        return this.position;
+        return this.circle.position();
     }
 
     /**
@@ -49,7 +49,7 @@ public class BallImpl implements Ball {
      */
     @Override
     public double getRadius() {
-        return this.radius;
+        return this.circle.radius();
     }
 
     /**
@@ -59,7 +59,7 @@ public class BallImpl implements Ball {
      */
     @Override
     public void setPosition(final Vector2D position) {
-        this.position = position;
+        this.circle = new Circle(position, this.circle.radius());
     }
 
     /**
