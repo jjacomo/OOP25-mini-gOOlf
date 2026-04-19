@@ -1,7 +1,9 @@
 package it.unibo.minigoolf.view.panels;
 
 import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
+import it.unibo.minigoolf.model.map.TestGameMapFactory;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
 import javax.swing.JLabel;
@@ -43,16 +45,6 @@ public final class GamePanel extends JPanel {
     // Placeholder ball position in logical (1920×1080) coordinates — will come from the physics model later.
     private static final Point BALL_START = new Point(220, 220);
 
-    // Magic numbers for the placeholder field drawing (logical 1920×1080 space).
-    // private static final int BALL_X = 200;
-    // private static final int BALL_Y = 200;
-    // private static final int BALL_SIZE = 40;
-    // private static final int OBSTACLE_X = 400;
-    // private static final int OBSTACLE_Y = 300;
-    // private static final int OBSTACLE_W = 200;
-    // private static final int OBSTACLE_H = 400;
-    // private static final int FIELD_GREEN = 153;
-
     // Aspect ratio constants.
     private static final double ASPECT_W = 16.0;
     private static final double ASPECT_H = 9.0;
@@ -61,7 +53,7 @@ public final class GamePanel extends JPanel {
     private final ShotViewPanel shotViewPanel;
 
     // The panel where the map, ball and obstacles are drawn. 
-    private final MapPanel mapPanel = new MapPanel();
+    private final MapPanel mapPanel = new MapPanel(new GameMapControllerImpl(new TestGameMapFactory().buildGameMap())); //va bene crearla qui?
 
     /**
      * @param controller the main controller (reserved for future use)
@@ -78,31 +70,6 @@ public final class GamePanel extends JPanel {
         turnoLabel.setForeground(Color.WHITE);
         uiPanel.add(turnoLabel);
         this.add(uiPanel, BorderLayout.NORTH);
-
-        //* Here's the real area where the game runs: ball, map and obstacles need to be drawn here @jjacomo @MattiaDambrosio5 */
-
-        // to remove when mapPanel will work
-
-        // final JPanel fieldArea = new JPanel() {
-        //     @Override
-        //     protected void paintComponent(final Graphics g) {
-        //         super.paintComponent(g);
-        //         final Graphics2D g2d = (Graphics2D) g;
-        //         // Scale from logical (1920×1080) to actual panel size.
-        //         // This MUST match ShotViewPanel's own scale so that any coordinate
-        //         // used here (ball position, obstacles, …) maps to exactly the same
-        //         // physical pixel on screen as the shot-indicator overlay.
-        //         g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
-        //         // A test ball to see how it appears with the Graphics2D library
-        //         g2d.setColor(Color.WHITE);
-        //         g2d.fillOval(BALL_X, BALL_Y, BALL_SIZE, BALL_SIZE);
-        //         // A simple obstacle
-        //         g2d.setColor(Color.GRAY);
-        //         g2d.fillRect(OBSTACLE_X, OBSTACLE_Y, OBSTACLE_W, OBSTACLE_H);
-        //     }
-        // };
-
-        // fieldArea.setBackground(new Color(0, FIELD_GREEN, 140));
 
         // A "wrapperpanel" that contains the field area, so it can be forced to the 16:9 ratio
 
@@ -139,9 +106,6 @@ public final class GamePanel extends JPanel {
                     fieldSize = new Dimension(w, expectedHeight);
                 }
 
-                // mapPanel is the new fieldArea
-                // fieldArea.setPreferredSize(fieldSize);
-                // fieldArea.setBounds(0, 0, fieldSize.width, fieldSize.height);
                 mapPanel.setPreferredSize(fieldSize);
                 mapPanel.setBounds(0, 0, fieldSize.width, fieldSize.height);
                 layeredPane.setPreferredSize(fieldSize);

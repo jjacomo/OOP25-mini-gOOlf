@@ -1,9 +1,11 @@
-Report - 19/04 - 1h 30min
+Report - 19/04 - 2h 30min
 
 per risolvere il TODO - "Probabilmente da cambiare il modo in cui si passano gli oggetti da disegnare a MapPanel. 
     Per ora prende direttamente l'oggetto GameMap"
 
-- Creata GameMapController
+- Creata GameMapController e la sua implementazione
+- MapPanel adesso sfrutta un mapController per disegnare gli oggetti del campo
+- Rimossi i commenti in GamePanel della vecchia fieldArea (adesso MapPanel)
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;
@@ -19,3 +21,4 @@ TODO:
 * reviewa le ultime robe
 
 * Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
+* Dove creare GameMapController (per ora in GamePanel)

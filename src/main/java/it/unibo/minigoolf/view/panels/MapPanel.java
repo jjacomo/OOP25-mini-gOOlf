@@ -13,8 +13,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import it.unibo.minigoolf.model.map.GameMap;
-import it.unibo.minigoolf.model.map.TestGameMapFactory;
+import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
@@ -27,11 +26,13 @@ public class MapPanel extends JPanel{
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
-    private final GameMap map = new TestGameMapFactory().buildGameMap();
+    // vorrei non dover importare niente dal model
+    private final GameMapController mapController;
     private final Map<String, BufferedImage> textureCache = new HashMap<>();
 
-    public MapPanel() {
+    public MapPanel(GameMapController mapController) {
         this.setBounds(0, 0, START_WIDTH, START_HEIGHT);
+        this.mapController = mapController;
     }
 
     private BufferedImage loadTexture(String texturePath) {
@@ -66,8 +67,10 @@ public class MapPanel extends JPanel{
         // potrebbe rompersi in futuro forse se dani cambia qualcosa
 
 
-        // disegno la mappa, per ora solo i rettangoli, in futuro anche ostacoli e buche (utilizzo degli stream)
-        map.getSurfaces().stream()
+        // qui va disegnato tutto quello che si vede nella mappa, quindi superfici, ostacoli, buche, palla, ...
+
+        // mappa (utilizzo degli stream)
+        mapController.getSurfaces().stream()
                 .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
                 .forEach(surface -> {
                     BufferedImage texture = loadTexture(surface.getTexturePath());
@@ -78,10 +81,10 @@ public class MapPanel extends JPanel{
                     }
                 });
 
-        // disegno la palla
+        // palla
         // cosi' forse non e' bellissimo (c'e' probabilmente qualcosa da cambiare)
         g2d.setColor(Color.WHITE);
-        drawShape(new Circle(map.getBall().getPosition(), map.getBall().getRadius()), g2d, null);
+        drawShape(mapController.getBallShape(), g2d, null);
     }
 
     /**
