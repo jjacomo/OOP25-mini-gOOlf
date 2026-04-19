@@ -6,6 +6,8 @@ per risolvere il TODO - "Probabilmente da cambiare il modo in cui si passano gli
 - Creata GameMapController e la sua implementazione
 - MapPanel adesso sfrutta un mapController per disegnare gli oggetti del campo
 - Rimossi i commenti in GamePanel della vecchia fieldArea (adesso MapPanel)
+- Cambiato costruttore di GamePanel (adesso accetta anche un MapController);
+    La responsabilita' di creare il controller (e quindi anche la GameMap) adesso e' di MainWindow
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;

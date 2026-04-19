@@ -1,9 +1,8 @@
 package it.unibo.minigoolf.view.panels;
 
 import it.unibo.minigoolf.controller.MainController;
-import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
+import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.model.logic.GameState;
-import it.unibo.minigoolf.model.map.TestGameMapFactory;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
 import javax.swing.JLabel;
@@ -52,16 +51,19 @@ public final class GamePanel extends JPanel {
     // The transparent overlay for shot input and power indicator.
     private final ShotViewPanel shotViewPanel;
 
-    // The panel where the map, ball and obstacles are drawn. 
-    private final MapPanel mapPanel = new MapPanel(new GameMapControllerImpl(new TestGameMapFactory().buildGameMap())); //va bene crearla qui?
+    // The panel where the map, ball and obstacles are drawn.
+    private final MapPanel mapPanel;
 
     /**
      * @param controller the main controller (reserved for future use)
      * @param gameState  the shared game-state instance
+     * @param mapController the controller for the game map model
      */
-    public GamePanel(final MainController controller, final GameState gameState) {
+    public GamePanel(final MainController controller, final GameState gameState,
+                     final GameMapController mapController) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
+        this.mapPanel = new MapPanel(mapController);
 
         // TODO: To work later with @fedesparvo1-a11y to determine how to personalize this
         final JPanel uiPanel = new JPanel();

@@ -1,7 +1,10 @@
 package it.unibo.minigoolf.view;
 
 import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
+import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
+import it.unibo.minigoolf.model.map.TestGameMapFactory;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
 import it.unibo.minigoolf.view.panels.NewGamePanel;
@@ -45,8 +48,10 @@ public final class MainWindow extends JFrame {
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        this.gamePanel = new GamePanel(controller, gameState);
-        this.menuPanel = new MenuPanel(controller); 
+        final GameMapController gameMapController = new GameMapControllerImpl(
+                new TestGameMapFactory().buildGameMap());
+        this.gamePanel = new GamePanel(controller, gameState, gameMapController);
+        this.menuPanel = new MenuPanel(controller);
         final JPanel newGamePanel = new NewGamePanel(controller);
 
         // TODO: Later add the other panels
