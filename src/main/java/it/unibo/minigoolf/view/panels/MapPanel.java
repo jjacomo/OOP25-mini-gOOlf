@@ -18,6 +18,13 @@ import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
 
+/**
+ * Panel responsible for rendering the game map, including surfaces, obstacles, and the ball.
+ * This panel uses a logical coordinate system (1920×1080) that scales to the actual panel size
+ * for consistent on-screen positioning across different resolutions.
+ * 
+ * @author jack
+ */
 public class MapPanel extends JPanel{
     // mappa di test, per ora dichiarata qui, ma in futuro dovrebbe essere passata
     // da chi costruisce la scena, o comunque caricata da file
@@ -30,11 +37,25 @@ public class MapPanel extends JPanel{
     private final GameMapController mapController;
     private final Map<String, BufferedImage> textureCache = new HashMap<>();
 
+    /**
+     * Constructs a MapPanel with the specified game map controller.
+     * Initializes the panel with default start dimensions (960×540) and sets up
+     * the internal state for rendering the game map.
+     * 
+     * @param mapController the controller managing the game map data
+     */
     public MapPanel(GameMapController mapController) {
         this.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         this.mapController = mapController;
     }
 
+    /**
+     * Loads a texture from the resource cache or from disk if not cached.
+     * Uses a HashMap to store previously loaded textures for improved performance.
+     * 
+     * @param texturePath the relative path to the texture file in src/main/resources/
+     * @return the loaded BufferedImage, or null if loading fails
+     */
     private BufferedImage loadTexture(String texturePath) {
         if (textureCache.containsKey(texturePath)) {
             return textureCache.get(texturePath);
@@ -52,6 +73,12 @@ public class MapPanel extends JPanel{
         }
     }
 
+    /**
+     * Paints the game map on the panel by rendering all surfaces sorted by z-index
+     * and the ball shape.
+     * 
+     * @param g the graphics context provided by Swing
+     */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -84,7 +111,7 @@ public class MapPanel extends JPanel{
         // palla
         // cosi' forse non e' bellissimo (c'e' probabilmente qualcosa da cambiare)
         g2d.setColor(Color.WHITE);
-        drawShape(mapController.getBallShape(), g2d, null);
+        drawShape(mapController.getBallController().getBallShape(), g2d, null);
     }
 
     /**
