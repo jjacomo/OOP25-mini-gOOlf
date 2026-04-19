@@ -1,4 +1,4 @@
-Report - 17/04 - 2h
+Report - 17/04 - 2h (tot: 16h)
 
 - Creata Circle che implementa Shape
 - Cambiata implementazione di Ball che adesso usa Circle

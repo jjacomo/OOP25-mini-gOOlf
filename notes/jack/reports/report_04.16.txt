@@ -1,4 +1,4 @@
-Report - 16/04 - 2h
+Report - 16/04 - 2h (tot: 14h)
 
 - Creata interfaccia Shapes; adesso Rectangle implementa Shapes (deve implementare contains)
 - In MapPanel adesso vengono disegnate Shapes generiche. Per farlo guarda che tipo di shape e' (java reflection) e disegna di conseguenza.

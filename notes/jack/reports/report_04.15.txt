@@ -1,4 +1,4 @@
-Report - 15/04 - 2h 30 min
+Report - 15/04 - 3h (tot: 12h)
 
 - Nell'interfaccia GameMap aggiunto metodo getSurfaces (che tra l'altro avevo gia' implementato in GameMapImpl)
 - Aggiunto nell'interfaccia Surface il metodo getBounds (solo che sono solo rettangoli) e implementato in 

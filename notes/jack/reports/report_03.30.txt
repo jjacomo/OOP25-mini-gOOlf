@@ -1,4 +1,4 @@
-Report - 03/30 - 1 ora
+Report - 03/30 - 1h (tot: 7h)
 
 - Spostato tutto il codice della mappa di gioco nel package model.map
 - Creata interfaccia Ball

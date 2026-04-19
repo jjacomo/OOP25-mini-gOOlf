@@ -1,4 +1,4 @@
-Report - 01/04 - 0.5 ore
+Report - 01/04 - 1h (tot: 8h)
 
 - Spostato codice della palla (interfaccia e implementazione nel package ball)
 - Aggiustato di conseguenza le import in model.obstacles.AbstractObstacle e model.obstacles.WallObstacle

@@ -1,4 +1,4 @@
-Report - 03/04 - 0.5 ore
+Report - 03/04 - 1h (tot: 9h)
 
 - Aggiunta Ball a GameMap (e GameMapImpl)
 - Cambiato il costruttore di Ball (ho tolto la velocita; dal costruttore), la palla viene sempre creata con v_iniziale=0

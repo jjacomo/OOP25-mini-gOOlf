@@ -1,4 +1,4 @@
-Report - 19/04 - 3h 30min
+Report - 19/04 - 4h (tot: 20h)
 
 per risolvere il TODO - "Probabilmente da cambiare il modo in cui si passano gli oggetti da disegnare a MapPanel. 
     Per ora prende direttamente l'oggetto GameMap"
@@ -8,6 +8,7 @@ per risolvere il TODO - "Probabilmente da cambiare il modo in cui si passano gli
 - Cambiato costruttore di GamePanel (adesso accetta anche un MapController);
     La responsabilita' di creare il controller (e quindi anche la GameMap) adesso e' di MainWindow
 - Aggiunta javadoc alle ultime classi
+- Creato BallController e la sua implementazione che vengono usate da GameMapController
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;

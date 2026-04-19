@@ -1,4 +1,4 @@
-Report - 03/23 - 2 ore
+Report - 03/23 - 2h (tot: 6h)
 
 - Creata GameMapFactory per la creazione di livelli diversi
     NOTA: se le mappe diventano complesse (molti oggetti) considera l'opzione del pattern builder
