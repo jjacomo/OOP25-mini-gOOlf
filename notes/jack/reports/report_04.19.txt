@@ -1,0 +1,21 @@
+Report - 19/04 - 1h 30min
+
+per risolvere il TODO - "Probabilmente da cambiare il modo in cui si passano gli oggetti da disegnare a MapPanel. 
+    Per ora prende direttamente l'oggetto GameMap"
+
+- Creata GameMapController
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Metodi per calcolare l'attrito palla-superficie;
+* Sempre nel controller applicare la velocita', update della posizione...
+    mhhhh forse non nel controller (non lo so)
+
+* Texture che non si resizano (non warpa l'immagine)
+* Riguarda codice in MapPanel per la resizabilita'
+* Creare la buca
+* Disegnare Ball meglio?
+* reviewa le ultime robe
+
+* Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
