@@ -1,0 +1,22 @@
+Report - 20/04 - 1h (tot: 21h)
+
+- Risolti errori di spotbugs
+- Aggiunto logger a MapPanel per loggare l'errore nel caso la texture non venga caricata
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Metodi per calcolare l'attrito palla-superficie;
+* Sempre nel controller applicare la velocita', update della posizione...
+    mhhhh forse non nel controller (non lo so)
+
+* Texture che non si resizano (non warpa l'immagine)
+* Riguarda codice in MapPanel per la resizabilita'
+* Creare la buca
+
+* Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+
+POSSIBILI FEATURE:
+* Caricare mappe da file

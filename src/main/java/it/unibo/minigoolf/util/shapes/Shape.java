@@ -3,12 +3,12 @@ package it.unibo.minigoolf.util.shapes;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
+ * Represents a shape in 2D space that can be used for collision
+ * detection and rendering.
+ * 
  * @author jack
- * 
- *         Represents a shape in 2D space that can be used for collision
- *         detection and rendering.
- * 
  */
+@FunctionalInterface
 public interface Shape {
     /**
      * Checks if the given position is contained within this shape.

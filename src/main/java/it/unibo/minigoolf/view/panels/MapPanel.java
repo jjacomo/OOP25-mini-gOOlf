@@ -13,23 +13,26 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
- * Panel responsible for rendering the game map, including surfaces, obstacles, and the ball.
- * This panel uses a logical coordinate system (1920×1080) that scales to the actual panel size
+ * Panel responsible for rendering the game map, including surfaces, obstacles,
+ * and the ball.
+ * This panel uses a logical coordinate system (1920×1080) that scales to the
+ * actual panel size
  * for consistent on-screen positioning across different resolutions.
- * 
+ *
  * @author jack
  */
-public class MapPanel extends JPanel{
-    // mappa di test, per ora dichiarata qui, ma in futuro dovrebbe essere passata
-    // da chi costruisce la scena, o comunque caricata da file
-    private static final int START_WIDTH = 960;
-    private static final int START_HEIGHT = 540;
+public class MapPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapPanel.class); // non sono sicuro di cosa faccia
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
@@ -41,34 +44,33 @@ public class MapPanel extends JPanel{
      * Constructs a MapPanel with the specified game map controller.
      * Initializes the panel with default start dimensions (960×540) and sets up
      * the internal state for rendering the game map.
-     * 
+     *
      * @param mapController the controller managing the game map data
      */
-    public MapPanel(GameMapController mapController) {
-        this.setBounds(0, 0, START_WIDTH, START_HEIGHT);
+    public MapPanel(final GameMapController mapController) {
         this.mapController = mapController;
     }
 
     /**
      * Loads a texture from the resource cache or from disk if not cached.
      * Uses a HashMap to store previously loaded textures for improved performance.
-     * 
-     * @param texturePath the relative path to the texture file in src/main/resources/
+     *
+     * @param texturePath the relative path to the texture file in
+     *                    src/main/resources/
      * @return the loaded BufferedImage, or null if loading fails
      */
-    private BufferedImage loadTexture(String texturePath) {
+    private BufferedImage loadTexture(final String texturePath) {
         if (textureCache.containsKey(texturePath)) {
             return textureCache.get(texturePath);
         }
         try {
             // Simple file loading from src/main/resources/ (for development)
-            File file = new File("src/main/resources/" + texturePath);
-            BufferedImage image = ImageIO.read(file);
+            final File file = new File("src/main/resources/" + texturePath);
+            final BufferedImage image = ImageIO.read(file);
             textureCache.put(texturePath, image);
             return image;
-        } catch (IOException e) {
-            System.err.println("Failed to load texture: " + texturePath);
-            e.printStackTrace();
+        } catch (final IOException e) {
+            LOGGER.error("Failed to load texture: {}", texturePath, e);
             return null;
         }
     }
@@ -76,12 +78,13 @@ public class MapPanel extends JPanel{
     /**
      * Paints the game map on the panel by rendering all surfaces sorted by z-index
      * and the ball shape.
-     * 
+     *
      * @param g the graphics context provided by Swing
      */
-    protected void paintComponent(Graphics g) {
+    @Override
+    protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
+        final Graphics2D g2d = (Graphics2D) g;
         // Scale from logical (1920×1080) to actual panel size.
         // This MUST match ShotViewPanel's own scale so that any coordinate
         // used here (ball position, obstacles, …) maps to exactly the same
@@ -93,14 +96,14 @@ public class MapPanel extends JPanel{
         // pannello
         // potrebbe rompersi in futuro forse se dani cambia qualcosa
 
-
-        // qui va disegnato tutto quello che si vede nella mappa, quindi superfici, ostacoli, buche, palla, ...
+        // qui va disegnato tutto quello che si vede nella mappa, quindi superfici,
+        // ostacoli, buche, palla, ...
 
         // mappa (utilizzo degli stream)
         mapController.getSurfaces().stream()
                 .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
                 .forEach(surface -> {
-                    BufferedImage texture = loadTexture(surface.getTexturePath());
+                    final BufferedImage texture = loadTexture(surface.getTexturePath());
                     if (texture != null) {
                         drawShape(surface.getBounds(), g2d, texture);
                     } else {
@@ -115,20 +118,23 @@ public class MapPanel extends JPanel{
     }
 
     /**
-     * Draws a shape with the given texture. This method handles different shape types
+     * Draws a shape with the given texture. This method handles different shape
+     * types
      * by checking their concrete type and applying the appropriate drawing logic.
-     * 
-     * @param shape the shape to draw
-     * @param g2d the graphics context
+     *
+     * @param shape   the shape to draw
+     * @param g2d     the graphics context
      * @param texture the texture to apply
      */
-    private void drawShape(Shape shape, Graphics2D g2d, BufferedImage texture) { //avrebbe senso farne una anceh senza texture?
-        if (shape instanceof Rectangle rect) { // ma poi in generale fai la review di sto codice (non e' che sarebbe
-                                               // meglio fare diverse funzioni invece che una sola che disegna tutte le
-                                               // superfici (che tra l'altro alcune hanno texture altre no))
+    private void drawShape(final Shape shape, final Graphics2D g2d, final BufferedImage texture) {
+        // avrebbe senso farne una anche senza texture?
+        if (shape instanceof Rectangle rect) { 
+            // ma poi in generale fai la review di sto codice (non e' che sarebbe meglio
+            // fare diverse funzioni invece che una sola che disegna tutte le superfici (che
+            // tra l'altro alcune hanno texture altre no))
             g2d.drawImage(texture, (int) rect.position().getX(), (int) rect.position().getY(),
                     (int) rect.width(), (int) rect.height(), null);
-        } else if (shape instanceof Circle circ){
+        } else if (shape instanceof Circle circ) {
             g2d.fillOval((int) circ.position().getX(), (int) circ.position().getY(), (int) circ.radius() * 2,
                     (int) circ.radius() * 2);
         } else {

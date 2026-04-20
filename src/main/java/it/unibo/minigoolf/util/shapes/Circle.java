@@ -2,10 +2,24 @@ package it.unibo.minigoolf.util.shapes;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-public record Circle(Vector2D position, double radius) implements Shape{
+/**
+ * A record representing a circle shape defined by its center position and radius.
+ * Implements the Shape interface to check if a point is contained within the circle.
+ *
+ * @param position the center position of the circle as a Vector2D
+ * @param radius the radius of the circle
+ */
+public record Circle(Vector2D position, double radius) implements Shape {
 
+    /**
+     * Checks if a given position is contained within this circle.
+     * A point is considered inside the circle if its distance from the center is less than the radius.
+     *
+     * @param pos the position to check as a Vector2D
+     * @return true if the position is inside the circle, false otherwise
+     */
     @Override
-    public boolean contains(Vector2D pos) {
+    public boolean contains(final Vector2D pos) {
         return Vector2D.distance(position, pos) < radius;
     }
 

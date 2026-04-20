@@ -14,17 +14,17 @@ import it.unibo.minigoolf.model.surfaces.Surface;
 public interface GameMapController {
     /**
      * Returns all surfaces on the game map.
-     * 
+     *
      * @return a list of all surfaces
      */
     List<Surface> getSurfaces();
 
     // List<Obstacle> getObstacles();
     // Hole getHole();
-    
+
     /**
      * Returns the controller for managing the ball.
-     * 
+     *
      * @return the ball controller
      */
     BallController getBallController();

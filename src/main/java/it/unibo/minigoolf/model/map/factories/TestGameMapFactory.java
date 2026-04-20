@@ -1,4 +1,4 @@
-package it.unibo.minigoolf.model.map;
+package it.unibo.minigoolf.model.map.factories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import it.unibo.minigoolf.model.ball.BallImpl;
+import it.unibo.minigoolf.model.map.GameMap;
+import it.unibo.minigoolf.model.map.GameMapImpl;
 import it.unibo.minigoolf.model.surfaces.RectangularSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.SurfaceType;

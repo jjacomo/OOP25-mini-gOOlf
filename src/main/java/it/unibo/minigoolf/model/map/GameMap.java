@@ -29,6 +29,11 @@ public interface GameMap {
      */
     Ball getBall();
 
+    /**
+     * Returns a list of all surfaces in the game map.
+     * 
+     * @return a list of all surfaces
+     */
     List<Surface> getSurfaces();
 
 }

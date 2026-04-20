@@ -4,7 +4,7 @@ import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
-import it.unibo.minigoolf.model.map.TestGameMapFactory;
+import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
 import it.unibo.minigoolf.view.panels.NewGamePanel;

@@ -29,7 +29,7 @@ public final class GameMapImpl implements GameMap {
      * @param ball the ball in the game map
      */
     public GameMapImpl(final List<Surface> surfaces, final Ball ball) {
-        this.surfaces = surfaces;
+        this.surfaces = List.copyOf(surfaces);
         this.ball = ball;
     }
 
