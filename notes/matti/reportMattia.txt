@@ -1,4 +1,4 @@
-Ore totati: 22
+Ore totati: 24
 
 Report - 25/03 - 3 ore
 - Creato il package obstacles per gestire i vari ostacoli
@@ -45,7 +45,12 @@ Report - 16/04 - 4 ore
 Report - 17/04 - 2 ore
 - Aggiunti alcuni metodi alla classe TriangleObstacle
 - Sistemati alcuni commenti della JavaDoc nelle classe degli ostacoli
- 
+
+Report 21/04 - 2 ore
+- Aggiunti alcuni metodi alla classe TriangleObstacle
+- Sistemati alcuni commenti della JavaDoc nella classe TriangleObstacle
+
 TODO:
 - Spostare i metodi comuni tra gli ostacoli in AbstractObstacle
 - Vedere come migliorare Vector2D
+- Completare la classe TriangleObstacle

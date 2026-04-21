@@ -64,6 +64,7 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
      *
      * @param collisionVector vector from obstacle center to ball center
      * @param distance the distance between the two centers
+     * @param velocity the velocity of the ball
      * @return the normalized collision normal
      */
     private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance, final Vector2D velocity) {
