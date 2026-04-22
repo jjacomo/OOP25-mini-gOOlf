@@ -1,0 +1,34 @@
+Report - 21/04 - 1h (tot: 22h)
+
+- sto guardando che in The100DayOfWar hanno usato un main controller centralizzato con tutti 
+    i vari controller specifici al suo interno. Cosi' quando in altre aree del codice si fa
+    uso di uno di questi controller si prendono i riferimenti ai controller del mainController
+    staticamente (eviti di sbagliare dichiarando due controller uguali in 2 parti del codice)
+- creato controller.physics.PhysicsController e una sua implementazione con i metodi per 
+    aggiornare la posizione della pallina, calcolare attrito e... (vedi "PER AGENDA FUTURA")
+
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Metodi per calcolare l'attrito palla-superficie;
+* Sempre nel controller applicare la velocita', update della posizione...
+    mhhhh forse non nel controller (non lo so)
+
+* Texture che non si resizano (non warpa l'immagine)
+* Riguarda codice in MapPanel per la resizabilita'
+* Creare la buca
+
+* Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+* Logger?
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+PER AGENDA FUTURA:
+* MainController che li contiene tutti?
+* Per Mattia: collisioni in PhysicsController?
+* Per Mattia: Mappa in model.map.factory

@@ -17,14 +17,7 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * Test implementation of the GameMapFactory interface.
  * 
  * <p>This factory creates a simple, flat test game map suitable for development,
- * debugging, and basic testing purposes. The generated map consists of a single
- * rectangular surface with standard friction properties.</p>
- * 
- * <p>Map Specifications:</p>
- * <ul>
- *   <li><strong>Main Surface:</strong> 500×800 units, position (0,0), friction 0.75, z-index 0, green color</li>
- *   <li><strong>Secondary Surface:</strong> 100×200 units, position (100,50), friction 0.65, z-index 0, blue color</li>
- * </ul>
+ * debugging, and basic testing purposes. </p>
  * 
  * @author jack
  * 
@@ -54,7 +47,7 @@ public class TestGameMapFactory implements GameMapFactory {
     private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(50, 50);
 
     /**
-     * Builds a simple test game map with a single flat rectangular surface.
+     * Builds a simple test game map.
      * 
      * <p>The flat surface allows for straightforward physics simulation and visual
      * testing of the ball mechanics and user interactions.</p>

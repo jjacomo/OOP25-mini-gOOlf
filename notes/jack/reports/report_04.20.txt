@@ -17,6 +17,8 @@ TODO:
 * Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
 * Dove creare GameMapController (per ora in GamePanel)
 * Guarda errori piu' "Strutturali" di spotbugs
+* Logger?
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
 
 POSSIBILI FEATURE:
 * Caricare mappe da file

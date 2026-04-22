@@ -36,7 +36,6 @@ public class MapPanel extends JPanel {
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
-    // vorrei non dover importare niente dal model
     private final GameMapController mapController;
     private final Map<String, BufferedImage> textureCache = new HashMap<>();
 
