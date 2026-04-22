@@ -12,6 +12,10 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle{
     private final double maxX;
     private final double minY;
     private final double maxY;
+    private final double MIN_WIDTH = 5;
+    private final double MAX_WIDTH = 100;
+    private final double MIN_HEIGHT = 5;
+    private final double MAX_HEIGHT = 100;
 
     /**
      * Constructs a rectangular wall.
@@ -22,6 +26,12 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle{
      */
     public WallObstacle(final Vector2D position, final double width, final double height) {
         super(position);
+        if (width < MIN_WIDTH || width > MAX_WIDTH 
+                                        || height < MIN_HEIGHT || height > MAX_HEIGHT) {
+            throw new IllegalArgumentException("The width must be between " + MIN_WIDTH
+                                        + " and " + MAX_WIDTH + "; The height must be "
+                                        + "between " + MIN_HEIGHT + " and " + MAX_HEIGHT);
+        }
         this.minX = position.getX();
         this.maxX = position.getX() + width;
         this.minY = position.getY();

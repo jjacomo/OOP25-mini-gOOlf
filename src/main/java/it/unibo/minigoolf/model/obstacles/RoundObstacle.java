@@ -8,6 +8,8 @@ import it.unibo.minigoolf.model.ball.Ball;
  * This obstacle is defined by its center position and radius.
  */
 public final class RoundObstacle extends AbstractObstacle implements Obstacle{ 
+    private static final double MIN_RADIUS = 5.0;
+    private static final double MAX_RADIUS = 150.0;
     private final double radius;
 
     /**
@@ -18,6 +20,10 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
      */
     public RoundObstacle(final Vector2D position, final double radius) {
         super(position);
+        if (radius < MIN_RADIUS || radius > MAX_RADIUS) {
+            throw new IllegalArgumentException("The radius must be between " 
+                                             + MIN_RADIUS + " and " + MAX_RADIUS);
+        }
         this.radius = radius;
     }
     
