@@ -1,0 +1,12 @@
+Report - 04/22 - xx ore
+
+Creato il package view.elements dove metterò tutti gli elementi dell'interfaccia, ad esempio bottoni, text field e titoli. Tutti questi elementi verrano creati
+tramite una factory, in modo tale che se vogliamo cambiare lo stile di un elemento, basta farlo solo da qui! 
+Questo comprende quindi il colore, il font utilizziato, ecc..
+
+
+DA FARE:
+- Spotbugs!
+- Factory per gli elementi grafici (fare in modo che i bottoni ed altri elementi comuni siano creati in una factory con le stesse caratteristiche)
+- GridBagLayout dapertutto? Valutare pro e contro
+- Gamepanel e MapPanel, da vedere se modificare qualcosa

@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
+
 import it.unibo.minigoolf.controller.MainController;
 
 /**
@@ -36,7 +38,7 @@ public final class MenuPanel extends JPanel {
         final java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 
         gbc.gridx = 0;    
-        gbc.insets = new java.awt.Insets(10, 10, 10, 10); // Margin settings
+        gbc.insets = new java.awt.Insets(0, 0, 0, 0); // Margin settings
         gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
         // To import the image for the title
         final ImageIcon logoIcon = new ImageIcon(getClass().getResource("/title.png"));
@@ -55,15 +57,15 @@ public final class MenuPanel extends JPanel {
         // TODO: Implement something to unify the design of the buttons across all the UI, so no magic numbers are needed!
 
         // New game button
-        final JButton newGameButton = new JButton("NEW GAME");
-        newGameButton.setPreferredSize(new Dimension(200, 50));
+        final JButton newGameButton = UserInterfaceFactory.createButton("NEW GAME");
+        //newGameButton.setPreferredSize(new Dimension(200, 50));
         newGameButton.addActionListener(e -> controller.goToNewGameMenu());
         gbc.gridy = 1;
         this.add(newGameButton, gbc);
         
         // Start game button: for testing purpose, it starts the game immediately, to be removed!
-        final JButton playButton = new JButton("START GAME");
-        playButton.setPreferredSize(new Dimension(200, 50));
+        final JButton playButton = UserInterfaceFactory.createButton("START GAME");
+        //playButton.setPreferredSize(new Dimension(200, 50));
         playButton.addActionListener(e -> controller.startGame());
         gbc.gridy = 2;
         this.add(playButton, gbc);
