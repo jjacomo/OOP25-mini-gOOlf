@@ -3,6 +3,8 @@ package it.unibo.minigoolf.view.panels;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -28,18 +30,18 @@ public final class MenuPanel extends JPanel {
 
     private static final int START_WIDTH = 960; 
     private static final int START_HEIGHT = 540; 
+    private static final int MARGINS = 10;
 
     public MenuPanel(final MainController controller) {
-        // TODO: Unify the size of the panels, and create a file where you can change costants easely
+
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT)); 
         this.setBackground(Color.DARK_GRAY);
         this.setLayout(new GridBagLayout());
-        // This helps using GridBagLayout so everything is allignerd vertically, will be used in menus
-        final java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-
-        gbc.gridx = 0;    
-        gbc.insets = new java.awt.Insets(0, 0, 0, 0); // Margin settings
-        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        // This helps using GridBagLayout so everything is alligned vertically, will be used in menus
+        final GridBagConstraints gbc = new GridBagConstraints();
+   
+        gbc.insets = new Insets(MARGINS, MARGINS, MARGINS, MARGINS);
+        gbc.fill = GridBagConstraints.NONE;
         // To import the image for the title
         final ImageIcon logoIcon = new ImageIcon(getClass().getResource("/title.png"));
 
@@ -50,25 +52,39 @@ public final class MenuPanel extends JPanel {
         // Title
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new java.awt.Insets(0, 0, 50, 0);
-        gbc.anchor = java.awt.GridBagConstraints.CENTER;
+        gbc.insets = new Insets(MARGINS, MARGINS, MARGINS, MARGINS);
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(titleLabel, gbc);
-
-        // TODO: Implement something to unify the design of the buttons across all the UI, so no magic numbers are needed!
 
         // New game button
         final JButton newGameButton = UserInterfaceFactory.createButton("NEW GAME");
-        //newGameButton.setPreferredSize(new Dimension(200, 50));
         newGameButton.addActionListener(e -> controller.goToNewGameMenu());
-        gbc.gridy = 1;
+        gbc.gridy++;
         this.add(newGameButton, gbc);
         
         // Start game button: for testing purpose, it starts the game immediately, to be removed!
         final JButton playButton = UserInterfaceFactory.createButton("START GAME");
-        //playButton.setPreferredSize(new Dimension(200, 50));
         playButton.addActionListener(e -> controller.startGame());
-        gbc.gridy = 2;
+        gbc.gridy++;
         this.add(playButton, gbc);
+
+        // TEST FOR NOW
+        final JButton leaderboardButton = UserInterfaceFactory.createButton("LEADERBOARD");
+        gbc.gridy++;
+        this.add(leaderboardButton, gbc);
+
+        // TEST FOR NOW
+        final JButton creditsButton = UserInterfaceFactory.createButton("CREDITS");
+        gbc.gridy++;
+        this.add(creditsButton, gbc);
+
+        // This is just so the padding between the buttons is reduced
+        gbc.gridy++;      
+        gbc.weighty = 1.0; 
+        JPanel spacer = new JPanel();
+        spacer.setOpaque(false);
+        this.add(spacer, gbc);
+
     }
 }
 

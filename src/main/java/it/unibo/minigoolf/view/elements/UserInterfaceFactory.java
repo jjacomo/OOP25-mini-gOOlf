@@ -11,7 +11,7 @@ import java.awt.Dimension;
 public final class UserInterfaceFactory {
 
     private static final Color ACCENT_COLOR = Color.WHITE;
-    private static final Font MAIN_FONT = new Font("Comic Sans MS", Font.PLAIN, 14);
+    private static final Font MAIN_FONT = new Font("Comic Sans MS", Font.PLAIN, 24);
     private static final Font TITLE_FONT = new Font("Comic Sans MS", Font.BOLD, 22);
 
     private UserInterfaceFactory() {}
@@ -20,7 +20,7 @@ public final class UserInterfaceFactory {
         JButton button= new JButton(text);
         button.setFont(MAIN_FONT);
         button.setBackground(ACCENT_COLOR);
-        button.setPreferredSize(new Dimension(0, 50));
+        button.setPreferredSize(new Dimension(200, 60));
         return button;
     }
 
