@@ -5,145 +5,189 @@ import it.unibo.minigoolf.model.ball.Ball;
 
 /**
  * Represents a triangular obstacle in the minigolf course.
- * This obstacle is defined by its three arbitrary vertices.
+ * This obstacle is defined by its three vertex and centroid.
  */
-public final class TriangleObstacle extends AbstractObstacle implements Obstacle{ 
+public final class TriangleObstacle extends AbstractObstacle implements Obstacle {
+    private static final double MIN_SIDE_LENGTH = 10.0;
+    private static final double MAX_SIDE_LENGTH = 800.0;
+    private static final double MIN_AREA = 25.0;
+	private static final double EPSILON = 1e-12;
+
     private final Vector2D vertex1;
     private final Vector2D vertex2;
     private final Vector2D vertex3;
+	private final Vector2D normal12;
+    private final Vector2D normal23;
+    private final Vector2D normal31;
 
-    /**
-     * Constructs a triangular obstacle using three vertices.
-	 * As position we use the centroid of the triangle
-     *
-     * @param vertex1 the first vertex of the triangle
-     * @param vertex2 the second vertex of the triangle
-     * @param vertex3 the third vertex of the triangle
-     */
+	/**
+	* Constructs a triangular obstacle.
+	*
+	* @param vertex1 the first vertex of the triangle
+	* @param vertex2 the second vertex of the triangle
+	* @param vertex3 the third vertex of the triangle
+	* @throws IllegalArgumentException if the triangle area is less than MIN_AREA
+	*/
     public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final Vector2D vertex3) {
-        super(new Vector2D((vertex1.getX() + vertex2.getX() + vertex3.getX()) / 3, 
-                           (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3));
+        super(new Vector2D(
+            (vertex1.getX() + vertex2.getX() + vertex3.getX()) / 3.0,
+            (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3.0));
+
+        checkDistanceBounds(vertex1, vertex2, "vertex1", "vertex2");
+        checkDistanceBounds(vertex2, vertex3, "vertex2", "vertex3");
+        checkDistanceBounds(vertex3, vertex1, "vertex3", "vertex1");
+        final double area = computeTriangleArea(vertex1, vertex2, vertex3);
+        if (area < MIN_AREA) {
+            throw new IllegalArgumentException("Triangle too flat. Area: " + area
+			+ ". It must be over " + MIN_AREA + ".");
+		}
+
         this.vertex1 = vertex1;
         this.vertex2 = vertex2;
         this.vertex3 = vertex3;
+        this.normal12 = computeOutwardNormal(this.vertex1, this.vertex2);
+        this.normal23 = computeOutwardNormal(this.vertex2, this.vertex3);
+        this.normal31 = computeOutwardNormal(this.vertex3, this.vertex1);
     }
 
-    /**
-     * Calculates the closest point on a line segment (from A to B) to a given point P.
-     *
-     * @param point_p the ball's center
-     * @param endpoint_a the start of the line segment
-     * @param endpoint_b the end of the line segment
-     * @return the closest point on the segment ab to the point p
-     */
-    private Vector2D getClosestPointOnSegment(final Vector2D point_p, final Vector2D endpoint_a, final Vector2D endpoint_b) {
-        final Vector2D ab = endpoint_b.subtract(endpoint_a);
-        final Vector2D ap = point_p.subtract(endpoint_a);
-        final double lengthSquared = ab.getNormSq();
-        if (lengthSquared == 0) {
-            return endpoint_a; // The segment is just a single point
+	/**
+	* Checks that the distance between two points lies within the allowed limits.
+	*
+	* @param endpointA first endpoint of the segment ab
+	* @param endpointB second endpoint of the segment ab
+	* @param nameA name of the first endpoint
+	* @param nameB name of the second endpoint
+	* @throws IllegalArgumentException if the side length is outside [MIN_SIDE_LENGTH, 
+	*			MAX_SIDE_LENGTH]
+	*/
+    private void checkDistanceBounds(final Vector2D endpointA, final Vector2D endpointB,
+                                     final String nameA, final String nameB) {
+        final double distance = endpointA.distance(endpointB);
+        if (distance < MIN_SIDE_LENGTH || distance > MAX_SIDE_LENGTH) {
+            throw new IllegalArgumentException("Distance " + nameA + " - " + nameB
+			+ " = " + String.format("%.2f", distance) + ". It must be between ["
+			+ MIN_SIDE_LENGTH + " and " + MAX_SIDE_LENGTH + "].");
         }
-        // The relative distance from endpoint_a of the projection of the center of the ball on the segment ab
-        double relative_distance = ap.dotProduct(ab) / lengthSquared;
-        // relative_distance must be between 0 and 1 to ensure the point stays on the segment
-        relative_distance = Math.max(0, Math.min(1, relative_distance));
-        
-        return endpoint_a.add(ab.scalarMultiply(relative_distance));
     }
 
-    /**
-     * Finds the point on the perimeter of the triangle closest to the ball's center.
+	/**
+     * Computes the area of a triangle using the 2D cross product.
      *
-     * @param ballCenter the center of the ball
-     * @return the closest Vector2D point on the triangle's edges
+     * @param vertexA first vertex
+     * @param vertexB second vertex
+     * @param vertexC third vertex
+     * @return the absolute area of the triangle
      */
-    private Vector2D getClosestPoint(final Vector2D ballCenter) {
-        // Find the closest points on all three edges
-        final Vector2D closest1 = getClosestPointOnSegment(ballCenter, vertex1, vertex2);
-        final Vector2D closest2 = getClosestPointOnSegment(ballCenter, vertex2, vertex3);
-        final Vector2D closest3 = getClosestPointOnSegment(ballCenter, vertex3, vertex1);
-        
-        // Find which of these three points is the absolute closest to the ball
-        double dist1 = ballCenter.distanceSq(closest1);
-        double dist2 = ballCenter.distanceSq(closest2);
-        double dist3 = ballCenter.distanceSq(closest3);
-        double minDist = Math.min(dist1, Math.min(dist2, dist3));
+    private double computeTriangleArea(final Vector2D vertexA, final Vector2D vertexB, final Vector2D vertexC) {
+        final Vector2D segmentAB = vertexB.subtract(vertexA);
+        final Vector2D segmentAC = vertexC.subtract(vertexA);
 
-        if (minDist == dist1){
-            return closest1;
-        }
-        if (minDist == dist2){
-            return closest2;
-        } 
-        return closest3;
+        return Math.abs(segmentAB.getX() * segmentAC.getY() - segmentAB.getY() * segmentAC.getX()) / 2.0;
+    }
+
+	/**
+     * Computes the outward normal of a given edge.
+     *
+     * @param endpointA start point of the edge
+     * @param endpointB end point of the edge
+     * @return the outward unit normal
+     */
+    private Vector2D computeOutwardNormal(final Vector2D endpointA, final Vector2D endpointB) {
+        final Vector2D edge = endpointB.subtract(endpointA);
+        final Vector2D perpendicular1 = new Vector2D(edge.getY(), -edge.getX());
+        final Vector2D perpendicular2 = new Vector2D(-edge.getY(), edge.getX());
+        final Vector2D middle = endpointA.add(endpointB).scalarMultiply(0.5);
+        final Vector2D toCentroid = getPosition().subtract(middle);
+
+        return (perpendicular1.dotProduct(toCentroid) < 0) ? perpendicular1.normalize() : perpendicular2.normalize();
     }
 
     /**
-     * Checks if the ball is currently colliding with the wall.
+     * Evaluates whether the side examined is the closest to the ball. 
+     */
+    private void evaluateEdge(final Vector2D ballPosition, final Vector2D endpointA, 
+								final Vector2D endpointB, final Vector2D faceNormal,
+								double[] bestDistanceSquared, Vector2D[] bestPoint,
+								Vector2D[] bestNormal) {
+        final Vector2D segmentAB = endpointB.subtract(endpointA);
+        final Vector2D segmentAP = ballPosition.subtract(endpointA);
+        final double lengthSquared = segmentAB.getNormSq();
+        final double scalarProjection = segmentAP.dotProduct(segmentAB) / lengthSquared;
+        Vector2D closestPoint;
+        Vector2D normal;
+
+        if (scalarProjection <= 0) {
+            closestPoint = endpointA;
+            final Vector2D radial = ballPosition.subtract(endpointA);
+            normal = (radial.getNormSq() < EPSILON) ? faceNormal : radial.normalize();
+        } else if (scalarProjection >= 1) {
+            closestPoint = endpointB;
+            final Vector2D radial = ballPosition.subtract(endpointB);
+            normal = (radial.getNormSq() < EPSILON) ? faceNormal : radial.normalize();
+        } else {
+            closestPoint = endpointA.add(segmentAB.scalarMultiply(scalarProjection));
+            normal = faceNormal;
+        }
+        final double distSq = ballPosition.distanceSq(closestPoint);
+        if (distSq < bestDistanceSquared[0]) {
+            bestDistanceSquared[0] = distSq;
+            bestPoint[0] = closestPoint;
+            bestNormal[0] = normal;
+        }
+    }
+
+	/**
+     * Checks if the ball is currently colliding with triangular obstacle.
      * 
      * @param ball the ball to be checked for collision
-     * @return true if the ball collides with the wall, false otherwise
+     * @return true if the ball collides with the obstacle, false otherwise
      */
     @Override
     public boolean isColliding(final Ball ball) {
-        final Vector2D closestPoint = getClosestPoint(ball.getPosition());
-        final double distance = ball.getPosition().distance(closestPoint);
-        
-        return distance <= ball.getRadius();
+        final Vector2D ballPosition = ball.getPosition();
+        final double radiusSquared = ball.getRadius() * ball.getRadius();
+        double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
+        Vector2D[] bestPoint = { null };
+        Vector2D[] bestNormal = { null };
+
+        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint, bestNormal);
+
+        return bestDistanceSquared[0] <= radiusSquared;
     }
 
-    /**
-     * Resolves the collision between the wall and the ball by calculating the reflection 
-     * and correcting the ball's position to prevent overlap.
+	/**
+     * Resolves the collision between the triangular obstacle and the ball by calculating 
+     * the reflection and correcting the ball's position to prevent overlap.
      * 
      * @param ball the ball on which to apply the collision physics
      */
     @Override
     public void resolveCollision(final Ball ball) {
-        final Vector2D ballPos = ball.getPosition();
-        final Vector2D closestPoint = getClosestPoint(ballPos);
-        final Vector2D collisionVector = ballPos.subtract(closestPoint);
-        final double distance = collisionVector.getNorm();
-        final Vector2D normal = computeCollisionNormal(collisionVector, distance);
-		final double penetrationDepth = ball.getRadius() - distance;
-		
-		if (penetrationDepth > 0) {
-			correctPosition(ball, ballPos, normal, penetrationDepth);
+        final Vector2D ballPosition = ball.getPosition();
+
+        double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
+        Vector2D[] bestPoint = { null };
+        Vector2D[] bestNormal = { null };
+
+        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint, bestNormal);
+
+        final double distance = Math.sqrt(bestDistanceSquared[0]);
+        final double penetration = ball.getRadius() - distance;
+        final Vector2D normal = bestNormal[0];
+
+        if (penetration > 0) {
+            final Vector2D newPosition = ball.getPosition().add(normal.scalarMultiply(penetration));
+            ball.setPosition(newPosition);
         }
+
         reflectVelocity(ball, normal);
     }
-
-    /**
-     * Computes the collision normal based on whether the ball's center is
-     * on the boundary or in a standard collision state.
-     * 
-     * @param ballPos the current position of the ball's center
-     * @param collisionVector vector from closest point to ball center
-     * @param distance the distance between ball center and closest point
-     * @return the normalized collision normal
-     */
-    private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance) {
-        if (distance < EPSILON) {
-            // Edge case: ball center is exactly on the triangle edge
-            return new Vector2D(0, 1); 
-        }
-        return collisionVector.normalize();
-    }
-
-    /**
-     * Corrects the ball's position to resolve penetration with the wall.
-     * 
-     * @param ball the ball to correct
-     * @param ballPos the current position of the ball's center
-     * @param normal the collision normal
-     * @param distance the distance between ball center and closest point
-     */
-    private void correctPosition(final Ball ball, final Vector2D ballPos,
-                                 final Vector2D normal, final double penetrationDepth) {
-        ball.setPosition(ballPos.add(normal.scalarMultiply(penetrationDepth)));
-    }
-
-    /**
+	
+	/**
      * Reflects the ball's velocity based on the collision normal.
      *
      * @param ball the ball whose velocity to reflect
@@ -151,15 +195,10 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
      */
     private void reflectVelocity(final Ball ball, final Vector2D normal) {
         final Vector2D velocity = ball.getVelocity();
-        final double dotProduct = velocity.dotProduct(normal);
-        
-        // If the ball is already moving away, no reflection needed
-        if (dotProduct > 0) {
-            return;
+        final double dot = velocity.dotProduct(normal);
+        if (dot >= 0) {
+			return;
         }
-        
-        // Apply the reflection formula: v' = v - 2 * (v · n) * n
-        final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
-        ball.setVelocity(velocity.subtract(reflection));
+		ball.setVelocity(velocity.subtract(normal.scalarMultiply(2 * dot)));
     }
 }

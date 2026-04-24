@@ -36,7 +36,7 @@ Report - 15/04 - 2 ore
 - Iniziata classe Vector2D
 
 Report - 16/04 - 4 ore
-- Creata la classe Vector2D
+- Creata la classe Vector2D in locale, non ancora caricata
 - Migliorata la collisione in RoundObstacle
 - Creata l'interfaccia Obstacle
 - Iniziata la classe TriangleObstacle: gestisce tutti gli ostacoli triangolari e cambia la direzione della pallina
@@ -53,7 +53,9 @@ Report 21/04 - 2 ore
 Report 22/04 - 1 ore
 - Aggiunti dei controlli nella creazione degli ostacoli rettangolari e rotonti
 
+Report 24/05 - 5 ore
+- Riscritta da capo l'intera classe TriangleObstacle perchè quella precedente aveva diversi problemi di penetrazione
+
 TODO:
 - Spostare i metodi comuni tra gli ostacoli in AbstractObstacle
 - Vedere come migliorare Vector2D
-- Completare la classe TriangleObstacle
