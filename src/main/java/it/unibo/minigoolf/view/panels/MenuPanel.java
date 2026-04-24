@@ -43,7 +43,7 @@ public final class MenuPanel extends JPanel {
         gbc.insets = new Insets(MARGINS, MARGINS, MARGINS, MARGINS);
         gbc.fill = GridBagConstraints.NONE;
         // To import the image for the title
-        final ImageIcon logoIcon = new ImageIcon(getClass().getResource("/title.png"));
+        final ImageIcon logoIcon = new ImageIcon(getClass().getResource("title.png"));
 
         // To scale the image of the title logo, tho maybe it's not necessary
         final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);

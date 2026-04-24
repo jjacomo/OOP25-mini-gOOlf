@@ -1,6 +1,10 @@
 package it.unibo.minigoolf.controller;
 
+import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
+import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
+import it.unibo.minigoolf.model.map.GameMap;
+import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
 import it.unibo.minigoolf.util.Vec2D;
 import it.unibo.minigoolf.view.MainWindow;
 
@@ -22,6 +26,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
     private final Timer timer;
 
     private final GameState gameState;
+    private final GameMapController gameMapController;
     private final MainWindow mainWindow;
 
     /**
@@ -30,7 +35,9 @@ public final class MainControllerImpl implements MainController, ActionListener 
     public MainControllerImpl() {
         // TODO: let the player write their own nickname
         this.gameState = new GameState(List.of("Player 1"));
-        this.mainWindow = new MainWindow(this, gameState);
+        final GameMap map = new TestGameMapFactory().buildGameMap();
+        this.gameMapController = new GameMapControllerImpl(map);
+        this.mainWindow = new MainWindow(this, gameState, gameMapController);
         this.timer = new Timer(1000 / FPS, this);
     }
 
@@ -82,6 +89,6 @@ public final class MainControllerImpl implements MainController, ActionListener 
     /** {@inheritDoc} */
     @Override
     public void goToNewGameMenu() {
-    this.mainWindow.showScene("NEW_GAME"); 
+        this.mainWindow.showScene("NEW_GAME");
     }
 }

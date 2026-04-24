@@ -2,9 +2,7 @@ package it.unibo.minigoolf.view;
 
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
-import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
-import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
 import it.unibo.minigoolf.view.panels.NewGamePanel;
@@ -26,11 +24,11 @@ public final class MainWindow extends JFrame {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    //Minimum resolution, the main window can't be smaller than specified here.
+    // Minimum resolution, the main window can't be smaller than specified here.
     private static final int MIN_WIDTH = 800;
     private static final int MIN_HEIGHT = 600;
 
-    // Using the CardLayout to switch easely through the panels.
+    // Using the CardLayout to switch easily through the panels.
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel mainContainer = new JPanel(cardLayout);
 
@@ -40,21 +38,20 @@ public final class MainWindow extends JFrame {
     /**
      * Creates and displays the main application window.
      *
-     * @param controller the main controller
-     * @param gameState  the shared state of the game instance
+     * @param controller        the main controller
+     * @param gameState         the shared state of the game instance
+     * @param gameMapController the controller managing the single shared game map
      */
-    public MainWindow(final MainController controller, final GameState gameState) {
+    public MainWindow(final MainController controller, final GameState gameState,
+            final GameMapController gameMapController) {
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        final GameMapController gameMapController = new GameMapControllerImpl(
-                new TestGameMapFactory().buildGameMap());
         this.gamePanel = new GamePanel(controller, gameState, gameMapController);
         this.menuPanel = new MenuPanel(controller);
         final JPanel newGamePanel = new NewGamePanel(controller);
 
-        // TODO: Later add the other panels
         mainContainer.add(menuPanel, "MENU");
         mainContainer.add(newGamePanel, "NEW_GAME");
         mainContainer.add(gamePanel, "GAME");
@@ -67,7 +64,7 @@ public final class MainWindow extends JFrame {
 
     /**
      * Allows to change the panel through the cardLayout.
-     * 
+     *
      * @param name the name assigned to the according panel ("MENU", "GAME", ....)
      */
     public void showScene(final String name) {
@@ -79,7 +76,7 @@ public final class MainWindow extends JFrame {
      *
      * @return the game panel
      */
-    @SuppressWarnings("EI_EXPOSE_REP")//TODO: find a way to remove this
+    @SuppressWarnings("EI_EXPOSE_REP") // TODO: find a way to remove this
     public GamePanel getGamePanel() {
         return gamePanel;
     }

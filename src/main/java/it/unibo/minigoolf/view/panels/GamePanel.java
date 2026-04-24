@@ -11,8 +11,6 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-// import java.awt.Graphics;
-// import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
@@ -29,17 +27,8 @@ public final class GamePanel extends JPanel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /** Starting resolution width (placeholder, should be a fixed size). */
     private static final int START_WIDTH = 960;
     private static final int START_HEIGHT = 540;
-
-    /**
-     * Logical resolution shared with ShotViewPanel.
-     * ALL game-object coordinates must live in this space so the two
-     * layers (field drawing + shot overlay) stay perfectly aligned.
-     */
-    // private static final int LOGICAL_WIDTH = 1920;
-    // private static final int LOGICAL_HEIGHT = 1080;
 
     // Placeholder ball position in logical (1920×1080) coordinates — will come from the physics model later.
     private static final Point BALL_START = new Point(220, 220);
@@ -55,15 +44,14 @@ public final class GamePanel extends JPanel {
     private final MapPanel mapPanel;
 
     /**
-     * @param controller the main controller (reserved for future use)
-     * @param gameState  the shared game-state instance
-     * @param mapController the controller for the game map model
+     * @param controller        the main controller
+     * @param gameState         the shared game-state instance
+     * @param gameMapController the controller managing the shared game map
      */
     public GamePanel(final MainController controller, final GameState gameState,
-                     final GameMapController mapController) {
+            final GameMapController gameMapController) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
-        this.mapPanel = new MapPanel(mapController);
 
         // TODO: To work later with @fedesparvo1-a11y to determine how to personalize this
         final JPanel uiPanel = new JPanel();
@@ -73,15 +61,14 @@ public final class GamePanel extends JPanel {
         uiPanel.add(turnoLabel);
         this.add(uiPanel, BorderLayout.NORTH);
 
-        // A "wrapperpanel" that contains the field area, so it can be forced to the 16:9 ratio
+        this.mapPanel = new MapPanel(gameMapController);
 
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
 
-        // Use a JLayeredPane to overlay ShotViewPanel on top of the field area.
         final JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
-        // fieldArea.setBounds(0, 0, START_WIDTH, START_HEIGHT);
+        mapPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
 
         shotViewPanel = new ShotViewPanel(gameState);
@@ -91,7 +78,6 @@ public final class GamePanel extends JPanel {
         centerWrapper.add(layeredPane);
         this.add(centerWrapper, BorderLayout.CENTER);
 
-        // FIXME: First attempt at forcing the 16:9 ratio, maybe needs to be redone
         centerWrapper.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
