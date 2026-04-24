@@ -56,6 +56,15 @@ public final class GameState{
     }
 
     /**
+     * Returns the player current index for the savings.
+     *
+     * @return the current player
+     */
+    public synchronized int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+
+    /**
      * Returns an unmodifiable view of all players.
      *
      * @return the player list
