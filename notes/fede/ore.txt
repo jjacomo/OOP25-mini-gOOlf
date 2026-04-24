@@ -13,3 +13,7 @@
 
 5 ore: sitemazione di input, buttato giù una bozza per il salvataggio mappa, ho implementato una libreria aggiunta al build di 
         gradle: json. 
+
+2 ore: dovrei aver risolto il problema che sia MainControllerImpl che MainWindow creano ciascuno una GameMap separata con new 
+        TestGameMapFactory().buildGameMap(), quindi esistono due mappe diverse e la palla del controller non è la stessa che 
+        viene disegnata, ora l'input si dovrebbe vedere sempre anche nelle altre mappe future
