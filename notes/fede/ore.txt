@@ -10,3 +10,6 @@
         l'input dell'utente
 
 4 ore: sistemazione build di gradlew
+
+5 ore: sitemazione di input, buttato giù una bozza per il salvataggio mappa, ho implementato una libreria aggiunta al build di 
+        gradle: json. 
