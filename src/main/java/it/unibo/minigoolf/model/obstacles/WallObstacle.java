@@ -7,167 +7,147 @@ import it.unibo.minigoolf.model.ball.Ball;
  * Represents a rectangular wall obstacle in the minigolf course.
  * This obstacle is defined by its top-left position, width, and height.
  */
-public final class WallObstacle extends AbstractObstacle implements Obstacle{
-    private final double minX;
-    private final double maxX;
-    private final double minY;
-    private final double maxY;
-    private final double MIN_WIDTH = 5;
-    private final double MAX_WIDTH = 100;
-    private final double MIN_HEIGHT = 5;
-    private final double MAX_HEIGHT = 100;
+public final class WallObstacle extends AbstractObstacle implements Obstacle {
+    private static final double MIN_WIDTH = 5.0;
+    private static final double MAX_WIDTH = 100.0;
+    private static final double MIN_HEIGHT = 5.0;
+    private static final double MAX_HEIGHT = 100.0;
 
-    /**
+    private final double minX;
+	private final double maxX;
+	private final double minY;
+	private final double maxY;
+    private final Vector2D normalLeft;
+	private final Vector2D normalRight;
+	private final Vector2D normalTop;
+	private final Vector2D normalBottom;
+
+	/**
      * Constructs a rectangular wall.
      * 
      * @param position the 2D vector representing the top-left corner of the wall
      * @param width    the width of the wall
      * @param height   the height of the wall
+	 * @throws IllegalArgumentException if the width is outside [MIN_WIDTH, 
+	 *			MAX_WIDTH] or if the height is outside [MIN_HEIGHT, MAX_HEIGHT]
      */
     public WallObstacle(final Vector2D position, final double width, final double height) {
         super(position);
-        if (width < MIN_WIDTH || width > MAX_WIDTH 
-                                        || height < MIN_HEIGHT || height > MAX_HEIGHT) {
-            throw new IllegalArgumentException("The width must be between " + MIN_WIDTH
-                                        + " and " + MAX_WIDTH + "; The height must be "
-                                        + "between " + MIN_HEIGHT + " and " + MAX_HEIGHT);
-        }
+        if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
+            throw new IllegalArgumentException("Invalid dimensions. Width: " + width
+			+ "; Height: " + height + ".\nWidth must be between [" + MIN_WIDTH + ", "
+			+ MAX_WIDTH + "].\n Height must be between [" + MIN_HEIGHT + ", "
+			+ MAX_HEIGHT + "].");
+		}
         this.minX = position.getX();
         this.maxX = position.getX() + width;
         this.minY = position.getY();
         this.maxY = position.getY() + height;
+        this.normalLeft   = new Vector2D(-1, 0);
+        this.normalRight  = new Vector2D( 1, 0);
+        this.normalTop    = new Vector2D( 0,-1);
+        this.normalBottom = new Vector2D( 0, 1);
     }
 
     /**
-     * Finds the point on the perimeter of the rectangle closest to the center of the ball.
-     * 
-     * @param ballCenter the 2D vector representing the center of the ball
-     * @return the Vector2D representing the closest point on the wall to the ball
-     */
-    private Vector2D getClosestPoint(final Vector2D ballCenter) {
-        final double closestX = Math.max(minX, Math.min(ballCenter.getX(), maxX));
-        final double closestY = Math.max(minY, Math.min(ballCenter.getY(), maxY));
-
-        return new Vector2D(closestX, closestY);
-    }
-
-    /**
-     * Checks if the ball is currently colliding with the wall.
-     * 
-     * @param ball the ball to be checked for collision
-     * @return true if the ball collides with the wall, false otherwise
+     * Checks if the ball is colliding with the obstacle's boundaries.
+     *
+     * @param ball the ball object to be checked for collisions
+     * @return true if the ball's boundaries touch the obstacle, false otherwise
      */
     @Override
     public boolean isColliding(final Ball ball) {
-        final Vector2D closestPoint = getClosestPoint(ball.getPosition());
-        final double distance = ball.getPosition().distance(closestPoint);
-
-        return distance <= ball.getRadius();
+        final Vector2D position = ball.getPosition();
+        final double closestX = Math.max(minX, Math.min(position.getX(), maxX));
+        final double closestY = Math.max(minY, Math.min(position.getY(), maxY));
+        final double dx = position.getX() - closestX;
+        final double dy = position.getY() - closestY;
+        final double distSq = dx * dx + dy * dy;
+        return distSq <= ball.getRadius() * ball.getRadius();
     }
 
     /**
-     * Resolves the collision between the wall and the ball by calculating the reflection 
-     * and correcting the ball's position to prevent overlap.
+     * Resolves the physical collision between the ball and the obstacle calculating
+     * the bounce based on the obstacle's shape and applies the new direction to the ball.
      * 
-     * @param ball the ball on which to apply the collision physics
+     * @param ball the Ball object that has collided with the obstacle
      */
     @Override
     public void resolveCollision(final Ball ball) {
-        final Vector2D ballPos = ball.getPosition();
-        final Vector2D closestPoint = getClosestPoint(ballPos);
-        final Vector2D collisionVector = ballPos.subtract(closestPoint);
-        final double distance = collisionVector.getNorm();
-        final Vector2D normal = computeCollisionNormal(ballPos, collisionVector, distance);
-        final double penetrationDepth = ball.getRadius() - distance;
+        final Vector2D ballPosition = ball.getPosition();
+        final double positionX = ballPosition.getX();
+        final double positionY = ballPosition.getY();
+        final double closestX = Math.max(minX, Math.min(positionX, maxX));
+        final double closestY = Math.max(minY, Math.min(positionY, maxY));
+        final boolean inside = (positionX > minX && positionX < maxX && positionY > minY && positionY < maxY);
+        Vector2D normal;
+        double penetrationDepth;
+
+        if (inside) {
+            final double distanceLeft   = positionX - minX;
+            final double distanceRight  = maxX - positionX;
+            final double distanceTop    = positionY - minY;
+            final double distanceBottom = maxY - positionY;
+            double minDistance = Math.min(Math.min(distanceLeft, distanceRight), Math.min(distanceTop, distanceBottom));
+			
+            if (minDistance == distanceLeft) {
+				normal = normalLeft;
+			} else if (minDistance == distanceRight) {
+				normal = normalRight;
+            } else if (minDistance == distanceTop) {
+				normal = normalTop;
+            } else {
+				normal = normalBottom;
+			}
+            penetrationDepth = ball.getRadius() + minDistance;
+        } else {
+            final Vector2D closestPoint = new Vector2D(closestX, closestY);
+            final Vector2D toCenter = ballPosition.subtract(closestPoint);
+            final double distance = toCenter.getNorm();
+            penetrationDepth = ball.getRadius() - distance;
+
+            if (distance < EPSILON) {
+                final boolean onLeft   = Math.abs(positionX - minX) < EPSILON;
+                final boolean onRight  = Math.abs(positionX - maxX) < EPSILON;
+                final boolean onTop    = Math.abs(positionY - minY) < EPSILON;
+                final boolean onBottom = Math.abs(positionY - maxY) < EPSILON;
+                if ((onLeft || onRight) && (onTop || onBottom)) {
+                    double accX = 0, accY = 0;
+                    if (onLeft) {
+						accX -= 1;
+					}
+                    if (onRight) {
+						accX += 1;
+					}
+                    if (onTop)  {
+						accY -= 1;
+					}
+                    if (onBottom) {
+						accY += 1;
+					}
+                    normal = new Vector2D(accX, accY).normalize();
+                } else {
+                    if (onLeft) {
+						normal = normalLeft;
+					}
+                    else if (onRight) {
+						normal = normalRight;
+					}
+                    else if (onTop) {
+						normal = normalTop;
+					}
+                    else {
+						normal = normalBottom;
+					}
+                }
+            } else {
+                normal = toCenter.normalize();
+            }
+        }
 
         if (penetrationDepth > 0) {
-            correctPosition(ball, ballPos, normal, penetrationDepth);
+            correctPosition(ball, ballPosition, normal, penetrationDepth);
         }
         reflectVelocity(ball, normal);
-    }
-
-    /**
-     * Computes the collision normal based on whether the ball's center is
-     * on the boundary or in a standard collision state.
-     * 
-     * @param ballPos the current position of the ball's center
-     * @param collisionVector vector from closest point to ball center
-     * @param distance the distance between ball center and closest point
-     * @return the normalized collision normal
-     */
-    private Vector2D computeCollisionNormal(final Vector2D ballPos, final Vector2D collisionVector,
-                                            final double distance) {
-        if (distance < EPSILON) {
-            return computeNormalForBoundaryCase(ballPos);
-        }
-
-        return collisionVector.normalize();
-    }
-
-    /**
-     * Computes the collision normal for the boundary case where the ball's center
-     * lies exactly on the rectangle perimeter or inside it. Handles corners correctly
-     * by accumulating normals from all equidistant sides.
-     * 
-     * @param ballPos the current position of the ball's center
-     * @return the normalized collision normal pointing outward from the wall
-     */
-    private Vector2D computeNormalForBoundaryCase(final Vector2D ballPos) {
-        double accX = 0;
-        double accY = 0;
-        final double dLeft = Math.abs(ballPos.getX() - minX);
-        final double dRight = Math.abs(ballPos.getX() - maxX);
-        final double dTop = Math.abs(ballPos.getY() - minY);
-        final double dBottom = Math.abs(ballPos.getY() - maxY);
-        final double minDist = Math.min(Math.min(dLeft, dRight), Math.min(dTop, dBottom));
-        // Adaptive tolerance to handle any inaccuracies in dLato distance calculations
-        final double tolerance = Math.max(EPSILON, Math.abs(minDist) * EPSILON);
-
-        if (Math.abs(dLeft - minDist) <= tolerance) {
-            accX -= 1;
-        }
-        if (Math.abs(dRight - minDist) <= tolerance) {
-            accX += 1;
-        }
-        if (Math.abs(dTop - minDist) <= tolerance) {
-            accY -= 1;
-        }
-        if (Math.abs(dBottom - minDist) <= tolerance) {
-            accY += 1;
-        }
-
-        return new Vector2D(accX, accY).normalize();
-    }
-
-    /**
-     * Corrects the ball's position to resolve penetration with the wall.
-     * 
-     * @param ball the ball to correct
-     * @param ballPos the current position of the ball's center
-     * @param normal the collision normal
-     * @param distance the distance between ball center and closest point
-     */
-    private void correctPosition(final Ball ball, final Vector2D ballPos,
-                                 final Vector2D normal, final double penetrationDepth) {
-            ball.setPosition(ballPos.add(normal.scalarMultiply(penetrationDepth)));
-    }
-
-    /**
-     * Reflects the ball's velocity based on the collision normal.
-     *
-     * @param ball the ball whose velocity to reflect
-     * @param normal the collision normal
-     */
-    private void reflectVelocity(final Ball ball, final Vector2D normal) {
-        final Vector2D velocity = ball.getVelocity();
-        final double dotProduct = velocity.dotProduct(normal);
-        final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
-
-        // If the ball is already moving away, no reflection needed
-        if (dotProduct > 0) {
-            return;
-        }
-        // Apply the reflection formula: v' = v - 2 * (v · n) * n
-        ball.setVelocity(velocity.subtract(reflection));
     }
 }

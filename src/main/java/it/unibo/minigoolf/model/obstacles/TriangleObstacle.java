@@ -11,7 +11,6 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
     private static final double MIN_SIDE_LENGTH = 10.0;
     private static final double MAX_SIDE_LENGTH = 800.0;
     private static final double MIN_AREA = 25.0;
-	private static final double EPSILON = 1e-12;
 
     private final Vector2D vertex1;
     private final Vector2D vertex2;
@@ -29,9 +28,8 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
 	* @throws IllegalArgumentException if the triangle area is less than MIN_AREA
 	*/
     public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final Vector2D vertex3) {
-        super(new Vector2D(
-            (vertex1.getX() + vertex2.getX() + vertex3.getX()) / 3.0,
-            (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3.0));
+        super(new Vector2D((vertex1.getX() + vertex2.getX() + vertex3.getX()) / 3.0,
+                            (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3.0));
 
         checkDistanceBounds(vertex1, vertex2, "vertex1", "vertex2");
         checkDistanceBounds(vertex2, vertex3, "vertex2", "vertex3");
@@ -48,6 +46,55 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         this.normal12 = computeOutwardNormal(this.vertex1, this.vertex2);
         this.normal23 = computeOutwardNormal(this.vertex2, this.vertex3);
         this.normal31 = computeOutwardNormal(this.vertex3, this.vertex1);
+    }
+
+    /**
+     * Checks if the ball is colliding with the obstacle's boundaries.
+     *
+     * @param ball the ball object to be checked for collisions
+     * @return true if the ball's boundaries touch the obstacle, false otherwise
+     */
+    @Override
+    public boolean isColliding(final Ball ball) {
+        final Vector2D ballPosition = ball.getPosition();
+        final double radiusSquared = ball.getRadius() * ball.getRadius();
+        double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
+        Vector2D[] bestPoint = { null };
+        Vector2D[] bestNormal = { null };
+
+        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint, bestNormal);
+
+        return bestDistanceSquared[0] <= radiusSquared;
+    }
+
+	/**
+     * Resolves the physical collision between the ball and the obstacle calculating
+     * the bounce based on the obstacle's shape and applies the new direction to the ball.
+     * 
+     * @param ball the ball object that has collided with the obstacle
+     */
+    @Override
+    public void resolveCollision(final Ball ball) {
+        final Vector2D ballPosition = ball.getPosition();
+
+        double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
+        Vector2D[] bestPoint = { null };
+        Vector2D[] bestNormal = { null };
+
+        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint, bestNormal);
+
+        final double distance = Math.sqrt(bestDistanceSquared[0]);
+        final double penetrationDepth = ball.getRadius() - distance;
+        final Vector2D normal = bestNormal[0];
+
+        if (penetrationDepth > 0) {
+            correctPosition(ball, ballPosition, normal, penetrationDepth);
+        }
+        reflectVelocity(ball, normal);
     }
 
 	/**
@@ -69,7 +116,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
 			+ MIN_SIDE_LENGTH + " and " + MAX_SIDE_LENGTH + "].");
         }
     }
-
+    
 	/**
      * Computes the area of a triangle using the 2D cross product.
      *
@@ -134,71 +181,5 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
             bestPoint[0] = closestPoint;
             bestNormal[0] = normal;
         }
-    }
-
-	/**
-     * Checks if the ball is currently colliding with triangular obstacle.
-     * 
-     * @param ball the ball to be checked for collision
-     * @return true if the ball collides with the obstacle, false otherwise
-     */
-    @Override
-    public boolean isColliding(final Ball ball) {
-        final Vector2D ballPosition = ball.getPosition();
-        final double radiusSquared = ball.getRadius() * ball.getRadius();
-        double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
-        Vector2D[] bestPoint = { null };
-        Vector2D[] bestNormal = { null };
-
-        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint, bestNormal);
-        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint, bestNormal);
-        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint, bestNormal);
-
-        return bestDistanceSquared[0] <= radiusSquared;
-    }
-
-	/**
-     * Resolves the collision between the triangular obstacle and the ball by calculating 
-     * the reflection and correcting the ball's position to prevent overlap.
-     * 
-     * @param ball the ball on which to apply the collision physics
-     */
-    @Override
-    public void resolveCollision(final Ball ball) {
-        final Vector2D ballPosition = ball.getPosition();
-
-        double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
-        Vector2D[] bestPoint = { null };
-        Vector2D[] bestNormal = { null };
-
-        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint, bestNormal);
-        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint, bestNormal);
-        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint, bestNormal);
-
-        final double distance = Math.sqrt(bestDistanceSquared[0]);
-        final double penetration = ball.getRadius() - distance;
-        final Vector2D normal = bestNormal[0];
-
-        if (penetration > 0) {
-            final Vector2D newPosition = ball.getPosition().add(normal.scalarMultiply(penetration));
-            ball.setPosition(newPosition);
-        }
-
-        reflectVelocity(ball, normal);
-    }
-	
-	/**
-     * Reflects the ball's velocity based on the collision normal.
-     *
-     * @param ball the ball whose velocity to reflect
-     * @param normal the collision normal
-     */
-    private void reflectVelocity(final Ball ball, final Vector2D normal) {
-        final Vector2D velocity = ball.getVelocity();
-        final double dot = velocity.dotProduct(normal);
-        if (dot >= 0) {
-			return;
-        }
-		ball.setVelocity(velocity.subtract(normal.scalarMultiply(2 * dot)));
     }
 }

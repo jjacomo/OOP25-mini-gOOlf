@@ -14,9 +14,10 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
 
     /**
      * Constructs a circular obstacle.
-     * 
-	 * @param position the 2D vector representing the center of the circle
-     * @param radius   the radius of the circular obstacle
+     *
+     * @param center the center of the circle (must not be null)
+     * @param radius the radius of the circular obstacle
+     * @throws IllegalArgumentException if radius is not between [MIN_RADIUS, MAX_RADIUS]
      */
     public RoundObstacle(final Vector2D position, final double radius) {
         super(position);
@@ -28,10 +29,10 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
     }
     
     /**
-     * Checks if the ball is currently colliding with the circular obstacle.
+     * Checks if the ball is colliding with the obstacle's boundaries.
      *
-	 * @param ball the ball to be checked for collision
-     * @return true if the ball collides with the obstacle, false otherwise
+     * @param ball the Ball object to be checked for collisions
+     * @return true if the ball's boundaries touch the obstacle, false otherwise
      */
     @Override
     public boolean isColliding(final Ball ball) {
@@ -40,26 +41,22 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
     }
 
     /**
-     * Resolves the collision between the rounnd obstacle and the ball by calculating the reflection 
-     * and correcting the ball's position to prevent overlap.
+     * Resolves the physical collision between the ball and the obstacle calculating
+     * the bounce based on the obstacle's shape and applies the new direction to the ball.
      * 
-     * @param ball the ball on which to apply the collision physics
+     * @param ball the Ball object that has collided with the obstacle
      */
     @Override
     public void resolveCollision(final Ball ball) {
-        final Vector2D ballPos = ball.getPosition();
+        final Vector2D ballPosition = ball.getPosition();
         final Vector2D obstaclePos = this.getPosition();
-        
-        // Vector from the center of the obstacle to the center of the ball
-        final Vector2D collisionVector = ballPos.subtract(obstaclePos);
+        final Vector2D collisionVector = ballPosition.subtract(obstaclePos);
         final double distance = collisionVector.getNorm();
-
         final Vector2D normal = computeCollisionNormal(collisionVector, distance, ball.getVelocity());
-
-        // Penetration is calculated using the sum of the two radii
         final double penetrationDepth = (ball.getRadius() + this.radius) - distance;
+		
         if (penetrationDepth > 0) {
-            correctPosition(ball, ballPos, normal, penetrationDepth);
+            correctPosition(ball, ballPosition, normal, penetrationDepth);
         }
         reflectVelocity(ball, normal);
     }
@@ -79,36 +76,5 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
         }
 
         return  velocity.scalarMultiply(-1).normalize();
-    }
-
-    /**
-     * Corrects the ball's position to resolve penetration with the obstacle.
-     *
-     * @param ball the ball to correct
-     * @param ballPos the current position of the ball's center
-     * @param normal the collision normal
-     * @param distance the distance between the two centers
-     */
-    private void correctPosition(final Ball ball, final Vector2D ballPos,
-                                 final Vector2D normal, final double penetrationDepth) {
-        ball.setPosition(ballPos.add(normal.scalarMultiply(penetrationDepth)));
-    }
-
-    /**
-     * Reflects the ball's velocity based on the collision normal.
-     *
-     * @param ball the ball whose velocity to reflect
-     * @param normal the collision normal
-     */
-    private void reflectVelocity(final Ball ball, final Vector2D normal) {
-        final Vector2D velocity = ball.getVelocity();
-        final double dotProduct = velocity.dotProduct(normal);
-        // If the ball is already moving away, no reflection needed
-        if (dotProduct > 0) {
-            return;
-        }
-        // Apply the reflection formula: v' = v - 2 * (v · n) * n
-        final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
-        ball.setVelocity(velocity.subtract(reflection));
     }
 }

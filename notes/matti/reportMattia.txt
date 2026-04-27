@@ -56,6 +56,10 @@ Report 22/04 - 1 ore
 Report 24/05 - 5 ore
 - Riscritta da capo l'intera classe TriangleObstacle perchè quella precedente aveva diversi problemi di penetrazione
 
+Report 27/05 - 4 ore
+- Migliorari e rimossi alcuni metodi di RoundObstacle e WallObstacle per migliorare la gestione delle collisioni e 
+    la correzione della penetrazione.
+- Spostati i metodi comuni da WallObstacle, RoundObstacle e TriangleObstacle in AbstractObstacle
+
 TODO:
-- Spostare i metodi comuni tra gli ostacoli in AbstractObstacle
 - Vedere come migliorare Vector2D
