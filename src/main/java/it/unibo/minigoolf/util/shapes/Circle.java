@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.util.shapes;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * A record representing a circle shape defined by its center position and radius.
@@ -20,7 +20,7 @@ public record Circle(Vector2D position, double radius) implements Shape {
      */
     @Override
     public boolean contains(final Vector2D pos) {
-        return Vector2D.distance(position, pos) < radius;
+        return position.distance(pos) < radius;
     }
 
 }

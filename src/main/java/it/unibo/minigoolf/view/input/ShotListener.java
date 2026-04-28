@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.view.input;
 
-import it.unibo.minigoolf.util.Vec2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -60,9 +60,9 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
             // Convert current physical position to logical space.
             final Point logicalCurrent = panel.toLogical(e.getPoint());
             // Build the raw drag vector (logical start → logical current).
-            final Vec2D raw = new Vec2D(this.startingPoint, logicalCurrent);
+            final Vector2D raw = new Vector2D(this.startingPoint, logicalCurrent);
             // Negate it: dragging the club backward means shooting the ball forward.
-            final Vec2D shotDirection = raw.getOppositeVector();
+            final Vector2D shotDirection = raw.getOppositeVector();
             this.visualizer.updateShotIntent(shotDirection);
         }
     }

@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.util.shapes;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * @author jack

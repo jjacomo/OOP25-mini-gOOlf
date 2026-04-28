@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.model.obstacles;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.model.ball.Ball;
 
 /**
@@ -158,7 +158,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
 								Vector2D[] bestNormal) {
         final Vector2D segmentAB = endpointB.subtract(endpointA);
         final Vector2D segmentAP = ballPosition.subtract(endpointA);
-        final double lengthSquared = segmentAB.getNormSq();
+        final double lengthSquared = segmentAB.getNormSquared();
         final double scalarProjection = segmentAP.dotProduct(segmentAB) / lengthSquared;
         Vector2D closestPoint;
         Vector2D normal;
@@ -166,16 +166,16 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         if (scalarProjection <= 0) {
             closestPoint = endpointA;
             final Vector2D radial = ballPosition.subtract(endpointA);
-            normal = (radial.getNormSq() < EPSILON) ? faceNormal : radial.normalize();
+            normal = (radial.getNormSquared() < EPSILON) ? faceNormal : radial.normalize();
         } else if (scalarProjection >= 1) {
             closestPoint = endpointB;
             final Vector2D radial = ballPosition.subtract(endpointB);
-            normal = (radial.getNormSq() < EPSILON) ? faceNormal : radial.normalize();
+            normal = (radial.getNormSquared() < EPSILON) ? faceNormal : radial.normalize();
         } else {
             closestPoint = endpointA.add(segmentAB.scalarMultiply(scalarProjection));
             normal = faceNormal;
         }
-        final double distSq = ballPosition.distanceSq(closestPoint);
+        final double distSq = ballPosition.distanceSquared(closestPoint);
         if (distSq < bestDistanceSquared[0]) {
             bestDistanceSquared[0] = distSq;
             bestPoint[0] = closestPoint;

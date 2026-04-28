@@ -61,5 +61,8 @@ Report 27/05 - 4 ore
     la correzione della penetrazione.
 - Spostati i metodi comuni da WallObstacle, RoundObstacle e TriangleObstacle in AbstractObstacle
 
-TODO:
-- Vedere come migliorare Vector2D
+Report 28/05 - 3 ore
+- Aggiunta la classe Vector2D personalizzata, che sostituisce quella di apache
+- Aggiunti tutti i metodi mancanti presenti nella classe temporanea Vec2D all'interno di Vector2D
+- Corretti tutti gli errori dovuti a conversioni di dipi diversi
+- Corretti tutti gli errori dovuti a metodi con nomi diversi rispetto a Vector2D

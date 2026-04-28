@@ -3,7 +3,7 @@ package it.unibo.minigoolf.model.map.factories;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.map.GameMap;

@@ -1,7 +1,7 @@
 package it.unibo.minigoolf.view.input;
 
 import it.unibo.minigoolf.model.logic.GameState;
-import it.unibo.minigoolf.util.Vec2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 import javax.swing.JPanel;
 import java.awt.BasicStroke;
@@ -58,7 +58,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
         0f
     );
 
-    /** The ShotListener that translates mouse events into Vec2D values. */
+    /** The ShotListener that translates mouse events into Vector2D values. */
     private final transient ShotListener shotListener;
 
     /**
@@ -69,7 +69,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     @SuppressWarnings("EI_EXPOSE_REP2") //TODO: find a way to remove this
     private final transient GameState gameState;
 
-    private transient Vec2D currentDirection;
+    private transient Vector2D currentDirection;
     private transient Point ballScreenPos;
 
     /**
@@ -156,7 +156,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
      * @param direction current shot direction/power vector (already negated by ShotListener)
      */
     @Override
-    public synchronized void updateShotIntent(final Vec2D direction) {
+    public synchronized void updateShotIntent(final Vector2D direction) {
         this.currentDirection = direction;
     }
 
@@ -186,7 +186,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
 
-        final Vec2D dir;
+        final Vector2D dir;
         final Point origin;
 
         synchronized (this) {
@@ -203,11 +203,11 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
             g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
 
             // Clamp display length so the line doesn't go off the screen.
-            final Vec2D displayDir = dir.clampedTo(MAX_LINE_PIXELS);
+            final Vector2D displayDir = dir.clampedTo(MAX_LINE_PIXELS);
             final Point tip = displayDir.translate(origin);
 
             // Line colour based on power.
-            final double squaredPower = dir.getSquareModule();
+            final double squaredPower = dir.getNormSquared();
             final Color lineColor;
             if (squaredPower < LOW_THRESHOLD) {
                 lineColor = Color.GREEN;
@@ -237,6 +237,6 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
      */
     private boolean isValidShot() {
         return currentDirection != null
-            && currentDirection.getSquareModule() >= MIN_SQUARE_POWER;
+            && currentDirection.getNormSquared() >= MIN_SQUARE_POWER;
     }
 }

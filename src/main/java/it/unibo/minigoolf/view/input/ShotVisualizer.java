@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.view.input;
 
-import it.unibo.minigoolf.util.Vec2D;
+import it.unibo.minigoolf.util.Vector2D;
  
 /**
  * Interface implemented by the panel that draws the shot-intent indicator.
@@ -14,7 +14,7 @@ public interface ShotVisualizer {
      *
      * @param direction the shot direction
      */
-    void updateShotIntent(Vec2D direction);
+    void updateShotIntent(Vector2D direction);
  
     /**
      * Called when the user releases the mouse.

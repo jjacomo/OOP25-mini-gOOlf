@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.model.logic;
 
-import it.unibo.minigoolf.util.Vec2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +23,7 @@ public final class GameState{
     private int currentPlayerIndex;
 
     /** The shot queued by the view; null if no shot is waiting. */
-    private Vec2D pendingShot;
+    private Vector2D pendingShot;
 
     /** Whether the ball is still rolling. */
     private volatile boolean ballMoving;
@@ -88,8 +88,8 @@ public final class GameState{
      *
      * @param shot the direction/power vector of the intended shot
      */
-    public synchronized void setPendingShot(final Vec2D shot) {
-        if (!ballMoving && shot != null && shot.getSquareModule() >= MIN_SQUARE_POWER) {
+    public synchronized void setPendingShot(final Vector2D shot) {
+        if (!ballMoving && shot != null && shot.getNormSquared() >= MIN_SQUARE_POWER) {
             this.pendingShot = shot;
         }
     }
@@ -99,9 +99,9 @@ public final class GameState{
      *
      * @return an Optional containing the shot vector, or empty if no shot this tick
      */
-    public synchronized Optional<Vec2D> update() {
+    public synchronized Optional<Vector2D> update() {
         if (pendingShot != null) {
-            final Vec2D shot = pendingShot;
+            final Vector2D shot = pendingShot;
             pendingShot = null;
             ballMoving = true;
             getCurrentPlayer().addShot();

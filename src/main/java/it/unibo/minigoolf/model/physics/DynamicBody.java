@@ -1,7 +1,7 @@
 package it.unibo.minigoolf.model.physics;
 
 // consider using a custom Vector2D to avoid external dependencies
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * Represents a dynamic physical body in 2D space with a position and velocity.

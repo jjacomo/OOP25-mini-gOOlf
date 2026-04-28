@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.controller.ballcontroller;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 import it.unibo.minigoolf.util.shapes.Shape;
 

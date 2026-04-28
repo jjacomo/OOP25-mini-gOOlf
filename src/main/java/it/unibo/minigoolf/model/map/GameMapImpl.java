@@ -2,7 +2,7 @@ package it.unibo.minigoolf.model.map;
 
 import java.util.List;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.surfaces.Surface;

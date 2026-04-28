@@ -5,7 +5,7 @@ import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
-import it.unibo.minigoolf.util.Vec2D;
+import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.view.MainWindow;
 
 import javax.swing.Timer;
@@ -45,7 +45,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
     @Override
     public void actionPerformed(final ActionEvent e) {
         // Process shot from GameState.
-        final Optional<Vec2D> shot = gameState.update();
+        final Optional<Vector2D> shot = gameState.update();
         if (shot.isPresent()) {
             handleShot(shot.get());
         }
@@ -59,7 +59,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
      *
      * @param ignored the shot vector (unused until physics is implemented)
      */
-    private void handleShot(final Vec2D ignored) {
+    private void handleShot(final Vector2D ignored) {
         // TODO: when physics is ready this will be called only when the ball stops.
         // For now we stop it immediately.
         gameState.onBallStopped();

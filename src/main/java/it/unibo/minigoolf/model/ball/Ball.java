@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.model.ball;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * Interface representing the ball in the mini-golf game.
