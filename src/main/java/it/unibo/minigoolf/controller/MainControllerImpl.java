@@ -2,6 +2,8 @@ package it.unibo.minigoolf.controller;
 
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
+import it.unibo.minigoolf.controller.physics.PhysicsController;
+import it.unibo.minigoolf.controller.physics.PhysicsControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
@@ -27,6 +29,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
 
     private final GameState gameState;
     private final GameMapController gameMapController;
+    private final PhysicsController physicsController;
     private final MainWindow mainWindow;
 
     /**
@@ -37,6 +40,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
         this.gameState = new GameState(List.of("Player 1"));
         final GameMap map = new TestGameMapFactory().buildGameMap();
         this.gameMapController = new GameMapControllerImpl(map);
+        this.physicsController = new PhysicsControllerImpl(map.getBall(), map);
         this.mainWindow = new MainWindow(this, gameState, gameMapController);
         this.timer = new Timer(1000 / FPS, this);
     }
@@ -50,6 +54,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
             handleShot(shot.get());
         }
 
+        physicsController.update(1.0 / FPS); 
         mainWindow.repaint();
     }
 

@@ -110,8 +110,6 @@ public class MapPanel extends JPanel {
                     }
                 });
 
-        // palla
-        // cosi' forse non e' bellissimo (c'e' probabilmente qualcosa da cambiare)
         g2d.setColor(Color.WHITE);
         drawShape(mapController.getBallController().getBallShape(), g2d, null);
     }
