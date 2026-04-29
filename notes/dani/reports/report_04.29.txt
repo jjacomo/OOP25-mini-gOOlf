@@ -1,14 +1,12 @@
-Report - 04/29 - xx ore
+Report - 04/29 - 3 ore
 
 FATTO:
 - Ho letto il report di @jjacomo ed effettivamente è meglio se lasciamo al maincontroller solo ciò che è necessario (cerchiamo di tenerlo abbastanza snello).
-Per questo ho creato una nuova classe, chiamata NavigationController, per poter gestire lo switch tra le varie schermate (gioco,menu,ecc...).
-
-- 
-
+Per questo ho creato una nuova classe, chiamata NavigationController, per poter gestire lo switch tra le varie schermate (gioco,menu,ecc...). C'è stato bisogno di
+un bel po' di modifiche (per fortuna tra le mie classi), quindi ocio che certe volte questi approci forse è meglio farli all'inizio.
 
 DA FARE:
-- Spotbugs!
+- Spotbugs! In treno domani probabilmente.
 - Gamepanel e MapPanel, da vedere se modificare qualcosa
 
 AGENDA:
