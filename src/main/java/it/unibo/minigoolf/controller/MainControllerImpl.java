@@ -2,6 +2,7 @@ package it.unibo.minigoolf.controller;
 
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapControllerImpl;
+import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.controller.physics.PhysicsController;
 import it.unibo.minigoolf.controller.physics.PhysicsControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
@@ -31,6 +32,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
     private final GameMapController gameMapController;
     private final PhysicsController physicsController;
     private final MainWindow mainWindow;
+    private final NavigationController navigationController;
 
     /**
      * Creates the controller, the game state and the main window.
@@ -41,7 +43,9 @@ public final class MainControllerImpl implements MainController, ActionListener 
         final GameMap map = new TestGameMapFactory().buildGameMap();
         this.gameMapController = new GameMapControllerImpl(map);
         this.physicsController = new PhysicsControllerImpl(map.getBall(), map);
-        this.mainWindow = new MainWindow(this, gameState, gameMapController);
+        this.navigationController = new NavigationController(this);
+        this.mainWindow = new MainWindow(this, this.navigationController, gameState, gameMapController);
+        this.navigationController.setMainWindow(this.mainWindow);
         this.timer = new Timer(1000 / FPS, this);
     }
 
@@ -84,16 +88,4 @@ public final class MainControllerImpl implements MainController, ActionListener 
         timer.stop();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void startGame() {
-        this.start();
-        this.mainWindow.showScene("GAME");
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void goToNewGameMenu() {
-        this.mainWindow.showScene("NEW_GAME");
-    }
 }

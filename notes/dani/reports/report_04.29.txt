@@ -1,0 +1,16 @@
+Report - 04/29 - xx ore
+
+FATTO:
+- Ho letto il report di @jjacomo ed effettivamente è meglio se lasciamo al maincontroller solo ciò che è necessario (cerchiamo di tenerlo abbastanza snello).
+Per questo ho creato una nuova classe, chiamata NavigationController, per poter gestire lo switch tra le varie schermate (gioco,menu,ecc...).
+
+- 
+
+
+DA FARE:
+- Spotbugs!
+- Gamepanel e MapPanel, da vedere se modificare qualcosa
+
+AGENDA:
+- Per la prossima volta, dobbiamo capire come gestire il maincontroller: lì lasciamo soltanto start e stop del timer, o li facciamo fare tutta la parte logica del
+gioco? Secondo me è meglio creare una classe a parte anche per quella, e questa classe la terrei solo per far partire il gioco.

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 
-import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 
 /**
  * One of the possibile scenes, this is the main menu where the user can start a new game,
@@ -32,7 +32,7 @@ public final class MenuPanel extends JPanel {
     private static final int START_HEIGHT = 540; 
     private static final int MARGINS = 10;
 
-    public MenuPanel(final MainController controller) {
+    public MenuPanel(final NavigationController navigationController) {
 
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT)); 
         this.setBackground(Color.DARK_GRAY);
@@ -58,13 +58,13 @@ public final class MenuPanel extends JPanel {
 
         // New game button
         final JButton newGameButton = UserInterfaceFactory.createButton("NEW GAME");
-        newGameButton.addActionListener(e -> controller.goToNewGameMenu());
+        newGameButton.addActionListener(e -> navigationController.goToNewGameMenu());
         gbc.gridy++;
         this.add(newGameButton, gbc);
         
         // Start game button: for testing purpose, it starts the game immediately, to be removed!
         final JButton playButton = UserInterfaceFactory.createButton("START GAME");
-        playButton.addActionListener(e -> controller.startGame());
+        playButton.addActionListener(e -> navigationController.startGame());
         gbc.gridy++;
         this.add(playButton, gbc);
 

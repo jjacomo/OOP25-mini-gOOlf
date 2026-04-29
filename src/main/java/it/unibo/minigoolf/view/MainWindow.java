@@ -2,6 +2,7 @@ package it.unibo.minigoolf.view;
 
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
+import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
@@ -42,15 +43,15 @@ public final class MainWindow extends JFrame {
      * @param gameState         the shared state of the game instance
      * @param gameMapController the controller managing the single shared game map
      */
-    public MainWindow(final MainController controller, final GameState gameState,
+    public MainWindow(final MainController controller, final NavigationController navigationController, final GameState gameState,
             final GameMapController gameMapController) {
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.gamePanel = new GamePanel(controller, gameState, gameMapController);
-        this.menuPanel = new MenuPanel(controller);
-        final JPanel newGamePanel = new NewGamePanel(controller);
+        this.menuPanel = new MenuPanel(navigationController);
+        final JPanel newGamePanel = new NewGamePanel(navigationController);
 
         mainContainer.add(menuPanel, "MENU");
         mainContainer.add(newGamePanel, "NEW_GAME");

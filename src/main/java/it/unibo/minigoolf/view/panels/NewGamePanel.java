@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 
 /**
  * One of the possibile scenes, this is the menu where the user can choose the n° of
@@ -38,7 +38,7 @@ public final class NewGamePanel extends JPanel {
     private final JPanel namesContainer;
     private final JTextField numInput;
 
-    public NewGamePanel(final MainController controller) {
+    public NewGamePanel(final NavigationController navigationController) {
         this.setLayout(new BorderLayout(20, 20));
         this.setBackground(Color.DARK_GRAY);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
