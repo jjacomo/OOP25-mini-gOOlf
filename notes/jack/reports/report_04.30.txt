@@ -1,0 +1,30 @@
+Report - 30/04 - 1h (tot: 24h)
+
+* attrito preso dalla superficie sopra cui si trova la palla
+* cambiato surface getBounds in Surface.getShape
+* separato il codice del metodo PhysicsController.update in 2 sotto-metodi
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Metodi per calcolare l'attrito palla-superficie;
+
+* Texture che non si resizano (non warpa l'immagine)
+* Riguarda codice in MapPanel per la resizabilita'
+* Creare la buca
+* sarebbe bello che la palla rallentasse in funzione anche della sua velocita'
+    (oltre che sulla superficie su cui si trova): ad esempio quando e' molto veloce
+    l'attrito dovrebbe contare di meno rispetto a quando e' quasi ferma
+
+* Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+* Logger?
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+PER AGENDA FUTURA:
+* MainController che li contiene tutti?
+* Per Fede: controller per gli shot (invece di mettere codice direttamente in MainController)?
