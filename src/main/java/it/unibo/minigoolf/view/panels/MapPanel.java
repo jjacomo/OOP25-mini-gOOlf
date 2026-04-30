@@ -104,7 +104,7 @@ public class MapPanel extends JPanel {
                 .forEach(surface -> {
                     final BufferedImage texture = loadTexture(surface.getTexturePath());
                     if (texture != null) {
-                        drawShape(surface.getBounds(), g2d, texture);
+                        drawShape(surface.getShape(), g2d, texture);
                     } else {
                         throw new IllegalStateException("Texture not found for surface: " + surface.getTexturePath());
                     }

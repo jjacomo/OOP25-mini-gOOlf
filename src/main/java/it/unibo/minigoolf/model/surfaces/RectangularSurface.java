@@ -59,7 +59,7 @@ public final class RectangularSurface implements Surface {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getShape() {
         return bounds;
     }
 }

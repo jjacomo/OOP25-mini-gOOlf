@@ -1,4 +1,4 @@
-Report - 28/04 - 1h (tot: 22h)
+Report - 28/04 - 1h (tot: 23h)
 
 * Aggiunto l'update della posizione in controller.physics.PhysicsControllerImpl
 * Inizializzata la palla in BallImpl con una velocita' iniziale per test (da cambiare).
@@ -22,6 +22,8 @@ TODO:
 * Guarda errori piu' "Strutturali" di spotbugs
 * Logger?
 * Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+
+cambia surface getBounds in Surface.getShape
 
 POSSIBILI FEATURE:
 * Caricare mappe da file

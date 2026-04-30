@@ -49,5 +49,5 @@ public interface Surface {
      *
      * @return the shape of the surface
      */
-    Shape getBounds();
+    Shape getShape();
 }

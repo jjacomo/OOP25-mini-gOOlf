@@ -5,6 +5,7 @@ import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.util.Vector2D;
 
 public class PhysicsControllerImpl implements PhysicsController {
+    // private static final double FRICTION = 0.14; // example friction coefficient
     private final Ball ball;
     private final GameMap gameMap;
     
@@ -16,18 +17,24 @@ public class PhysicsControllerImpl implements PhysicsController {
     @Override
     public void update(double deltaTime) {
         // apply friction.
-        Vector2D velocity = ball.getVelocity();
-        Vector2D friction = velocity.scalarMultiply(-0.14); // simple linear friction
-        Vector2D newVelocity = velocity.add(friction.scalarMultiply(deltaTime));
-        ball.setVelocity(newVelocity);
+        updateBallVelocity(deltaTime);
 
         // update ball position based on velocity,
-
-        Vector2D newPosition = ball.getPosition().add(ball.getVelocity().scalarMultiply(deltaTime));
-        ball.setPosition(newPosition);
-
+        updateBallPosition(deltaTime);
 
         // collisioni? 
+    }
+
+    private void updateBallVelocity(double deltaTime) {
+        Vector2D velocity = ball.getVelocity();
+        Vector2D friction = velocity.scalarMultiply(-gameMap.getSurfaceAt(ball.getPosition()).getFriction()); 
+        Vector2D newVelocity = velocity.add(friction.scalarMultiply(deltaTime));
+        ball.setVelocity(newVelocity);
+    }
+
+    private void updateBallPosition(double deltaTime) {
+        Vector2D newPosition = ball.getPosition().add(ball.getVelocity().scalarMultiply(deltaTime));
+        ball.setPosition(newPosition);
     }
 
 }
