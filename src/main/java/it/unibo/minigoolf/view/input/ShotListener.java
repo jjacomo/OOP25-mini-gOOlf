@@ -19,16 +19,16 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
      */
     private static final double CLICK_RADIUS = 40.0;
 
-    private final ShotVisualizer visualizer;
-
     /**
-     * Reference to the panel used to convert physical to logical coordinates.
-     * Needed because MouseEvent coordinates are always in physical pixels.
+     * The panel that draws the shot indicator, handles shots, and converts
+     * physical mouse coordinates to logical ones.
+     * A single reference is kept since {@link ShotViewPanel} implements
+     * {@link ShotVisualizer} directly.
      */
-    private final ShotViewPanel panel;
+    private final transient ShotViewPanel panel;
 
     /** Where the drag started in logical coordinates (null when no drag is in progress). */
-    private Point startingPoint;
+    private transient Point startingPoint;
 
     /** Whether this listener is accepting input. */
     private boolean enable;
@@ -36,11 +36,10 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
     /**
      * Creates a new ShotListener linked to the given panel.
      *
-     * @param visualizer the panel that draws the indicator and handles shots
+     * @param panel the panel that draws the indicator and handles shots
      */
-    public ShotListener(final ShotViewPanel visualizer) {
-        this.visualizer = visualizer;
-        this.panel = visualizer;
+    public ShotListener(final ShotViewPanel panel) {
+        this.panel = panel;
     }
 
     /** {@inheritDoc} */
@@ -61,7 +60,7 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
             final Point logicalCurrent = panel.toLogical(e.getPoint());
             final Vector2D raw = new Vector2D(this.startingPoint, logicalCurrent);
             final Vector2D shotDirection = raw.getOppositeVector();
-            this.visualizer.updateShotIntent(shotDirection);
+            panel.updateShotIntent(shotDirection);
         }
     }
 
@@ -69,7 +68,7 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
     @Override
     public void mouseReleased(final MouseEvent e) {
         if (this.enable && this.startingPoint != null) {
-            this.visualizer.shoot();
+            panel.shoot();
             this.startingPoint = null;
         }
     }

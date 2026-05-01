@@ -14,12 +14,12 @@ import java.util.List;
  * by this id and rebuilds the map from scratch. This keeps the save file small
  * and avoids serialising complex geometry.</p>
  *
+ * @author fede
  * @param currentPlayerIndex index into {@code players} of whose turn it is
  * @param mapId              identifier used by {@link GameMapFactory} to rebuild the map
  * @param players            ordered list of player snapshots
  * @param ballX              ball X position in logical (1920×1080) coordinates
  * @param ballY              ball Y position in logical (1920×1080) coordinates
- * @author fede
  */
 public record SaveData(
     int currentPlayerIndex,
@@ -48,6 +48,7 @@ public record SaveData(
      * @param gameState the current game state
      * @param map       the current game map (used to read ball position)
      * @param mapId     the string identifier of the map, used to rebuild it on load
+     *
      * @return a new SaveData ready to be persisted
      */
     public static SaveData from(final GameState gameState, final GameMap map, final String mapId) {

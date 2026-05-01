@@ -4,16 +4,17 @@ import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.logic.GameState;
+import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
 import it.unibo.minigoolf.view.panels.NewGamePanel;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.io.Serial;
+import java.util.Optional;
 
 /**
  * The main application window.
@@ -22,14 +23,13 @@ import java.io.Serial;
  * @author dani and fede
  */
 public final class MainWindow extends JFrame {
+
     @Serial
     private static final long serialVersionUID = 1L;
 
-    // Minimum resolution, the main window can't be smaller than specified here.
     private static final int MIN_WIDTH = 800;
     private static final int MIN_HEIGHT = 600;
 
-    // Using the CardLayout to switch easily through the panels.
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel mainContainer = new JPanel(cardLayout);
 
@@ -39,12 +39,13 @@ public final class MainWindow extends JFrame {
     /**
      * Creates and displays the main application window.
      *
-     * @param controller        the main controller
-     * @param gameState         the shared state of the game instance
-     * @param gameMapController the controller managing the single shared game map
+     * @param controller           the main controller
+     * @param navigationController the navigation controller
+     * @param gameState            the shared state of the game instance
+     * @param gameMapController    the controller managing the single shared game map
      */
-    public MainWindow(final MainController controller, final NavigationController navigationController, final GameState gameState,
-            final GameMapController gameMapController) {
+    public MainWindow(final MainController controller, final NavigationController navigationController,
+            final GameState gameState, final GameMapController gameMapController) {
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -73,12 +74,20 @@ public final class MainWindow extends JFrame {
     }
 
     /**
-     * Returns the active GamePanel.
+     * Polls the game panel for a pending shot each tick.
+     * Called by the controller instead of exposing the panel directly.
      *
-     * @return the game panel
+     * @return an Optional containing the shot vector, or empty if none is pending
      */
-    @SuppressWarnings("EI_EXPOSE_REP") // TODO: find a way to remove this
-    public GamePanel getGamePanel() {
-        return gamePanel;
+    public Optional<Vector2D> consumePendingShot() {
+        return gamePanel.consumePendingShot();
+    }
+
+    /**
+     * Notifies the game panel that the ball has stopped moving.
+     * Re-enables shot input for the current player.
+     */
+    public void onBallStopped() {
+        gamePanel.onBallStopped();
     }
 }

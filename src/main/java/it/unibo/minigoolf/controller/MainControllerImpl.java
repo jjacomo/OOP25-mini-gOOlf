@@ -52,27 +52,26 @@ public final class MainControllerImpl implements MainController, ActionListener 
     /** {@inheritDoc} */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        // Process shot from GameState.
+        mainWindow.consumePendingShot().ifPresent(gameState::setPendingShot);
+
         final Optional<Vector2D> shot = gameState.update();
         if (shot.isPresent()) {
             handleShot(shot.get());
         }
 
-        physicsController.update(1.0 / FPS); 
+        physicsController.update(1.0 / FPS);
         mainWindow.repaint();
     }
 
     /**
      * Placeholder for physics processing of a shot.
-     * TODO: replace when physics is ready
      *
      * @param ignored the shot vector (unused until physics is implemented)
      */
     private void handleShot(final Vector2D ignored) {
         // TODO: when physics is ready this will be called only when the ball stops.
-        // For now we stop it immediately.
         gameState.onBallStopped();
-        mainWindow.getGamePanel().onBallStopped();
+        mainWindow.onBallStopped();
         mainWindow.repaint();
     }
 
@@ -87,5 +86,4 @@ public final class MainControllerImpl implements MainController, ActionListener 
     public void stop() {
         timer.stop();
     }
-
 }

@@ -1,6 +1,5 @@
 package it.unibo.minigoolf.view.input;
 
-import it.unibo.minigoolf.model.logic.ShotAcceptor;
 import it.unibo.minigoolf.util.Vector2D;
 
 import javax.swing.JPanel;
@@ -13,6 +12,7 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.io.Serial;
+import java.util.Optional;
 
 /**
  * The view of the shot.
@@ -60,28 +60,18 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     /** The ShotListener that translates mouse events into Vector2D values. */
     private final transient ShotListener shotListener;
 
-    /**
-     * Accepts confirmed shots and forwards them to the game logic.
-     * Using {@link ShotAcceptor} instead of {@link it.unibo.minigoolf.model.logic.GameState}
-     * avoids storing a mutable object reference directly.
-     */
-    private final transient ShotAcceptor shotAcceptor;
-
     private transient Vector2D currentDirection;
     private transient Point ballScreenPos;
 
     /**
-     * Creates a new ShotViewPanel linked to the given shot acceptor.
-     *
-     * @param shotAcceptor the callback used to submit confirmed shots to the game logic
+     * Creates a new ShotViewPanel.
+     * No external references are stored: the controller polls
+     * {@link #consumePendingShot()} each tick instead.
      */
-    public ShotViewPanel(final ShotAcceptor shotAcceptor) {
-        this.shotAcceptor = shotAcceptor;
+    public ShotViewPanel() {
         this.shotListener = new ShotListener(this);
-
         this.addMouseListener(shotListener);
         this.addMouseMotionListener(shotListener);
-
         this.setOpaque(false);
     }
 
@@ -146,6 +136,23 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     }
 
     /**
+     * Called by the controller each tick to retrieve and consume a pending shot.
+     * If a valid shot has been released since the last call, it is returned and
+     * the internal state is cleared. Returns empty if no shot is ready.
+     *
+     * @return an Optional containing the shot vector, or empty if none is pending
+     */
+    public synchronized Optional<Vector2D> consumePendingShot() {
+        if (isValidShot()) {
+            final Vector2D shot = currentDirection;
+            currentDirection = null;
+            shotListener.setEnable(false);
+            return Optional.of(shot);
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Receives the live drag vector and keeps it so paintComponent can draw it.
      *
      * @param direction current shot direction/power vector (already negated by ShotListener)
@@ -157,16 +164,13 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     /**
      * Called on mouse release.
-     * Validates the shot and forwards it to the acceptor if valid.
-     * Disables further input until the controller calls enableShot() again.
+     * Marks the shot as ready to be consumed; the controller will pick it up
+     * via {@link #consumePendingShot()}.
      */
     @Override
     public synchronized void shoot() {
-        if (isValidShot()) {
-            shotAcceptor.setPendingShot(this.currentDirection);
-            shotListener.setEnable(false);
-        }
-        this.currentDirection = null;
+        // currentDirection is already set by updateShotIntent;
+        // consumePendingShot() will validate and clear it.
     }
 
     /**

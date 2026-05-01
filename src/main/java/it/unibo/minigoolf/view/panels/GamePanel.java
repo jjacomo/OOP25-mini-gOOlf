@@ -3,6 +3,7 @@ package it.unibo.minigoolf.view.panels;
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.model.logic.GameState;
+import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.Serial;
+import java.util.Optional;
 
 /**
  * One of the possible scenes, this one is where the game is played.
@@ -30,17 +32,12 @@ public final class GamePanel extends JPanel {
     private static final int START_WIDTH = 960;
     private static final int START_HEIGHT = 540;
 
-    // Placeholder ball position in logical (1920×1080) coordinates — will come from the physics model later.
     private static final Point BALL_START = new Point(220, 220);
 
-    // Aspect ratio constants.
     private static final double ASPECT_W = 16.0;
     private static final double ASPECT_H = 9.0;
 
-    // The transparent overlay for shot input and power indicator.
     private final ShotViewPanel shotViewPanel;
-
-    // The panel where the map, ball and obstacles are drawn.
     private final MapPanel mapPanel;
 
     /**
@@ -53,7 +50,6 @@ public final class GamePanel extends JPanel {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
-        // TODO: To work later with @fedesparvo1-a11y to determine how to personalize this
         final JPanel uiPanel = new JPanel();
         uiPanel.setBackground(Color.DARK_GRAY);
         final JLabel turnoLabel = new JLabel(gameState.getCurrentPlayer().toString());
@@ -71,7 +67,7 @@ public final class GamePanel extends JPanel {
         mapPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
 
-        shotViewPanel = new ShotViewPanel(gameState::setPendingShot);
+        shotViewPanel = new ShotViewPanel();
         shotViewPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(shotViewPanel, JLayeredPane.PALETTE_LAYER);
 
@@ -103,7 +99,6 @@ public final class GamePanel extends JPanel {
             }
         });
 
-        // Enable shot input for the first turn.
         shotViewPanel.enableShot(BALL_START);
     }
 
@@ -112,6 +107,16 @@ public final class GamePanel extends JPanel {
      * Re-enables shot input for the current player.
      */
     public void onBallStopped() {
-        shotViewPanel.enableShot(BALL_START); // TODO: get real ball position from model
+        shotViewPanel.enableShot(BALL_START);
+    }
+
+    /**
+     * Polls the shot view panel for a pending shot and returns it if present.
+     * Called by the controller each tick instead of exposing the panel directly.
+     *
+     * @return an Optional containing the shot vector, or empty if none is pending
+     */
+    public Optional<Vector2D> consumePendingShot() {
+        return shotViewPanel.consumePendingShot();
     }
 }
