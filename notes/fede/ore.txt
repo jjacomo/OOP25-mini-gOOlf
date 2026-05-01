@@ -17,3 +17,6 @@
 2 ore: dovrei aver risolto il problema che sia MainControllerImpl che MainWindow creano ciascuno una GameMap separata con new 
         TestGameMapFactory().buildGameMap(), quindi esistono due mappe diverse e la palla del controller non è la stessa che 
         viene disegnata, ora l'input si dovrebbe vedere sempre anche nelle altre mappe future
+
+3 ore: tolto quasi tutti i suppressWarning e todo che avevo, tranne quello in shotListener che non riesco a capire come togliere
+        
