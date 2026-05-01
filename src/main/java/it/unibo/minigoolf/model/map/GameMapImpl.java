@@ -75,7 +75,7 @@ public final class GameMapImpl implements GameMap {
 
     /**
      * Returns the list of obstacles in the game map.
-     * 
+     *
      * @return the list of obstacles
      */
     public List<Obstacle> getObstacles() {
