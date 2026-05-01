@@ -71,7 +71,7 @@ public final class GamePanel extends JPanel {
         mapPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
 
-        shotViewPanel = new ShotViewPanel(gameState);
+        shotViewPanel = new ShotViewPanel(gameState::setPendingShot);
         shotViewPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(shotViewPanel, JLayeredPane.PALETTE_LAYER);
 
