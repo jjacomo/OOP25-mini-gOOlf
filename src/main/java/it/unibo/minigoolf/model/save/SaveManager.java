@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Handles persistence of a minigolf match to a JSON file using Gson.
@@ -30,7 +31,7 @@ import java.io.Writer;
 public final class SaveManager {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final String SAVE_DIR  = "saves";
+    private static final String SAVE_DIR = "saves";
     private static final String SAVE_FILE = SAVE_DIR + "/savefile.json";
 
     /**
@@ -44,7 +45,7 @@ public final class SaveManager {
         if (!dir.exists() && !dir.mkdirs()) {
             throw new IOException("Could not create save directory: " + SAVE_DIR);
         }
-        try (Writer writer = new FileWriter(SAVE_FILE)) {
+        try (Writer writer = new FileWriter(SAVE_FILE, StandardCharsets.UTF_8)) {
             GSON.toJson(data, writer);
         }
     }
@@ -56,7 +57,7 @@ public final class SaveManager {
      * @throws IOException if the file cannot be read or does not exist
      */
     public SaveData load() throws IOException {
-        try (Reader reader = new FileReader(SAVE_FILE)) {
+        try (Reader reader = new FileReader(SAVE_FILE, StandardCharsets.UTF_8)) {
             return GSON.fromJson(reader, SaveData.class);
         }
     }
@@ -76,8 +77,8 @@ public final class SaveManager {
      */
     public void deleteSave() {
         final File file = new File(SAVE_FILE);
-        if (file.exists()) {
-            file.delete();
+        if (file.exists() && !file.delete()) {
+            throw new IllegalStateException("Could not delete save file: " + SAVE_FILE);
         }
     }
 }

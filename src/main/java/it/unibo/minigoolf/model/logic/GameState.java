@@ -14,7 +14,7 @@ import java.util.Optional;
  *
  * @author fede
  */
-public final class GameState{
+public final class GameState {
 
     /** Minimum squared length a shot vector must have to be considered valid. */
     private static final double MIN_SQUARE_POWER = 100.0;

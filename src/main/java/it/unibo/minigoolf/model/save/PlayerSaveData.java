@@ -5,7 +5,6 @@ package it.unibo.minigoolf.model.save;
  *
  * @param name  the player's display name
  * @param shots the number of shots taken on the current hole
- *
  * @author fede
  */
 public record PlayerSaveData(String name, int shots) {

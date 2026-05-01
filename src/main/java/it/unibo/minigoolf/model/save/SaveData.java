@@ -19,7 +19,6 @@ import java.util.List;
  * @param players            ordered list of player snapshots
  * @param ballX              ball X position in logical (1920×1080) coordinates
  * @param ballY              ball Y position in logical (1920×1080) coordinates
- *
  * @author fede
  */
 public record SaveData(
@@ -29,6 +28,19 @@ public record SaveData(
     double ballX,
     double ballY
 ) {
+
+    /**
+     * Compact canonical constructor that defensively copies the players list.
+     *
+     * @param currentPlayerIndex index into {@code players} of whose turn it is
+     * @param mapId              identifier used by {@link GameMapFactory} to rebuild the map
+     * @param players            ordered list of player snapshots
+     * @param ballX              ball X position in logical (1920×1080) coordinates
+     * @param ballY              ball Y position in logical (1920×1080) coordinates
+     */
+    public SaveData {
+        players = List.copyOf(players);
+    }
 
     /**
      * Builds a {@code SaveData} snapshot from the current game state and map.
