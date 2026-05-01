@@ -6,6 +6,7 @@ import it.unibo.minigoolf.util.Vector2D;
 
 import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.surfaces.Surface;
+import it.unibo.minigoolf.model.obstacles.Obstacle;
 
 /**
  * Implementation of the GameMap interface.
@@ -19,6 +20,9 @@ public final class GameMapImpl implements GameMap {
     /** The list of surfaces in the game map. */
     private final List<Surface> surfaces;
 
+    /** The list of obstacles in the game map. */
+    private final List<Obstacle> obstacles;
+
     /** The ball in the game map. */
     private final Ball ball;
 
@@ -28,9 +32,10 @@ public final class GameMapImpl implements GameMap {
      * @param surfaces the list of surfaces
      * @param ball the ball in the game map
      */
-    public GameMapImpl(final List<Surface> surfaces, final Ball ball) {
+    public GameMapImpl(final List<Surface> surfaces, final Ball ball, final List<Obstacle> obstacles) {
         this.surfaces = List.copyOf(surfaces);
         this.ball = ball;
+        this.obstacles = List.copyOf(obstacles);
     }
 
     /**
