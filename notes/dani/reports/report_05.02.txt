@@ -2,7 +2,9 @@ Report - 05/02 - 3 ore
 
 FATTO:
 - Una buona parte di spotbugs.
-- 
+- Ho creato il menu di pausa, e devo essere sincero mi piace così semplice con lo sfondo un po' annerito. Ho già messo due bottoni che insomma fanno quello che dicono. Dovrò vedere in futuro se c'è da
+cambiare qualcosa quando effettivamente faremo la partita vera e propria con le regole ecc... ma teoricamente già così non è male (la pallina si ferma e riparte quando si fa "RESUME", è già tanta roba
+per me ahahahah).
 
 DA FARE:
 - Spotbugs! In treno domani probabilmente.

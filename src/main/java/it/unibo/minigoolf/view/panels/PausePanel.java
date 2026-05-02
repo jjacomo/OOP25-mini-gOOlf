@@ -25,15 +25,15 @@ public class PausePanel extends JPanel {
         this.setOpaque(false); 
         this.setLayout(new GridBagLayout());
 
-        JPanel menuBox = new JPanel();
+        final JPanel menuBox = new JPanel();
         menuBox.setLayout(new BoxLayout(menuBox, BoxLayout.Y_AXIS));
         menuBox.setOpaque(false);
 
-        JButton resumeBtn = UserInterfaceFactory.createButton("RESUME");
+        final JButton resumeBtn = UserInterfaceFactory.createButton("RESUME");
         resumeBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         resumeBtn.addActionListener(e -> navController.resumeGame());
         
-        JButton exitBtn = UserInterfaceFactory.createButton("EXIT TO MENU");
+        final JButton exitBtn = UserInterfaceFactory.createButton("EXIT TO MENU");
         exitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitBtn.addActionListener(e -> navController.quitToMenu());
 
@@ -47,7 +47,7 @@ public class PausePanel extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
         // Tinted effect for the background
         g.setColor(new Color(0, 0, 0, 150));
