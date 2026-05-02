@@ -3,6 +3,9 @@ package it.unibo.minigoolf.controller.navigationcontroller;
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.view.MainWindow;
 
+/**
+ * Controller for navigation between panels.
+ */
 public final class NavigationController {
     private MainWindow mainWindow;
     private final MainController mainController;

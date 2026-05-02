@@ -33,15 +33,16 @@ public final class NewGamePanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private static final int MAX_PLAYERS = 10;
     private static final int COLUMNS_COUNT = 2;
+    private static final int MARGINS = 20;
 
     private final List<JTextField> nameFields = new ArrayList<>();
     private final JPanel namesContainer;
     private final JTextField numInput;
 
     public NewGamePanel(final NavigationController navigationController) {
-        this.setLayout(new BorderLayout(20, 20));
+        this.setLayout(new BorderLayout(MARGINS, MARGINS));
         this.setBackground(Color.DARK_GRAY);
-        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        this.setBorder(BorderFactory.createEmptyBorder(MARGINS, MARGINS, MARGINS, MARGINS));
 
         // N° of players
         final JPanel header = new JPanel();
@@ -93,19 +94,20 @@ public final class NewGamePanel extends JPanel {
 
     /**
      * This method initializes the number of text fields for the names of the players.
+     * 
      * @param n number of players.
      */
-    private void generateFields(int n) {
+    private void generateFields(final int n) {
         namesContainer.removeAll();
         nameFields.clear();
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 20, 10, 20); // The space within the text fields
+        final GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(MARGINS, MARGINS, MARGINS, MARGINS); // The space within the text fields
         gbc.anchor = GridBagConstraints.WEST;
 
         for (int i = 0; i < n; i++) {
-            int row = i / COLUMNS_COUNT;
-            int col = i % COLUMNS_COUNT;
+            final int row = i / COLUMNS_COUNT;
+            final int col = i % COLUMNS_COUNT;
 
             final JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
             p.setOpaque(false);

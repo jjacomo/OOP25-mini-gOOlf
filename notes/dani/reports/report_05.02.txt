@@ -1,0 +1,10 @@
+Report - 05/02 - 3 ore
+
+FATTO:
+
+
+DA FARE:
+- Spotbugs! In treno domani probabilmente.
+- Gamepanel e MapPanel, da vedere se modificare qualcosa
+
+AGENDA:

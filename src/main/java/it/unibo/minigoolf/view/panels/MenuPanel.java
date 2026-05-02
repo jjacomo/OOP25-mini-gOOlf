@@ -34,12 +34,11 @@ public final class MenuPanel extends JPanel {
 
     public MenuPanel(final NavigationController navigationController) {
 
-        this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT)); 
+        this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setBackground(Color.DARK_GRAY);
         this.setLayout(new GridBagLayout());
         // This helps using GridBagLayout so everything is alligned vertically, will be used in menus
         final GridBagConstraints gbc = new GridBagConstraints();
-   
         gbc.insets = new Insets(MARGINS, MARGINS, MARGINS, MARGINS);
         gbc.fill = GridBagConstraints.NONE;
         // To import the image for the title
@@ -61,7 +60,6 @@ public final class MenuPanel extends JPanel {
         newGameButton.addActionListener(e -> navigationController.goToNewGameMenu());
         gbc.gridy++;
         this.add(newGameButton, gbc);
-        
         // Start game button: for testing purpose, it starts the game immediately, to be removed!
         final JButton playButton = UserInterfaceFactory.createButton("START GAME");
         playButton.addActionListener(e -> navigationController.startGame());
@@ -79,9 +77,9 @@ public final class MenuPanel extends JPanel {
         this.add(creditsButton, gbc);
 
         // This is just so the padding between the buttons is reduced
-        gbc.gridy++;      
-        gbc.weighty = 1.0; 
-        JPanel spacer = new JPanel();
+        gbc.gridy++;
+        gbc.weighty = 1.0;
+        final JPanel spacer = new JPanel();
         spacer.setOpaque(false);
         this.add(spacer, gbc);
 

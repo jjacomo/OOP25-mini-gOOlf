@@ -1,0 +1,4 @@
+Dani:
+
+- Dobbiamo rivedere MainController: spacchetare la parte di gameplay in un controller dedicato, direi che il main controller sarà solo per far partire e stoppare implementar 
+  timer.
