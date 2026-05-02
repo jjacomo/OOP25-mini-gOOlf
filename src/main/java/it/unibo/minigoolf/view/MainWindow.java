@@ -8,6 +8,7 @@ import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
 import it.unibo.minigoolf.view.panels.NewGamePanel;
+import it.unibo.minigoolf.view.panels.PausePanel;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -50,7 +51,7 @@ public final class MainWindow extends JFrame {
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        this.gamePanel = new GamePanel(controller, gameState, gameMapController);
+        this.gamePanel = new GamePanel(controller, navigationController, gameState, gameMapController);
         this.menuPanel = new MenuPanel(navigationController);
         final JPanel newGamePanel = new NewGamePanel(navigationController);
 
@@ -59,6 +60,10 @@ public final class MainWindow extends JFrame {
         mainContainer.add(gamePanel, "GAME");
         this.setContentPane(mainContainer);
         cardLayout.show(mainContainer, "MENU");
+
+        // Pause menu test!
+        PausePanel pausePanel = new PausePanel(navigationController);
+        this.setGlassPane(pausePanel);
 
         this.pack();
         this.setVisible(true);

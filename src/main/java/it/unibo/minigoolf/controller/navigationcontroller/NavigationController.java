@@ -40,4 +40,30 @@ public final class NavigationController {
         this.mainController.start(); 
         this.mainWindow.showScene("GAME");
     }
+    
+    /**
+     * Handles the transition from the game to the pause menu.
+     * Stops the timer and switches the view.
+     */
+    public void pauseGame() {
+        this.mainController.stop(); 
+        this.mainWindow.getGlassPane().setVisible(true);
+    }
+    /**
+     * Handles the transition from the pause to the game.
+     * Starts the timer and switches the view.
+     */
+    public void resumeGame() {
+    this.mainWindow.getGlassPane().setVisible(false);
+    this.mainController.start();
+    }
+    /**
+     * Handles the transition from the pause menu to the main menu.
+     * Starts the timer and switches the view.
+     * TODO: Reset the game status!
+     */
+    public void quitToMenu() {
+    this.mainWindow.getGlassPane().setVisible(false);
+    this.mainWindow.showScene("MENU");
+    }
 }

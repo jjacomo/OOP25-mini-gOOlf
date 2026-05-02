@@ -1,7 +1,8 @@
 Report - 05/02 - 3 ore
 
 FATTO:
-
+- Una buona parte di spotbugs.
+- 
 
 DA FARE:
 - Spotbugs! In treno domani probabilmente.

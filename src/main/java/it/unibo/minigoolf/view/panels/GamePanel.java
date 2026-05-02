@@ -2,6 +2,7 @@ package it.unibo.minigoolf.view.panels;
 
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
+import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
@@ -9,6 +10,11 @@ import it.unibo.minigoolf.view.input.ShotViewPanel;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+
+import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -42,11 +48,13 @@ public final class GamePanel extends JPanel {
 
     /**
      * @param controller        the main controller
+     * @param navController     the navigation controller for handling pauses/menus
      * @param gameState         the shared game-state instance
      * @param gameMapController the controller managing the shared game map
      */
-    public GamePanel(final MainController controller, final GameState gameState,
-            final GameMapController gameMapController) {
+    public GamePanel(final MainController controller, 
+        final NavigationController navController,final GameState gameState,
+        final GameMapController gameMapController) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
@@ -100,6 +108,19 @@ public final class GamePanel extends JPanel {
         });
 
         shotViewPanel.enableShot(BALL_START);
+        
+        // Pause menu calling with the "ESC" key
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
+        this.getActionMap().put("pauseAction", new AbstractAction() {
+            @Serial
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                navController.pauseGame();
+            }
+        });
+
     }
 
     /**
