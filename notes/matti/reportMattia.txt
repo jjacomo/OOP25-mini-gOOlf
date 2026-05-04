@@ -77,5 +77,7 @@ Report 04/05 - 3 ore
 - Aggiunto istanceof Triangle in MapPanel
 - Aggiunto il metodo handleCollisions in PhysicsControllerImpl che in ogni frame gestisce eventuali 
   collisioni tra la palla e gli ostacoli
+- Scritti alcuni metodi per disegnare gli ostacoli, ma ancora non funzionano
 
 TO DO:
+Vedere come poter disegnare gli ostacoli usando drawShape in MapPanel

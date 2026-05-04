@@ -6,6 +6,7 @@ import it.unibo.minigoolf.controller.ballcontroller.BallController;
 import it.unibo.minigoolf.controller.ballcontroller.BallControllerImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.surfaces.Surface;
+import it.unibo.minigoolf.model.obstacles.Obstacle;
 
 /**
  * Implementation of {@link GameMapController}.
@@ -46,6 +47,16 @@ public final class GameMapControllerImpl implements GameMapController {
     @Override
     public BallController getBallController() {
         return ballController;
+    }
+
+    /**
+     * Returns a list of all surfaces in the game map.
+     *
+     * @return a list of surfaces
+     */
+    @Override
+    public List<Obstacle> getObstacles() {
+        return map.getObstacles();
     }
 
 }

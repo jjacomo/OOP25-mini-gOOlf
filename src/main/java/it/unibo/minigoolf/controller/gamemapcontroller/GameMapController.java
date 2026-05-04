@@ -3,6 +3,7 @@ package it.unibo.minigoolf.controller.gamemapcontroller;
 import java.util.List;
 
 import it.unibo.minigoolf.controller.ballcontroller.BallController;
+import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 
 /**
@@ -19,7 +20,13 @@ public interface GameMapController {
      */
     List<Surface> getSurfaces();
 
-    // List<Obstacle> getObstacles();
+    /**
+     * Returns all obstacles on the game map.
+     *
+     * @return a list of all obstacles
+     */
+    List<Obstacle> getObstacles();
+    
     // Hole getHole();
 
     /**
