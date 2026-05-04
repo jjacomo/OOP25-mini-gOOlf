@@ -20,6 +20,7 @@ import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
+import it.unibo.minigoolf.util.shapes.Triangle;
 
 /**
  * Panel responsible for rendering the game map, including surfaces, obstacles,
@@ -134,6 +135,13 @@ public class MapPanel extends JPanel {
         } else if (shape instanceof Circle circ) {
             g2d.fillOval((int) circ.position().getX(), (int) circ.position().getY(), (int) circ.radius() * 2,
                     (int) circ.radius() * 2);
+        } else if (shape instanceof Triangle tria) {
+            int[] xPoints = {(int) tria.vertex1().getX(), (int) tria.vertex2().getX(),
+                            (int) tria.vertex1().getX()};
+            int[] yPoints = {(int) tria.vertex1().getY(), (int) tria.vertex2().getY(),
+                            (int) tria.vertex1().getY()};
+            g2d.setColor(Color.ORANGE);
+            g2d.fillPolygon(xPoints, yPoints, 3);
         } else {
             // For future shape types, add more cases here
             throw new UnsupportedOperationException("Drawing not implemented for shape type: " + shape.getClass());

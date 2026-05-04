@@ -53,16 +53,24 @@ Report 21/04 - 2 ore
 Report 22/04 - 1 ore
 - Aggiunti dei controlli nella creazione degli ostacoli rettangolari e rotonti
 
-Report 24/05 - 5 ore
+Report 24/04 - 5 ore
 - Riscritta da capo l'intera classe TriangleObstacle perchè quella precedente aveva diversi problemi di penetrazione
 
-Report 27/05 - 4 ore
+Report 27/04 - 4 ore
 - Migliorari e rimossi alcuni metodi di RoundObstacle e WallObstacle per migliorare la gestione delle collisioni e 
     la correzione della penetrazione.
 - Spostati i metodi comuni da WallObstacle, RoundObstacle e TriangleObstacle in AbstractObstacle
 
-Report 28/05 - 3 ore
+Report 28/04 - 3 ore
 - Aggiunta la classe Vector2D personalizzata, che sostituisce quella di apache
 - Aggiunti tutti i metodi mancanti presenti nella classe temporanea Vec2D all'interno di Vector2D
 - Corretti tutti gli errori dovuti a conversioni di dipi diversi
 - Corretti tutti gli errori dovuti a metodi con nomi diversi rispetto a Vector2D
+
+Report 01/05 - 1 ore
+- Aggiunta una lista di tipo ostacoli in GameMapImpl
+- Aggiunto il record Triangle in util/shapes
+- Aggiunto il metodo getObstacles ed i suoi commenti JavaDoc in GameMapImpl
+
+
+TO DO:
