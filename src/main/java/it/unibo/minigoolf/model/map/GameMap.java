@@ -5,6 +5,7 @@ import java.util.List;
 import it.unibo.minigoolf.util.Vector2D;
 
 import it.unibo.minigoolf.model.ball.Ball;
+import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 
 /**
@@ -35,5 +36,12 @@ public interface GameMap {
      * @return a list of all surfaces
      */
     List<Surface> getSurfaces();
+
+    /**
+     * Returns a list of all obstacles in the game map.
+     * 
+     * @return a list of all obstacles
+     */
+    List<Obstacle> getObstacles();
 
 }

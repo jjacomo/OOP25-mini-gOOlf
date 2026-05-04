@@ -72,5 +72,10 @@ Report 01/05 - 1 ore
 - Aggiunto il record Triangle in util/shapes
 - Aggiunto il metodo getObstacles ed i suoi commenti JavaDoc in GameMapImpl
 
+Report 04/05 - 3 ore
+- Aggiunto getObstacles() nell'interfaccia GameMap
+- Aggiunto istanceof Triangle in MapPanel
+- Aggiunto il metodo handleCollisions in PhysicsControllerImpl che in ogni frame gestisce eventuali 
+  collisioni tra la palla e gli ostacoli
 
 TO DO:
