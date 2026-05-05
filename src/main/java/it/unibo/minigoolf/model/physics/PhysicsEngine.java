@@ -6,6 +6,8 @@ import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.util.Vector2D;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Physics engine for the mini-golf domain.
@@ -14,6 +16,8 @@ import it.unibo.minigoolf.util.Vector2D;
  * surfaces and obstacles. This keeps the domain behavior out of the controller layer.
  */
 public final class PhysicsEngine {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PhysicsEngine.class);
 
     /** Max number of iterations to resolve overlapping collisions in a single update. */
     private static final int MAX_COLLISION_ITERATIONS = 3;
@@ -33,6 +37,7 @@ public final class PhysicsEngine {
      */
     public static void update(final GameMap gameMap, final double deltaTime) {
         final Ball ball = gameMap.getBall();
+        LOGGER.debug("Physics update: pos={}, vel={}, dt={}", ball.getPosition(), ball.getVelocity(), deltaTime);
         updateBallVelocity(ball, gameMap, deltaTime);
         updateBallPosition(ball, deltaTime);
         resolveCollisions(ball, gameMap.getObstacles());
@@ -48,9 +53,10 @@ public final class PhysicsEngine {
     private static void updateBallVelocity(final Ball ball, final GameMap gameMap, final double deltaTime) {
         final Vector2D velocity = ball.getVelocity();
         final double velocityNorm = velocity.getNorm();
+        final double surfaceFriction = gameMap.getSurfaceAt(ball.getPosition()).getFriction();
+        LOGGER.debug("Velocity norm: {}, surface friction: {}", velocityNorm, surfaceFriction);
         
         if (velocityNorm > 0.5) {
-            final double surfaceFriction = gameMap.getSurfaceAt(ball.getPosition()).getFriction();
             // Attrito diretto dalla superficie e modulato dalla velocità:
             // basso quando la palla è veloce, crescente man mano che rallenta.
             final double friction = 10000 * surfaceFriction / velocityNorm; // per test, da tarare meglio

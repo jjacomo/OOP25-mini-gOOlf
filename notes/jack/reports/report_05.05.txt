@@ -1,8 +1,9 @@
-Report - 05/05 - 2.5h (tot: 26.5h)
+Report - 05/05 - 3h (tot: 27h)
 
 * Spostato tutto il codice degli aggiornamenti dello stato di GameMap (gestione palla e ostacoli) in model.physics.PhysicsEngine
     (rispetta molto meglio MVC)
 * Cercando di creare una buona funzione di aggiornamento della velocita' della pallina (aspetto che ci siano anche gli ostacoli)
+* Aggiunto logger a PhysicsEngine (btw molto utile)
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;
@@ -28,4 +29,4 @@ POSSIBILI FEATURE:
 PER AGENDA FUTURA:
 * MainController che li contiene tutti?
 * Per Fede: controller per gli shot (invece di mettere codice direttamente in MainController)?
-* Logger?
+* Logger
