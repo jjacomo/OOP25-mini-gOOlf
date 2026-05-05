@@ -42,7 +42,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
         this.gameState = new GameState(List.of("Player 1"));
         final GameMap map = new TestGameMapFactory().buildGameMap();
         this.gameMapController = new GameMapControllerImpl(map);
-        this.physicsController = new PhysicsControllerImpl(map.getBall(), map);
+        this.physicsController = new PhysicsControllerImpl(map);
         this.navigationController = new NavigationController(this);
         this.mainWindow = new MainWindow(this, this.navigationController, gameState, gameMapController);
         this.navigationController.setMainWindow(this.mainWindow);

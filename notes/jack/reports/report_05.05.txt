@@ -1,0 +1,29 @@
+Report - 05/05 - 1h (tot: 25h)
+
+* Spostato tutto il codice degli aggiornamenti dello stato di GameMap (gestione palla e ostacoli) in model.physics.PhysicsEngine
+    (rispetta molto meglio MVC)
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Metodi per calcolare l'attrito palla-superficie;
+
+* Texture che non si resizano (non warpa l'immagine)
+* Riguarda codice in MapPanel per la resizabilita'
+* Creare la buca
+* sarebbe bello che la palla rallentasse in funzione anche della sua velocita'
+    (oltre che sulla superficie su cui si trova): ad esempio quando e' molto veloce
+    l'attrito dovrebbe contare di meno rispetto a quando e' quasi ferma
+
+* Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+* Logger?
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+PER AGENDA FUTURA:
+* MainController che li contiene tutti?
+* Per Fede: controller per gli shot (invece di mettere codice direttamente in MainController)?
