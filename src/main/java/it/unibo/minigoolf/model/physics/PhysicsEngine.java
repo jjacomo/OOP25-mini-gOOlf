@@ -47,9 +47,21 @@ public final class PhysicsEngine {
      */
     private static void updateBallVelocity(final Ball ball, final GameMap gameMap, final double deltaTime) {
         final Vector2D velocity = ball.getVelocity();
-        final Vector2D friction = velocity.scalarMultiply(-gameMap.getSurfaceAt(ball.getPosition()).getFriction());
-        final Vector2D newVelocity = velocity.add(friction.scalarMultiply(deltaTime));
-        ball.setVelocity(newVelocity);
+        final double velocityNorm = velocity.getNorm();
+        
+        if (velocityNorm > 0.5) {
+            final double surfaceFriction = gameMap.getSurfaceAt(ball.getPosition()).getFriction();
+            // Attrito diretto dalla superficie e modulato dalla velocità:
+            // basso quando la palla è veloce, crescente man mano che rallenta.
+            final double friction = 10000 * surfaceFriction / velocityNorm; // per test, da tarare meglio
+
+            final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
+            final Vector2D newVelocity = velocity.add(frictionForce.scalarMultiply(deltaTime));
+            ball.setVelocity(newVelocity);
+        } else {
+            // Ferma completamente la palla se la velocità è molto bassa
+            ball.setVelocity(new Vector2D(0, 0));
+        }
     }
 
     /**

@@ -1,7 +1,8 @@
-Report - 05/05 - 1h (tot: 25h)
+Report - 05/05 - 2.5h (tot: 26.5h)
 
 * Spostato tutto il codice degli aggiornamenti dello stato di GameMap (gestione palla e ostacoli) in model.physics.PhysicsEngine
     (rispetta molto meglio MVC)
+* Cercando di creare una buona funzione di aggiornamento della velocita' della pallina (aspetto che ci siano anche gli ostacoli)
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;
@@ -18,8 +19,8 @@ TODO:
 * Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
 * Dove creare GameMapController (per ora in GamePanel)
 * Guarda errori piu' "Strutturali" di spotbugs
-* Logger?
 * Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+* Dovrebbe esserci una velocita' massima della palla?
 
 POSSIBILI FEATURE:
 * Caricare mappe da file
@@ -27,3 +28,4 @@ POSSIBILI FEATURE:
 PER AGENDA FUTURA:
 * MainController che li contiene tutti?
 * Per Fede: controller per gli shot (invece di mettere codice direttamente in MainController)?
+* Logger?
