@@ -1,6 +1,7 @@
 package it.unibo.minigoolf.model.obstacles;
 
 import it.unibo.minigoolf.util.Vector2D;
+import it.unibo.minigoolf.util.shapes.Triangle;
 import it.unibo.minigoolf.model.ball.Ball;
 
 /**
@@ -18,6 +19,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
 	private final Vector2D normal12;
     private final Vector2D normal23;
     private final Vector2D normal31;
+    private final Triangle shape;
 
 	/**
 	* Constructs a triangular obstacle.
@@ -46,6 +48,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         this.normal12 = computeOutwardNormal(this.vertex1, this.vertex2);
         this.normal23 = computeOutwardNormal(this.vertex2, this.vertex3);
         this.normal31 = computeOutwardNormal(this.vertex3, this.vertex1);
+        this.shape = new Triangle(this.vertex1, this.vertex2, this.vertex3);
     }
 
     /**
@@ -181,5 +184,10 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
             bestPoint[0] = closestPoint;
             bestNormal[0] = normal;
         }
+    }
+
+    @Override
+    public Triangle getShape() {
+        return this.shape;
     }
 }

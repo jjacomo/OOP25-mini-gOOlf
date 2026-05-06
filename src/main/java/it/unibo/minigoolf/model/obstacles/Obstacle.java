@@ -2,6 +2,8 @@ package it.unibo.minigoolf.model.obstacles;
 
 import it.unibo.minigoolf.util.Vector2D;
 
+import it.unibo.minigoolf.util.shapes.Shape;
+
 import it.unibo.minigoolf.model.ball.Ball;
 
 public interface Obstacle {
@@ -29,4 +31,8 @@ public interface Obstacle {
      */
     void resolveCollision(Ball ball);
 
+    /**
+     * @return the shape of the obstacle
+     */
+    Shape getShape();
 }

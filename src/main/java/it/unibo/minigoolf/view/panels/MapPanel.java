@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
+import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
@@ -113,7 +114,10 @@ public class MapPanel extends JPanel {
 
         g2d.setColor(Color.WHITE);
         drawShape(mapController.getBallController().getBallShape(), g2d, null);
-        //drawShape(mapController.getObstacles(), g2d, null);
+        g2d.setColor(Color.ORANGE);
+        for (Obstacle obstacle : mapController.getObstacles()) {
+            drawShape(obstacle.getShape(), g2d, null);
+        }
     }
 
     /**
@@ -138,10 +142,9 @@ public class MapPanel extends JPanel {
                     (int) circ.radius() * 2);
         } else if (shape instanceof Triangle tria) {
             int[] xPoints = {(int) tria.vertex1().getX(), (int) tria.vertex2().getX(),
-                            (int) tria.vertex1().getX()};
+                            (int) tria.vertex3().getX()};
             int[] yPoints = {(int) tria.vertex1().getY(), (int) tria.vertex2().getY(),
-                            (int) tria.vertex1().getY()};
-            g2d.setColor(Color.ORANGE);
+                            (int) tria.vertex3().getY()};
             g2d.fillPolygon(xPoints, yPoints, 3);
         } else {
             // For future shape types, add more cases here

@@ -1,6 +1,7 @@
 package it.unibo.minigoolf.model.obstacles;
 
 import it.unibo.minigoolf.util.Vector2D;
+import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.model.ball.Ball;
 
 /**
@@ -11,6 +12,7 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
     private static final double MIN_RADIUS = 5.0;
     private static final double MAX_RADIUS = 150.0;
     private final double radius;
+    private final Circle shape;
 
     /**
      * Constructs a circular obstacle.
@@ -26,6 +28,7 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
                                              + MIN_RADIUS + " and " + MAX_RADIUS);
         }
         this.radius = radius;
+        this.shape = new Circle(position, this.radius);
     }
     
     /**
@@ -76,5 +79,10 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
         }
 
         return  velocity.scalarMultiply(-1).normalize();
+    }
+
+    @Override
+    public Circle getShape() {
+        return this.shape;
     }
 }

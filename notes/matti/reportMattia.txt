@@ -79,5 +79,13 @@ Report 04/05 - 3 ore
   collisioni tra la palla e gli ostacoli
 - Scritti alcuni metodi per disegnare gli ostacoli, ma ancora non funzionano
 
+Report 06/05 - 1.5 ore
+- Aggiunti metodi getShape negli ostacoli per restituire la forma
+- Aggiunto degli ostacoli provvisori per vedere se venissero disegnati (cerchio e triangolo si, rettangolo no,
+  molto probabilmente perchè non ha ancora una texture, quindi va sistemato).
+- Controllata la correttezza del rimbalzo della pallina con gli ostacoli circolari, ma non funziona correttamente
+
 TO DO:
-Vedere come poter disegnare gli ostacoli usando drawShape in MapPanel
+Modificare il metodo drawShape in MapPanel per disegnare anche gli ostacoli rettangolari senza la texture
+Verificare che i rimbalzi della pallina sugli ostacoli siano corretti
+Controllare tutti gli errori di SpotBugs

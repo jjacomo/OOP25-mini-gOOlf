@@ -9,9 +9,9 @@ import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
-//import it.unibo.minigoolf.model.obstacles.RoundObstacle;
-//import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
-//import it.unibo.minigoolf.model.obstacles.WallObstacle;
+import it.unibo.minigoolf.model.obstacles.RoundObstacle;
+import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
+import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.RectangularSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.SurfaceType;
@@ -78,8 +78,8 @@ public class TestGameMapFactory implements GameMapFactory {
                         THIRD_SURFACE_HEIGHT),
                 SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
         //obstacles.add(new WallObstacle(new Vector2D(300, 200), 40, 100));
-        //obstacles.add(new RoundObstacle(new Vector2D(300, 200), 100));
-        //obstacles.add(new TriangleObstacle(new Vector2D(400, 500), new Vector2D(400, 550), new Vector2D(350, 500)));
+        //obstacles.add(new RoundObstacle(new Vector2D(700, 200), 100));
+        //obstacles.add(new TriangleObstacle(new Vector2D(900, 500), new Vector2D(900, 550), new Vector2D(850, 500)));
         return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles);
     }
 }

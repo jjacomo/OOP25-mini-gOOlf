@@ -1,6 +1,7 @@
 package it.unibo.minigoolf.model.obstacles;
 
 import it.unibo.minigoolf.util.Vector2D;
+import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.model.ball.Ball;
 
 /**
@@ -21,6 +22,7 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
 	private final Vector2D normalRight;
 	private final Vector2D normalTop;
 	private final Vector2D normalBottom;
+    private final Rectangle shape;
 
 	/**
      * Constructs a rectangular wall.
@@ -47,6 +49,7 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
         this.normalRight  = new Vector2D( 1, 0);
         this.normalTop    = new Vector2D( 0,-1);
         this.normalBottom = new Vector2D( 0, 1);
+        this.shape = new Rectangle(position, width, height);
     }
 
     /**
@@ -149,5 +152,10 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
             correctPosition(ball, ballPosition, normal, penetrationDepth);
         }
         reflectVelocity(ball, normal);
+    }
+
+    @Override
+    public Rectangle getShape() {
+        return this.shape;
     }
 }
