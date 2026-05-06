@@ -20,7 +20,8 @@ public class BallImpl implements Ball {
      */
     public BallImpl(final Vector2D position, final double radius) {
         this.circle = new Circle(position, radius);
-        this.velocity = new Vector2D(250, 100); //per test (quando ci sarà l'interazione con l'utente, questa sarà inizialmente zero)
+        this.velocity = new Vector2D(0, 0);
+
     }
 
     /**

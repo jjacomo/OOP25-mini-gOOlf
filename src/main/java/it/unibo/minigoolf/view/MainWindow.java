@@ -61,8 +61,7 @@ public final class MainWindow extends JFrame {
         this.setContentPane(mainContainer);
         cardLayout.show(mainContainer, "MENU");
 
-        // Pause menu test!
-        PausePanel pausePanel = new PausePanel(navigationController);
+        final PausePanel pausePanel = new PausePanel(navigationController);
         this.setGlassPane(pausePanel);
 
         this.pack();
@@ -80,7 +79,6 @@ public final class MainWindow extends JFrame {
 
     /**
      * Polls the game panel for a pending shot each tick.
-     * Called by the controller instead of exposing the panel directly.
      *
      * @return an Optional containing the shot vector, or empty if none is pending
      */
@@ -90,9 +88,11 @@ public final class MainWindow extends JFrame {
 
     /**
      * Notifies the game panel that the ball has stopped moving.
-     * Re-enables shot input for the current player.
+     * Passes the real ball position so shot input is re-enabled in the right place.
+     *
+     * @param ballPosition the current ball position in logical coordinates
      */
-    public void onBallStopped() {
-        gamePanel.onBallStopped();
+    public void onBallStopped(final Vector2D ballPosition) {
+        gamePanel.onBallStopped(ballPosition);
     }
 }

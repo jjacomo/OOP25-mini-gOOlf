@@ -1,18 +1,18 @@
 package it.unibo.minigoolf.controller.ballcontroller;
 
-import it.unibo.minigoolf.util.Vector2D;
-
 import it.unibo.minigoolf.model.ball.Ball;
+import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
  * Implementation of {@link BallController}.
  * Manages ball state and coordinates updates to the model.
- * 
+ *
  * @author jack
  */
 public final class BallControllerImpl implements BallController {
+
     private final Ball ball;
 
     /**
@@ -24,16 +24,31 @@ public final class BallControllerImpl implements BallController {
         this.ball = ball;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Shape getBallShape() {
         return new Circle(ball.getPosition(), ball.getRadius());
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D getPosition() {
+        return ball.getPosition();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getRadius() {
+        return ball.getRadius();
+    }
+
+    /** {@inheritDoc} */
     @Override
     public void updatePosition(final Vector2D position) {
         ball.setPosition(position);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void updateVelocity(final Vector2D velocity) {
         ball.setVelocity(velocity);

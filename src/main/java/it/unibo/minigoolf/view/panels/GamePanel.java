@@ -38,13 +38,14 @@ public final class GamePanel extends JPanel {
     private static final int START_WIDTH = 960;
     private static final int START_HEIGHT = 540;
 
-    private static final Point BALL_START = new Point(220, 220);
-
     private static final double ASPECT_W = 16.0;
     private static final double ASPECT_H = 9.0;
 
     private final ShotViewPanel shotViewPanel;
     private final MapPanel mapPanel;
+
+    /** Cached ball radius in logical coordinates, used to compute the ball centre. */
+    private final double ballRadius;
 
     /**
      * @param controller        the main controller
@@ -52,9 +53,9 @@ public final class GamePanel extends JPanel {
      * @param gameState         the shared game-state instance
      * @param gameMapController the controller managing the shared game map
      */
-    public GamePanel(final MainController controller, 
-        final NavigationController navController,final GameState gameState,
-        final GameMapController gameMapController) {
+    public GamePanel(final MainController controller,
+            final NavigationController navController, final GameState gameState,
+            final GameMapController gameMapController) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
@@ -66,6 +67,7 @@ public final class GamePanel extends JPanel {
         this.add(uiPanel, BorderLayout.NORTH);
 
         this.mapPanel = new MapPanel(gameMapController);
+        this.ballRadius = gameMapController.getBallController().getRadius();
 
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
@@ -107,8 +109,10 @@ public final class GamePanel extends JPanel {
             }
         });
 
-        shotViewPanel.enableShot(BALL_START);
-        
+        // Enable shot at the real initial ball centre.
+        final Vector2D initialPos = gameMapController.getBallController().getPosition();
+        shotViewPanel.enableShot(toCenter(initialPos, ballRadius));
+
         // Pause menu calling with the "ESC" key
         this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
         this.getActionMap().put("pauseAction", new AbstractAction() {
@@ -120,24 +124,38 @@ public final class GamePanel extends JPanel {
                 navController.pauseGame();
             }
         });
-
     }
 
     /**
      * Called by the controller once the ball has stopped moving.
-     * Re-enables shot input for the current player.
+     * Re-enables shot input at the real current ball centre.
+     *
+     * @param ballPosition the current ball position (top-left of bounding box)
+     *                     in logical (1920×1080) coordinates
      */
-    public void onBallStopped() {
-        shotViewPanel.enableShot(BALL_START);
+    public void onBallStopped(final Vector2D ballPosition) {
+        shotViewPanel.enableShot(toCenter(ballPosition, ballRadius));
     }
 
     /**
      * Polls the shot view panel for a pending shot and returns it if present.
-     * Called by the controller each tick instead of exposing the panel directly.
      *
      * @return an Optional containing the shot vector, or empty if none is pending
      */
     public Optional<Vector2D> consumePendingShot() {
         return shotViewPanel.consumePendingShot();
+    }
+
+    /**
+     * Converts a ball position (top-left of bounding box) to its centre point.
+     * Needed because {@code fillOval} uses the top-left corner while shot input
+     * should originate from the ball centre.
+     *
+     * @param pos    the top-left position of the ball in logical coordinates
+     * @param radius the ball radius in logical coordinates
+     * @return the centre of the ball as an AWT Point
+     */
+    private static Point toCenter(final Vector2D pos, final double radius) {
+        return new Point((int) (pos.getX() + radius), (int) (pos.getY() + radius));
     }
 }

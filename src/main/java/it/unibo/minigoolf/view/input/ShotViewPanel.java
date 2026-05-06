@@ -64,6 +64,13 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     private transient Point ballScreenPos;
 
     /**
+     * True only after the mouse has been released with a valid drag.
+     * Prevents consumePendingShot() from consuming the vector while the
+     * user is still dragging.
+     */
+    private transient boolean shotReady;
+
+    /**
      * Creates a new ShotViewPanel.
      * No external references are stored: the controller polls
      * {@link #consumePendingShot()} each tick instead.
@@ -98,10 +105,8 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     /**
      * Converts a physical mouse point to logical coordinates.
-     * Physical coordinates come from MouseEvent; logical ones are what the model uses.
      *
      * @param physical the raw point from a MouseEvent
-     *
      * @return the point in logical space
      */
     public Point toLogical(final Point physical) {
@@ -112,40 +117,40 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     /**
      * Activates shot input for the current turn.
-     * Call this after the ball has stopped and it's the player's turn to shoot.
      *
-     * @param ballPosition current screen coordinates of the ball
+     * @param ballPosition current centre of the ball in logical coordinates
      */
     public void enableShot(final Point ballPosition) {
         synchronized (this) {
             this.ballScreenPos = new Point(ballPosition);
             this.currentDirection = null;
+            this.shotReady = false;
         }
         this.shotListener.setEnable(true);
     }
 
     /**
      * Disables shot input (example: while the ball is moving).
-     * Clears any in-progress drag indicator.
      */
     public void disableShot() {
         this.shotListener.setEnable(false);
         synchronized (this) {
             this.currentDirection = null;
+            this.shotReady = false;
         }
     }
 
     /**
      * Called by the controller each tick to retrieve and consume a pending shot.
-     * If a valid shot has been released since the last call, it is returned and
-     * the internal state is cleared. Returns empty if no shot is ready.
+     * Returns a value only after the mouse has been released (not during drag).
      *
      * @return an Optional containing the shot vector, or empty if none is pending
      */
     public synchronized Optional<Vector2D> consumePendingShot() {
-        if (isValidShot()) {
+        if (shotReady && isValidShot()) {
             final Vector2D shot = currentDirection;
             currentDirection = null;
+            shotReady = false;
             shotListener.setEnable(false);
             return Optional.of(shot);
         }
@@ -155,27 +160,28 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     /**
      * Receives the live drag vector and keeps it so paintComponent can draw it.
      *
-     * @param direction current shot direction/power vector (already negated by ShotListener)
+     * @param direction current shot direction/power vector
      */
     @Override
     public synchronized void updateShotIntent(final Vector2D direction) {
         this.currentDirection = direction;
+        this.shotReady = false; // still dragging, not ready yet
+        repaint();
     }
 
     /**
      * Called on mouse release.
-     * Marks the shot as ready to be consumed; the controller will pick it up
-     * via {@link #consumePendingShot()}.
+     * Marks the shot as ready to be consumed by the controller next tick.
      */
     @Override
     public synchronized void shoot() {
-        // currentDirection is already set by updateShotIntent;
-        // consumePendingShot() will validate and clear it.
+        if (isValidShot()) {
+            this.shotReady = true;
+        }
     }
 
     /**
      * Draws the dashed coloured line from the ball position in the shot direction.
-     * Does nothing if there isn't any drag.
      *
      * @param g the Graphics context
      */
