@@ -54,7 +54,6 @@ public final class PhysicsEngine {
         final Vector2D velocity = ball.getVelocity();
         final double velocityNorm = velocity.getNorm();
         final double surfaceFriction = gameMap.getSurfaceAt(ball.getPosition()).getFriction();
-        LOGGER.debug("Velocity norm: {}, surface friction: {}", velocityNorm, surfaceFriction);
         
         if (velocityNorm > 0.5) {
             // Attrito diretto dalla superficie e modulato dalla velocità:
@@ -62,6 +61,7 @@ public final class PhysicsEngine {
             final double friction = 10000 * surfaceFriction / velocityNorm; // per test, da tarare meglio
 
             final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
+            LOGGER.debug("Velocity norm: {}, surface friction: {}, frictionForce: {}, deltaTime: {}", velocityNorm, surfaceFriction, frictionForce, deltaTime);
             final Vector2D newVelocity = velocity.add(frictionForce.scalarMultiply(deltaTime));
             ball.setVelocity(newVelocity);
         } else {

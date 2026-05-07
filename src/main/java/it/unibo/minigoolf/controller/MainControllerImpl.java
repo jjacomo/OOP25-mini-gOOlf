@@ -25,6 +25,7 @@ import java.util.Optional;
 public final class MainControllerImpl implements MainController, ActionListener {
 
     private static final int FPS = 60;
+    private long lastTime = System.nanoTime();
 
     /** Squared speed below which the ball is considered stopped. */
     private static final double STOP_THRESHOLD_SQ = 0.5;
@@ -55,6 +56,9 @@ public final class MainControllerImpl implements MainController, ActionListener 
     /** {@inheritDoc} */
     @Override
     public void actionPerformed(final ActionEvent e) {
+        long startTime = System.nanoTime();
+        double deltaTime = (startTime - lastTime) / 1_000_000_000.0;
+        lastTime = startTime;
         // Poll the view for a pending shot and apply it to the ball.
         final Optional<Vector2D> pendingShot = mainWindow.consumePendingShot();
         if (pendingShot.isPresent()) {
@@ -68,7 +72,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
 
         // Run physics and detect stop only while ball is moving.
         if (gameState.isBallMoving()) {
-            physicsController.update(1.0 / FPS);
+            physicsController.update(deltaTime);
 
             final Vector2D vel = map.getBall().getVelocity();
             if (vel.getNormSquared() < STOP_THRESHOLD_SQ) {
