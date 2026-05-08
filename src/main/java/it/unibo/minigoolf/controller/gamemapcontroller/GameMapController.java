@@ -3,6 +3,7 @@ package it.unibo.minigoolf.controller.gamemapcontroller;
 import java.util.List;
 
 import it.unibo.minigoolf.controller.ballcontroller.BallController;
+import it.unibo.minigoolf.controller.holecontroller.HoleController;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 
@@ -36,5 +37,10 @@ public interface GameMapController {
      */
     BallController getBallController();
 
-    // altri metodi per gli ostacoli
+    /**
+     * Returns the hole on the game map.
+     *
+     * @return the hole
+     */
+    HoleController getHoleController();
 }
