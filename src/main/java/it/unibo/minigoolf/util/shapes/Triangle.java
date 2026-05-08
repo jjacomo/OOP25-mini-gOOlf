@@ -49,7 +49,7 @@ public record Triangle(Vector2D vertex1, Vector2D vertex2, Vector2D vertex3, Col
      * @param color the color
      * @return the color of the triangle
      */
-    public Color getColor(Color color){
+    public Color getColor(){
         return this.color;
     }
 }

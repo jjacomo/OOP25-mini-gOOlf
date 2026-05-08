@@ -22,8 +22,7 @@ public interface Shape {
     /**
      * Returns the color of the shape
      * 
-     * @param color the color
      * @return the color of the shape
      */
-    Color getColor(Color color);    
+    Color getColor();    
 }
