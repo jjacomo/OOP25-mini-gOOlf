@@ -1,13 +1,14 @@
-Report - 08/05 - 4h (tot: 32h)
+Report - 08/05 - 6h (tot: 34h)
 
 * Creata buca
 * Creato package model.physics.velocity per gestire l'update della velocita' della palla (pattern strategy)
 * Fixato bug dei cerchi disegnati male
+* Fixato warp delle texture di superficie
+* Creata nuova mappa di gioco
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;
 
-* Texture che non si resizano (non warpa l'immagine)
 * Creare la buca
 * algoritmo per update della velocita'
 
