@@ -5,6 +5,7 @@ import java.util.List;
 import it.unibo.minigoolf.util.Vector2D;
 
 import it.unibo.minigoolf.model.ball.Ball;
+import it.unibo.minigoolf.model.hole.Hole;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 
@@ -29,6 +30,13 @@ public interface GameMap {
      * @return the ball
      */
     Ball getBall();
+
+    /**
+     * Returns the hole in the game map.
+     * 
+     * @return the hole
+     */
+    Hole getHole();
 
     /**
      * Returns a list of all surfaces in the game map.

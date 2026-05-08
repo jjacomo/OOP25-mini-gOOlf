@@ -6,6 +6,7 @@ import java.util.List;
 import it.unibo.minigoolf.util.Vector2D;
 
 import it.unibo.minigoolf.model.ball.BallImpl;
+import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
@@ -80,6 +81,6 @@ public class TestGameMapFactory implements GameMapFactory {
         //obstacles.add(new WallObstacle(new Vector2D(300, 200), 40, 100));
         //obstacles.add(new RoundObstacle(new Vector2D(700, 200), 100));
         //obstacles.add(new TriangleObstacle(new Vector2D(900, 500), new Vector2D(900, 550), new Vector2D(850, 500)));
-        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles);
+        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles, new HoleImpl(new Vector2D(1500, 800), 40));
     }
 }

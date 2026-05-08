@@ -112,6 +112,8 @@ public class MapPanel extends JPanel {
                     }
                 });
 
+        g2d.setColor(Color.BLACK);
+        drawShape(mapController.getHoleController().getHoleShape(), g2d, null);
         g2d.setColor(Color.WHITE);
         drawShape(mapController.getBallController().getBallShape(), g2d, null);
         g2d.setColor(Color.ORANGE);
@@ -135,8 +137,13 @@ public class MapPanel extends JPanel {
             // ma poi in generale fai la review di sto codice (non e' che sarebbe meglio
             // fare diverse funzioni invece che una sola che disegna tutte le superfici (che
             // tra l'altro alcune hanno texture altre no))
-            g2d.drawImage(texture, (int) rect.position().getX(), (int) rect.position().getY(),
-                    (int) rect.width(), (int) rect.height(), null);
+            if (texture == null) {
+                g2d.fillRect((int) rect.position().getX(), (int) rect.position().getY(),
+                        (int) rect.width(), (int) rect.height());
+            } else {
+                g2d.drawImage(texture, (int) rect.position().getX(), (int) rect.position().getY(),
+                        (int) rect.width(), (int) rect.height(), null);
+            }
         } else if (shape instanceof Circle circ) {
             g2d.fillOval((int) circ.position().getX(), (int) circ.position().getY(), (int) circ.radius() * 2,
                     (int) circ.radius() * 2);
