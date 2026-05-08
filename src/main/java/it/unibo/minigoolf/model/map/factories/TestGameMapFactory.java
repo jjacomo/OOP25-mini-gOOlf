@@ -49,7 +49,7 @@ public class TestGameMapFactory implements GameMapFactory {
     private static final double THIRD_SURFACE_HEIGHT = 200;
     private static final int THIRD_SURFACE_Z_INDEX = 2;
     private static final double BALL_RADIUS = 30;
-    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(0, 0);
+    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(50, 50);
 
     /**
      * Builds a simple test game map.
@@ -78,9 +78,13 @@ public class TestGameMapFactory implements GameMapFactory {
                 new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
                         THIRD_SURFACE_HEIGHT),
                 SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
-        //obstacles.add(new WallObstacle(new Vector2D(300, 200), 40, 100));
-        //obstacles.add(new RoundObstacle(new Vector2D(700, 200), 100));
-        //obstacles.add(new TriangleObstacle(new Vector2D(900, 500), new Vector2D(900, 550), new Vector2D(850, 500)));
+        obstacles.add(new WallObstacle(new Vector2D(0, 0), 15, 1080));
+        obstacles.add(new WallObstacle(new Vector2D(0, 0), 1920, 15));
+        obstacles.add(new WallObstacle(new Vector2D(1905, 0), 15, 1080));
+        obstacles.add(new WallObstacle(new Vector2D(0, 1065), 1920, 15));
+        obstacles.add(new WallObstacle(new Vector2D(300, 200), 40, 100));
+        obstacles.add(new RoundObstacle(new Vector2D(700, 200), 50));
+        obstacles.add(new TriangleObstacle(new Vector2D(900, 400), new Vector2D(900, 450), new Vector2D(750, 400)));
         return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles, new HoleImpl(new Vector2D(1500, 800), 40));
     }
 }
