@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.model.map.factories;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,23 +69,23 @@ public class TestGameMapFactory implements GameMapFactory {
         final List<Surface> surfaces = new ArrayList<>();
         final List<Obstacle> obstacles = new ArrayList<>();
         surfaces.add(new RectangularSurface(
-                new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH, MAIN_SURFACE_HEIGHT),
+                new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH, MAIN_SURFACE_HEIGHT, Color.WHITE),
                 SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
         surfaces.add(new RectangularSurface(
                 new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
-                        SECOND_SURFACE_HEIGHT),
+                        SECOND_SURFACE_HEIGHT, Color.WHITE),
                 SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getTexturePath()));
         surfaces.add(new RectangularSurface(
                 new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
-                        THIRD_SURFACE_HEIGHT),
+                        THIRD_SURFACE_HEIGHT, Color.WHITE),
                 SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
-        obstacles.add(new WallObstacle(new Vector2D(0, 0), 15, 1080));
-        obstacles.add(new WallObstacle(new Vector2D(0, 0), 1920, 15));
-        obstacles.add(new WallObstacle(new Vector2D(1905, 0), 15, 1080));
-        obstacles.add(new WallObstacle(new Vector2D(0, 1065), 1920, 15));
-        obstacles.add(new WallObstacle(new Vector2D(300, 200), 40, 100));
-        obstacles.add(new RoundObstacle(new Vector2D(700, 200), 50));
-        obstacles.add(new TriangleObstacle(new Vector2D(900, 400), new Vector2D(900, 450), new Vector2D(750, 400)));
+        obstacles.add(new WallObstacle(new Vector2D(0, 0), 15, 1080, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(0, 0), 1920, 15, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(1905, 0), 15, 1080, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(0, 1065), 1920, 15, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(300, 200), 40, 100, Color.ORANGE));
+        obstacles.add(new RoundObstacle(new Vector2D(700, 200), 50, Color.ORANGE));
+        obstacles.add(new TriangleObstacle(new Vector2D(900, 400), new Vector2D(900, 450), new Vector2D(750, 400), Color.ORANGE));
         return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles, new HoleImpl(new Vector2D(1500, 800), 40));
     }
 }

@@ -1,6 +1,7 @@
 package it.unibo.minigoolf.util.shapes;
 
 import it.unibo.minigoolf.util.Vector2D;
+import java.awt.Color;
 
 /**
  * Represents a triangular area in 2D space defined by three vertices.
@@ -8,8 +9,9 @@ import it.unibo.minigoolf.util.Vector2D;
  * @param vertex1 the first vertex of the triangle
  * @param vertex2 the second vertex of the triangle
  * @param vertex3 the third vertex of the triangle
+ * @param color   the color of the triangle
  */
-public record Triangle(Vector2D vertex1, Vector2D vertex2, Vector2D vertex3) implements Shape {
+public record Triangle(Vector2D vertex1, Vector2D vertex2, Vector2D vertex3, Color color) implements Shape {
 
     /**
      * Checks if the given position is contained within this triangle.
@@ -39,5 +41,15 @@ public record Triangle(Vector2D vertex1, Vector2D vertex2, Vector2D vertex3) imp
                            - (b.getY() - a.getY()) * (p.getX() - a.getX());
 
         return cross >= 0;
+    }
+
+    /**
+     * Returns the color of the triangle
+     * 
+     * @param color the color
+     * @return the color of the triangle
+     */
+    public Color getColor(Color color){
+        return this.color;
     }
 }

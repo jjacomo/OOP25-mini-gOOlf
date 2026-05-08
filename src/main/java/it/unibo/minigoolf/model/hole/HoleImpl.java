@@ -1,5 +1,7 @@
 package it.unibo.minigoolf.model.hole;
 
+import java.awt.Color;
+
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 
@@ -15,7 +17,7 @@ public class HoleImpl implements Hole {
      */
     public HoleImpl(Vector2D position, double radius) {
         this.position = position;
-        this.circle = new Circle(position, radius);
+        this.circle = new Circle(position, radius, Color.BLACK);
     }
 
     @Override

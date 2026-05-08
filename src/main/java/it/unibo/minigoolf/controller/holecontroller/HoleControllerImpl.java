@@ -4,6 +4,7 @@ import it.unibo.minigoolf.model.hole.Hole;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Shape;
+import java.awt.Color;
 
 public class HoleControllerImpl implements HoleController {
     private Hole hole;
@@ -14,7 +15,7 @@ public class HoleControllerImpl implements HoleController {
 
     @Override
     public Shape getHoleShape() {
-        return new Circle(hole.getPosition(), hole.getRadius());
+        return new Circle(hole.getPosition(), hole.getRadius(), Color.BLACK);
     }
 
     @Override

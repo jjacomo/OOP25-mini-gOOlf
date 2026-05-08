@@ -1,6 +1,7 @@
 package it.unibo.minigoolf.util.shapes;
 
 import it.unibo.minigoolf.util.Vector2D;
+import java.awt.Color;
 
 /**
  * A record representing a circle shape defined by its center position and radius.
@@ -8,8 +9,9 @@ import it.unibo.minigoolf.util.Vector2D;
  *
  * @param position the center position of the circle as a Vector2D
  * @param radius the radius of the circle
+ * @param color    che color of the circle
  */
-public record Circle(Vector2D position, double radius) implements Shape {
+public record Circle(Vector2D position, double radius, Color color) implements Shape {
 
     /**
      * Checks if a given position is contained within this circle.
@@ -23,4 +25,13 @@ public record Circle(Vector2D position, double radius) implements Shape {
         return position.distance(pos) < radius;
     }
 
+    /**
+     * Returns the color of the circle
+     * 
+     * @param color the color
+     * @return the color of the circle
+     */
+    public Color getColor(Color color){
+        return this.color;
+    }
 }

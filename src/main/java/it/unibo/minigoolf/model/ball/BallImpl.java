@@ -1,5 +1,7 @@
 package it.unibo.minigoolf.model.ball;
 
+import java.awt.Color;
+
 import it.unibo.minigoolf.util.Vector2D;
 
 import it.unibo.minigoolf.util.shapes.Circle;
@@ -19,7 +21,7 @@ public class BallImpl implements Ball {
      * @param radius   the radius of the ball
      */
     public BallImpl(final Vector2D position, final double radius) {
-        this.circle = new Circle(position, radius);
+        this.circle = new Circle(position, radius, Color.WHITE);
         this.velocity = new Vector2D(0, 0);
 
     }
@@ -61,7 +63,7 @@ public class BallImpl implements Ball {
      */
     @Override
     public void setPosition(final Vector2D position) {
-        this.circle = new Circle(position, this.circle.radius());
+        this.circle = new Circle(position, this.circle.radius(), Color.WHITE);
     }
 
     /**

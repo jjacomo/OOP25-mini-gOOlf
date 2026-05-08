@@ -3,6 +3,7 @@ package it.unibo.minigoolf.model.obstacles;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Triangle;
 import it.unibo.minigoolf.model.ball.Ball;
+import java.awt.Color;
 
 /**
  * Represents a triangular obstacle in the minigolf course.
@@ -20,6 +21,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
     private final Vector2D normal23;
     private final Vector2D normal31;
     private final Triangle shape;
+    private final Color color;
 
 	/**
 	* Constructs a triangular obstacle.
@@ -29,7 +31,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
 	* @param vertex3 the third vertex of the triangle
 	* @throws IllegalArgumentException if the triangle area is less than MIN_AREA
 	*/
-    public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final Vector2D vertex3) {
+    public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final Vector2D vertex3, final Color color) {
         super(new Vector2D((vertex1.getX() + vertex2.getX() + vertex3.getX()) / 3.0,
                             (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3.0));
 
@@ -48,7 +50,8 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         this.normal12 = computeOutwardNormal(this.vertex1, this.vertex2);
         this.normal23 = computeOutwardNormal(this.vertex2, this.vertex3);
         this.normal31 = computeOutwardNormal(this.vertex3, this.vertex1);
-        this.shape = new Triangle(this.vertex1, this.vertex2, this.vertex3);
+        this.color = color;
+        this.shape = new Triangle(this.vertex1, this.vertex2, this.vertex3, this.color);
     }
 
     /**

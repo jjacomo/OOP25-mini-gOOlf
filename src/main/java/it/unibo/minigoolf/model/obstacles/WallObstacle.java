@@ -3,6 +3,7 @@ package it.unibo.minigoolf.model.obstacles;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.model.ball.Ball;
+import java.awt.Color;
 
 /**
  * Represents a rectangular wall obstacle in the minigolf course.
@@ -23,6 +24,7 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
 	private final Vector2D normalTop;
 	private final Vector2D normalBottom;
     private final Rectangle shape;
+    private final Color color;
 
 	/**
      * Constructs a rectangular wall.
@@ -33,7 +35,7 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
 	 * @throws IllegalArgumentException if the width is outside [MIN_WIDTH, 
 	 *			MAX_WIDTH] or if the height is outside [MIN_HEIGHT, MAX_HEIGHT]
      */
-    public WallObstacle(final Vector2D position, final double width, final double height) {
+    public WallObstacle(final Vector2D position, final double width, final double height, final Color color) {
         super(position);
         if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
             throw new IllegalArgumentException("Invalid dimensions. Width: " + width
@@ -49,7 +51,8 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
         this.normalRight  = new Vector2D( 1, 0);
         this.normalTop    = new Vector2D( 0,-1);
         this.normalBottom = new Vector2D( 0, 1);
-        this.shape = new Rectangle(position, width, height);
+        this.color = color;
+        this.shape = new Rectangle(position, width, height, this.color);
     }
 
     /**
