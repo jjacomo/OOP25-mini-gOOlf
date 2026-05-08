@@ -79,7 +79,7 @@ public class TestGameMapFactory implements GameMapFactory {
                 SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
         //obstacles.add(new WallObstacle(new Vector2D(300, 200), 40, 100));
         //obstacles.add(new RoundObstacle(new Vector2D(700, 200), 100));
-        obstacles.add(new TriangleObstacle(new Vector2D(900, 500), new Vector2D(900, 550), new Vector2D(850, 500)));
+        //obstacles.add(new TriangleObstacle(new Vector2D(900, 500), new Vector2D(900, 550), new Vector2D(850, 500)));
         return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles);
     }
 }
