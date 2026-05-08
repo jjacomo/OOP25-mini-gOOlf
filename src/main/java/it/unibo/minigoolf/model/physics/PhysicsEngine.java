@@ -55,7 +55,7 @@ public final class PhysicsEngine {
         final double velocityNorm = velocity.getNorm();
         final double surfaceFriction = gameMap.getSurfaceAt(ball.getPosition()).getFriction();
         
-        if (velocityNorm > 0.5) {
+        if (velocityNorm > 50) {
             // Attrito diretto dalla superficie e modulato dalla velocità:
             // basso quando la palla è veloce, crescente man mano che rallenta.
             final double friction = 10000 * surfaceFriction / velocityNorm; // per test, da tarare meglio
@@ -64,8 +64,14 @@ public final class PhysicsEngine {
             LOGGER.debug("Velocity norm: {}, surface friction: {}, frictionForce: {}, deltaTime: {}", velocityNorm, surfaceFriction, frictionForce, deltaTime);
             final Vector2D newVelocity = velocity.add(frictionForce.scalarMultiply(deltaTime));
             ball.setVelocity(newVelocity);
+        } else if (velocityNorm > 5) {
+            // Attrito più forte quando la palla è lenta, per evitare che si trascini troppo.
+            final double friction = 500 * surfaceFriction; // per test, da tarare meglio
+            final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
+            LOGGER.debug("Low speed: Velocity norm: {}, surface friction: {}, frictionForce: {}, deltaTime: {}", velocityNorm, surfaceFriction, frictionForce, deltaTime);
+            final Vector2D newVelocity = velocity.add(frictionForce.scalarMultiply(deltaTime));
+            ball.setVelocity(newVelocity);
         } else {
-            // Ferma completamente la palla se la velocità è molto bassa
             ball.setVelocity(new Vector2D(0, 0));
         }
     }
