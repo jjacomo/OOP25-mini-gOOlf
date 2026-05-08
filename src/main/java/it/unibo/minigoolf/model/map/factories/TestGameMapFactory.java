@@ -50,7 +50,7 @@ public class TestGameMapFactory implements GameMapFactory {
     private static final double THIRD_SURFACE_HEIGHT = 200;
     private static final int THIRD_SURFACE_Z_INDEX = 2;
     private static final double BALL_RADIUS = 30;
-    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(50, 50);
+    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(150, 150);
 
     /**
      * Builds a simple test game map.

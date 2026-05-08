@@ -34,23 +34,38 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  */
 public class SecondMapFactory implements GameMapFactory {
  
-    private static final double MAIN_SURFACE_X = 0;
-    private static final double MAIN_SURFACE_Y = 0;
-    private static final double MAIN_SURFACE_WIDTH = 1920;
-    private static final double MAIN_SURFACE_HEIGHT = 1080;
-    private static final int MAIN_SURFACE_Z_INDEX = 0;
-    private static final double SECOND_SURFACE_X = 100;
-    private static final double SECOND_SURFACE_Y = 50;
-    private static final double SECOND_SURFACE_WIDTH = 100;
-    private static final double SECOND_SURFACE_HEIGHT = 200;
-    private static final int SECOND_SURFACE_Z_INDEX = 1;
-    private static final double THIRD_SURFACE_X = 440;
-    private static final double THIRD_SURFACE_Y = 100;
-    private static final double THIRD_SURFACE_WIDTH = 600;
-    private static final double THIRD_SURFACE_HEIGHT = 200;
-    private static final int THIRD_SURFACE_Z_INDEX = 2;
+    private static final double GRASS1_X = 0;
+    private static final double GRASS1_Y = 0;
+    private static final double GRASS1_WIDTH = 550;
+    private static final double GRASS1_HEIGHT = 1080;
+    private static final int GRASS1_Z_INDEX = 0;
+    private static final double DIRT_X = 550;
+    private static final double DIRT_Y = 0;
+    private static final double DIRT_WIDTH = 690;
+    private static final double DIRT_HEIGHT = 540;
+    private static final int DIRT_Z_INDEX = 1;
+    private static final double SAND_X = 550;
+    private static final double SAND_Y = 540;
+    private static final double SAND_WIDTH = 690;
+    private static final double SAND_HEIGHT = 540;
+    private static final int SAND_Z_INDEX = 2;
+    private static final double GRASS2_X = 1240;
+    private static final double GRASS2_Y = 0;
+    private static final double GRASS2_WIDTH = 680;
+    private static final double GRASS2_HEIGHT = 270;
+    private static final int GRASS2_Z_INDEX = 0;
+    private static final double GRASS3_X = 1240;
+    private static final double GRASS3_Y = 810;
+    private static final double GRASS3_WIDTH = 680;
+    private static final double GRASS3_HEIGHT = 270;
+    private static final int GRASS3_Z_INDEX = 0;
+    private static final double GRASS4_X = 1650;
+    private static final double GRASS4_Y = 0;
+    private static final double GRASS4_WIDTH = 270;
+    private static final double GRASS4_HEIGHT = 1080;
+    private static final int GRASS4_Z_INDEX = 0;
     private static final double BALL_RADIUS = 30;
-    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(250, 250);
+    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(80, 80);
 
     /**
      * Builds a simple test game map.
@@ -69,16 +84,25 @@ public class SecondMapFactory implements GameMapFactory {
         final List<Surface> surfaces = new ArrayList<>();
         final List<Obstacle> obstacles = new ArrayList<>();
         surfaces.add(new RectangularSurface(
-                new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH, MAIN_SURFACE_HEIGHT, Color.WHITE),
-                SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+                new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT, Color.WHITE),
+                SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
         surfaces.add(new RectangularSurface(
-                new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
-                        SECOND_SURFACE_HEIGHT, Color.WHITE),
-                SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getTexturePath()));
+                new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT, Color.WHITE),
+                SurfaceType.GRASS.getFriction(), GRASS2_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
         surfaces.add(new RectangularSurface(
-                new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
-                        THIRD_SURFACE_HEIGHT, Color.WHITE),
-                SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
+                new Rectangle(new Vector2D(GRASS3_X, GRASS3_Y), GRASS3_WIDTH, GRASS3_HEIGHT, Color.WHITE),
+                SurfaceType.GRASS.getFriction(), GRASS3_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+        surfaces.add(new RectangularSurface(
+                new Rectangle(new Vector2D(GRASS4_X, GRASS4_Y), GRASS4_WIDTH, GRASS4_HEIGHT, Color.WHITE),
+                SurfaceType.GRASS.getFriction(), GRASS4_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+        surfaces.add(new RectangularSurface(
+                new Rectangle(new Vector2D(SAND_X, SAND_Y), SAND_WIDTH,
+                        SAND_HEIGHT, Color.WHITE),
+                SurfaceType.SAND.getFriction(), SAND_Z_INDEX, SurfaceType.SAND.getTexturePath()));
+        surfaces.add(new RectangularSurface(
+                new Rectangle(new Vector2D(DIRT_X, DIRT_Y), DIRT_WIDTH,
+                        DIRT_HEIGHT, Color.WHITE),
+                SurfaceType.DIRT.getFriction(), DIRT_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
         obstacles.add(new WallObstacle(new Vector2D(0, 0), 15, 1080, Color.BLACK));
         obstacles.add(new WallObstacle(new Vector2D(0, 0), 1920, 15, Color.BLACK));
         obstacles.add(new WallObstacle(new Vector2D(1905, 0), 15, 1080, Color.BLACK));

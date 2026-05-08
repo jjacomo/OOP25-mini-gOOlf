@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.TexturePaint;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -141,8 +143,12 @@ public class MapPanel extends JPanel {
                 g2d.fillRect((int) rect.position().getX(), (int) rect.position().getY(),
                         (int) rect.width(), (int) rect.height());
             } else {
-                g2d.drawImage(texture, (int) rect.position().getX(), (int) rect.position().getY(),
-                        (int) rect.width(), (int) rect.height(), null);
+                Rectangle2D anchor = new Rectangle2D.Double(0, 0, 1920,
+                        1080); // le dimensioni delle texture sono 1920x1080, quindi uso quelle come ancore per il tiling
+                TexturePaint paint = new TexturePaint(texture, anchor);
+                g2d.setPaint(paint);
+                g2d.fill(new Rectangle2D.Double(rect.position().getX(), rect.position().getY(), rect.width(),
+                        rect.height()));
             }
         } else if (shape instanceof Circle circ) {
             g2d.fillOval((int) circ.position().getX()- (int) circ.radius(), (int) circ.position().getY()- (int) circ.radius(), (int) circ.radius() * 2,
