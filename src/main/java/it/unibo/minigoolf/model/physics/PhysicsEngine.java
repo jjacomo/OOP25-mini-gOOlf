@@ -5,6 +5,7 @@ import java.util.List;
 import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.model.physics.velocity.BallVelocityStrategy;
 import it.unibo.minigoolf.util.Vector2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,14 @@ public final class PhysicsEngine {
     /** Max number of iterations to resolve overlapping collisions in a single update. */
     private static final int MAX_COLLISION_ITERATIONS = 3;
 
+    private static BallVelocityStrategy velocityStrategy;
+
     private PhysicsEngine() {
         throw new UnsupportedOperationException("PhysicsEngine is a utility class");
+    }
+
+    public static void setVelocityStrategy(BallVelocityStrategy strategy) {
+        velocityStrategy = strategy;
     }
 
     /**
@@ -51,28 +58,10 @@ public final class PhysicsEngine {
      * @param deltaTime the elapsed time in seconds
      */
     private static void updateBallVelocity(final Ball ball, final GameMap gameMap, final double deltaTime) {
-        final Vector2D velocity = ball.getVelocity();
-        final double velocityNorm = velocity.getNorm();
-        final double surfaceFriction = gameMap.getSurfaceAt(ball.getPosition()).getFriction();
-        
-        if (velocityNorm > 50) {
-            // Attrito diretto dalla superficie e modulato dalla velocità:
-            // basso quando la palla è veloce, crescente man mano che rallenta.
-            final double friction = 10000 * surfaceFriction / velocityNorm; // per test, da tarare meglio
-
-            final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
-            LOGGER.debug("Velocity norm: {}, surface friction: {}, frictionForce: {}, deltaTime: {}", velocityNorm, surfaceFriction, frictionForce, deltaTime);
-            final Vector2D newVelocity = velocity.add(frictionForce.scalarMultiply(deltaTime));
-            ball.setVelocity(newVelocity);
-        } else if (velocityNorm > 5) {
-            // Attrito più forte quando la palla è lenta, per evitare che si trascini troppo.
-            final double friction = 500 * surfaceFriction; // per test, da tarare meglio
-            final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
-            LOGGER.debug("Low speed: Velocity norm: {}, surface friction: {}, frictionForce: {}, deltaTime: {}", velocityNorm, surfaceFriction, frictionForce, deltaTime);
-            final Vector2D newVelocity = velocity.add(frictionForce.scalarMultiply(deltaTime));
-            ball.setVelocity(newVelocity);
+        if (velocityStrategy != null) {
+            velocityStrategy.updateVelocity(ball, gameMap.getSurfaceAt(ball.getPosition()), deltaTime);
         } else {
-            ball.setVelocity(new Vector2D(0, 0));
+            LOGGER.warn("No velocity strategy set for PhysicsEngine. Ball velocity will not be updated.");
         }
     }
 

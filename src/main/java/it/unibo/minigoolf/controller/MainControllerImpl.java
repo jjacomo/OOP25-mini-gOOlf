@@ -8,6 +8,7 @@ import it.unibo.minigoolf.controller.physics.PhysicsControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
+import it.unibo.minigoolf.model.physics.velocity.BasicFrictionStrategy;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.view.MainWindow;
 
@@ -89,6 +90,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
     /** {@inheritDoc} */
     @Override
     public void start() {
+        physicsController.setVelocityStrategy(new BasicFrictionStrategy());
         timer.start();
     }
 

@@ -1,0 +1,30 @@
+Report - 08/05 - 2h (tot: 30h)
+
+* Creata buca
+* Creato package model.physics.velocity per gestire l'update della velocita' della palla (pattern strategy)
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Texture che non si resizano (non warpa l'immagine)
+* Creare la buca
+* algoritmo per update della velocita'
+
+* Fare che se la palla ca sull'acqua ritorna alla posizione precedente?
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+* Dovrebbe esserci una velocita' massima della palla?
+* Accumulatore?
+
+
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());
+* oppure combinare più effetti (attrito + vento) (Decorator Pattern)
+
+PER AGENDA FUTURA:
+* MainController che li contiene tutti?
+* Accumulatore per il dt nel game loop?
