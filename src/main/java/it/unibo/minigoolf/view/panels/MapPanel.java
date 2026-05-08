@@ -145,7 +145,7 @@ public class MapPanel extends JPanel {
                         (int) rect.width(), (int) rect.height(), null);
             }
         } else if (shape instanceof Circle circ) {
-            g2d.fillOval((int) circ.position().getX(), (int) circ.position().getY(), (int) circ.radius() * 2,
+            g2d.fillOval((int) circ.position().getX()- (int) circ.radius(), (int) circ.position().getY()- (int) circ.radius(), (int) circ.radius() * 2,
                     (int) circ.radius() * 2);
         } else if (shape instanceof Triangle tria) {
             int[] xPoints = {(int) tria.vertex1().getX(), (int) tria.vertex2().getX(),
