@@ -85,7 +85,14 @@ Report 06/05 - 1.5 ore
   molto probabilmente perchè non ha ancora una texture, quindi va sistemato).
 - Controllata la correttezza del rimbalzo della pallina con gli ostacoli circolari, ma non funziona correttamente
 
+Report 08/05 - 2 ore
+- Aggiunto il metodo getColor in Shape
+- Aggiornato tutte le classi dipendenti da Shape
+- Aggiunti i bordi fisici della mappa
+- Sistemato il problema visivo della collisione della pallina con gli ostacoli
+- Fatti alcuni test sul rimbalzo della pallina
+
 TO DO:
-Modificare il metodo drawShape in MapPanel per disegnare anche gli ostacoli rettangolari senza la texture
 Verificare che i rimbalzi della pallina sugli ostacoli siano corretti
+Aggiungere la classe Color per utilizzare colori personalizzati, sostituendo java.awt.Color;
 Controllare tutti gli errori di SpotBugs
