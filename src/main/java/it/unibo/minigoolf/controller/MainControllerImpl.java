@@ -61,6 +61,9 @@ public final class MainControllerImpl implements MainController, ActionListener 
     public void actionPerformed(final ActionEvent e) {
         long startTime = System.nanoTime();
         double deltaTime = (startTime - lastTime) / 1_000_000_000.0;
+        if (deltaTime > 0.1) { // Cap deltaTime to avoid issues when the game is paused.
+            deltaTime = 1.0 / FPS;
+        }
         lastTime = startTime;
         // Poll the view for a pending shot and apply it to the ball.
         final Optional<Vector2D> pendingShot = mainWindow.consumePendingShot();

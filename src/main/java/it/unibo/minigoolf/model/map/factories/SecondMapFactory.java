@@ -98,7 +98,7 @@ public class SecondMapFactory implements GameMapFactory {
     private static final double O7_WIDTH = 410;
     private static final double O7_HEIGHT = 50;
     private static final double O8_X = 275;
-    private static final double O8_Y = 400;
+    private static final double O8_Y = 330;
     private static final double O8_RADIUS = 100;
     private static final Vector2D O9_V1 = new Vector2D(850, 15);
     private static final Vector2D O9_V2 = new Vector2D(1000, 15);
@@ -109,6 +109,15 @@ public class SecondMapFactory implements GameMapFactory {
     private static final double O11_X = 550;
     private static final double O11_Y = 715;
     private static final double O11_RADIUS = 25;
+    private static final double O12_X = 275;
+    private static final double O12_Y = 745;
+    private static final double O12_RADIUS = 80;
+    private static final double O13_X = 825;
+    private static final double O13_Y = 557;
+    private static final double O13_RADIUS = 25;
+    private static final double O14_X = 1025;
+    private static final double O14_Y = 310;
+    private static final double O14_RADIUS = 25;
 
     private static final double BALL_RADIUS = 30;
     private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(80, 80);
@@ -170,6 +179,9 @@ public class SecondMapFactory implements GameMapFactory {
         obstacles.add(new TriangleObstacle(O9_V1, O9_V2, O9_V3, Color.darkGray));
         obstacles.add(new TriangleObstacle(O10_V1, O10_V2, O10_V3, Color.darkGray));
         obstacles.add(new RoundObstacle(new Vector2D(O11_X, O11_Y), O11_RADIUS, Color.darkGray));
+        obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS, Color.darkGray));
+        obstacles.add(new RoundObstacle(new Vector2D(O13_X, O13_Y), O13_RADIUS, Color.darkGray));
+        obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS, Color.darkGray));
         return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles, new HoleImpl(HOLE_POSITION, HOLE_RADIUS));
     }
 }
