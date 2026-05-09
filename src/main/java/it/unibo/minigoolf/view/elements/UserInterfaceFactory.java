@@ -9,7 +9,7 @@ import java.awt.Font;
 import java.awt.Dimension;
 
 /**
- * Factory to build any UI element such as buttons, labels and textfields
+ * Factory to build any UI element such as buttons, labels and textfields.
  */
 public final class UserInterfaceFactory {
 

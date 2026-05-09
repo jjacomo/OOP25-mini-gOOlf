@@ -1,4 +1,4 @@
-Report - 04/29 - 3 ore
+Report - 04/29 - 25 ore
 
 FATTO:
 - Ho letto il report di @jjacomo ed effettivamente è meglio se lasciamo al maincontroller solo ciò che è necessario (cerchiamo di tenerlo abbastanza snello).

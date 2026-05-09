@@ -1,6 +1,6 @@
 Report - 03/21 - 6 ore
 
-Ciao allora ho cominciato a scrivere la mia parte, ho fatto qualche modifica iniziale:  
+Ciao allora ho cominciato a scrivere la mia parte, ho fatto qualche modifica iniziale: 
 - Commenti riscritti in inglese e formattati correttamente
 - Creato il sotto-package it.unibo.minigoolf.view.panels, dove dentro ho creato le classi dei vari pannelli: GamePanel, LeaderBoardPanel, ecc.. (per ora sono tutte TO DO, soprattutto quelle avanzate, ovviamente…
 - Sistemato il MainWindow con il MainControler, ora non è solo di test!
