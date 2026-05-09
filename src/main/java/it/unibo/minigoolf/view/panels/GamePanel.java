@@ -12,7 +12,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
@@ -114,7 +113,7 @@ public final class GamePanel extends JPanel {
         shotViewPanel.enableShot(toCenter(initialPos, ballRadius));
 
         // Pause menu calling with the "ESC" key
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
         this.getActionMap().put("pauseAction", new AbstractAction() {
             @Serial
             private static final long serialVersionUID = 1L;

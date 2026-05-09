@@ -37,10 +37,10 @@ public final class NavigationController {
      * Starts the timer and switches the view.
      */
     public void startGame() {
-        this.mainController.start(); 
+        this.mainController.start();
         this.mainWindow.showScene("GAME");
     }
-    
+
     /**
      * Handles the transition from the game to the pause menu.
      * Stops the timer and switches the view.
@@ -49,6 +49,7 @@ public final class NavigationController {
         this.mainController.stop(); 
         this.mainWindow.getGlassPane().setVisible(true);
     }
+
     /**
      * Handles the transition from the pause to the game.
      * Starts the timer and switches the view.
@@ -57,6 +58,7 @@ public final class NavigationController {
     this.mainWindow.getGlassPane().setVisible(false);
     this.mainController.start();
     }
+
     /**
      * Handles the transition from the pause menu to the main menu.
      * Starts the timer and switches the view.

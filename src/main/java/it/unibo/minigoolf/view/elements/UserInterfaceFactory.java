@@ -8,6 +8,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Dimension;
 
+/**
+ * Factory to build any UI element such as buttons, labels and textfields
+ */
 public final class UserInterfaceFactory {
 
     private static final Color ACCENT_COLOR = Color.WHITE;
@@ -16,7 +19,7 @@ public final class UserInterfaceFactory {
     private static final int WIDTH = 200;
     private static final int HEIGHT = 60;
 
-    private UserInterfaceFactory() {}
+    private UserInterfaceFactory() { }
 
     public static JButton createButton(final String text) {
         final JButton button = new JButton(text);

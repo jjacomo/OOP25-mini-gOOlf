@@ -117,7 +117,7 @@ public final class NewGamePanel extends JPanel {
 
             final JTextField field = new JTextField(12);
             nameFields.add(field);
-            
+
             p.add(label);
             p.add(field);
 
