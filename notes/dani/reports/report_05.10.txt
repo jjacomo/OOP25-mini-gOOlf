@@ -1,0 +1,22 @@
+Report - 05/10 - 31 ore
+
+FATTO:
+- A livello pratico nulla, fatta call con Fede, ci siamo divisi i prossimi compiti, direi spalmati
+nelle prossime 2 settimane.
+
+DA FARE:
+- Gamestate: studiare ed implementare il multiplayer: importare i nomi dei player, adattare le schermate NewGame,
+PauseGame, ecc..
+- Se non troppo complicato, faccio anche le regole della partita (7 shot max o buca, ecc...) altriemnti lascio a Fede
+- Creare i bottoni per @fedesparvo1-a11y per il salvataggio:
+  - Bottone "Load Game" -> vedere se passare all'attuale LoadGamePanel o toglierlo e fare solo schermata
+    di conferma -> "si" o "no".
+  - Bottone "Save Game" -> nel Pause Panel. Se viene premuto exit to mene nel menu di pausa, chiedere conferma di 
+    uscire senza salvare. Se la partita è stata salvata, il tasto exit non lo chiederà.
+- Gestire l'HUD (anche dal punto di vista logico) delle stats della partita (nomi player, shots corrispondenti)
+  *nota estetica*: vogliamo mettere il colore della bandierina in base al giocatore che sta giocando? Potrei mettere
+  nella schermata dell'inserimento dei nomi dei giocatori, un pallino col colore del giocatore corrispondente,
+  solo un dettaglio grafico marginale vedremo poi verso la fine.
+
+AGENDA:
+- Dobbiamo vedere come legare la partita con le varie mappe, tutti insieme direi.
