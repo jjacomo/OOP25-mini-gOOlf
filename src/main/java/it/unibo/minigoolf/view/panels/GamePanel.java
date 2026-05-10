@@ -12,6 +12,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
@@ -43,8 +44,7 @@ public final class GamePanel extends JPanel {
     private final ShotViewPanel shotViewPanel;
     private final MapPanel mapPanel;
 
-    /** Cached ball radius in logical coordinates, used to compute the ball centre. */
-    private final double ballRadius;
+
 
     /**
      * @param controller        the main controller
@@ -66,7 +66,6 @@ public final class GamePanel extends JPanel {
         this.add(uiPanel, BorderLayout.NORTH);
 
         this.mapPanel = new MapPanel(gameMapController);
-        this.ballRadius = gameMapController.getBallController().getRadius();
 
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
@@ -110,10 +109,10 @@ public final class GamePanel extends JPanel {
 
         // Enable shot at the real initial ball centre.
         final Vector2D initialPos = gameMapController.getBallController().getPosition();
-        shotViewPanel.enableShot(toCenter(initialPos, ballRadius));
+        shotViewPanel.enableShot(toPoint(initialPos));
 
         // Pause menu calling with the "ESC" key
-        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
         this.getActionMap().put("pauseAction", new AbstractAction() {
             @Serial
             private static final long serialVersionUID = 1L;
@@ -133,7 +132,7 @@ public final class GamePanel extends JPanel {
      *                     in logical (1920×1080) coordinates
      */
     public void onBallStopped(final Vector2D ballPosition) {
-        shotViewPanel.enableShot(toCenter(ballPosition, ballRadius));
+        shotViewPanel.enableShot(toPoint(ballPosition));
     }
 
     /**
@@ -146,15 +145,14 @@ public final class GamePanel extends JPanel {
     }
 
     /**
-     * Converts a ball position (top-left of bounding box) to its centre point.
-     * Needed because {@code fillOval} uses the top-left corner while shot input
-     * should originate from the ball centre.
+     * Converts a logical Vector2D position to an AWT Point.
+     * {@code position()} on a Circle already returns the centre,
+     * so no radius offset is needed.
      *
-     * @param pos    the top-left position of the ball in logical coordinates
-     * @param radius the ball radius in logical coordinates
-     * @return the centre of the ball as an AWT Point
+     * @param pos the position in logical coordinates
+     * @return the corresponding Point
      */
-    private static Point toCenter(final Vector2D pos, final double radius) {
-        return new Point((int) (pos.getX() + radius), (int) (pos.getY() + radius));
+    private static Point toPoint(final Vector2D pos) {
+        return new Point((int) pos.getX(), (int) pos.getY());
     }
 }
