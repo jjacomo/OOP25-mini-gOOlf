@@ -19,7 +19,7 @@ TODO:
 * Guarda errori piu' "Strutturali" di spotbugs
 * Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
 * Dovrebbe esserci una velocita' massima della palla?
-* Accumulatore?
+* Vorrei che non fosse possibile accedere a GameMap dal maincontroller (si devono usare solo i controller della mappa).
 
 
 POSSIBILI FEATURE:
