@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.io.Serial;
 import java.util.Optional;
 
@@ -45,8 +46,8 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
      */
     private static final double MAX_LINE_PIXELS = 150.0;
 
-    /** Dashed stroke for the power indicator line. */
-    private static final float LINE_WIDTH = 2.5f;
+    /** Dashed stroke for the power indicator line — doubled width. */
+    private static final float LINE_WIDTH = 5.0f;
     private static final float[] DASH_PATTERN = {10f, 6f};
     private static final Stroke DASHED_STROKE = new BasicStroke(
         LINE_WIDTH,
@@ -56,6 +57,9 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
         DASH_PATTERN,
         0f
     );
+
+    /** Arrowhead size in logical pixels. */
+    private static final double ARROW_SIZE = 18.0;
 
     /** The ShotListener that translates mouse events into Vector2D values. */
     private final transient ShotListener shotListener;
@@ -85,11 +89,9 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     /**
      * Returns true if the given logical point is within {@code radius} pixels
      * of the ball centre (in logical space).
-     * Used by ShotListener to reject drags that don't start on the ball.
      *
      * @param logical the point to test, in logical coordinates
      * @param radius  maximum allowed distance in logical pixels
-     *
      * @return true if the point is close enough to the ball
      */
     public boolean isNearBall(final Point logical, final double radius) {
@@ -165,7 +167,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     @Override
     public synchronized void updateShotIntent(final Vector2D direction) {
         this.currentDirection = direction;
-        this.shotReady = false; // still dragging, not ready yet
+        this.shotReady = false;
         repaint();
     }
 
@@ -181,7 +183,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     }
 
     /**
-     * Draws the dashed coloured line from the ball position in the shot direction.
+     * Draws the dashed coloured line with an arrowhead at the tip.
      *
      * @param g the Graphics context
      */
@@ -203,6 +205,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
         final Graphics2D g2d = (Graphics2D) g.create();
         try {
             g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             final Vector2D displayDir = dir.clampedTo(MAX_LINE_PIXELS);
             final Point tip = displayDir.translate(origin);
@@ -217,16 +220,48 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
                 lineColor = Color.RED;
             }
 
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setStroke(DASHED_STROKE);
             g2d.setColor(lineColor);
+
+            // Dashed line from origin to tip.
+            g2d.setStroke(DASHED_STROKE);
             g2d.draw(new Line2D.Float(origin.x, origin.y, tip.x, tip.y));
 
+            // Arrowhead (">") at the tip, pointing in the shot direction.
+            drawArrowhead(g2d, displayDir, tip);
+
+            // Small solid circle at the ball centre.
             g2d.setStroke(new BasicStroke(1f));
             g2d.fillOval(origin.x - 4, origin.y - 4, 8, 8);
         } finally {
             g2d.dispose();
         }
+    }
+
+    /**
+     * Draws a filled arrowhead at the tip of the indicator line.
+     *
+     * @param g2d        the graphics context (already scaled to logical space)
+     * @param displayDir the clamped display vector, used to compute the direction angle
+     * @param tip        the tip point in logical coordinates
+     */
+    private static void drawArrowhead(final Graphics2D g2d, final Vector2D displayDir, final Point tip) {
+        final double angle = Math.atan2(displayDir.getY(), displayDir.getX());
+
+        // The two "wings" of the ">" are drawn at ±140° from the shot direction.
+        final double wingAngle = Math.toRadians(140);
+
+        final double x1 = tip.x + ARROW_SIZE * Math.cos(angle + wingAngle);
+        final double y1 = tip.y + ARROW_SIZE * Math.sin(angle + wingAngle);
+        final double x2 = tip.x + ARROW_SIZE * Math.cos(angle - wingAngle);
+        final double y2 = tip.y + ARROW_SIZE * Math.sin(angle - wingAngle);
+
+        final Path2D arrow = new Path2D.Double();
+        arrow.moveTo(x1, y1);
+        arrow.lineTo(tip.x, tip.y);
+        arrow.lineTo(x2, y2);
+
+        g2d.setStroke(new BasicStroke(LINE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2d.draw(arrow);
     }
 
     /**
