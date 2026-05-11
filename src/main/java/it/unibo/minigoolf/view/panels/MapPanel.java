@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -67,7 +68,6 @@ public class MapPanel extends JPanel {
             return textureCache.get(texturePath);
         }
         try {
-            // Simple file loading from src/main/resources/ (for development)
             final File file = new File("src/main/resources/" + texturePath);
             final BufferedImage image = ImageIO.read(file);
             textureCache.put(texturePath, image);
@@ -93,15 +93,9 @@ public class MapPanel extends JPanel {
         // used here (ball position, obstacles, …) maps to exactly the same
         // physical pixel on screen as the shot-indicator overlay.
         g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
-        // la roba sopra l'ho presa dalla vecchia fieldPanel di GamePanel, per scalare
-        // tutto in modo che le coordinate logiche (1920×1080) corrispondano sempre alla
-        // stessa posizione fisica sullo schermo, indipendentemente dalle dimensioni del
-        // pannello
-        // potrebbe rompersi in futuro forse se dani cambia qualcosa
 
         // qui va disegnato tutto quello che si vede nella mappa, quindi superfici,
         // ostacoli, buche, palla, ...
-
         // mappa (utilizzo degli stream)
         mapController.getSurfaces().stream()
                 .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
@@ -134,17 +128,12 @@ public class MapPanel extends JPanel {
      * @param texture the texture to apply
      */
     private void drawShape(final Shape shape, final Graphics2D g2d, final BufferedImage texture) {
-        // avrebbe senso farne una anche senza texture?
         if (shape instanceof Rectangle rect) { 
-            // ma poi in generale fai la review di sto codice (non e' che sarebbe meglio
-            // fare diverse funzioni invece che una sola che disegna tutte le superfici (che
-            // tra l'altro alcune hanno texture altre no))
-            if (texture == null) {
+            if (Objects.isNull(texture)) {
                 g2d.fillRect((int) rect.position().getX(), (int) rect.position().getY(),
                         (int) rect.width(), (int) rect.height());
             } else {
-                Rectangle2D anchor = new Rectangle2D.Double(0, 0, 1920,
-                        1080); // le dimensioni delle texture sono 1920x1080, quindi uso quelle come ancore per il tiling
+                Rectangle2D anchor = new Rectangle2D.Double(0, 0, 1920, 1080);
                 TexturePaint paint = new TexturePaint(texture, anchor);
                 g2d.setPaint(paint);
                 g2d.fill(new Rectangle2D.Double(rect.position().getX(), rect.position().getY(), rect.width(),

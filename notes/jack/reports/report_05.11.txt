@@ -1,0 +1,32 @@
+Report - 11/05 - 1h (tot: 36h)
+
+* Ripuliti i commenti di MapView.
+* Rimpiazzato texture == null con Objects.isNull(texture).
+* Guardato un po' MainController:
+    * Forse sarebbe meglio usare le api dei controller (della mappa e palla) 
+      invece che interagire direttamete con l'oggetto GameMap (magari rendendolo impossibile per design?);
+    * Non si dovrebbe modificare direttamente la velocita' della palla in MainController
+      (tra l'altro il controllo che se la velocita' e' troppo bassa e' gia' in PhysicsEngine).
+    * Codice di fede in un sottocontroller?
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+* Migliore algoritmo per l'update della velocita'
+
+* Fare che se la palla va sull'acqua ritorna alla posizione precedente?
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+* Dovrebbe esserci una velocita' massima della palla?
+
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());
+* oppure combinare più effetti (attrito + vento) (Decorator Pattern)
+
+PER AGENDA FUTURA:
+* MainController che li contiene tutti?
+* Accumulatore per il dt nel game loop?
