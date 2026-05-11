@@ -1,4 +1,4 @@
-Report - 11/05 - 1h (tot: 36h)
+Report - 11/05 - 2h (tot: 37h)
 
 * Ripuliti i commenti di MapView.
 * Rimpiazzato texture == null con Objects.isNull(texture).
@@ -8,6 +8,13 @@ Report - 11/05 - 1h (tot: 36h)
     * Non si dovrebbe modificare direttamente la velocita' della palla in MainController
       (tra l'altro il controllo che se la velocita' e' troppo bassa e' gia' in PhysicsEngine).
     * Codice di fede in un sottocontroller?
+    * MainController troppo pieno
+    * Fede non dovrebbe modificare la velocita' della pallina a parte per l'input da giocatore (bug della pallina che non si ferma)
+    * MainWindow non dovrebbe importare il model (pattern MVC) e neanche il vector2D
+    * Devo a fede che api della palla ha bisogno cosi' le implemento tutte e non ha bisogno di usare direttamente gli 
+      oggetti del model ma i controller
+* Modificato codice in model.physics.velocity.BasicFrictionStrategy (tiene conto delle velocita' molto alte)
+
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;
