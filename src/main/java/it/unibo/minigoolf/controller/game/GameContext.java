@@ -11,7 +11,7 @@ import it.unibo.minigoolf.model.map.GameMap;
  * and {@link it.unibo.minigoolf.view.MainWindow},
  * so neither class needs to import individual model types directly.
  *
- * @author fede and dani
+ * @author fede
  *
  * @param gameState         the central game logic (turn order, ball-moving flag)
  * @param map               the game map (surfaces, ball, obstacles)
