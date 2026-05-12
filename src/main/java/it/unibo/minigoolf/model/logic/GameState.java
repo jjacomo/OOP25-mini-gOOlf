@@ -9,8 +9,8 @@ import java.util.Optional;
 
 /**
  * Central game logic for a minigolf match.
- *
- * <p>The game loop in MainControllerImpl calls the method update() once per tick.
+ * Manages turn order, player state, and ball-moving flag.
+ * Shot queuing has been moved to {@link ShotState}.
  *
  * @author fede
  */
@@ -22,7 +22,7 @@ public final class GameState {
     private final List<Player> players;
     private int currentPlayerIndex;
 
-    /** The shot queued by the view; null if no shot is waiting. */
+    /** The shot queued by ShotController; null if no shot is waiting. */
     private Vector2D pendingShot;
 
     /** Whether the ball is still rolling. */
@@ -30,7 +30,6 @@ public final class GameState {
 
     /**
      * Creates a new GameState with the given list of player names.
-     * At least one name must be provided.
      *
      * @param playerNames ordered list of player display names
      * @throws IllegalArgumentException if the list is empty
@@ -56,9 +55,9 @@ public final class GameState {
     }
 
     /**
-     * Returns the player current index for the savings.
+     * Returns the index of the current player (used for save/load).
      *
-     * @return the current player
+     * @return the current player index
      */
     public synchronized int getCurrentPlayerIndex() {
         return currentPlayerIndex;
@@ -83,8 +82,8 @@ public final class GameState {
     }
 
     /**
-     * Called by the view layer when the user releases the mouse.
-     * Ignored if the ball is still moving from the previous shot.
+     * Called by {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}
+     * once a valid shot has been confirmed by the player.
      *
      * @param shot the direction/power vector of the intended shot
      */
@@ -96,6 +95,8 @@ public final class GameState {
 
     /**
      * Called by the game loop each tick.
+     * If a shot is pending, consumes it, increments the shot counter,
+     * marks the ball as moving and returns the vector.
      *
      * @return an Optional containing the shot vector, or empty if no shot this tick
      */
@@ -111,8 +112,7 @@ public final class GameState {
     }
 
     /**
-     * Must be called by the physics layer once the ball has stopped moving.
-     * Re-enables shot input for the current player.
+     * Called by the physics layer once the ball has stopped moving.
      */
     public synchronized void onBallStopped() {
         this.ballMoving = false;

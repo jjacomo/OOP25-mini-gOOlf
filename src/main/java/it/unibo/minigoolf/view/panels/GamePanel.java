@@ -4,29 +4,29 @@ import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.logic.GameState;
-import it.unibo.minigoolf.util.Vector2D;
+import it.unibo.minigoolf.model.logic.ShotState;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-
-import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.Serial;
-import java.util.Optional;
 
 /**
- * One of the possible scenes, this one is where the game is played.
+ * The game scene panel.
+ * Hosts the map layer and the shot-indicator overlay.
+ * No longer owns shot polling or ball-stopped logic —
+ * those are handled by {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}.
  *
  * @author dani
  */
@@ -37,27 +37,28 @@ public final class GamePanel extends JPanel {
 
     private static final int START_WIDTH = 960;
     private static final int START_HEIGHT = 540;
-
     private static final double ASPECT_W = 16.0;
     private static final double ASPECT_H = 9.0;
 
     private final ShotViewPanel shotViewPanel;
     private final MapPanel mapPanel;
 
-
-
     /**
      * @param controller        the main controller
-     * @param navController     the navigation controller for handling pauses/menus
-     * @param gameState         the shared game-state instance
+     * @param navController     the navigation controller
+     * @param gameState         the shared game state (used only for the turn label)
      * @param gameMapController the controller managing the shared game map
+     * @param shotState         the shot state model shared with ShotControllerImpl
      */
     public GamePanel(final MainController controller,
-            final NavigationController navController, final GameState gameState,
-            final GameMapController gameMapController) {
+            final NavigationController navController,
+            final GameState gameState,
+            final GameMapController gameMapController,
+            final ShotState shotState) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
+        // Turn label bar.
         final JPanel uiPanel = new JPanel();
         uiPanel.setBackground(Color.DARK_GRAY);
         final JLabel turnoLabel = new JLabel(gameState.getCurrentPlayer().toString());
@@ -66,6 +67,7 @@ public final class GamePanel extends JPanel {
         this.add(uiPanel, BorderLayout.NORTH);
 
         this.mapPanel = new MapPanel(gameMapController);
+        this.shotViewPanel = new ShotViewPanel(shotState);
 
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
@@ -74,8 +76,6 @@ public final class GamePanel extends JPanel {
         layeredPane.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         mapPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
-
-        shotViewPanel = new ShotViewPanel();
         shotViewPanel.setBounds(0, 0, START_WIDTH, START_HEIGHT);
         layeredPane.add(shotViewPanel, JLayeredPane.PALETTE_LAYER);
 
@@ -87,7 +87,6 @@ public final class GamePanel extends JPanel {
             public void componentResized(final ComponentEvent e) {
                 final int w = centerWrapper.getWidth();
                 final int h = centerWrapper.getHeight();
-
                 final int expectedHeight = (int) (w * ASPECT_H / ASPECT_W);
                 final int expectedWidth = (int) (h * ASPECT_W / ASPECT_H);
 
@@ -107,12 +106,9 @@ public final class GamePanel extends JPanel {
             }
         });
 
-        // Enable shot at the real initial ball centre.
-        final Vector2D initialPos = gameMapController.getBallController().getPosition();
-        shotViewPanel.enableShot(toPoint(initialPos));
-
-        // Pause menu calling with the "ESC" key
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
+        // ESC → pause.
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
         this.getActionMap().put("pauseAction", new AbstractAction() {
             @Serial
             private static final long serialVersionUID = 1L;
@@ -125,34 +121,12 @@ public final class GamePanel extends JPanel {
     }
 
     /**
-     * Called by the controller once the ball has stopped moving.
-     * Re-enables shot input at the real current ball centre.
+     * Returns the shot view panel so the controller can wire it to
+     * {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}.
      *
-     * @param ballPosition the current ball position (top-left of bounding box)
-     *                     in logical (1920×1080) coordinates
+     * @return the shot view panel
      */
-    public void onBallStopped(final Vector2D ballPosition) {
-        shotViewPanel.enableShot(toPoint(ballPosition));
-    }
-
-    /**
-     * Polls the shot view panel for a pending shot and returns it if present.
-     *
-     * @return an Optional containing the shot vector, or empty if none is pending
-     */
-    public Optional<Vector2D> consumePendingShot() {
-        return shotViewPanel.consumePendingShot();
-    }
-
-    /**
-     * Converts a logical Vector2D position to an AWT Point.
-     * {@code position()} on a Circle already returns the centre,
-     * so no radius offset is needed.
-     *
-     * @param pos the position in logical coordinates
-     * @return the corresponding Point
-     */
-    private static Point toPoint(final Vector2D pos) {
-        return new Point((int) pos.getX(), (int) pos.getY());
+    public ShotViewPanel getShotViewPanel() {
+        return shotViewPanel;
     }
 }

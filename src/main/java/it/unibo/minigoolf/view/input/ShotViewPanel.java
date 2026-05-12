@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.view.input;
 
+import it.unibo.minigoolf.model.logic.ShotState;
 import it.unibo.minigoolf.util.Vector2D;
 
 import javax.swing.JPanel;
@@ -16,7 +17,10 @@ import java.io.Serial;
 import java.util.Optional;
 
 /**
- * The view of the shot.
+ * Pure view panel for the shot indicator.
+ * Draws the dashed line and arrowhead while the user is dragging.
+ * All shot state logic lives in {@link ShotState};
+ * this panel only reads from it and forwards raw input events.
  *
  * @author fede
  */
@@ -28,25 +32,16 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
-    /** Minimum squared power for a shot to be accepted. */
-    private static final double MIN_SQUARE_POWER = 100.0;
-
     /** Squared power below which the line is drawn green. */
     private static final double LOW_THRESHOLD = 1_000.0;
 
-    /**
-     * Squared power above LOW_THRESHOLD and below which the line is yellow.
-     * Above this it turns red.
-     */
+    /** Squared power above LOW_THRESHOLD and below which the line is yellow. */
     private static final double MED_THRESHOLD = 5_000.0;
 
-    /**
-     * Maximum display length of the dashed line in pixels.
-     * Beyond this the line is clamped so it doesn't leave the ball area.
-     */
+    /** Maximum display length of the dashed line in logical pixels. */
     private static final double MAX_LINE_PIXELS = 150.0;
 
-    /** Dashed stroke for the power indicator line — doubled width. */
+    /** Dashed stroke for the power indicator line. */
     private static final float LINE_WIDTH = 5.0f;
     private static final float[] DASH_PATTERN = {10f, 6f};
     private static final Stroke DASHED_STROKE = new BasicStroke(
@@ -61,25 +56,19 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     /** Arrowhead size in logical pixels. */
     private static final double ARROW_SIZE = 18.0;
 
-    /** The ShotListener that translates mouse events into Vector2D values. */
+    /** The shot state model — read to draw, written via updateShotIntent/shoot. */
+    private final transient ShotState shotState;
+
+    /** The mouse listener that translates drag gestures into vectors. */
     private final transient ShotListener shotListener;
 
-    private transient Vector2D currentDirection;
-    private transient Point ballScreenPos;
-
     /**
-     * True only after the mouse has been released with a valid drag.
-     * Prevents consumePendingShot() from consuming the vector while the
-     * user is still dragging.
+     * Creates a new ShotViewPanel linked to the given shot state.
+     *
+     * @param shotState the model that holds shot intent and confirmation state
      */
-    private transient boolean shotReady;
-
-    /**
-     * Creates a new ShotViewPanel.
-     * No external references are stored: the controller polls
-     * {@link #consumePendingShot()} each tick instead.
-     */
-    public ShotViewPanel() {
+    public ShotViewPanel(final ShotState shotState) {
+        this.shotState = shotState;
         this.shotListener = new ShotListener(this);
         this.addMouseListener(shotListener);
         this.addMouseMotionListener(shotListener);
@@ -88,21 +77,20 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     /**
      * Returns true if the given logical point is within {@code radius} pixels
-     * of the ball centre (in logical space).
+     * of the ball centre.
      *
      * @param logical the point to test, in logical coordinates
      * @param radius  maximum allowed distance in logical pixels
      * @return true if the point is close enough to the ball
      */
     public boolean isNearBall(final Point logical, final double radius) {
-        synchronized (this) {
-            if (ballScreenPos == null) {
-                return false;
-            }
-            final double dx = logical.x - ballScreenPos.x;
-            final double dy = logical.y - ballScreenPos.y;
-            return dx * dx + dy * dy <= radius * radius;
+        final Optional<Vector2D> ballPos = shotState.getBallPosition();
+        if (ballPos.isEmpty()) {
+            return false;
         }
+        final double dx = logical.x - ballPos.get().getX();
+        final double dy = logical.y - ballPos.get().getY();
+        return dx * dx + dy * dy <= radius * radius;
     }
 
     /**
@@ -119,67 +107,39 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
 
     /**
      * Activates shot input for the current turn.
+     * Called by {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}.
      *
      * @param ballPosition current centre of the ball in logical coordinates
      */
     public void enableShot(final Point ballPosition) {
-        synchronized (this) {
-            this.ballScreenPos = new Point(ballPosition);
-            this.currentDirection = null;
-            this.shotReady = false;
-        }
+        shotState.reset(new Vector2D(ballPosition.x, ballPosition.y));
         this.shotListener.setEnable(true);
     }
 
     /**
-     * Disables shot input (example: while the ball is moving).
+     * Disables shot input (e.g. while the ball is moving).
      */
     public void disableShot() {
         this.shotListener.setEnable(false);
-        synchronized (this) {
-            this.currentDirection = null;
-            this.shotReady = false;
-        }
     }
 
     /**
-     * Called by the controller each tick to retrieve and consume a pending shot.
-     * Returns a value only after the mouse has been released (not during drag).
-     *
-     * @return an Optional containing the shot vector, or empty if none is pending
-     */
-    public synchronized Optional<Vector2D> consumePendingShot() {
-        if (shotReady && isValidShot()) {
-            final Vector2D shot = currentDirection;
-            currentDirection = null;
-            shotReady = false;
-            shotListener.setEnable(false);
-            return Optional.of(shot);
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Receives the live drag vector and keeps it so paintComponent can draw it.
+     * Forwards the drag vector to the model and triggers a repaint.
      *
      * @param direction current shot direction/power vector
      */
     @Override
-    public synchronized void updateShotIntent(final Vector2D direction) {
-        this.currentDirection = direction;
-        this.shotReady = false;
+    public void updateShotIntent(final Vector2D direction) {
+        shotState.updateIntent(direction);
         repaint();
     }
 
     /**
-     * Called on mouse release.
-     * Marks the shot as ready to be consumed by the controller next tick.
+     * Forwards the mouse-release event to the model.
      */
     @Override
-    public synchronized void shoot() {
-        if (isValidShot()) {
-            this.shotReady = true;
-        }
+    public void shoot() {
+        shotState.confirmShot();
     }
 
     /**
@@ -191,16 +151,16 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
 
-        final Vector2D dir;
-        final Point origin;
+        final Optional<Vector2D> intentOpt = shotState.getIntent();
+        final Optional<Vector2D> ballPosOpt = shotState.getBallPosition();
 
-        synchronized (this) {
-            if (currentDirection == null || ballScreenPos == null || !isValidShot()) {
-                return;
-            }
-            dir = currentDirection;
-            origin = new Point(ballScreenPos);
+        if (intentOpt.isEmpty() || ballPosOpt.isEmpty() || !shotState.isValid()) {
+            return;
         }
+
+        final Vector2D dir = intentOpt.get();
+        final Vector2D ballPos = ballPosOpt.get();
+        final Point origin = new Point((int) ballPos.getX(), (int) ballPos.getY());
 
         final Graphics2D g2d = (Graphics2D) g.create();
         try {
@@ -210,8 +170,8 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
             final Vector2D displayDir = dir.clampedTo(MAX_LINE_PIXELS);
             final Point tip = displayDir.translate(origin);
 
-            final double squaredPower = dir.getNormSquared();
             final Color lineColor;
+            final double squaredPower = dir.getNormSquared();
             if (squaredPower < LOW_THRESHOLD) {
                 lineColor = Color.GREEN;
             } else if (squaredPower < MED_THRESHOLD) {
@@ -221,15 +181,11 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
             }
 
             g2d.setColor(lineColor);
-
-            // Dashed line from origin to tip.
             g2d.setStroke(DASHED_STROKE);
             g2d.draw(new Line2D.Float(origin.x, origin.y, tip.x, tip.y));
-
-            // Arrowhead (">") at the tip, pointing in the shot direction.
             drawArrowhead(g2d, displayDir, tip);
 
-            // Small solid circle at the ball centre.
+            // Small circle at the ball centre.
             g2d.setStroke(new BasicStroke(1f));
             g2d.fillOval(origin.x - 4, origin.y - 4, 8, 8);
         } finally {
@@ -238,16 +194,14 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     }
 
     /**
-     * Draws a filled arrowhead at the tip of the indicator line.
+     * Draws a ">" arrowhead at the tip of the indicator line.
      *
      * @param g2d        the graphics context (already scaled to logical space)
-     * @param displayDir the clamped display vector, used to compute the direction angle
+     * @param displayDir the clamped display vector
      * @param tip        the tip point in logical coordinates
      */
     private static void drawArrowhead(final Graphics2D g2d, final Vector2D displayDir, final Point tip) {
         final double angle = Math.atan2(displayDir.getY(), displayDir.getX());
-
-        // The two "wings" of the ">" are drawn at ±140° from the shot direction.
         final double wingAngle = Math.toRadians(140);
 
         final double x1 = tip.x + ARROW_SIZE * Math.cos(angle + wingAngle);
@@ -262,15 +216,5 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
 
         g2d.setStroke(new BasicStroke(LINE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2d.draw(arrow);
-    }
-
-    /**
-     * Returns true if the current drag vector is above the minimum power.
-     *
-     * @return true if the shot is valid
-     */
-    private boolean isValidShot() {
-        return currentDirection != null
-            && currentDirection.getNormSquared() >= MIN_SQUARE_POWER;
     }
 }
