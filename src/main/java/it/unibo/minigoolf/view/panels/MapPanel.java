@@ -133,8 +133,8 @@ public class MapPanel extends JPanel {
                 g2d.fillRect((int) rect.position().getX(), (int) rect.position().getY(),
                         (int) rect.width(), (int) rect.height());
             } else {
-                Rectangle2D anchor = new Rectangle2D.Double(0, 0, 1920, 1080);
-                TexturePaint paint = new TexturePaint(texture, anchor);
+                final Rectangle2D anchor = new Rectangle2D.Double(0, 0, 1920, 1080);
+                final TexturePaint paint = new TexturePaint(texture, anchor);
                 g2d.setPaint(paint);
                 g2d.fill(new Rectangle2D.Double(rect.position().getX(), rect.position().getY(), rect.width(),
                         rect.height()));
@@ -143,9 +143,9 @@ public class MapPanel extends JPanel {
             g2d.fillOval((int) circ.position().getX()- (int) circ.radius(), (int) circ.position().getY()- (int) circ.radius(), (int) circ.radius() * 2,
                     (int) circ.radius() * 2);
         } else if (shape instanceof Triangle tria) {
-            int[] xPoints = {(int) tria.vertex1().getX(), (int) tria.vertex2().getX(),
+            final int[] xPoints = {(int) tria.vertex1().getX(), (int) tria.vertex2().getX(),
                             (int) tria.vertex3().getX()};
-            int[] yPoints = {(int) tria.vertex1().getY(), (int) tria.vertex2().getY(),
+            final int[] yPoints = {(int) tria.vertex1().getY(), (int) tria.vertex2().getY(),
                             (int) tria.vertex3().getY()};
             g2d.fillPolygon(xPoints, yPoints, 3);
         } else {

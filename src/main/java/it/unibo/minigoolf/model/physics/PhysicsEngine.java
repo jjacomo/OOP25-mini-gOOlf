@@ -29,7 +29,7 @@ public final class PhysicsEngine {
         throw new UnsupportedOperationException("PhysicsEngine is a utility class");
     }
 
-    public static void setVelocityStrategy(BallVelocityStrategy strategy) {
+    public static void setVelocityStrategy(final BallVelocityStrategy strategy) {
         velocityStrategy = strategy;
     }
 

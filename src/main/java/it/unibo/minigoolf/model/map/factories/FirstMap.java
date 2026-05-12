@@ -183,13 +183,13 @@ public class FirstMap implements GameMapFactory {
         obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT, Color.BLACK));
         obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT, Color.BLACK));
         obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT, Color.BLACK));
-        obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT, Color.darkGray));    
-        obstacles.add(new WallObstacle(new Vector2D(O2_X, O2_Y), O2_WIDTH, O2_HEIGHT, Color.darkGray));    
-        obstacles.add(new WallObstacle(new Vector2D(O3_X, O3_Y), O3_WIDTH, O3_HEIGHT, Color.darkGray));    
-        obstacles.add(new WallObstacle(new Vector2D(O4_X, O4_Y), O4_WIDTH, O4_HEIGHT, Color.darkGray));    
-        obstacles.add(new WallObstacle(new Vector2D(O5_X, O5_Y), O5_WIDTH, O5_HEIGHT, Color.darkGray));    
-        obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT, Color.darkGray));    
-        obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT, Color.darkGray));    
+        obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT, Color.darkGray));
+        obstacles.add(new WallObstacle(new Vector2D(O2_X, O2_Y), O2_WIDTH, O2_HEIGHT, Color.darkGray));
+        obstacles.add(new WallObstacle(new Vector2D(O3_X, O3_Y), O3_WIDTH, O3_HEIGHT, Color.darkGray));
+        obstacles.add(new WallObstacle(new Vector2D(O4_X, O4_Y), O4_WIDTH, O4_HEIGHT, Color.darkGray));
+        obstacles.add(new WallObstacle(new Vector2D(O5_X, O5_Y), O5_WIDTH, O5_HEIGHT, Color.darkGray));
+        obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT, Color.darkGray));
+        obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT, Color.darkGray));
         obstacles.add(new RoundObstacle(new Vector2D(O8_X, O8_Y), O8_RADIUS, Color.darkGray));
         obstacles.add(new TriangleObstacle(O9_V1, O9_V2, O9_V3, Color.darkGray));
         obstacles.add(new TriangleObstacle(O10_V1, O10_V2, O10_V3, Color.darkGray));
@@ -197,6 +197,7 @@ public class FirstMap implements GameMapFactory {
         obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS, Color.darkGray));
         obstacles.add(new RoundObstacle(new Vector2D(O13_X, O13_Y), O13_RADIUS, Color.darkGray));
         obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS, Color.darkGray));
-        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles, new HoleImpl(HOLE_POSITION, HOLE_RADIUS));
+        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles,
+                        new HoleImpl(HOLE_POSITION, HOLE_RADIUS));
     }
 }

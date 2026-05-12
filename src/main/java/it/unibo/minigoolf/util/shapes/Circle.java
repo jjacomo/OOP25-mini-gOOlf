@@ -31,6 +31,7 @@ public record Circle(Vector2D position, double radius, Color color) implements S
      * @param color the color
      * @return the color of the circle
      */
+    @Override
     public Color getColor(){
         return this.color;
     }

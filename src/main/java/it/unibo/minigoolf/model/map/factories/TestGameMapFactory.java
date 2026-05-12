@@ -52,6 +52,36 @@ public class TestGameMapFactory implements GameMapFactory {
     private static final double BALL_RADIUS = 30;
     private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(150, 150);
 
+    private static final double W1_X = 0;
+    private static final double W1_Y = 0;
+    private static final double W1_WIDTH = 15;
+    private static final double W1_HEIGHT = 1080;
+    private static final double W2_X = 0;
+    private static final double W2_Y = 0;
+    private static final double W2_WIDTH = 1920;
+    private static final double W2_HEIGHT = 15;
+    private static final double W3_X = 1905;
+    private static final double W3_Y = 0;
+    private static final double W3_WIDTH = 15;
+    private static final double W3_HEIGHT = 1080;
+    private static final double W4_X = 0;
+    private static final double W4_Y = 1065;
+    private static final double W4_WIDTH = 1920;
+    private static final double W4_HEIGHT = 15;
+    private static final double O1_X = 300;
+    private static final double O1_Y = 200;
+    private static final double O1_WIDTH = 40;
+    private static final double O1_HEIGHT = 100;
+    private static final double O2_X = 700;
+    private static final double O2_Y = 200;
+    private static final double O2_RADIUS = 50;
+    private static final Vector2D O3_V1 = new Vector2D(900, 400);
+    private static final Vector2D O3_V2 = new Vector2D(900, 450);
+    private static final Vector2D O3_V3 = new Vector2D(750, 400);
+
+    private static final Vector2D HOLE_POSITION = new Vector2D(1500, 800);
+    private static final double HOLE_RADIUS = 40;
+
     /**
      * Builds a simple test game map.
      * 
@@ -69,23 +99,25 @@ public class TestGameMapFactory implements GameMapFactory {
         final List<Surface> surfaces = new ArrayList<>();
         final List<Obstacle> obstacles = new ArrayList<>();
         surfaces.add(new RectangularSurface(
-                new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH, MAIN_SURFACE_HEIGHT, Color.WHITE),
-                SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+                        new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH,
+                                        MAIN_SURFACE_HEIGHT, Color.WHITE),
+                        SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
         surfaces.add(new RectangularSurface(
-                new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
-                        SECOND_SURFACE_HEIGHT, Color.WHITE),
-                SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getTexturePath()));
+                        new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
+                                        SECOND_SURFACE_HEIGHT, Color.WHITE),
+                        SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getTexturePath()));
         surfaces.add(new RectangularSurface(
-                new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
-                        THIRD_SURFACE_HEIGHT, Color.WHITE),
-                SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
-        obstacles.add(new WallObstacle(new Vector2D(0, 0), 15, 1080, Color.BLACK));
-        obstacles.add(new WallObstacle(new Vector2D(0, 0), 1920, 15, Color.BLACK));
-        obstacles.add(new WallObstacle(new Vector2D(1905, 0), 15, 1080, Color.BLACK));
-        obstacles.add(new WallObstacle(new Vector2D(0, 1065), 1920, 15, Color.BLACK));
-        obstacles.add(new WallObstacle(new Vector2D(300, 200), 40, 100, Color.ORANGE));
-        obstacles.add(new RoundObstacle(new Vector2D(700, 200), 50, Color.ORANGE));
-        obstacles.add(new TriangleObstacle(new Vector2D(900, 400), new Vector2D(900, 450), new Vector2D(750, 400), Color.ORANGE));
-        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles, new HoleImpl(new Vector2D(1500, 800), 40));
-    }
+                        new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
+                                        THIRD_SURFACE_HEIGHT, Color.WHITE),
+                        SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
+        obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT, Color.BLACK));
+        obstacles.add(new RoundObstacle(new Vector2D(O2_X, O2_Y), O2_RADIUS, Color.ORANGE));
+        obstacles.add(new TriangleObstacle(O3_V1, O3_V2, O3_V3, Color.ORANGE));
+        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles,
+                        new HoleImpl(HOLE_POSITION, HOLE_RADIUS));
+}
 }

@@ -2,7 +2,6 @@ package it.unibo.minigoolf.model.hole;
 
 import it.unibo.minigoolf.util.Vector2D;
 
-
 public interface Hole {
     /**
      * Returns the current position of the hole in the game coordinate system.

@@ -36,6 +36,7 @@ public record Rectangle(Vector2D position, double width, double height, Color co
      * @param color the color
      * @return the color of the rectangle
      */
+    @Override
     public Color getColor(){
         return this.color;
     }

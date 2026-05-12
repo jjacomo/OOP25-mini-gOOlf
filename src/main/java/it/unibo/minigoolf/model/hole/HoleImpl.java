@@ -5,7 +5,7 @@ import java.awt.Color;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 
-public class HoleImpl implements Hole {
+public final class HoleImpl implements Hole {
     private final Vector2D position;
     private final Circle circle;
 
@@ -15,7 +15,7 @@ public class HoleImpl implements Hole {
      * @param position the position of the hole in the game coordinate system
      * @param radius   the radius of the hole in game units
      */
-    public HoleImpl(Vector2D position, double radius) {
+    public HoleImpl(final Vector2D position, final double radius) {
         this.position = position;
         this.circle = new Circle(position, radius, Color.BLACK);
     }

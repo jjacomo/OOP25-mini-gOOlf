@@ -20,6 +20,7 @@ public final class GameMapControllerImpl implements GameMapController {
     private final GameMap map;
     private final BallController ballController;
     private final HoleController holeController;
+
     /**
      * Creates a new GameMapController for the given game map.
      * Initializes the ball controller with the map's ball.

@@ -66,6 +66,7 @@ public final class GameMapImpl implements GameMap {
      * 
      * @return the list of surfaces
      */
+    @Override
     public List<Surface> getSurfaces() {
         return this.surfaces;
     }
@@ -91,6 +92,7 @@ public final class GameMapImpl implements GameMap {
      *
      * @return the list of obstacles
      */
+    @Override
     public List<Obstacle> getObstacles() {
         return this.obstacles;
     }

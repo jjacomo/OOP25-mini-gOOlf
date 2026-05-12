@@ -10,7 +10,7 @@ import it.unibo.minigoolf.model.physics.velocity.BallVelocityStrategy;
  * <p>The controller remains lightweight and does not contain the actual
  * physics logic, which is implemented in {@link PhysicsEngine}.</p>
  */
-public class PhysicsControllerImpl implements PhysicsController {
+public final class PhysicsControllerImpl implements PhysicsController {
 
     private final GameMap gameMap;
 
@@ -24,7 +24,7 @@ public class PhysicsControllerImpl implements PhysicsController {
     }
 
     @Override
-    public void setVelocityStrategy(BallVelocityStrategy strategy) {
+    public void setVelocityStrategy(final BallVelocityStrategy strategy) {
         PhysicsEngine.setVelocityStrategy(strategy);
     }
 
