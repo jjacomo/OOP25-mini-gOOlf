@@ -50,8 +50,6 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
             if (panel.isNearBall(logical, CLICK_RADIUS)) {
                 this.startingPoint = logical;
             }
-        } else {
-            System.out.println("Shot not enabled");
         }
     }
 

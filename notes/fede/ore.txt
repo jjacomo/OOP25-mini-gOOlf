@@ -21,3 +21,6 @@
 3 ore: tolto quasi tutti i suppressWarning e todo che avevo, tranne quello in shotListener che non riesco a capire come togliere
 
 3 ore: sistemato lo shot di input in base alla nuova fisica e modificato (scompattato) MainControllerImpl 
+
+4 ore: snellitto completamente MainControllerImpl e diviso le parti di model e controller che avevo nella view in delle nuove
+        classi: GameContext e GameFactory

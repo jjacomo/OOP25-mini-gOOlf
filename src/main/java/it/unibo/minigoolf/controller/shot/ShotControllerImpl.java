@@ -21,12 +21,14 @@ public final class ShotControllerImpl implements ShotController {
     private final ShotState shotState;
     private final GameState gameState;
     private final GameMap map;
+
+    @SuppressWarnings("EI_EXPOSE_REP2")
     private final ShotViewPanel shotViewPanel;
 
     /**
-     * @param shotState    the model holding shot intent and confirmation state
-     * @param gameState    the game logic (turn management, ball-moving flag)
-     * @param map          the game map (used to apply velocity to the ball)
+     * @param shotState     the model holding shot intent and confirmation state
+     * @param gameState     the game logic (turn management, ball-moving flag)
+     * @param map           the game map (used to apply velocity to the ball)
      * @param shotViewPanel the view panel that draws the indicator and captures input
      */
     public ShotControllerImpl(

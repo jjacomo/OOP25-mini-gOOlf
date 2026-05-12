@@ -1,14 +1,11 @@
 package it.unibo.minigoolf.view.panels;
 
+import it.unibo.minigoolf.controller.game.GameContext;
 import it.unibo.minigoolf.controller.MainController;
-import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
-import it.unibo.minigoolf.model.logic.GameState;
-import it.unibo.minigoolf.model.logic.ShotState;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -24,9 +21,7 @@ import java.io.Serial;
 
 /**
  * The game scene panel.
- * Hosts the map layer and the shot-indicator overlay.
- * No longer owns shot polling or ball-stopped logic —
- * those are handled by {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}.
+ * Receives a {@link GameContext} instead of individual model objects.
  *
  * @author dani
  */
@@ -44,30 +39,25 @@ public final class GamePanel extends JPanel {
     private final MapPanel mapPanel;
 
     /**
-     * @param controller        the main controller
-     * @param navController     the navigation controller
-     * @param gameState         the shared game state (used only for the turn label)
-     * @param gameMapController the controller managing the shared game map
-     * @param shotState         the shot state model shared with ShotControllerImpl
+     * @param controller    the main controller
+     * @param navController the navigation controller
+     * @param ctx           the game context holding all match objects
      */
     public GamePanel(final MainController controller,
             final NavigationController navController,
-            final GameState gameState,
-            final GameMapController gameMapController,
-            final ShotState shotState) {
+            final GameContext ctx) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
-        // Turn label bar.
         final JPanel uiPanel = new JPanel();
         uiPanel.setBackground(Color.DARK_GRAY);
-        final JLabel turnoLabel = new JLabel(gameState.getCurrentPlayer().toString());
+        final JLabel turnoLabel = new JLabel(ctx.gameState().getCurrentPlayer().toString());
         turnoLabel.setForeground(Color.WHITE);
         uiPanel.add(turnoLabel);
         this.add(uiPanel, BorderLayout.NORTH);
 
-        this.mapPanel = new MapPanel(gameMapController);
-        this.shotViewPanel = new ShotViewPanel(shotState);
+        this.mapPanel = new MapPanel(ctx.gameMapController());
+        this.shotViewPanel = new ShotViewPanel(ctx.shotState());
 
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
@@ -107,7 +97,7 @@ public final class GamePanel extends JPanel {
         });
 
         // ESC → pause.
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
         this.getActionMap().put("pauseAction", new AbstractAction() {
             @Serial
@@ -121,11 +111,12 @@ public final class GamePanel extends JPanel {
     }
 
     /**
-     * Returns the shot view panel so the controller can wire it to
-     * {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}.
+     * Returns the shot view panel so the controller can wire
+     * {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl} to it.
      *
      * @return the shot view panel
      */
+    @SuppressWarnings("EI_EXPOSE_REP")//TODO: suppress warning probabilmente necessario
     public ShotViewPanel getShotViewPanel() {
         return shotViewPanel;
     }
