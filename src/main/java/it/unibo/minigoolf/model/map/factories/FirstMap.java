@@ -2,9 +2,8 @@ package it.unibo.minigoolf.model.map.factories;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List; 
 import it.unibo.minigoolf.util.Vector2D;
-
 import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
@@ -31,7 +30,7 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * @see RectangularSurface
  * @see Surface
  */
-public class SecondMapFactory implements GameMapFactory {
+public class FirstMap implements GameMapFactory {
  
     private static final double GRASS1_X = 0;
     private static final double GRASS1_Y = 0;
@@ -69,6 +68,22 @@ public class SecondMapFactory implements GameMapFactory {
     private static final double ICE_HEIGHT = 540;
     private static final int ICE_Z_INDEX = 4;
 
+    private static final double W1_X = 0;
+    private static final double W1_Y = 0;
+    private static final double W1_WIDTH = 15;
+    private static final double W1_HEIGHT = 1080;
+    private static final double W2_X = 0;
+    private static final double W2_Y = 0;
+    private static final double W2_WIDTH = 1920;
+    private static final double W2_HEIGHT = 15;
+    private static final double W3_X = 1905;
+    private static final double W3_Y = 0;
+    private static final double W3_WIDTH = 15;
+    private static final double W3_HEIGHT = 1080;
+    private static final double W4_X = 0;
+    private static final double W4_Y = 1065;
+    private static final double W4_WIDTH = 1920;
+    private static final double W4_HEIGHT = 15;
     private static final double O1_X = 525;
     private static final double O1_Y = 15;
     private static final double O1_WIDTH = 50;
@@ -164,10 +179,10 @@ public class SecondMapFactory implements GameMapFactory {
                 new Rectangle(new Vector2D(DIRT_X, DIRT_Y), DIRT_WIDTH,
                         DIRT_HEIGHT, Color.WHITE),
                 SurfaceType.DIRT.getFriction(), DIRT_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
-        obstacles.add(new WallObstacle(new Vector2D(0, 0), 15, 1080, Color.BLACK));
-        obstacles.add(new WallObstacle(new Vector2D(0, 0), 1920, 15, Color.BLACK));
-        obstacles.add(new WallObstacle(new Vector2D(1905, 0), 15, 1080, Color.BLACK));
-        obstacles.add(new WallObstacle(new Vector2D(0, 1065), 1920, 15, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT, Color.BLACK));
+        obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT, Color.BLACK));
         obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT, Color.darkGray));    
         obstacles.add(new WallObstacle(new Vector2D(O2_X, O2_Y), O2_WIDTH, O2_HEIGHT, Color.darkGray));    
         obstacles.add(new WallObstacle(new Vector2D(O3_X, O3_Y), O3_WIDTH, O3_HEIGHT, Color.darkGray));    

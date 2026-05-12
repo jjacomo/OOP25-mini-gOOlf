@@ -7,7 +7,7 @@ import it.unibo.minigoolf.controller.physics.PhysicsController;
 import it.unibo.minigoolf.controller.physics.PhysicsControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.model.map.GameMap;
-import it.unibo.minigoolf.model.map.factories.SecondMapFactory;
+import it.unibo.minigoolf.model.map.factories.FirstMap;
 // import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
 import it.unibo.minigoolf.model.physics.velocity.BasicFrictionStrategy;
 import it.unibo.minigoolf.util.Vector2D;
@@ -47,7 +47,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
         // TODO: let the player write their own nickname
         this.gameState = new GameState(List.of("Player 1"));
         // this.map = new TestGameMapFactory().buildGameMap();
-        this.map = new SecondMapFactory().buildGameMap();
+        this.map = new FirstMap().buildGameMap();
         this.gameMapController = new GameMapControllerImpl(map);
         this.physicsController = new PhysicsControllerImpl(map);
         this.navigationController = new NavigationController(this);
