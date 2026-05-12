@@ -18,7 +18,7 @@ import it.unibo.minigoolf.model.map.GameMap;
  * @param gameMapController the controller facade over the map
  * @param shotState         the shot input state shared between view and controller
  */
-@SuppressWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
+@SuppressWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"}) //TODO: warning necessario, ne parleremo alla prossima riunione
 public record GameContext(
     GameState gameState,
     GameMap map,
