@@ -4,6 +4,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JOptionPane;
+
+import java.awt.Component;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Dimension;
@@ -43,5 +46,23 @@ public final class UserInterfaceFactory {
         field.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         return field;
     }
+    /**
+     * Creates and shows a Yes/No confirmation dialog.
+     *
+     * @param parent  the parent component of the dialog (usually 'this' from the calling panel)
+     * @param message the message to display
+     * @param title   the title of the dialog window
+     * @return the integer representing the user's choice (e.g., JOptionPane.YES_OPTION)
+     */
+    public static int showConfirmDialog(final Component parent, final String message, final String title) {
+        return JOptionPane.showConfirmDialog(
+                parent,
+                message,
+                title,
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+    }
 }
+
 

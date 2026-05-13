@@ -5,6 +5,7 @@ import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -18,7 +19,7 @@ import java.awt.event.MouseAdapter;
  */
 public final class PausePanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    private final int TINT = 150;
+    private static final int TINT = 150;
 
     public PausePanel(final NavigationController navController) {
         this.setOpaque(false); 
@@ -28,17 +29,26 @@ public final class PausePanel extends JPanel {
         menuBox.setLayout(new BoxLayout(menuBox, BoxLayout.Y_AXIS));
         menuBox.setOpaque(false);
 
-        final JButton resumeBtn = UserInterfaceFactory.createButton("RESUME");
-        resumeBtn.setAlignmentX(CENTER_ALIGNMENT);
-        resumeBtn.addActionListener(e -> navController.resumeGame());
+        final JButton resumeButton = UserInterfaceFactory.createButton("RESUME");
+        resumeButton.setAlignmentX(CENTER_ALIGNMENT);
+        resumeButton.addActionListener(e -> navController.resumeGame());
+        menuBox.add(resumeButton);
 
-        final JButton exitBtn = UserInterfaceFactory.createButton("EXIT TO MENU");
-        exitBtn.setAlignmentX(CENTER_ALIGNMENT);
-        exitBtn.addActionListener(e -> navController.quitToMenu());
+        final JButton quitButton = UserInterfaceFactory.createButton("QUIT");
+        quitButton.setAlignmentX(CENTER_ALIGNMENT);
+        quitButton.addActionListener(e -> {
+            final int choice = UserInterfaceFactory.showConfirmDialog(this, "Do you want to save before quitting?", "Quit Game");
 
-        menuBox.add(resumeBtn);
-        //menuBox.add(Box.createVerticalStrut(20));
-        menuBox.add(exitBtn);
+            if (choice == JOptionPane.YES_OPTION) {
+                // TODO: Logica di salvataggio da implementare!
+                navController.quitToMenu();
+                
+            } else if (choice == JOptionPane.NO_OPTION) {
+                navController.quitToMenu();
+            }
+
+        });
+        menuBox.add(quitButton);
 
         this.add(menuBox, new GridBagConstraints());
         // This is needed so if the player clicks with his mouse during pause-state, the ball won't react

@@ -11,7 +11,9 @@ PauseGame, ecc..
 - Creare i bottoni per @fedesparvo1-a11y per il salvataggio:
   - Bottone "Load Game" -> vedere se passare all'attuale LoadGamePanel o toglierlo e fare solo schermata
     di conferma -> "si" o "no".
-  - Bottone "Save Game" -> nel Pause Panel. Se viene premuto exit to mene nel menu di pausa, chiedere conferma di 
+    - Jack propone di caricare la partita dal bottone start game -> finestra di dialogo che chiede "vuoi caricare la scorsa partita?
+     [Sì] -> carica la scorsa partita [No] -> comincia una nuova partita
+  - Bottone "Save Game" -> nel Pause Panel. Se viene premuto exit to menu nel menu di pausa, chiedere conferma di 
     uscire senza salvare. Se la partita è stata salvata, il tasto exit non lo chiederà.
 - Gestire l'HUD (anche dal punto di vista logico) delle stats della partita (nomi player, shots corrispondenti)
   *nota estetica*: vogliamo mettere il colore della bandierina in base al giocatore che sta giocando? Potrei mettere

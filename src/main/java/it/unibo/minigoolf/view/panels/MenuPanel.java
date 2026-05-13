@@ -55,16 +55,26 @@ public final class MenuPanel extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         this.add(titleLabel, gbc);
 
-        // New game button
-        final JButton newGameButton = UserInterfaceFactory.createButton("NEW GAME");
-        newGameButton.addActionListener(e -> navigationController.goToNewGameMenu());
-        gbc.gridy++;
-        this.add(newGameButton, gbc);
-        // Start game button: for testing purpose, it starts the game immediately, to be removed!
-        final JButton playButton = UserInterfaceFactory.createButton("START GAME");
-        playButton.addActionListener(e -> navigationController.startGame());
+        // Start game button, test for simulitang loading game or new game
+        final JButton playButton = UserInterfaceFactory.createButton("PLAY");
+        playButton.addActionListener(e -> {
+        final int choice = UserInterfaceFactory.showConfirmDialog(
+        this, "Do you want to load the last game you played?", "Load Game");
+        
+        if (choice == javax.swing.JOptionPane.YES_OPTION) {
+            // TODO: Implementare il caricamento della partita!
+        } 
+        else if (choice == javax.swing.JOptionPane.NO_OPTION) {
+        navigationController.goToNewGameMenu();}
+        });
         gbc.gridy++;
         this.add(playButton, gbc);
+
+        // Test game button: for testing purpose, it starts the game immediately, to be removed!
+        final JButton testButton = UserInterfaceFactory.createButton("TEST GAME");
+        testButton.addActionListener(e -> navigationController.startGame());
+        gbc.gridy++;
+        this.add(testButton, gbc);
 
         // TEST FOR NOW
         final JButton leaderboardButton = UserInterfaceFactory.createButton("LEADERBOARD");
