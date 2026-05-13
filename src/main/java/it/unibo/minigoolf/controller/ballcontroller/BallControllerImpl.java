@@ -24,6 +24,15 @@ public final class BallControllerImpl implements BallController {
      */
     public BallControllerImpl(final Ball ball) {
         this.ball = ball;
+        // this.ball = new BallImpl(ball.getPosition(), ball.getRadius());
+
+        //TODO
+        // si rompe tutto pero':
+        // (credo) per risolvere questo errore di spotbugs bisognerebbe smettere di
+        // usare il ball del model come riferimento e usare solo il ball del
+        // controller, che è  quello che viene aggiornato dalla fisica. In questo modo
+        // si eviterebbe di dover creare un nuovo BallImpl ogni volta che si chiama
+        // getBall() per evitare che venga modificato da altri componenti.
     }
 
     /** {@inheritDoc} */

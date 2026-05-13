@@ -1,4 +1,4 @@
-Report - 13/05 - 2h (tot: 40h)
+Report - 13/05 - 3h (tot: 41h)
 
 * Sto guardando il codice di controller.game.GameFactory che e' dove viene creata la mappa.
     In teoria se si importa il controller della mappa non dovrebbe esserci bisogno di importare anche la mappa (chiedi a fede)
@@ -9,6 +9,12 @@ Report - 13/05 - 2h (tot: 40h)
 * Cambiate le costanti di attrito ora sono molto piu' grandi, ora sarebbe da dire a fede di aumentare la potenza dell'input.
 * Creato la costante per il vettore nullo in util.Vector2D, quindi rimpiazzato il codice dove si creava un vettore nullo
     con Vector2D.ZERO
+* Per risolvere l'errore di spotbugs del passaggio diretto di ball in GameMapImpl (invece che una copia) bisognerebbe smettere
+    di usare del tutto la Ball di GameMapImpl e usare solo quella del controller (GameMapController);
+    In generale un metodo getBall non servirebbe perche' ho gia un ballController che ti da tutte le info utili della palla
+    e metodi per settare posizione e velocita'.
+
+    Quindi rivedi anche l'uso di controller statici come in The100DaysOfWar;
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;
@@ -33,7 +39,7 @@ POSSIBILI FEATURE:
 * oppure combinare più effetti (attrito + vento) (Decorator Pattern)
 
 PER AGENDA FUTURA:
-* MainController che li contiene tutti?
+* MainController che li contiene tutti? CONTROLLER STATICI
 * Accumulatore per il dt nel game loop?
 
 * Dovrebbe esserci una velocita' massima della palla? (Con fede)

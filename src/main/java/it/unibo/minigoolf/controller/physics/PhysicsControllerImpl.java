@@ -21,6 +21,10 @@ public final class PhysicsControllerImpl implements PhysicsController {
     @Override
     public void update(final double deltaTime) {
         PhysicsEngine.update(gameMap, deltaTime);
+        //TODO
+        // PhysicsEngine.update(gameMapController, deltaTime);
+        // vedi commenti in PhysicsEngine: bisognerebbe rifare tutte le classi che
+        // accedono direttamente al GameMap (e non al controller)
     }
 
     @Override

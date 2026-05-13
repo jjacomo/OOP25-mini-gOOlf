@@ -70,6 +70,12 @@ public final class GameMapImpl implements GameMap {
     @Override
     public List<Surface> getSurfaces() {
         return this.surfaces;
+        // TODO
+        // return List.copyOf(this.surfaces); farlo qui o in GameMapControllerImpl? Se
+        // lo faccio qui, ogni volta che chiamo getSurfaces() viene creata una nuova
+        // lista, il che è inefficiente. Se lo faccio in GameMapControllerImpl, invece,
+        // posso creare una sola volta la lista immutabile e restituirla ogni volta
+        // senza overhead.
     }
 
     /**
@@ -79,6 +85,12 @@ public final class GameMapImpl implements GameMap {
     public Ball getBall() {
         return this.ball;
         // return new BallImpl(this.ball.getPosition(), this.ball.getRadius());
+
+        // TODO: per risolvere questo errore di spotbugs bisognerebbe smettere di usare
+        // il ball del model come riferimento e usare solo il ball del controller, che è
+        // quello che viene aggiornato dalla fisica. In questo modo si eviterebbe di
+        // dover creare un nuovo BallImpl ogni volta che si chiama getBall() per evitare
+        // che venga modificato da altri componenti.
     }
 
     /**

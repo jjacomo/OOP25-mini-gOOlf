@@ -49,6 +49,15 @@ public final class PhysicsEngine {
         updateBallPosition(ball, deltaTime);
         resolveCollisions(ball, gameMap.getObstacles());
     }
+//TODO
+//     public static void update(final GameMapController gameMapController, final double deltaTime) {
+//         Vector2D ballPos = gameMapController.getBallController().getPosition();
+//         Vector2D ballVel = gameMapController.getBallController().getVelocity();
+//         LOGGER.debug("Physics update: pos={}, vel={}, dt={}", ballPos, ballVel, deltaTime);
+//         updateBallVelocity(ball, gameMapController, deltaTime);
+//         updateBallPosition(ball, deltaTime);
+//         resolveCollisions(ball, gameMapController.getObstacles());
+//     }
 
     /**
      * Applies surface friction to the ball's velocity.
