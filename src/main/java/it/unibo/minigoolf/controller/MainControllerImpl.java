@@ -55,7 +55,8 @@ public final class MainControllerImpl implements MainController, ActionListener 
             ctx.shotState(), ctx.gameState(), ctx.map(), mainWindow.getShotViewPanel());
 
         // Enable shot input at the initial ball position.
-        shotController.onBallStopped(ctx.map().getBall().getPosition());
+        // shotController.onBallStopped(ctx.map().getBall().getPosition());
+        shotController.onBallStopped(ctx.gameMapController().getBallController().getPosition());
 
         this.timer = new Timer(1000 / FPS, this);
     }
@@ -76,10 +77,13 @@ public final class MainControllerImpl implements MainController, ActionListener 
             physicsController.update(deltaTime);
 
             final Vector2D vel = ctx.map().getBall().getVelocity();
+            // final Vector2D vel = ctx.gameMapController().getBallController().getVelocity();
             if (vel.getNormSquared() < STOP_THRESHOLD_SQ) {
-                ctx.map().getBall().setVelocity(new Vector2D(0, 0));
+                // ctx.map().getBall().setVelocity(new Vector2D(0, 0));
+                ctx.gameMapController().getBallController().updateVelocity(new Vector2D(0, 0));
                 ctx.gameState().onBallStopped();
-                shotController.onBallStopped(ctx.map().getBall().getPosition());
+                // shotController.onBallStopped(ctx.map().getBall().getPosition());
+                shotController.onBallStopped(ctx.gameMapController().getBallController().getPosition());
             }
         }
 

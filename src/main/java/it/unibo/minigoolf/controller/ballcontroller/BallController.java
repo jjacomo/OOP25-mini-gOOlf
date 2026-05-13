@@ -26,6 +26,13 @@ public interface BallController {
     Vector2D getPosition();
 
     /**
+     * Returns the current velocity of the ball in logical coordinates.
+     *
+     * @return the ball velocity
+     */
+    Vector2D getVelocity();
+
+    /**
      * Returns the radius of the ball in logical coordinates.
      *
      * @return the ball radius

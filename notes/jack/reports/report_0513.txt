@@ -1,0 +1,32 @@
+Report - 13/05 - 1h (tot: 39h)
+
+* Sto guardando il codice di controller.game.GameFactory che e' dove viene creata la mappa.
+    In teoria se si importa il controller della mappa non dovrebbe esserci bisogno di importare anche la mappa (chiedi a fede)
+    Ma forse e' necessario per settare una nuova mappa (altrimenti un metodo setMap in GameMapController)
+* Ho visto che ctx usa direttamente la palla per modificarne la velocita' invece del controller
+    l'ho modificato (vecchio codice commentato) in MainControllerImpl
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+* Guarda se avere getColor in tutte le shapes ha senso;
+
+* Migliore algoritmo per l'update della velocita'
+
+* Fare che se la palla va sull'acqua ritorna alla posizione precedente? (Con fede?)
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());
+* oppure combinare più effetti (attrito + vento) (Decorator Pattern)
+
+PER AGENDA FUTURA:
+* MainController che li contiene tutti?
+* Accumulatore per il dt nel game loop?
+
+* Dovrebbe esserci una velocita' massima della palla? (Con fede)
+* Guarda il primo punto delle cose fatte oggi
