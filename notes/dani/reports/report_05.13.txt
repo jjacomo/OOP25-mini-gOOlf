@@ -1,0 +1,24 @@
+Report - 05/13 - 34 ore
+
+FATTO:
+- Riarrangiato il menu principale:
+ - [Play] -> finestra di dialogo con la scelta di caricare una partita:
+  - (yes)-> *carica partita* (da implementare con Fede) 
+  - (no)-> schermata dove chiede n* di giocatori
+
+- Nel menu di pausa, quando si preme il pulsante [QUIT], ora c'è una finestra di dialogo che chiede se si vuole salvare la partita:
+  - (yes)-> *salva partita* (da implementare con Fede) 
+  - (no)-> va direttamente al menu senza salvare
+
+DA FARE:
+- Gamestate: studiare ed implementare il multiplayer: importare i nomi dei player, adattare le schermate NewGame,
+PauseGame, ecc.. -> guardato, forse devo aspettare che fede sistemi le classi nuove, credo di aver bisogno di un controller per il gamestate
+- Se non troppo complicato, faccio anche le regole della partita (7 shot max o buca, ecc...) altrimenti lascio a Fede
+
+- Gestire l'HUD (anche dal punto di vista logico) delle stats della partita (nomi player, shots corrispondenti)
+  *nota estetica*: vogliamo mettere il colore della bandierina in base al giocatore che sta giocando? Potrei mettere
+  nella schermata dell'inserimento dei nomi dei giocatori, un pallino col colore del giocatore corrispondente,
+  solo un dettaglio grafico marginale vedremo poi verso la fine.
+
+AGENDA:
+- Dobbiamo vedere come legare la partita con le varie mappe, tutti insieme direi.
