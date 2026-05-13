@@ -6,6 +6,8 @@ import java.awt.Point;
  * A simple immutable 2D vector class.
  */
 public class Vector2D {
+    public static final Vector2D ZERO = new Vector2D(0.0, 0.0);
+
     private final double x;
     private final double y;
 

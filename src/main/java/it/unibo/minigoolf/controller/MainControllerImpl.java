@@ -80,7 +80,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
             // final Vector2D vel = ctx.gameMapController().getBallController().getVelocity();
             if (vel.getNormSquared() < STOP_THRESHOLD_SQ) {
                 // ctx.map().getBall().setVelocity(new Vector2D(0, 0));
-                ctx.gameMapController().getBallController().updateVelocity(new Vector2D(0, 0));
+                ctx.gameMapController().getBallController().updateVelocity(Vector2D.ZERO);
                 ctx.gameState().onBallStopped();
                 // shotController.onBallStopped(ctx.map().getBall().getPosition());
                 shotController.onBallStopped(ctx.gameMapController().getBallController().getPosition());

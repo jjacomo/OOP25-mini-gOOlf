@@ -1,10 +1,14 @@
-Report - 13/05 - 1h (tot: 39h)
+Report - 13/05 - 2h (tot: 40h)
 
 * Sto guardando il codice di controller.game.GameFactory che e' dove viene creata la mappa.
     In teoria se si importa il controller della mappa non dovrebbe esserci bisogno di importare anche la mappa (chiedi a fede)
     Ma forse e' necessario per settare una nuova mappa (altrimenti un metodo setMap in GameMapController)
 * Ho visto che ctx usa direttamente la palla per modificarne la velocita' invece del controller
     l'ho modificato (vecchio codice commentato) in MainControllerImpl
+* Risolto il bug della palla che oscillava quando le costanti di attrito erano troppo grandi (deltaV troppo negativo).
+* Cambiate le costanti di attrito ora sono molto piu' grandi, ora sarebbe da dire a fede di aumentare la potenza dell'input.
+* Creato la costante per il vettore nullo in util.Vector2D, quindi rimpiazzato il codice dove si creava un vettore nullo
+    con Vector2D.ZERO
 
 TODO:
 * Riguarda e aggiungi i commenti della javadoc;
@@ -16,6 +20,10 @@ TODO:
 * Dove creare GameMapController (per ora in GamePanel)
 * Guarda errori piu' "Strutturali" di spotbugs
 * Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+* Una factory per le superfici?
+* Ma le altre classi del model dovrebbero usare direttamente la palla o il controller?
+* Nelle shapes c'e' un getColor, dovrebbe essere implementato da ogni shape anche se e' uguale
+    per tutte? (non sembra un granche') (Abstract?)
 
 POSSIBILI FEATURE:
 * Caricare mappe da file

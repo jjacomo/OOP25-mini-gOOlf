@@ -7,9 +7,9 @@ package it.unibo.minigoolf.model.surfaces;
  * @author jack
  */
 public enum SurfaceType {
-    GRASS(0.75, "Grass", "surfaces/grass.png"),
-    SAND(1.85, "Sand", "surfaces/sand.png"),
-    DIRT(1.25, "Dirt", "surfaces/dirt.png"),
+    GRASS(1.75, "Grass", "surfaces/grass.png"),
+    SAND(9.25, "Sand", "surfaces/sand.png"),
+    DIRT(6.25, "Dirt", "surfaces/dirt.png"),
     ICE(0.25, "Ice", "surfaces/ice.png");
 
     private final double friction;

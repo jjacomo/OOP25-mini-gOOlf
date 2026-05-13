@@ -22,7 +22,7 @@ public class BallImpl implements Ball {
      */
     public BallImpl(final Vector2D position, final double radius) {
         this.circle = new Circle(position, radius, Color.WHITE);
-        this.velocity = new Vector2D(0, 0);
+        this.velocity = Vector2D.ZERO;
 
     }
 

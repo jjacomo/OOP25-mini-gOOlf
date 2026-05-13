@@ -17,12 +17,12 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
         final double surfaceFriction = surface.getFriction();
         double friction = 0;
 
-        if (velocityNorm > 600) {
+        if (velocityNorm > 800) {
             // Attrito dinamico più forte a velocità molto elevate, per evitare che la palla diventi incontrollabile.
-            friction = 15000 * surfaceFriction / velocityNorm; // per test, da tarare meglio
+            friction = 15000 * surfaceFriction / Math.sqrt(velocityNorm); // per test, da tarare meglio
             LOGGER.debug("High speed: Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm,
                     surfaceFriction, deltaTime);
-        } else if (velocityNorm > 50) {
+        } else if (velocityNorm > 200) {
             // Attrito diretto dalla superficie e modulato dalla velocità:
             // basso quando la palla è veloce, crescente man mano che rallenta.
             friction = 10000 * surfaceFriction / velocityNorm; // per test, da tarare meglio
@@ -35,15 +35,19 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
                     surfaceFriction, deltaTime);
         } else if (velocityNorm != 0) {
             LOGGER.debug("Very low speed: setting velocity to zero.");
-            ball.setVelocity(new Vector2D(0, 0)); // Non c'e' bisogno di stoppare la palla in MainController
+            ball.setVelocity(Vector2D.ZERO); // Non c'e' bisogno di stoppare la palla in MainController
             return;
         } else if (velocityNorm == 0) {
             return;
         }
 
         final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
-        final Vector2D newVelocity = velocity.add(frictionForce.scalarMultiply(deltaTime));
-        ball.setVelocity(newVelocity);
+        final Vector2D deltaV = frictionForce.scalarMultiply(deltaTime);
+        if (deltaV.getNorm() >= velocityNorm) {
+            ball.setVelocity(Vector2D.ZERO);
+        } else {
+            ball.setVelocity(velocity.add(deltaV));
+        }
     }
 
 }
