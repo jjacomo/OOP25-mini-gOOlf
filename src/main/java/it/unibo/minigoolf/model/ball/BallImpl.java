@@ -12,7 +12,7 @@ import it.unibo.minigoolf.util.shapes.Circle;
  */
 public class BallImpl implements Ball {
     private Vector2D velocity;
-    private Circle circle;
+    private Circle body;
 
     /**
      * Constructs a new BallImpl with the specified position, velocity, and radius.
@@ -21,7 +21,7 @@ public class BallImpl implements Ball {
      * @param radius   the radius of the ball
      */
     public BallImpl(final Vector2D position, final double radius) {
-        this.circle = new Circle(position, radius, Color.WHITE);
+        this.body = new Circle(position, radius, Color.WHITE);
         this.velocity = Vector2D.ZERO;
 
     }
@@ -33,7 +33,7 @@ public class BallImpl implements Ball {
      */
     @Override
     public Vector2D getPosition() {
-        return this.circle.position();
+        return this.body.position();
     }
 
     /**
@@ -53,7 +53,7 @@ public class BallImpl implements Ball {
      */
     @Override
     public double getRadius() {
-        return this.circle.radius();
+        return this.body.radius();
     }
 
     /**
@@ -63,7 +63,7 @@ public class BallImpl implements Ball {
      */
     @Override
     public void setPosition(final Vector2D position) {
-        this.circle = new Circle(position, this.circle.radius(), Color.WHITE);
+        this.body = new Circle(position, this.body.radius(), Color.WHITE);
     }
 
     /**
