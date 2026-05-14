@@ -7,18 +7,17 @@ import it.unibo.minigoolf.model.map.GameMap;
 
 /**
  * Immutable container that groups all the objects needed to run a match.
- * Passed from {@link GameFactory} to {@link it.unibo.minigoolf.controller.MainControllerImpl}
- * and {@link it.unibo.minigoolf.view.MainWindow},
- * so neither class needs to import individual model types directly.
+ * Lives in the {@code app} package so neither the controller nor the view
+ * layer owns it, keeping the MVC boundaries clean.
  *
- * @author fede
+ * @author fede and dani
  *
  * @param gameState         the central game logic (turn order, ball-moving flag)
  * @param map               the game map (surfaces, ball, obstacles)
  * @param gameMapController the controller facade over the map
  * @param shotState         the shot input state shared between view and controller
  */
-@SuppressWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"}) //TODO: warning necessario, ne parleremo alla prossima riunione
+@SuppressWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"}) //TODO: warning necessario: 
 public record GameContext(
     GameState gameState,
     GameMap map,

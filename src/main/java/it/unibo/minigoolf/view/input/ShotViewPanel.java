@@ -2,6 +2,7 @@ package it.unibo.minigoolf.view.input;
 
 import it.unibo.minigoolf.model.logic.ShotState;
 import it.unibo.minigoolf.util.Vector2D;
+import it.unibo.minigoolf.controller.shot.ShotView;
 
 import javax.swing.JPanel;
 import java.awt.BasicStroke;
@@ -19,12 +20,12 @@ import java.util.Optional;
 /**
  * Pure view panel for the shot indicator.
  * Draws the dashed line and arrowhead while the user is dragging.
- * All shot state logic lives in {@link ShotState};
- * this panel only reads from it and forwards raw input events.
+ * Implements {@link ShotView} so the controller can enable input
+ * without depending on this concrete class.
  *
  * @author fede
  */
-public final class ShotViewPanel extends JPanel implements ShotVisualizer {
+public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotView {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -32,16 +33,10 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
-    /** Squared power below which the line is drawn green. */
     private static final double LOW_THRESHOLD = 1_000.0;
-
-    /** Squared power above LOW_THRESHOLD and below which the line is yellow. */
     private static final double MED_THRESHOLD = 5_000.0;
-
-    /** Maximum display length of the dashed line in logical pixels. */
     private static final double MAX_LINE_PIXELS = 150.0;
 
-    /** Dashed stroke for the power indicator line. */
     private static final float LINE_WIDTH = 5.0f;
     private static final float[] DASH_PATTERN = {10f, 6f};
     private static final Stroke DASHED_STROKE = new BasicStroke(
@@ -53,13 +48,9 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
         0f
     );
 
-    /** Arrowhead size in logical pixels. */
     private static final double ARROW_SIZE = 18.0;
 
-    /** The shot state model — read to draw, written via updateShotIntent/shoot. */
     private final transient ShotState shotState;
-
-    /** The mouse listener that translates drag gestures into vectors. */
     private final transient ShotListener shotListener;
 
     /**
@@ -106,47 +97,36 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     }
 
     /**
-     * Activates shot input for the current turn.
-     * Called by {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}.
-     *
-     * @param ballPosition current centre of the ball in logical coordinates
+     * {@inheritDoc}
+     * Activates shot input at the given ball position.
      */
+    @Override
     public void enableShot(final Point ballPosition) {
         shotState.reset(new Vector2D(ballPosition.x, ballPosition.y));
         this.shotListener.setEnable(true);
     }
 
     /**
-     * Disables shot input (e.g. while the ball is moving).
+     * Disables shot input.
      */
     public void disableShot() {
         this.shotListener.setEnable(false);
     }
 
-    /**
-     * Forwards the drag vector to the model and triggers a repaint.
-     *
-     * @param direction current shot direction/power vector
-     */
+    /** {@inheritDoc} */
     @Override
     public void updateShotIntent(final Vector2D direction) {
         shotState.updateIntent(direction);
         repaint();
     }
 
-    /**
-     * Forwards the mouse-release event to the model.
-     */
+    /** {@inheritDoc} */
     @Override
     public void shoot() {
         shotState.confirmShot();
     }
 
-    /**
-     * Draws the dashed coloured line with an arrowhead at the tip.
-     *
-     * @param g the Graphics context
-     */
+    /** {@inheritDoc} */
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
@@ -170,8 +150,8 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
             final Vector2D displayDir = dir.clampedTo(MAX_LINE_PIXELS);
             final Point tip = displayDir.translate(origin);
 
-            final Color lineColor;
             final double squaredPower = dir.getNormSquared();
+            final Color lineColor;
             if (squaredPower < LOW_THRESHOLD) {
                 lineColor = Color.GREEN;
             } else if (squaredPower < MED_THRESHOLD) {
@@ -185,7 +165,6 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
             g2d.draw(new Line2D.Float(origin.x, origin.y, tip.x, tip.y));
             drawArrowhead(g2d, displayDir, tip);
 
-            // Small circle at the ball centre.
             g2d.setStroke(new BasicStroke(1f));
             g2d.fillOval(origin.x - 4, origin.y - 4, 8, 8);
         } finally {
@@ -194,13 +173,14 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer {
     }
 
     /**
-     * Draws a ">" arrowhead at the tip of the indicator line.
+     * Draws a arrowhead at the tip of the indicator line.
      *
      * @param g2d        the graphics context (already scaled to logical space)
      * @param displayDir the clamped display vector
      * @param tip        the tip point in logical coordinates
      */
-    private static void drawArrowhead(final Graphics2D g2d, final Vector2D displayDir, final Point tip) {
+    private static void drawArrowhead(final Graphics2D g2d,
+            final Vector2D displayDir, final Point tip) {
         final double angle = Math.atan2(displayDir.getY(), displayDir.getX());
         final double wingAngle = Math.toRadians(140);
 

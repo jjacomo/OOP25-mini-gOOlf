@@ -3,7 +3,7 @@ package it.unibo.minigoolf.view;
 import it.unibo.minigoolf.controller.game.GameContext;
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
-import it.unibo.minigoolf.view.input.ShotViewPanel;
+import it.unibo.minigoolf.controller.shot.ShotView;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
 import it.unibo.minigoolf.view.panels.NewGamePanel;
@@ -18,7 +18,8 @@ import java.io.Serial;
 /**
  * The main application window.
  * Hosts the panel that is currently active.
- * Receives a {@link GameContext} instead of individual model objects.
+ * Receives a {@link GameContext} instead of individual model objects,
+ * so it has no direct imports of model classes.
  *
  * @author dani and fede
  */
@@ -70,12 +71,13 @@ public final class MainWindow extends JFrame {
     }
 
     /**
-     * Returns the shot view panel so {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}
+     * Returns the shot view interface so
+     * {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}
      * can be wired to it after construction.
      *
-     * @return the shot view panel
+     * @return the shot view interface
      */
-    public ShotViewPanel getShotViewPanel() {
-        return gamePanel.getShotViewPanel();
+    public ShotView getShotView() {
+        return gamePanel.getShotView();
     }
 }

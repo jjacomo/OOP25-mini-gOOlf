@@ -3,6 +3,7 @@ package it.unibo.minigoolf.view.panels;
 import it.unibo.minigoolf.controller.game.GameContext;
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
+import it.unibo.minigoolf.controller.shot.ShotView;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
 import javax.swing.AbstractAction;
@@ -111,13 +112,12 @@ public final class GamePanel extends JPanel {
     }
 
     /**
-     * Returns the shot view panel so the controller can wire
-     * {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl} to it.
+     * Returns the shot view as the narrow {@link ShotView} interface,
+     * so callers stay decoupled from the concrete {@link ShotViewPanel}.
      *
-     * @return the shot view panel
+     * @return the shot view interface
      */
-    @SuppressWarnings("EI_EXPOSE_REP")//TODO: suppress warning probabilmente necessario
-    public ShotViewPanel getShotViewPanel() {
+    public ShotView getShotView() {
         return shotViewPanel;
     }
 }
