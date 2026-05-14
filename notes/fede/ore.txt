@@ -24,3 +24,5 @@
 
 4 ore: snellitto completamente MainControllerImpl e diviso le parti di model e controller che avevo nella view in delle nuove
         classi: GameContext e GameFactory
+
+2 ore: sistemato warning di spotbugs
