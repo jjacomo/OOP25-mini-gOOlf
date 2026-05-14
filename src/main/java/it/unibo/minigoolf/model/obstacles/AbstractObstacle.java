@@ -32,7 +32,7 @@ public abstract class AbstractObstacle {
         return this.position;
     }
 
-	/**
+    /**
      * Checks if the ball is colliding with the obstacle's boundaries.
      *
      * @param ball the ball object to be checked for collisions
@@ -40,7 +40,7 @@ public abstract class AbstractObstacle {
      */
     public abstract boolean isColliding(Ball ball);
 
-	/**
+    /**
      * Resolves the physical collision between the ball and the obstacle calculating
      * the bounce based on the obstacle's shape and applies the new direction to the ball.
      * 
@@ -53,10 +53,12 @@ public abstract class AbstractObstacle {
      * Moves the ball outward along the collision normal by the penetration depth.
      *
      * @param ball the ball to reposition
+     * @param ballPosition the position of the ball
      * @param normal the collision normal (unit vector pointing outward from the obstacle)
      * @param penetrationDepth the amount of overlap (positive value)
      */
-    protected void correctPosition(final Ball ball, final Vector2D ballPosition, final Vector2D normal, final double penetrationDepth) {
+    protected void correctPosition(final Ball ball, final Vector2D ballPosition, 
+                                final Vector2D normal, final double penetrationDepth) {
         final Vector2D newPosition = ballPosition.add(normal.scalarMultiply(penetrationDepth));
         ball.setPosition(newPosition);
     }

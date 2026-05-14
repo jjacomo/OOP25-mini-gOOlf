@@ -9,7 +9,7 @@ import java.awt.Color;
  * Represents a circular obstacle in the minigolf course.
  * This obstacle is defined by its center position and radius.
  */
-public final class RoundObstacle extends AbstractObstacle implements Obstacle{ 
+public final class RoundObstacle extends AbstractObstacle implements Obstacle { 
     private static final double MIN_RADIUS = 5.0;
     private static final double MAX_RADIUS = 150.0;
     private final double radius;
@@ -19,8 +19,9 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
     /**
      * Constructs a circular obstacle.
      *
-     * @param center the center of the circle (must not be null)
      * @param radius the radius of the circular obstacle
+     * @param position the position of the obstacle
+     * @param color the color of the obstacle
      * @throws IllegalArgumentException if radius is not between [MIN_RADIUS, MAX_RADIUS]
      */
     public RoundObstacle(final Vector2D position, final double radius, final Color color) {
@@ -33,7 +34,7 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
         this.color = color;
         this.shape = new Circle(position, this.radius, this.color);
     }
-    
+
     /**
      * Checks if the ball is colliding with the obstacle's boundaries.
      *
@@ -60,7 +61,7 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
         final double distance = collisionVector.getNorm();
         final Vector2D normal = computeCollisionNormal(collisionVector, distance, ball.getVelocity());
         final double penetrationDepth = (ball.getRadius() + this.radius) - distance;
-		
+
         if (penetrationDepth > 0) {
             correctPosition(ball, ballPosition, normal, penetrationDepth);
         }
@@ -81,7 +82,7 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle{
             return collisionVector.normalize();
         }
 
-        return  velocity.scalarMultiply(-1).normalize();
+        return velocity.scalarMultiply(-1).normalize();
     }
 
     @Override
