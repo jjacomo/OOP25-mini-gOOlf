@@ -21,10 +21,10 @@ public class Vector2D {
         this.x = x;
         this.y = y;
     }
-	
-	/**
+
+    /**
      * Creates a vector from two AWT Points.
-	 *
+     *
      * @param from starting point
      * @param to   ending point
      */
@@ -61,11 +61,11 @@ public class Vector2D {
     public Vector2D scalarMultiply(final double a) {
         return new Vector2D(a * this.x, a * this.y);
     }
-	
-	/**
+
+    /**
      * Returns a new vector whose components are multiplied by -1.
-	 *
-	 * @return the opposite vector (-x, -y).
+     *
+     * @return the opposite vector (-x, -y).
      */
     public Vector2D getOppositeVector() {
         return scalarMultiply(-1);
@@ -96,7 +96,7 @@ public class Vector2D {
 
         return dx * dx + dy * dy;
     }
-	
+
     /**
      * Returns a new vector that is this vector minus the given vector.
      *
@@ -124,6 +124,7 @@ public class Vector2D {
     public double getNormSquared() {
         return this.x * this.x + this.y * this.y;
     }
+
     /**
      * Returns a new vector that is the sum of this vector and the given vector.
      *
@@ -158,8 +159,8 @@ public class Vector2D {
 
         return scalarMultiply(1.0 / norm);
     }
-	
-	/**
+
+    /**
      * Returns a scaled copy of this vector clamped to a maximum length.
      *
      * @param maxLength maximum allowed length
@@ -171,13 +172,13 @@ public class Vector2D {
             return this;
         }
         final double scale = maxLength / len;
-		
+
         return new Vector2D(this.x * scale, this.y * scale);
     }
-	
-	/**
+
+    /**
      * Translates an AWT Point by this vector.
-	 *
+     *
      * @param origin the starting point
      * @return a new Point at (origin.x + this.x, origin.y + this.y)
      */
