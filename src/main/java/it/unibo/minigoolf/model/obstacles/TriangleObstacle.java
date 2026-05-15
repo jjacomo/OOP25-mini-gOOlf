@@ -111,7 +111,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
      * @param nameA name of the first endpoint
      * @param nameB name of the second endpoint
      * @throws IllegalArgumentException if the side length is outside [MIN_SIDE_LENGTH, 
-     *			MAX_SIDE_LENGTH]
+     *          MAX_SIDE_LENGTH]
      */
     private void checkDistanceBounds(final Vector2D endpointA, final Vector2D endpointB,
                                      final String nameA, final String nameB) {
@@ -152,28 +152,33 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         final Vector2D middle = endpointA.add(endpointB).scalarMultiply(0.5);
         final Vector2D toCentroid = getPosition().subtract(middle);
 
-        return (perpendicular1.dotProduct(toCentroid) < 0) ? perpendicular1.normalize() : perpendicular2.normalize();
+        return (perpendicular1.dotProduct(toCentroid) < 0) ? perpendicular1.normalize() 
+                : perpendicular2.normalize();
     }
 
     /**
      * Evaluates whether the side examined is the closest to the ball.
-     * 
-     * @param ballPosition the position of the ball
-     * @param endpointA the first point of the edge
-     * @param endpointB the second point of the edge
-     * @param faceNormal the normal of the face
-     * @param bestDistanceSquared the best squared distance from the ball to the edge
+     *
+     * @param ballPosition the position of the ball.
+     * @param endpointA the first point of the edge.
+     * @param endpointB the second point of the edge.
+     * @param faceNormal the normal of the face.
+     * @param bestDistanceSquared an array used to store and update the minimum squared
+     *          distance found.
+     * @param bestPoint an array used to store and update the closest point on the
+     *          perimeter.
+     * @param bestNormal an array used to store and update the normal at the closest point.
      */
     private void evaluateEdge(final Vector2D ballPosition, final Vector2D endpointA, 
                                 final Vector2D endpointB, final Vector2D faceNormal,
-                                double[] bestDistanceSquared, Vector2D[] bestPoint,
-                                Vector2D[] bestNormal) {
+                                final double[] bestDistanceSquared, 
+                                final Vector2D[] bestPoint, final Vector2D[] bestNormal) {
         final Vector2D segmentAB = endpointB.subtract(endpointA);
         final Vector2D segmentAP = ballPosition.subtract(endpointA);
         final double lengthSquared = segmentAB.getNormSquared();
         final double scalarProjection = segmentAP.dotProduct(segmentAB) / lengthSquared;
-        Vector2D closestPoint;
-        Vector2D normal;
+        final Vector2D closestPoint;
+        final Vector2D normal;
 
         if (scalarProjection <= 0) {
             closestPoint = endpointA;
