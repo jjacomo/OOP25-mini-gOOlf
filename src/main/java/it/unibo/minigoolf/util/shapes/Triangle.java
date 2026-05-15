@@ -21,9 +21,9 @@ public record Triangle(Vector2D vertex1, Vector2D vertex2, Vector2D vertex3, Col
      */
     @Override
     public boolean contains(final Vector2D position) {
-        boolean sign1 = crossSign(vertex1, vertex2, position);
-        boolean sign2 = crossSign(vertex2, vertex3, position);
-        boolean sign3 = crossSign(vertex3, vertex1, position);
+        final boolean sign1 = crossSign(vertex1, vertex2, position);
+        final boolean sign2 = crossSign(vertex2, vertex3, position);
+        final boolean sign3 = crossSign(vertex3, vertex1, position);
 
         return sign1 == sign2 && sign2 == sign3;
     }
@@ -44,12 +44,12 @@ public record Triangle(Vector2D vertex1, Vector2D vertex2, Vector2D vertex3, Col
     }
 
     /**
-     * Returns the color of the triangle
+     * Returns the color of the triangle.
      * 
      * @param color the color
      * @return the color of the triangle
      */
-    public Color getColor(){
+    public Color getColor() {
         return this.color;
     }
 }
