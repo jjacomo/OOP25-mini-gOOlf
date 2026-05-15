@@ -1,0 +1,40 @@
+Report - 14/05 - 1h (tot: 43h)
+
+* Fatta bandierina (da cambiare il modo in cui viene disegnata (magari una funzione che se ne occupa))
+* (TODO) Magari implementare le superfici con un tipo Surface<Rectangle> ? (non so se ha senso)
+    In ottica di avere piu' superfici di forme diverse (senza dover creare nuove classi)
+
+CONTROLLO ERRORI DA METTERE (TEST):
+- check che la mappa venga creata con almeno una palla, una buca, una superficie
+- check che la palla sia sempre sopra una superficie
+- check che il raggio della palla sia > di un raggio minimo consentito
+- altri check?
+
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+* Guarda se avere getColor in tutte le shapes ha senso;
+
+* Migliore algoritmo per l'update della velocita'
+
+* Fare che se la palla va sull'acqua ritorna alla posizione precedente? (Con fede?)
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+* Una factory per le superfici?
+* Ma le altre classi del model dovrebbero usare direttamente la palla o il controller?
+* Nelle shapes c'e' un getColor, dovrebbe essere implementato da ogni shape anche se e' uguale
+    per tutte? (non sembra un granche') (Abstract?)
+
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());
+* oppure combinare più effetti (attrito + vento) (Decorator Pattern)
+
+PER AGENDA FUTURA:
+* MainController che li contiene tutti? CONTROLLER STATICI
+* Accumulatore per il dt nel game loop?
+
+* Dovrebbe esserci una velocita' massima della palla? (Con fede)
+* Guarda il primo punto delle cose fatte oggi
