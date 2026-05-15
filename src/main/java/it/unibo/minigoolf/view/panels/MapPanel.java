@@ -1,7 +1,5 @@
 package it.unibo.minigoolf.view.panels;
 
-import javax.swing.JPanel;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,12 +13,14 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
@@ -116,6 +116,15 @@ public class MapPanel extends JPanel {
             g2d.setColor(obstacle.getShape().getColor());
             drawShape(obstacle.getShape(), g2d, null);
         }
+
+        // TODO: fai una funzione
+        // disegnare la bandierina
+        // asta:
+        g2d.setColor(Color.lightGray);
+        drawShape(new Rectangle(new Vector2D(1805, 420), 10, 100, Color.RED), g2d, null);
+        // bandiera:
+        g2d.setColor(Color.RED);
+        drawShape(new Triangle(new Vector2D(1815, 420), new Vector2D(1865, 440), new Vector2D(1815, 460), Color.RED), g2d, null);
     }
 
     /**
@@ -153,4 +162,4 @@ public class MapPanel extends JPanel {
             throw new UnsupportedOperationException("Drawing not implemented for shape type: " + shape.getClass());
         }
     }
-}
+ }
