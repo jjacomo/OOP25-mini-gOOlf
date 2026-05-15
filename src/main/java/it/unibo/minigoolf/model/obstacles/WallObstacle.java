@@ -16,41 +16,42 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
     private static final double MAX_HEIGHT = 1080.0;
 
     private final double minX;
-	private final double maxX;
-	private final double minY;
-	private final double maxY;
+    private final double maxX;
+    private final double minY;
+    private final double maxY;
     private final Vector2D normalLeft;
-	private final Vector2D normalRight;
-	private final Vector2D normalTop;
-	private final Vector2D normalBottom;
+    private final Vector2D normalRight;
+    private final Vector2D normalTop;
+    private final Vector2D normalBottom;
     private final Rectangle shape;
     private final Color color;
 
-	/**
+    /**
      * Constructs a rectangular wall.
      * 
      * @param position the 2D vector representing the top-left corner of the wall
      * @param width    the width of the wall
      * @param height   the height of the wall
-	 * @throws IllegalArgumentException if the width is outside [MIN_WIDTH, 
-	 *			MAX_WIDTH] or if the height is outside [MIN_HEIGHT, MAX_HEIGHT]
+     * @param color    the color of the wall
+     * @throws IllegalArgumentException if the width is outside [MIN_WIDTH, 
+     *         MAX_WIDTH] or if the height is outside [MIN_HEIGHT, MAX_HEIGHT]
      */
     public WallObstacle(final Vector2D position, final double width, final double height, final Color color) {
         super(position);
         if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
             throw new IllegalArgumentException("Invalid dimensions. Width: " + width
-			+ "; Height: " + height + ".\nWidth must be between [" + MIN_WIDTH + ", "
-			+ MAX_WIDTH + "].\n Height must be between [" + MIN_HEIGHT + ", "
-			+ MAX_HEIGHT + "].");
-		}
+            + "; Height: " + height + ".\nWidth must be between [" + MIN_WIDTH + ", "
+            + MAX_WIDTH + "].\n Height must be between [" + MIN_HEIGHT + ", "
+            + MAX_HEIGHT + "].");
+        }
         this.minX = position.getX();
         this.maxX = position.getX() + width;
         this.minY = position.getY();
         this.maxY = position.getY() + height;
-        this.normalLeft   = new Vector2D(-1, 0);
-        this.normalRight  = new Vector2D( 1, 0);
-        this.normalTop    = new Vector2D( 0,-1);
-        this.normalBottom = new Vector2D( 0, 1);
+        this.normalLeft = new Vector2D(-1, 0);
+        this.normalRight = new Vector2D(1, 0);
+        this.normalTop = new Vector2D(0, -1);
+        this.normalBottom = new Vector2D(0, 1);
         this.color = color;
         this.shape = new Rectangle(position, width, height, this.color);
     }
@@ -85,26 +86,26 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
         final double positionY = ballPosition.getY();
         final double closestX = Math.max(minX, Math.min(positionX, maxX));
         final double closestY = Math.max(minY, Math.min(positionY, maxY));
-        final boolean inside = (positionX > minX && positionX < maxX && positionY > minY && positionY < maxY);
-        Vector2D normal;
-        double penetrationDepth;
+        final boolean inside = positionX > minX && positionX < maxX && positionY > minY && positionY < maxY;
+        final Vector2D normal;
+        final double penetrationDepth;
 
         if (inside) {
-            final double distanceLeft   = positionX - minX;
-            final double distanceRight  = maxX - positionX;
-            final double distanceTop    = positionY - minY;
+            final double distanceLeft = positionX - minX;
+            final double distanceRight = maxX - positionX;
+            final double distanceTop = positionY - minY;
             final double distanceBottom = maxY - positionY;
-            double minDistance = Math.min(Math.min(distanceLeft, distanceRight), Math.min(distanceTop, distanceBottom));
-			
+            final double minDistance = Math.min(Math.min(distanceLeft, distanceRight), Math.min(distanceTop, distanceBottom));
+
             if (minDistance == distanceLeft) {
-				normal = normalLeft;
-			} else if (minDistance == distanceRight) {
-				normal = normalRight;
+                normal = normalLeft;
+            } else if (minDistance == distanceRight) {
+                normal = normalRight;
             } else if (minDistance == distanceTop) {
-				normal = normalTop;
+                normal = normalTop;
             } else {
-				normal = normalBottom;
-			}
+                normal = normalBottom;
+            }
             penetrationDepth = ball.getRadius() + minDistance;
         } else {
             final Vector2D closestPoint = new Vector2D(closestX, closestY);
@@ -113,38 +114,36 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
             penetrationDepth = ball.getRadius() - distance;
 
             if (distance < EPSILON) {
-                final boolean onLeft   = Math.abs(positionX - minX) < EPSILON;
-                final boolean onRight  = Math.abs(positionX - maxX) < EPSILON;
-                final boolean onTop    = Math.abs(positionY - minY) < EPSILON;
+                final boolean onLeft = Math.abs(positionX - minX) < EPSILON;
+                final boolean onRight = Math.abs(positionX - maxX) < EPSILON;
+                final boolean onTop = Math.abs(positionY - minY) < EPSILON;
                 final boolean onBottom = Math.abs(positionY - maxY) < EPSILON;
+
                 if ((onLeft || onRight) && (onTop || onBottom)) {
-                    double accX = 0, accY = 0;
+                    double accX = 0;
+                    double accY = 0;
+
                     if (onLeft) {
-						accX -= 1;
-					}
-                    if (onRight) {
-						accX += 1;
-					}
-                    if (onTop)  {
-						accY -= 1;
-					}
-                    if (onBottom) {
-						accY += 1;
-					}
+                        accX -= 1;
+                    } else {
+                        accX += 1;
+                    }
+                    if (onTop) {
+                        accY -= 1;
+                    } else {
+                        accY += 1;
+                    }
                     normal = new Vector2D(accX, accY).normalize();
                 } else {
                     if (onLeft) {
-						normal = normalLeft;
-					}
-                    else if (onRight) {
-						normal = normalRight;
-					}
-                    else if (onTop) {
-						normal = normalTop;
-					}
-                    else {
-						normal = normalBottom;
-					}
+                        normal = normalLeft;
+                    } else if (onRight) {
+                        normal = normalRight;
+                    } else if (onTop) {
+                        normal = normalTop;
+                    } else {
+                        normal = normalBottom;
+                    }
                 }
             } else {
                 normal = toCenter.normalize();
