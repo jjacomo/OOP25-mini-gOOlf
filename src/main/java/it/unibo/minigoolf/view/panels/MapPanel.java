@@ -117,14 +117,29 @@ public class MapPanel extends JPanel {
             drawShape(obstacle.getShape(), g2d, null);
         }
 
-        // TODO: fai una funzione
-        // disegnare la bandierina
-        // asta:
+        drawFlag(g2d,
+                new Vector2D(
+                        mapController.getHoleController().getPosition().getX()
+                                + mapController.getHoleController().getRadius(),
+                        mapController.getHoleController().getPosition().getY()));
+    }
+
+    private void drawFlag(Graphics2D g2d, Vector2D position) {
+        final int POLE_HEIGHT = 100;
+        final int POLE_WIDTH = 10;
+        final int POLE_OFFSET_X = 5;
+        final int FLAG_WIDTH = 55;
+        final int FLAG_HEIGHT = 45;
+        // pole:
         g2d.setColor(Color.lightGray);
-        drawShape(new Rectangle(new Vector2D(1805, 420), 10, 100, Color.RED), g2d, null);
-        // bandiera:
+        drawShape(new Rectangle(new Vector2D(position.getX() - POLE_OFFSET_X, position.getY() - POLE_HEIGHT),
+                POLE_WIDTH, POLE_HEIGHT, Color.RED), g2d, null);
+        // flag:
         g2d.setColor(Color.RED);
-        drawShape(new Triangle(new Vector2D(1815, 420), new Vector2D(1865, 440), new Vector2D(1815, 460), Color.RED), g2d, null);
+        drawShape(new Triangle(new Vector2D(position.getX() + POLE_OFFSET_X, position.getY() - POLE_HEIGHT),
+                new Vector2D(position.getX() + FLAG_WIDTH, position.getY() - POLE_HEIGHT + FLAG_HEIGHT / 2),
+                new Vector2D(position.getX() + POLE_OFFSET_X, position.getY() - POLE_HEIGHT + FLAG_HEIGHT), Color.RED),
+                g2d, null);
     }
 
     /**
