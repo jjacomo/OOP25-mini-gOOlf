@@ -3,6 +3,12 @@ package it.unibo.minigoolf.controller.holecontroller;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
+/**
+ * Interface representing the controller for the hole in the mini golf game.
+ * It provides methods to retrieve the hole's shape, position, and radius.
+ * 
+ * @author jack
+ */
 public interface HoleController {
 
     /**
@@ -10,7 +16,7 @@ public interface HoleController {
      *
      * @return the shape of the hole
      */
-    Shape getHoleShape();
+    Shape getShape();
 
     /**
      * Returns the current position of the hole in logical coordinates.

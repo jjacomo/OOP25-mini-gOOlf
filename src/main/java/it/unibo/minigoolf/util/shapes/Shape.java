@@ -20,9 +20,9 @@ public interface Shape {
     boolean contains(Vector2D position);
 
     /**
-     * Returns the color of the shape
+     * Returns the color of the shape.
      * 
      * @return the color of the shape
      */
-    Color getColor();    
+    Color getColor();
 }

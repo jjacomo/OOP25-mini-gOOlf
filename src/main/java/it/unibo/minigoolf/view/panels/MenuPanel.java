@@ -58,14 +58,15 @@ public final class MenuPanel extends JPanel {
         // Start game button, test for simulitang loading game or new game
         final JButton playButton = UserInterfaceFactory.createButton("PLAY");
         playButton.addActionListener(e -> {
-        final int choice = UserInterfaceFactory.showConfirmDialog(
-        this, "Do you want to load the last game you played?", "Load Game");
-        
-        if (choice == javax.swing.JOptionPane.YES_OPTION) {
-            // TODO: Implementare il caricamento della partita!
-        } 
-        else if (choice == javax.swing.JOptionPane.NO_OPTION) {
-        navigationController.goToNewGameMenu();}
+            final int choice = UserInterfaceFactory.showConfirmDialog(
+                    this, "Do you want to load the last game you played?", "Load Game");
+
+            if (choice == javax.swing.JOptionPane.YES_OPTION) {
+                // TODO: Implementare il caricamento della partita!
+            }
+            else if (choice == javax.swing.JOptionPane.NO_OPTION) {
+                navigationController.goToNewGameMenu();
+            }
         });
         gbc.gridy++;
         this.add(playButton, gbc);

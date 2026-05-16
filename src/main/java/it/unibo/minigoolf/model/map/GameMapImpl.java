@@ -71,11 +71,7 @@ public final class GameMapImpl implements GameMap {
     public List<Surface> getSurfaces() {
         return this.surfaces;
         // TODO
-        // return List.copyOf(this.surfaces); farlo qui o in GameMapControllerImpl? Se
-        // lo faccio qui, ogni volta che chiamo getSurfaces() viene creata una nuova
-        // lista, il che è inefficiente. Se lo faccio in GameMapControllerImpl, invece,
-        // posso creare una sola volta la lista immutabile e restituirla ogni volta
-        // senza overhead.
+        // return List.copyOf(this.surfaces); farlo qui o in GameMapControllerImpl?
     }
 
     /**

@@ -9,7 +9,7 @@ import java.awt.Color;
  *
  * @param position the center position of the circle as a Vector2D
  * @param radius the radius of the circle
- * @param color    che color of the circle
+ * @param color    the color of the circle
  */
 public record Circle(Vector2D position, double radius, Color color) implements Shape {
 
@@ -26,13 +26,12 @@ public record Circle(Vector2D position, double radius, Color color) implements S
     }
 
     /**
-     * Returns the color of the circle
+     * Returns the color of the circle.
      * 
-     * @param color the color
      * @return the color of the circle
      */
     @Override
-    public Color getColor(){
+    public Color getColor() {
         return this.color;
     }
 }

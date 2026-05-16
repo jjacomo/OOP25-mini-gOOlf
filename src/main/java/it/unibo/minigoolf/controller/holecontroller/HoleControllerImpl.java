@@ -6,23 +6,37 @@ import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Shape;
 import java.awt.Color;
 
-public class HoleControllerImpl implements HoleController {
-    private Hole hole;
+/**
+ * Implementation of the HoleController interface that manages the hole in the mini golf game.
+ * It provides methods to retrieve the hole's shape, position, and radius.
+ * 
+ * @author jack
+ */
+public final class HoleControllerImpl implements HoleController {
+    private final Hole hole;
 
+    /**
+     * Constructs a new HoleControllerImpl with the specified hole.
+     *
+     * @param hole the hole to manage
+     */
     public HoleControllerImpl(final Hole hole) {
         this.hole = hole;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public Shape getHoleShape() {
+    public Shape getShape() {
         return new Circle(hole.getPosition(), hole.getRadius(), Color.BLACK);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Vector2D getPosition() {
         return hole.getPosition();
     }
 
+    /** {@inheritDoc} */
     @Override
     public double getRadius() {
         return hole.getRadius();

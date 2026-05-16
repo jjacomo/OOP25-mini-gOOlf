@@ -109,10 +109,10 @@ public class MapPanel extends JPanel {
                 });
 
         g2d.setColor(Color.BLACK);
-        drawShape(mapController.getHoleController().getHoleShape(), g2d, null);
+        drawShape(mapController.getHoleController().getShape(), g2d, null);
         g2d.setColor(Color.WHITE);
         drawShape(mapController.getBallController().getBallShape(), g2d, null);
-        for (Obstacle obstacle : mapController.getObstacles()) {
+        for (final Obstacle obstacle : mapController.getObstacles()) {
             g2d.setColor(obstacle.getShape().getColor());
             drawShape(obstacle.getShape(), g2d, null);
         }
@@ -124,21 +124,21 @@ public class MapPanel extends JPanel {
                         mapController.getHoleController().getPosition().getY()));
     }
 
-    private void drawFlag(Graphics2D g2d, Vector2D position) {
-        final int POLE_HEIGHT = 100;
-        final int POLE_WIDTH = 10;
-        final int POLE_OFFSET_X = 5;
-        final int FLAG_WIDTH = 55;
-        final int FLAG_HEIGHT = 45;
+    private void drawFlag(final Graphics2D g2d, final Vector2D position) {
+        final int poleHeight = 100;
+        final int poleWidth = 10;
+        final int poleOffsetX = 5;
+        final int flagWidth = 55;
+        final int flagHeight = 45;
         // pole:
         g2d.setColor(Color.lightGray);
-        drawShape(new Rectangle(new Vector2D(position.getX() - POLE_OFFSET_X, position.getY() - POLE_HEIGHT),
-                POLE_WIDTH, POLE_HEIGHT, Color.RED), g2d, null);
+        drawShape(new Rectangle(new Vector2D(position.getX() - poleOffsetX, position.getY() - poleHeight),
+                poleWidth, poleHeight, Color.RED), g2d, null);
         // flag:
         g2d.setColor(Color.RED);
-        drawShape(new Triangle(new Vector2D(position.getX() + POLE_OFFSET_X, position.getY() - POLE_HEIGHT),
-                new Vector2D(position.getX() + FLAG_WIDTH, position.getY() - POLE_HEIGHT + FLAG_HEIGHT / 2),
-                new Vector2D(position.getX() + POLE_OFFSET_X, position.getY() - POLE_HEIGHT + FLAG_HEIGHT), Color.RED),
+        drawShape(new Triangle(new Vector2D(position.getX() + poleOffsetX, position.getY() - poleHeight),
+                new Vector2D(position.getX() + flagWidth, position.getY() - poleHeight + flagHeight / 2),
+                new Vector2D(position.getX() + poleOffsetX, position.getY() - poleHeight + flagHeight), Color.RED),
                 g2d, null);
     }
 
@@ -164,7 +164,8 @@ public class MapPanel extends JPanel {
                         rect.height()));
             }
         } else if (shape instanceof Circle circ) {
-            g2d.fillOval((int) circ.position().getX()- (int) circ.radius(), (int) circ.position().getY()- (int) circ.radius(), (int) circ.radius() * 2,
+            g2d.fillOval((int) circ.position().getX() - (int) circ.radius(),
+                    (int) circ.position().getY() - (int) circ.radius(), (int) circ.radius() * 2,
                     (int) circ.radius() * 2);
         } else if (shape instanceof Triangle tria) {
             final int[] xPoints = {(int) tria.vertex1().getX(), (int) tria.vertex2().getX(),

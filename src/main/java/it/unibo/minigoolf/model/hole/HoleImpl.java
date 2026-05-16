@@ -5,6 +5,11 @@ import java.awt.Color;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 
+/**
+ * Implementation of the Hole interface representing the hole in the mini golf game.
+ * 
+ * @author jack
+ */
 public final class HoleImpl implements Hole {
     private final Vector2D position;
     private final Circle circle;

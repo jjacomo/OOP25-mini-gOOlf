@@ -27,7 +27,7 @@ public interface GameMapController {
      * @return a list of all obstacles
      */
     List<Obstacle> getObstacles();
-    
+
     // Hole getHole();
 
     /**

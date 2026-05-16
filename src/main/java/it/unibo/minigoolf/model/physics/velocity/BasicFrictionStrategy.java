@@ -7,9 +7,41 @@ import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
 
+/**
+ * Basic implementation of the BallVelocityStrategy interface that applies a
+ * friction force to the ball's velocity based on the surface's friction
+ * coefficient and the ball's current speed. The friction force is stronger at
+ * higher speeds to prevent the ball from becoming uncontrollable, and it
+ * becomes weaker as the ball slows down.
+ *
+ * @author jack
+ */
 public final class BasicFrictionStrategy implements BallVelocityStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(BasicFrictionStrategy.class);
 
+    private static final int HIGH_SPEED_THRESHOLD = 800;
+    private static final int MEDIUM_SPEED_THRESHOLD = 200;
+    private static final int LOW_SPEED_THRESHOLD = 5;
+    private static final int HIGH_FRICTION_MULTIPLIER = 15_000;
+    private static final int MEDIUM_FRICTION_MULTIPLIER = 10_000;
+    private static final int LOW_FRICTION_MULTIPLIER = 500;
+
+    /**
+     * Updates the velocity of the ball based on the surface it is currently on and
+     * the time elapsed since the last update.
+     * This method applies a friction force to the ball's velocity, which is
+     * calculated based on the surface's friction coefficient and the ball's current
+     * speed. The friction force is stronger at higher speeds to prevent the ball
+     * from becoming uncontrollable, and it becomes weaker as the ball slows down.
+     *
+     * @param ball      the ball whose velocity is to be updated
+     * @param surface   the surface on which the ball is currently located, which
+     *                  may affect its velocity (e.g., different friction or bounce
+     *                  properties)
+     * @param deltaTime the time elapsed since the last update, used to calculate
+     *                  the change in velocity based on acceleration and other
+     *                  factors
+     */
     @Override
     public void updateVelocity(final Ball ball, final Surface surface, final double deltaTime) {
         final Vector2D velocity = ball.getVelocity();
@@ -17,20 +49,20 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
         final double surfaceFriction = surface.getFriction();
         double friction = 0;
 
-        if (velocityNorm > 800) {
+        if (velocityNorm > HIGH_SPEED_THRESHOLD) {
             // Attrito dinamico più forte a velocità molto elevate, per evitare che la palla diventi incontrollabile.
-            friction = 15000 * surfaceFriction / Math.sqrt(velocityNorm); // per test, da tarare meglio
+            friction = HIGH_FRICTION_MULTIPLIER * surfaceFriction / Math.sqrt(velocityNorm); // per test, da tarare meglio
             LOGGER.debug("High speed: Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm,
                     surfaceFriction, deltaTime);
-        } else if (velocityNorm > 200) {
+        } else if (velocityNorm > MEDIUM_SPEED_THRESHOLD) {
             // Attrito diretto dalla superficie e modulato dalla velocità:
             // basso quando la palla è veloce, crescente man mano che rallenta.
-            friction = 10000 * surfaceFriction / velocityNorm; // per test, da tarare meglio
+            friction = MEDIUM_FRICTION_MULTIPLIER * surfaceFriction / velocityNorm; // per test, da tarare meglio
             LOGGER.debug("Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm, surfaceFriction,
                     deltaTime);
-        } else if (velocityNorm > 5) {
+        } else if (velocityNorm > LOW_SPEED_THRESHOLD) {
             // Attrito più forte quando la palla è lenta, per evitare che si trascini troppo.
-            friction = 500 * surfaceFriction; // per test, da tarare meglio
+            friction = LOW_FRICTION_MULTIPLIER * surfaceFriction; // per test, da tarare meglio
             LOGGER.debug("Low speed: Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm,
                     surfaceFriction, deltaTime);
         } else if (velocityNorm != 0) {

@@ -48,6 +48,7 @@ public final class BallControllerImpl implements BallController {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Vector2D getVelocity() {
         return ball.getVelocity();
     }

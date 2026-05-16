@@ -2,6 +2,12 @@ package it.unibo.minigoolf.model.hole;
 
 import it.unibo.minigoolf.util.Vector2D;
 
+/**
+ * Represents the hole in the mini golf game, defined by its position and radius.
+ * The hole is the target for the ball to reach in order to complete a level.
+ * 
+ * @author jack
+ */
 public interface Hole {
     /**
      * Returns the current position of the hole in the game coordinate system.
