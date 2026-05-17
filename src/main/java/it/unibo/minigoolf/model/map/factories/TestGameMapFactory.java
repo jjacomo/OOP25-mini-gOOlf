@@ -22,8 +22,10 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
 /**
  * Test implementation of the GameMapFactory interface.
  * 
- * <p>This factory creates a simple, flat test game map suitable for development,
- * debugging, and basic testing purposes. </p>
+ * <p>
+ * This factory creates a simple, flat test game map suitable for development,
+ * debugging, and basic testing purposes.
+ * </p>
  * 
  * @author jack
  * 
@@ -33,7 +35,7 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * @see Surface
  */
 public class TestGameMapFactory implements GameMapFactory {
- 
+
     private static final double MAIN_SURFACE_X = 0;
     private static final double MAIN_SURFACE_Y = 0;
     private static final double MAIN_SURFACE_WIDTH = 1920;
@@ -85,31 +87,36 @@ public class TestGameMapFactory implements GameMapFactory {
     /**
      * Builds a simple test game map.
      * 
-     * <p>The flat surface allows for straightforward physics simulation and visual
-     * testing of the ball mechanics and user interactions.</p>
+     * <p>
+     * The flat surface allows for straightforward physics simulation and visual
+     * testing of the ball mechanics and user interactions.
+     * </p>
      * 
      * @return a GameMap instance containing two rectangular surfaces with different
-     *         properties: a large green surface (500×800) and a smaller blue surface (100×200)
+     *         properties: a large green surface (500×800) and a smaller blue
+     *         surface (100×200)
      * 
-     * @implNote The surface is created with hardcoded dimensions and friction values.
-     *           A future implementation should externalize these values to configuration.
+     * @implNote The surface is created with hardcoded dimensions and friction
+     *           values.
+     *           A future implementation should externalize these values to
+     *           configuration.
      */
     @Override
     public GameMap buildGameMap() {
         final List<Surface> surfaces = new ArrayList<>();
         final List<Obstacle> obstacles = new ArrayList<>();
         surfaces.add(new RectangularSurface(
-                        new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH,
-                                        MAIN_SURFACE_HEIGHT, Color.WHITE),
-                        SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+                new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH,
+                        MAIN_SURFACE_HEIGHT, Color.WHITE),
+                SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
         surfaces.add(new RectangularSurface(
-                        new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
-                                        SECOND_SURFACE_HEIGHT, Color.WHITE),
-                        SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getTexturePath()));
+                new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
+                        SECOND_SURFACE_HEIGHT, Color.WHITE),
+                SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX, SurfaceType.SAND.getTexturePath()));
         surfaces.add(new RectangularSurface(
-                        new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
-                                        THIRD_SURFACE_HEIGHT, Color.WHITE),
-                        SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
+                new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
+                        THIRD_SURFACE_HEIGHT, Color.WHITE),
+                SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
         obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT, Color.BLACK));
         obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT, Color.BLACK));
         obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT, Color.BLACK));
@@ -117,7 +124,7 @@ public class TestGameMapFactory implements GameMapFactory {
         obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT, Color.BLACK));
         obstacles.add(new RoundObstacle(new Vector2D(O2_X, O2_Y), O2_RADIUS, Color.ORANGE));
         obstacles.add(new TriangleObstacle(O3_V1, O3_V2, O3_V3, Color.ORANGE));
-        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS), obstacles,
-                        new HoleImpl(HOLE_POSITION, HOLE_RADIUS));
-}
+        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
+                new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
+    }
 }

@@ -7,6 +7,7 @@ import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.hole.Hole;
+import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 
@@ -31,13 +32,15 @@ public final class GameMapImpl implements GameMap {
     private final Hole hole;
 
     /**
-     * Constructs a GameMapImpl with the given list of surfaces.
+     * Constructs a GameMapImpl with the given list of surfaces, ball, hole and
+     * obstacles.
      * 
-     * @param surfaces the list of surfaces
-     * @param ball     the ball in the game map
-     * @param hole     the hole in the game map
+     * @param surfaces  the list of surfaces
+     * @param ball      the ball in the game map
+     * @param hole      the hole in the game map
+     * @param obstacles the list of obstacles
      */
-    public GameMapImpl(final List<Surface> surfaces, final Ball ball, final List<Obstacle> obstacles, final Hole hole) {
+    public GameMapImpl(final List<Surface> surfaces, final Ball ball, final Hole hole, final List<Obstacle> obstacles) {
         this.surfaces = List.copyOf(surfaces);
         this.ball = new BallImpl(ball.getPosition(), ball.getRadius());
         this.obstacles = List.copyOf(obstacles);
@@ -90,7 +93,7 @@ public final class GameMapImpl implements GameMap {
      */
     @Override
     public Hole getHole() {
-        return this.hole;
+        return new HoleImpl(this.hole.getPosition(), this.hole.getRadius());
     }
 
     /**
@@ -100,7 +103,8 @@ public final class GameMapImpl implements GameMap {
      */
     @Override
     public List<Obstacle> getObstacles() {
-        return this.obstacles;
+        return List.copyOf(this.obstacles);
+        // return this.obstacles;
     }
 
 }

@@ -5,6 +5,8 @@ Report - 17/05 - 3h (tot: 46h)
     per gli altri oggetti del model.
     Quindi PhysicsEngine non ha piu' bisogno di GameMap.
 
+    PhysicsEngine usa -> BallControllerAdapter -> BallController + [IMPLEMENTA BALL] (cosi' al model sembra la palla)
+
 * Cambiato PhysicsEngine.update() in modo che prenda come parametro Ball, Surface, List<Obstacle>
   invece che GameMap.
 
@@ -14,6 +16,8 @@ Report - 17/05 - 3h (tot: 46h)
   BallController tramite l'interfaccia Ball, senza che il model conosca il controller.
 
 * Rimosso GameMap come parametro di GameContext, ora ha bisogno solo di GameMapController.
+
+* Ora GameMap returna una copia delle sue superfici, ostacoli ecc (non Reference) (defensive copy)
 
 -------------------------------------------------------------------------------------------------
 CONTROLLO ERRORI DA METTERE (TEST):

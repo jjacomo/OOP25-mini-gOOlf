@@ -2,14 +2,15 @@ package it.unibo.minigoolf.model.surfaces;
 
 /**
  * Enumeration of different surface types in the mini-golf game.
- * Each surface type has a friction coefficient, a display name, and a texture path.
+ * Each surface type has a friction coefficient, a display name, and a texture
+ * path.
  * 
  * @author jack
  */
 public enum SurfaceType {
-    GRASS(1.75, "Grass", "surfaces/grass.png"),
+    GRASS(2.50, "Grass", "surfaces/grass.png"),
     SAND(11.50, "Sand", "surfaces/sand.png"),
-    DIRT(5.75, "Dirt", "surfaces/dirt.png"),
+    DIRT(6.75, "Dirt", "surfaces/dirt.png"),
     ICE(0.25, "Ice", "surfaces/ice.png");
 
     private final double friction;
@@ -19,8 +20,8 @@ public enum SurfaceType {
     /**
      * Constructs a SurfaceType with the specified friction, name, and texture path.
      * 
-     * @param friction the friction coefficient
-     * @param name the display name
+     * @param friction    the friction coefficient
+     * @param name        the display name
      * @param texturePath the path to the texture image in resources
      */
     SurfaceType(final double friction, final String name, final String texturePath) {
