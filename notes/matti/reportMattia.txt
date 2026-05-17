@@ -98,5 +98,12 @@ Report 14/05 - 0.5 ore
 Report 15/05 - 1 ore
 - Sistemate tutte le violazioni di CheckStyle neglio ostacoli, nella shape Triangle e in Vector2D
 
+Report 17/05 - 1 ore
+- Fatti alcuni test di rimbalzi della pallina sugli ostacoli per vedere eventuali limiti. Ho scoperto
+  che lo spessore minimo che un ostacolo deve avere è "Raggio della pallina + 1", perchè altrimenti
+  quest'ultima, in caso di tiro alla massima velocità contro l'ostacolo con distanza 0 (già in collisione),
+  lo attraverserebbe. Nel caso dei muri esterni della mappa, manderebbe in crash il gioco perchè la pallina
+  esce dal campo.
+
 TO DO:
 Verificare che i rimbalzi della pallina sugli ostacoli siano corretti

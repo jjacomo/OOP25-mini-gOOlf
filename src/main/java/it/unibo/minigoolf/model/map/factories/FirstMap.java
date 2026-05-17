@@ -70,20 +70,20 @@ public class FirstMap implements GameMapFactory {
 
     private static final double W1_X = 0;
     private static final double W1_Y = 0;
-    private static final double W1_WIDTH = 15;
+    private static final double W1_WIDTH = 31;
     private static final double W1_HEIGHT = 1080;
     private static final double W2_X = 0;
     private static final double W2_Y = 0;
     private static final double W2_WIDTH = 1920;
-    private static final double W2_HEIGHT = 15;
-    private static final double W3_X = 1905;
+    private static final double W2_HEIGHT = 31;
+    private static final double W3_X = 1889;
     private static final double W3_Y = 0;
-    private static final double W3_WIDTH = 15;
+    private static final double W3_WIDTH = 31;
     private static final double W3_HEIGHT = 1080;
     private static final double W4_X = 0;
-    private static final double W4_Y = 1065;
+    private static final double W4_Y = 1049;
     private static final double W4_WIDTH = 1920;
-    private static final double W4_HEIGHT = 15;
+    private static final double W4_HEIGHT = 31;
     private static final double O1_X = 525;
     private static final double O1_Y = 15;
     private static final double O1_WIDTH = 50;
