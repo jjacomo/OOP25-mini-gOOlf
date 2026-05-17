@@ -3,7 +3,6 @@ package it.unibo.minigoolf.model.physics;
 import java.util.List;
 
 import it.unibo.minigoolf.model.ball.Ball;
-import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.physics.velocity.BallVelocityStrategy;
 import it.unibo.minigoolf.model.surfaces.Surface;
@@ -45,22 +44,6 @@ public final class PhysicsEngine {
      */
     public static void setVelocityStrategy(final BallVelocityStrategy strategy) {
         velocityStrategy = strategy;
-    }
-
-    /**
-     * Updates the ball state according to the current game map and elapsed time.
-     *
-     * <p>
-     * This method performs the full physics tick for the ball, including
-     * friction, movement and collision handling.
-     * </p>
-     *
-     * @param gameMap   the map containing the ball, surfaces and obstacles
-     * @param deltaTime the elapsed time in seconds
-     */
-    public static void update(final GameMap gameMap, final double deltaTime) {
-        final Ball ball = gameMap.getBall();
-        update(ball, gameMap.getSurfaceAt(ball.getPosition()), gameMap.getObstacles(), deltaTime);
     }
 
     /**

@@ -1,0 +1,59 @@
+Report - 17/05 - 3h (tot: 46h)
+
+* Ora PhysicsControllerImpl.update() chiama l'update di PhysicsEngine passandogli
+    non piu' GameMap ma usando BallControllerAdapter per la palla e getSurfaceAt() / getObstacles()
+    per gli altri oggetti del model.
+    Quindi PhysicsEngine non ha piu' bisogno di GameMap.
+
+* Cambiato PhysicsEngine.update() in modo che prenda come parametro Ball, Surface, List<Obstacle>
+  invece che GameMap.
+
+* Creato BallControllerAdapter:
+  implementa Ball delegando a BallController (Object Adapter Pattern GoF).
+  Permette a PhysicsEngine, BallVelocityStrategy e Obstacle di operare sul
+  BallController tramite l'interfaccia Ball, senza che il model conosca il controller.
+
+-------------------------------------------------------------------------------------------------
+CONTROLLO ERRORI DA METTERE (TEST):
+- check che la mappa venga creata con almeno una palla, una buca, una superficie
+- check che la palla sia sempre sopra una superficie
+- check che il raggio della palla sia > di un raggio minimo consentito
+- altri check?
+
+-------------------------------------------------------------------------------------------------
+MEMO:
+Nel report finale fai uno schema UML che illustri il pattern adapter implementato.
+
+-------------------------------------------------------------------------------------------------
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+* Guarda se avere getColor in tutte le shapes ha senso;
+
+* Migliore algoritmo per l'update della velocita'
+
+* Fare che se la palla va sull'acqua ritorna alla posizione precedente? (Con fede?)
+* Dove creare GameMapController (per ora in GamePanel)
+* Guarda errori piu' "Strutturali" di spotbugs
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+* Una factory per le superfici?
+* Ma le altre classi del model dovrebbero usare direttamente la palla o il controller?
+* Nelle shapes c'e' un getColor, dovrebbe essere implementato da ogni shape anche se e' uguale
+    per tutte? (non sembra un granche') (Abstract?)
+
+-------------------------------------------------------------------------------------------------
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());
+* oppure combinare più effetti (attrito + vento) (Decorator Pattern)
+
+-------------------------------------------------------------------------------------------------
+PER AGENDA FUTURA:
+* MainController che li contiene tutti? CONTROLLER STATICI
+* Accumulatore per il dt nel game loop?
+
+* Dovrebbe esserci una velocita' massima della palla? (Con fede)
+* Guarda il primo punto delle cose fatte oggi
+* Non modificare la velcoita' della palla in MainControllerImpl (per fede)
+* MapPanel non deve importare nulla del model (Obstacles) (per Mattia)

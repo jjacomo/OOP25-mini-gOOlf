@@ -52,7 +52,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
         this.navigationController.setMainWindow(mainWindow);
 
         this.shotController = new ShotControllerImpl(
-            ctx.shotState(), ctx.gameState(), ctx.gameMapController(), mainWindow.getShotView());
+                ctx.shotState(), ctx.gameState(), ctx.gameMapController(), mainWindow.getShotView());
 
         // Enable shot input at the initial ball position.
         // shotController.onBallStopped(ctx.map().getBall().getPosition());
@@ -90,6 +90,8 @@ public final class MainControllerImpl implements MainController, ActionListener 
     /** {@inheritDoc} */
     @Override
     public void start() {
+        // TODO: implementare la velocity strategy in base al terreno in cui si trova la
+        // palla
         physicsController.setVelocityStrategy(new BasicFrictionStrategy());
         timer.start();
     }
