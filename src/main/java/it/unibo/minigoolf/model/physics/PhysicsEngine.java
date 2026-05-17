@@ -6,6 +6,7 @@ import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.physics.velocity.BallVelocityStrategy;
+import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,9 @@ import org.slf4j.LoggerFactory;
  * <p>
  * It contains the physics update logic for the ball and the interactions with
  * surfaces and obstacles. This keeps the domain behavior out of the controller
- * layer.
+ * layer. {@code PhysicsEngine} intentionally has <em>no</em> dependency on any
+ * controller class; coordination with the controller layer is the caller's
+ * responsibility.
  */
 public final class PhysicsEngine {
 
@@ -57,33 +60,47 @@ public final class PhysicsEngine {
      */
     public static void update(final GameMap gameMap, final double deltaTime) {
         final Ball ball = gameMap.getBall();
-        LOGGER.debug("Physics update: pos={}, vel={}, dt={}", ball.getPosition(), ball.getVelocity(), deltaTime);
-        updateBallVelocity(ball, gameMap, deltaTime);
-        updateBallPosition(ball, deltaTime);
-        resolveCollisions(ball, gameMap.getObstacles());
+        update(ball, gameMap.getSurfaceAt(ball.getPosition()), gameMap.getObstacles(), deltaTime);
     }
-    // TODO
-    // public static void update(final GameMapController gameMapController, final
-    // double deltaTime) {
-    // Vector2D ballPos = gameMapController.getBallController().getPosition();
-    // Vector2D ballVel = gameMapController.getBallController().getVelocity();
-    // LOGGER.debug("Physics update: pos={}, vel={}, dt={}", ballPos, ballVel,
-    // deltaTime);
-    // updateBallVelocity(ball, gameMapController, deltaTime);
-    // updateBallPosition(ball, deltaTime);
-    // resolveCollisions(ball, gameMapController.getObstacles());
-    // }
+
+    /**
+     * Updates the ball state using pre-resolved model objects.
+     *
+     * <p>
+     * This overload is intended for use by the controller layer: the caller
+     * extracts the current surface and obstacle list from its own controllers
+     * and passes them in, keeping {@code PhysicsEngine} free of any controller
+     * dependency. The {@code ball} parameter may be any implementation of
+     * {@link Ball}, including an adapter that delegates writes back to a
+     * {@code BallController}.
+     * </p>
+     *
+     * @param ball      the ball whose state will be updated
+     * @param surface   the surface currently under the ball
+     * @param obstacles all obstacles on the map
+     * @param deltaTime the elapsed time in seconds
+     */
+    public static void update(
+            final Ball ball,
+            final Surface surface,
+            final List<Obstacle> obstacles,
+            final double deltaTime) {
+        LOGGER.debug("Physics update: pos={}, vel={}, dt={}", ball.getPosition(), ball.getVelocity(), deltaTime);
+        updateBallVelocity(ball, surface, deltaTime);
+        updateBallPosition(ball, deltaTime);
+        resolveCollisions(ball, obstacles);
+    }
 
     /**
      * Applies surface friction to the ball's velocity.
      *
      * @param ball      the ball to update
-     * @param gameMap   the game map used to determine the current surface
+     * @param surface   the surface currently under the ball
      * @param deltaTime the elapsed time in seconds
      */
-    private static void updateBallVelocity(final Ball ball, final GameMap gameMap, final double deltaTime) {
+    private static void updateBallVelocity(final Ball ball, final Surface surface, final double deltaTime) {
         if (velocityStrategy != null) {
-            velocityStrategy.updateVelocity(ball, gameMap.getSurfaceAt(ball.getPosition()), deltaTime);
+            velocityStrategy.updateVelocity(ball, surface, deltaTime);
         } else {
             LOGGER.warn("No velocity strategy set for PhysicsEngine. Ball velocity will not be updated.");
         }

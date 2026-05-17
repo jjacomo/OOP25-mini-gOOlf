@@ -17,7 +17,8 @@ public final class PhysicsControllerImpl implements PhysicsController {
     private final GameMapController gameMapController;
 
     /**
-     * Constructs a new PhysicsControllerImpl with the specified game map controller.
+     * Constructs a new PhysicsControllerImpl with the specified game map
+     * controller.
      *
      * @param gameMapController the controller used to access map state for physics
      */
@@ -28,11 +29,12 @@ public final class PhysicsControllerImpl implements PhysicsController {
     /** {@inheritDoc} */
     @Override
     public void update(final double deltaTime) {
-        // PhysicsEngine.update(gameMap, deltaTime);
-        //TODO
-        // PhysicsEngine.update(gameMapController, deltaTime);
-        // vedi commenti in PhysicsEngine: bisognerebbe rifare tutte le classi che
-        // accedono direttamente al GameMap (e non al controller)
+        final BallControllerAdapter ballAdapter = new BallControllerAdapter(gameMapController.getBallController());
+        PhysicsEngine.update(
+                ballAdapter,
+                gameMapController.getSurfaceAt(ballAdapter.getPosition()),
+                gameMapController.getObstacles(),
+                deltaTime);
     }
 
     /** {@inheritDoc} */
