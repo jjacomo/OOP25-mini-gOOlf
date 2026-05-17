@@ -20,19 +20,18 @@ public final class BallControllerImpl implements BallController {
     /**
      * Creates a new BallController for the given ball.
      *
+     * <p>
+     * The shared reference to {@code ball} is intentional: this controller
+     * is responsible for mutating the ball's state (position and velocity)
+     * via {@link #updatePosition} and {@link #updateVelocity}. A defensive
+     * copy would break synchronisation with the model.
+     * </p>
+     *
      * @param ball the ball model to control
      */
+    @SuppressWarnings("EI_EXPOSE_REP2") // TODO: e' necessario?
     public BallControllerImpl(final Ball ball) {
         this.ball = ball;
-        // this.ball = new BallImpl(ball.getPosition(), ball.getRadius());
-
-        //TODO
-        // si rompe tutto pero':
-        // (credo) per risolvere questo errore di spotbugs bisognerebbe smettere di
-        // usare il ball del model come riferimento e usare solo il ball del
-        // controller, che è  quello che viene aggiornato dalla fisica. In questo modo
-        // si eviterebbe di dover creare un nuovo BallImpl ogni volta che si chiama
-        // getBall() per evitare che venga modificato da altri componenti.
     }
 
     /** {@inheritDoc} */

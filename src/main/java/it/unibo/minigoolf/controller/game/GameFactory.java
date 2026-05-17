@@ -13,8 +13,10 @@ import java.util.List;
  * Factory that builds and wires all model objects needed for a match,
  * returning them as a single {@link GameContext}.
  *
- * <p>Centralising construction here keeps {@link MainControllerImpl} free of
- * model-creation logic and makes it easy to swap maps or game modes later.</p>
+ * <p>
+ * Centralising construction here keeps {@link MainControllerImpl} free of
+ * model-creation logic and makes it easy to swap maps or game modes later.
+ * </p>
  *
  * @author fede
  */
@@ -36,6 +38,6 @@ public final class GameFactory {
         final GameMap map = new FirstMap().buildGameMap();
         final GameMapController gameMapController = new GameMapControllerImpl(map);
         final ShotState shotState = new ShotState();
-        return new GameContext(gameState, map, gameMapController, shotState);
+        return new GameContext(gameState, gameMapController, shotState);
     }
 }

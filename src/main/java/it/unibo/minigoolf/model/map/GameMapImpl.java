@@ -34,8 +34,8 @@ public final class GameMapImpl implements GameMap {
      * Constructs a GameMapImpl with the given list of surfaces.
      * 
      * @param surfaces the list of surfaces
-     * @param ball the ball in the game map
-     * @param hole the hole in the game map
+     * @param ball     the ball in the game map
+     * @param hole     the hole in the game map
      */
     public GameMapImpl(final List<Surface> surfaces, final Ball ball, final List<Obstacle> obstacles, final Hole hole) {
         this.surfaces = List.copyOf(surfaces);
@@ -46,7 +46,8 @@ public final class GameMapImpl implements GameMap {
 
     /**
      * {@inheritDoc}
-     * This implementation finds the surface with the highest z-index that contains the position.
+     * This implementation finds the surface with the highest z-index that contains
+     * the position.
      */
     @Override
     public Surface getSurfaceAt(final Vector2D position) {
@@ -69,9 +70,9 @@ public final class GameMapImpl implements GameMap {
      */
     @Override
     public List<Surface> getSurfaces() {
-        return this.surfaces;
-        // TODO
-        // return List.copyOf(this.surfaces); farlo qui o in GameMapControllerImpl?
+        return List.copyOf(this.surfaces);
+        // TODO farlo qui o in GameMapControllerImpl?
+        // return this.surfaces;
     }
 
     /**
@@ -79,14 +80,9 @@ public final class GameMapImpl implements GameMap {
      */
     @Override
     public Ball getBall() {
-        return this.ball;
-        // return new BallImpl(this.ball.getPosition(), this.ball.getRadius());
-
-        // TODO: per risolvere questo errore di spotbugs bisognerebbe smettere di usare
-        // il ball del model come riferimento e usare solo il ball del controller, che è
-        // quello che viene aggiornato dalla fisica. In questo modo si eviterebbe di
-        // dover creare un nuovo BallImpl ogni volta che si chiama getBall() per evitare
-        // che venga modificato da altri componenti.
+        final Ball copy = new BallImpl(this.ball.getPosition(), this.ball.getRadius());
+        copy.setVelocity(this.ball.getVelocity());
+        return copy;
     }
 
     /**

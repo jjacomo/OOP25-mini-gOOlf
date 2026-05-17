@@ -13,6 +13,8 @@ Report - 17/05 - 3h (tot: 46h)
   Permette a PhysicsEngine, BallVelocityStrategy e Obstacle di operare sul
   BallController tramite l'interfaccia Ball, senza che il model conosca il controller.
 
+* Rimosso GameMap come parametro di GameContext, ora ha bisogno solo di GameMapController.
+
 -------------------------------------------------------------------------------------------------
 CONTROLLO ERRORI DA METTERE (TEST):
 - check che la mappa venga creata con almeno una palla, una buca, una superficie

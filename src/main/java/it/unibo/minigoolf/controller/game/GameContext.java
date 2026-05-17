@@ -3,7 +3,6 @@ package it.unibo.minigoolf.controller.game;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.model.logic.ShotState;
-import it.unibo.minigoolf.model.map.GameMap;
 
 /**
  * Immutable container that groups all the objects needed to run a match.
@@ -12,16 +11,16 @@ import it.unibo.minigoolf.model.map.GameMap;
  *
  * @author fede and dani
  *
- * @param gameState         the central game logic (turn order, ball-moving flag)
+ * @param gameState         the central game logic (turn order, ball-moving
+ *                          flag)
  * @param map               the game map (surfaces, ball, obstacles)
  * @param gameMapController the controller facade over the map
- * @param shotState         the shot input state shared between view and controller
+ * @param shotState         the shot input state shared between view and
+ *                          controller
  */
-@SuppressWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"}) //TODO: warning necessario: 
+@SuppressWarnings({ "EI_EXPOSE_REP", "EI_EXPOSE_REP2" }) // TODO: warning necessario:
 public record GameContext(
-    GameState gameState,
-    GameMap map,
-    GameMapController gameMapController,
-    ShotState shotState
-) {
+        GameState gameState,
+        GameMapController gameMapController,
+        ShotState shotState) {
 }
