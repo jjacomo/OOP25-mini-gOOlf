@@ -12,12 +12,16 @@ import java.util.Optional;
  * Implementation of {@link ShotController}.
  * Coordinates {@link ShotState} (model), {@link GameState} (game logic),
  * {@link GameMap} (ball velocity), and {@link ShotView} (view interface).
- * Depends on the narrow {@link ShotView} interface rather than the full
- * {@code ShotViewPanel}, keeping the controller decoupled from the view layer.
  *
  * @author fede
  */
 public final class ShotControllerImpl implements ShotController {
+
+    /**
+     * Converts the shot vector from logical-pixel units (max {@link ShotState#MAX_POWER})
+     * to physics velocity units. Adjust this value to tune the overall shot speed.
+     */
+    private static final double SHOT_SCALE = 10.0;
 
     private final ShotState shotState;
     private final GameState gameState;
@@ -51,7 +55,7 @@ public final class ShotControllerImpl implements ShotController {
 
         final Optional<Vector2D> shot = gameState.update();
         if (shot.isPresent()) {
-            map.getBall().setVelocity(shot.get());
+            map.getBall().setVelocity(shot.get().scalarMultiply(SHOT_SCALE));
             return true;
         }
         return false;

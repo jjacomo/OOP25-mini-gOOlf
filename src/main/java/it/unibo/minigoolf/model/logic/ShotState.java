@@ -22,6 +22,14 @@ public final class ShotState {
     /** Minimum squared power for a shot to be accepted. */
     private static final double MIN_SQUARE_POWER = 100.0;
 
+    /**
+     * Maximum power of a shot in logical pixels.
+     * Matches the maximum display length of the indicator line in
+     * {@link it.unibo.minigoolf.view.input.ShotViewPanel} so the
+     * visual and the physics are always in sync.
+     */
+    public static final double MAX_POWER = 150.0;
+
     /** Current drag vector set by the view while the user is dragging. */
     private Vector2D intent;
 
@@ -57,13 +65,15 @@ public final class ShotState {
 
     /**
      * Consumes and returns the pending shot if one is ready.
+     * The shot vector is clamped to {@link #MAX_POWER} so the physics
+     * never receive more power than what the visual indicator shows.
      * Clears internal state after consumption.
      *
-     * @return an Optional containing the shot vector, or empty if none is ready
+     * @return an Optional containing the clamped shot vector, or empty if none is ready
      */
     public synchronized Optional<Vector2D> consume() {
         if (shotReady && isValid()) {
-            final Vector2D shot = intent;
+            final Vector2D shot = intent.clampedTo(MAX_POWER);
             intent = null;
             shotReady = false;
             return Optional.of(shot);

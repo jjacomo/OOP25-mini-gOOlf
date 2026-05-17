@@ -1,8 +1,8 @@
 package it.unibo.minigoolf.view.input;
 
+import it.unibo.minigoolf.controller.shot.ShotView;
 import it.unibo.minigoolf.model.logic.ShotState;
 import it.unibo.minigoolf.util.Vector2D;
-import it.unibo.minigoolf.controller.shot.ShotView;
 
 import javax.swing.JPanel;
 import java.awt.BasicStroke;
@@ -35,7 +35,6 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
 
     private static final double LOW_THRESHOLD = 1_000.0;
     private static final double MED_THRESHOLD = 5_000.0;
-    private static final double MAX_LINE_PIXELS = 150.0;
 
     private static final float LINE_WIDTH = 5.0f;
     private static final float[] DASH_PATTERN = {10f, 6f};
@@ -147,7 +146,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
             g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            final Vector2D displayDir = dir.clampedTo(MAX_LINE_PIXELS);
+            final Vector2D displayDir = dir.clampedTo(ShotState.MAX_POWER);
             final Point tip = displayDir.translate(origin);
 
             final double squaredPower = dir.getNormSquared();
@@ -173,7 +172,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
     }
 
     /**
-     * Draws a arrowhead at the tip of the indicator line.
+     * Draws an arrowhead at the tip of the indicator line.
      *
      * @param g2d        the graphics context (already scaled to logical space)
      * @param displayDir the clamped display vector
