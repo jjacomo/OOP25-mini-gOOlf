@@ -46,7 +46,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
         // TODO: pass real player names
         this.ctx = GameFactory.build(List.of("Player 1"));
 
-        this.physicsController = new PhysicsControllerImpl(ctx.map());
+        this.physicsController = new PhysicsControllerImpl(ctx.gameMapController());
         this.navigationController = new NavigationController(this);
         this.mainWindow = new MainWindow(this, navigationController, ctx);
         this.navigationController.setMainWindow(mainWindow);

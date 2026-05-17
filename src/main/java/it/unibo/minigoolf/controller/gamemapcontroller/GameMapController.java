@@ -6,6 +6,7 @@ import it.unibo.minigoolf.controller.ballcontroller.BallController;
 import it.unibo.minigoolf.controller.holecontroller.HoleController;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * Controller for managing the game map and its interactions.
@@ -27,6 +28,14 @@ public interface GameMapController {
      * @return a list of all obstacles
      */
     List<Obstacle> getObstacles();
+
+    /**
+     * Returns the surface at the given position.
+     *
+     * @param position the position to query
+     * @return the surface under the given position
+     */
+    Surface getSurfaceAt(Vector2D position);
 
     // Hole getHole();
 

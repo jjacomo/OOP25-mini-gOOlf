@@ -9,6 +9,7 @@ import it.unibo.minigoolf.controller.holecontroller.HoleControllerImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * Implementation of {@link GameMapController}.
@@ -41,6 +42,17 @@ public final class GameMapControllerImpl implements GameMapController {
     @Override
     public List<Surface> getSurfaces() {
         return map.getSurfaces();
+    }
+
+    /**
+     * Returns the surface at the given position.
+     *
+     * @param position the position to query
+     * @return the surface under the given position
+     */
+    @Override
+    public Surface getSurfaceAt(final Vector2D position) {
+        return map.getSurfaceAt(position);
     }
 
     /**
