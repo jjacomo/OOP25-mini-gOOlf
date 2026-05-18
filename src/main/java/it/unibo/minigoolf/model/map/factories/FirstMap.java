@@ -11,9 +11,10 @@ import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
-import it.unibo.minigoolf.model.surfaces.RectangularSurface;
+import it.unibo.minigoolf.model.surfaces.ShapedSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.SurfaceType;
+import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
@@ -43,6 +44,10 @@ public class FirstMap implements GameMapFactory {
         private static final double DIRT_WIDTH = 690;
         private static final double DIRT_HEIGHT = 540;
         private static final int DIRT_Z_INDEX = 1;
+        private static final double DIRT2_X = 275;
+        private static final double DIRT2_Y = 330;
+        private static final double DIRT2_RADIUS = 180;
+        private static final int DIRT2_Z_INDEX = 3;
         private static final double SAND_X = 550;
         private static final double SAND_Y = 540;
         private static final double SAND_WIDTH = 690;
@@ -161,30 +166,33 @@ public class FirstMap implements GameMapFactory {
         public GameMap buildGameMap() {
                 final List<Surface> surfaces = new ArrayList<>();
                 final List<Obstacle> obstacles = new ArrayList<>();
-                surfaces.add(new RectangularSurface(
+                surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
-                surfaces.add(new RectangularSurface(
+                surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS2_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
-                surfaces.add(new RectangularSurface(
+                surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS3_X, GRASS3_Y), GRASS3_WIDTH, GRASS3_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS3_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
-                surfaces.add(new RectangularSurface(
+                surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS4_X, GRASS4_Y), GRASS4_WIDTH, GRASS4_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS4_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
-                surfaces.add(new RectangularSurface(
+                surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(SAND_X, SAND_Y), SAND_WIDTH,
                                                 SAND_HEIGHT),
                                 SurfaceType.SAND.getFriction(), SAND_Z_INDEX, SurfaceType.SAND.getTexturePath()));
-                surfaces.add(new RectangularSurface(
+                surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_WIDTH,
                                                 ICE_HEIGHT),
                                 SurfaceType.ICE.getFriction(), ICE_Z_INDEX, SurfaceType.ICE.getTexturePath()));
-                surfaces.add(new RectangularSurface(
+                surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(DIRT_X, DIRT_Y), DIRT_WIDTH,
                                                 DIRT_HEIGHT),
                                 SurfaceType.DIRT.getFriction(), DIRT_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
+                surfaces.add(new ShapedSurface(
+                                new Circle(new Vector2D(DIRT2_X, DIRT2_Y), DIRT2_RADIUS),
+                                SurfaceType.DIRT.getFriction(), DIRT2_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));

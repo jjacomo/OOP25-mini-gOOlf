@@ -152,17 +152,16 @@ public class MapPanel extends JPanel {
      * @param texture the texture to apply
      */
     private void drawShape(final Shape shape, final Graphics2D g2d, final BufferedImage texture) {
+        final java.awt.Paint originalPaint = g2d.getPaint();
+        if (texture != null) {
+            final Rectangle2D anchor = new Rectangle2D.Double(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+            final TexturePaint paint = new TexturePaint(texture, anchor);
+            g2d.setPaint(paint);
+        }
+
         if (shape instanceof Rectangle rect) {
-            if (Objects.isNull(texture)) {
-                g2d.fillRect((int) rect.position().getX(), (int) rect.position().getY(),
-                        (int) rect.width(), (int) rect.height());
-            } else {
-                final Rectangle2D anchor = new Rectangle2D.Double(0, 0, 1920, 1080);
-                final TexturePaint paint = new TexturePaint(texture, anchor);
-                g2d.setPaint(paint);
-                g2d.fill(new Rectangle2D.Double(rect.position().getX(), rect.position().getY(), rect.width(),
-                        rect.height()));
-            }
+            g2d.fill(new Rectangle2D.Double(rect.position().getX(), rect.position().getY(), rect.width(),
+                    rect.height()));
         } else if (shape instanceof Circle circ) {
             g2d.fillOval((int) circ.position().getX() - (int) circ.radius(),
                     (int) circ.position().getY() - (int) circ.radius(), (int) circ.radius() * 2,
@@ -176,6 +175,10 @@ public class MapPanel extends JPanel {
         } else {
             // For future shape types, add more cases here
             throw new UnsupportedOperationException("Drawing not implemented for shape type: " + shape.getClass());
+        }
+
+        if (!Objects.isNull(texture)) {
+            g2d.setPaint(originalPaint);
         }
     }
 }
