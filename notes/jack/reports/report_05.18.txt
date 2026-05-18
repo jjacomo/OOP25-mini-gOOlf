@@ -1,4 +1,4 @@
-Report - 18/05 - 1h (tot: 47h)
+Report - 18/05 - 2h (tot: 48h)
 
 * Rimosso Color da Shape (violazione pattern MVC)
 * Aggiunta ShapedSurface per superfici di qualunque shape. Ora RectangularSurface e' inutile

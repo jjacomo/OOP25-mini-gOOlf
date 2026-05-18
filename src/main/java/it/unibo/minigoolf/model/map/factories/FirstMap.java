@@ -15,6 +15,7 @@ import it.unibo.minigoolf.model.surfaces.ShapedSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.SurfaceType;
 import it.unibo.minigoolf.util.shapes.Circle;
+import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
@@ -53,6 +54,9 @@ public class FirstMap implements GameMapFactory {
         private static final double SAND_WIDTH = 690;
         private static final double SAND_HEIGHT = 540;
         private static final int SAND_Z_INDEX = 2;
+        private static final Vector2D SAND2_POSITION = new Vector2D(1780, 520);
+        private static final double SAND2_RADIUS_X = 50;
+        private static final double SAND2_RADIUS_Y = 110;
         private static final double GRASS2_X = 1240;
         private static final double GRASS2_Y = 0;
         private static final double GRASS2_WIDTH = 680;
@@ -143,7 +147,7 @@ public class FirstMap implements GameMapFactory {
         private static final double BALL_RADIUS = 30;
         private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(80, 80);
         private static final double HOLE_RADIUS = 40;
-        private static final Vector2D HOLE_POSITION = new Vector2D(1770, 520);
+        private static final Vector2D HOLE_POSITION = new Vector2D(1780, 520);
 
         /**
          * Builds a simple test game map.
@@ -193,6 +197,9 @@ public class FirstMap implements GameMapFactory {
                 surfaces.add(new ShapedSurface(
                                 new Circle(new Vector2D(DIRT2_X, DIRT2_Y), DIRT2_RADIUS),
                                 SurfaceType.DIRT.getFriction(), DIRT2_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
+                surfaces.add(new ShapedSurface(
+                                new Oval(SAND2_POSITION, SAND2_RADIUS_X, SAND2_RADIUS_Y),
+                                SurfaceType.SAND.getFriction(), DIRT2_Z_INDEX, SurfaceType.SAND.getTexturePath()));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));

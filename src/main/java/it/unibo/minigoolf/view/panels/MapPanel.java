@@ -22,6 +22,7 @@ import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
+import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
 import it.unibo.minigoolf.util.shapes.Triangle;
@@ -172,6 +173,11 @@ public class MapPanel extends JPanel {
             final int[] yPoints = { (int) tria.vertex1().getY(), (int) tria.vertex2().getY(),
                     (int) tria.vertex3().getY() };
             g2d.fillPolygon(xPoints, yPoints, 3);
+        } else if (shape instanceof Oval oval) {
+            g2d.fillOval((int) (oval.position().getX() - oval.radiusX()),
+                    (int) (oval.position().getY() - oval.radiusY()),
+                    (int) (oval.radiusX() * 2),
+                    (int) (oval.radiusY() * 2));
         } else {
             // For future shape types, add more cases here
             throw new UnsupportedOperationException("Drawing not implemented for shape type: " + shape.getClass());

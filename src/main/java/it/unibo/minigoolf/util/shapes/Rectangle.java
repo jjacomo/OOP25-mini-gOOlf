@@ -1,6 +1,7 @@
 package it.unibo.minigoolf.util.shapes;
 
 import it.unibo.minigoolf.util.Vector2D;
+
 /**
  * @author jack
  *

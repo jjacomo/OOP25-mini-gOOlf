@@ -1,6 +1,7 @@
 package it.unibo.minigoolf.util.shapes;
 
 import it.unibo.minigoolf.util.Vector2D;
+
 /**
  * Represents a triangular area in 2D space defined by three vertices.
  *
@@ -35,7 +36,7 @@ public record Triangle(Vector2D vertex1, Vector2D vertex2, Vector2D vertex3) imp
      */
     private boolean crossSign(final Vector2D a, final Vector2D b, final Vector2D p) {
         final double cross = (b.getX() - a.getX()) * (p.getY() - a.getY())
-                           - (b.getY() - a.getY()) * (p.getX() - a.getX());
+                - (b.getY() - a.getY()) * (p.getX() - a.getX());
 
         return cross >= 0;
     }
