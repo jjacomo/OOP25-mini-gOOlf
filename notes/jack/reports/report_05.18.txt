@@ -3,6 +3,7 @@ Report - 18/05 - 2h (tot: 48h)
 * Rimosso Color da Shape (violazione pattern MVC)
 * Aggiunta ShapedSurface per superfici di qualunque shape. Ora RectangularSurface e' inutile
 * Modificata MapPanel per permettere di disegnare superfici con texture di qualunque shape
+* Creata util.shapes.Oval e aggiornato MapPanel per permettere di disegnare gli oval.
 
 -------------------------------------------------------------------------------------------------
 CONTROLLO ERRORI DA METTERE (TEST):

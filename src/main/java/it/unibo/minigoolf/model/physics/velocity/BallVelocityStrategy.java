@@ -10,6 +10,7 @@ import it.unibo.minigoolf.model.surfaces.Surface;
  * applying friction or other physics effects depending on the surface
  * properties.
  */
+@FunctionalInterface
 public interface BallVelocityStrategy {
     /**
      * Updates the velocity of the ball based on the surface it is currently on and

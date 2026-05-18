@@ -11,9 +11,7 @@ import it.unibo.minigoolf.model.logic.ShotState;
  *
  * @author fede and dani
  *
- * @param gameState         the central game logic (turn order, ball-moving
- *                          flag)
- * @param map               the game map (surfaces, ball, obstacles)
+ * @param gameState         the central game logic (turn order, ball-moving flag)
  * @param gameMapController the controller facade over the map
  * @param shotState         the shot input state shared between view and
  *                          controller

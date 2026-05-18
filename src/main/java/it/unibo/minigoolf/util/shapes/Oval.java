@@ -26,6 +26,6 @@ public record Oval(Vector2D position, double radiusX, double radiusY) implements
     public boolean contains(final Vector2D pos) {
         final double dx = pos.getX() - position.getX();
         final double dy = pos.getY() - position.getY();
-        return (dx * dx) / (radiusX * radiusX) + (dy * dy) / (radiusY * radiusY) <= 1.0;
+        return dx * dx / (radiusX * radiusX) + dy * dy / (radiusY * radiusY) <= 1.0;
     }
 }

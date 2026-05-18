@@ -168,10 +168,16 @@ public class MapPanel extends JPanel {
                     (int) circ.position().getY() - (int) circ.radius(), (int) circ.radius() * 2,
                     (int) circ.radius() * 2);
         } else if (shape instanceof Triangle tria) {
-            final int[] xPoints = { (int) tria.vertex1().getX(), (int) tria.vertex2().getX(),
-                    (int) tria.vertex3().getX() };
-            final int[] yPoints = { (int) tria.vertex1().getY(), (int) tria.vertex2().getY(),
-                    (int) tria.vertex3().getY() };
+            final int[] xPoints = {
+                    (int) tria.vertex1().getX(),
+                    (int) tria.vertex2().getX(),
+                    (int) tria.vertex3().getX(),
+            };
+            final int[] yPoints = {
+                    (int) tria.vertex1().getY(),
+                    (int) tria.vertex2().getY(),
+                    (int) tria.vertex3().getY(),
+            };
             g2d.fillPolygon(xPoints, yPoints, 3);
         } else if (shape instanceof Oval oval) {
             g2d.fillOval((int) (oval.position().getX() - oval.radiusX()),

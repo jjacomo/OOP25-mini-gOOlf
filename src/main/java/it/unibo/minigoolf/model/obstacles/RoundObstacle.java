@@ -3,7 +3,6 @@ package it.unibo.minigoolf.model.obstacles;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.model.ball.Ball;
-// import java.awt.Color;
 
 /**
  * Represents a circular obstacle in the minigolf course.
@@ -14,19 +13,15 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle {
     private static final double MAX_RADIUS = 150.0;
     private final double radius;
     private final Circle shape;
-    // private final Color color;
 
     /**
      * Constructs a circular obstacle.
      *
      * @param radius   the radius of the circular obstacle
      * @param position the position of the obstacle
-     * @param color    the color of the obstacle
      * @throws IllegalArgumentException if radius is not between [MIN_RADIUS,
      *                                  MAX_RADIUS]
      */
-    // public RoundObstacle(final Vector2D position, final double radius, final
-    // Color color) {
     public RoundObstacle(final Vector2D position, final double radius) {
         super(position);
         if (radius < MIN_RADIUS || radius > MAX_RADIUS) {
@@ -34,7 +29,6 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle {
                     + MIN_RADIUS + " and " + MAX_RADIUS);
         }
         this.radius = radius;
-        // this.color = color;
         this.shape = new Circle(position, this.radius);
     }
 
