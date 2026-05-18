@@ -3,36 +3,39 @@ package it.unibo.minigoolf.model.obstacles;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.model.ball.Ball;
-import java.awt.Color;
+// import java.awt.Color;
 
 /**
  * Represents a circular obstacle in the minigolf course.
  * This obstacle is defined by its center position and radius.
  */
-public final class RoundObstacle extends AbstractObstacle implements Obstacle { 
+public final class RoundObstacle extends AbstractObstacle implements Obstacle {
     private static final double MIN_RADIUS = 5.0;
     private static final double MAX_RADIUS = 150.0;
     private final double radius;
     private final Circle shape;
-    private final Color color;
+    // private final Color color;
 
     /**
      * Constructs a circular obstacle.
      *
-     * @param radius the radius of the circular obstacle
+     * @param radius   the radius of the circular obstacle
      * @param position the position of the obstacle
-     * @param color the color of the obstacle
-     * @throws IllegalArgumentException if radius is not between [MIN_RADIUS, MAX_RADIUS]
+     * @param color    the color of the obstacle
+     * @throws IllegalArgumentException if radius is not between [MIN_RADIUS,
+     *                                  MAX_RADIUS]
      */
-    public RoundObstacle(final Vector2D position, final double radius, final Color color) {
+    // public RoundObstacle(final Vector2D position, final double radius, final
+    // Color color) {
+    public RoundObstacle(final Vector2D position, final double radius) {
         super(position);
         if (radius < MIN_RADIUS || radius > MAX_RADIUS) {
-            throw new IllegalArgumentException("The radius must be between " 
-                                             + MIN_RADIUS + " and " + MAX_RADIUS);
+            throw new IllegalArgumentException("The radius must be between "
+                    + MIN_RADIUS + " and " + MAX_RADIUS);
         }
         this.radius = radius;
-        this.color = color;
-        this.shape = new Circle(position, this.radius, this.color);
+        // this.color = color;
+        this.shape = new Circle(position, this.radius);
     }
 
     /**
@@ -49,7 +52,8 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle {
 
     /**
      * Resolves the physical collision between the ball and the obstacle calculating
-     * the bounce based on the obstacle's shape and applies the new direction to the ball.
+     * the bounce based on the obstacle's shape and applies the new direction to the
+     * ball.
      * 
      * @param ball the Ball object that has collided with the obstacle
      */
@@ -73,11 +77,12 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle {
      * Handles the edge case where the centers perfectly overlap.
      *
      * @param collisionVector vector from obstacle center to ball center
-     * @param distance the distance between the two centers
-     * @param velocity the velocity of the ball
+     * @param distance        the distance between the two centers
+     * @param velocity        the velocity of the ball
      * @return the normalized collision normal
      */
-    private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance, final Vector2D velocity) {
+    private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance,
+            final Vector2D velocity) {
         if (distance >= EPSILON) {
             return collisionVector.normalize();
         }

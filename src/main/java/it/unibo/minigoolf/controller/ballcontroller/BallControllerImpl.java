@@ -1,7 +1,5 @@
 package it.unibo.minigoolf.controller.ballcontroller;
 
-import java.awt.Color;
-
 import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
@@ -37,7 +35,7 @@ public final class BallControllerImpl implements BallController {
     /** {@inheritDoc} */
     @Override
     public Shape getBallShape() {
-        return new Circle(ball.getPosition(), ball.getRadius(), Color.WHITE);
+        return new Circle(ball.getPosition(), ball.getRadius());
     }
 
     /** {@inheritDoc} */

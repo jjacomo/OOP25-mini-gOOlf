@@ -1,8 +1,6 @@
 package it.unibo.minigoolf.util.shapes;
 
 import it.unibo.minigoolf.util.Vector2D;
-import java.awt.Color; 
-
 /**
  * Represents a shape in 2D space that can be used for collision
  * detection and rendering.
@@ -18,11 +16,4 @@ public interface Shape {
      * @return true if the position is inside the shape, false otherwise
      */
     boolean contains(Vector2D position);
-
-    /**
-     * Returns the color of the shape.
-     * 
-     * @return the color of the shape
-     */
-    Color getColor();
 }

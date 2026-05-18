@@ -1,6 +1,5 @@
 package it.unibo.minigoolf.model.map.factories;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import it.unibo.minigoolf.util.Vector2D;
@@ -163,51 +162,47 @@ public class FirstMap implements GameMapFactory {
                 final List<Surface> surfaces = new ArrayList<>();
                 final List<Obstacle> obstacles = new ArrayList<>();
                 surfaces.add(new RectangularSurface(
-                                new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT,
-                                                Color.WHITE),
+                                new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
                 surfaces.add(new RectangularSurface(
-                                new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT,
-                                                Color.WHITE),
+                                new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS2_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
                 surfaces.add(new RectangularSurface(
-                                new Rectangle(new Vector2D(GRASS3_X, GRASS3_Y), GRASS3_WIDTH, GRASS3_HEIGHT,
-                                                Color.WHITE),
+                                new Rectangle(new Vector2D(GRASS3_X, GRASS3_Y), GRASS3_WIDTH, GRASS3_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS3_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
                 surfaces.add(new RectangularSurface(
-                                new Rectangle(new Vector2D(GRASS4_X, GRASS4_Y), GRASS4_WIDTH, GRASS4_HEIGHT,
-                                                Color.WHITE),
+                                new Rectangle(new Vector2D(GRASS4_X, GRASS4_Y), GRASS4_WIDTH, GRASS4_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS4_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
                 surfaces.add(new RectangularSurface(
                                 new Rectangle(new Vector2D(SAND_X, SAND_Y), SAND_WIDTH,
-                                                SAND_HEIGHT, Color.WHITE),
+                                                SAND_HEIGHT),
                                 SurfaceType.SAND.getFriction(), SAND_Z_INDEX, SurfaceType.SAND.getTexturePath()));
                 surfaces.add(new RectangularSurface(
                                 new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_WIDTH,
-                                                ICE_HEIGHT, Color.WHITE),
+                                                ICE_HEIGHT),
                                 SurfaceType.ICE.getFriction(), ICE_Z_INDEX, SurfaceType.ICE.getTexturePath()));
                 surfaces.add(new RectangularSurface(
                                 new Rectangle(new Vector2D(DIRT_X, DIRT_Y), DIRT_WIDTH,
-                                                DIRT_HEIGHT, Color.WHITE),
+                                                DIRT_HEIGHT),
                                 SurfaceType.DIRT.getFriction(), DIRT_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
-                obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT, Color.BLACK));
-                obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT, Color.BLACK));
-                obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT, Color.BLACK));
-                obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT, Color.BLACK));
-                obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT, Color.darkGray));
-                obstacles.add(new WallObstacle(new Vector2D(O2_X, O2_Y), O2_WIDTH, O2_HEIGHT, Color.darkGray));
-                obstacles.add(new WallObstacle(new Vector2D(O3_X, O3_Y), O3_WIDTH, O3_HEIGHT, Color.darkGray));
-                obstacles.add(new WallObstacle(new Vector2D(O4_X, O4_Y), O4_WIDTH, O4_HEIGHT, Color.darkGray));
-                obstacles.add(new WallObstacle(new Vector2D(O5_X, O5_Y), O5_WIDTH, O5_HEIGHT, Color.darkGray));
-                obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT, Color.darkGray));
-                obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT, Color.darkGray));
-                obstacles.add(new RoundObstacle(new Vector2D(O8_X, O8_Y), O8_RADIUS, Color.darkGray));
-                obstacles.add(new TriangleObstacle(O9_V1, O9_V2, O9_V3, Color.darkGray));
-                obstacles.add(new TriangleObstacle(O10_V1, O10_V2, O10_V3, Color.darkGray));
-                obstacles.add(new RoundObstacle(new Vector2D(O11_X, O11_Y), O11_RADIUS, Color.darkGray));
-                obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS, Color.darkGray));
-                obstacles.add(new RoundObstacle(new Vector2D(O13_X, O13_Y), O13_RADIUS, Color.darkGray));
-                obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS, Color.darkGray));
+                obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(O2_X, O2_Y), O2_WIDTH, O2_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(O3_X, O3_Y), O3_WIDTH, O3_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(O4_X, O4_Y), O4_WIDTH, O4_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(O5_X, O5_Y), O5_WIDTH, O5_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT));
+                obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT));
+                obstacles.add(new RoundObstacle(new Vector2D(O8_X, O8_Y), O8_RADIUS));
+                obstacles.add(new TriangleObstacle(O9_V1, O9_V2, O9_V3));
+                obstacles.add(new TriangleObstacle(O10_V1, O10_V2, O10_V3));
+                obstacles.add(new RoundObstacle(new Vector2D(O11_X, O11_Y), O11_RADIUS));
+                obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS));
+                obstacles.add(new RoundObstacle(new Vector2D(O13_X, O13_Y), O13_RADIUS));
+                obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS));
                 return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
                                 new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
         }

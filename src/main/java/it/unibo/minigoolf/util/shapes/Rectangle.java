@@ -1,8 +1,6 @@
 package it.unibo.minigoolf.util.shapes;
 
 import it.unibo.minigoolf.util.Vector2D;
-import java.awt.Color;
-
 /**
  * @author jack
  *
@@ -11,9 +9,8 @@ import java.awt.Color;
  * @param position the top-left corner of the rectangle
  * @param width    the width of the rectangle
  * @param height   the height of the rectangle
- * @param color    the color of the rectangle
  */
-public record Rectangle(Vector2D position, double width, double height, Color color) implements Shape {
+public record Rectangle(Vector2D position, double width, double height) implements Shape {
 
     /**
      * Checks if the given position is contained within this rectangle.
@@ -28,15 +25,5 @@ public record Rectangle(Vector2D position, double width, double height, Color co
                 && position2d.getX() <= this.position.getX() + width
                 && position2d.getY() >= this.position.getY()
                 && position2d.getY() <= this.position.getY() + height;
-    }
-
-    /**
-     * Returns the color of the rectangle.
-     * 
-     * @return the color of the rectangle
-     */
-    @Override
-    public Color getColor() {
-        return this.color;
     }
 }

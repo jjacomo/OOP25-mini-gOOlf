@@ -3,7 +3,7 @@ package it.unibo.minigoolf.model.obstacles;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.model.ball.Ball;
-import java.awt.Color;
+// import java.awt.Color;
 
 /**
  * Represents a rectangular wall obstacle in the minigolf course.
@@ -24,7 +24,7 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
     private final Vector2D normalTop;
     private final Vector2D normalBottom;
     private final Rectangle shape;
-    private final Color color;
+    // private final Color color;
 
     /**
      * Constructs a rectangular wall.
@@ -33,16 +33,19 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
      * @param width    the width of the wall
      * @param height   the height of the wall
      * @param color    the color of the wall
-     * @throws IllegalArgumentException if the width is outside [MIN_WIDTH, 
-     *         MAX_WIDTH] or if the height is outside [MIN_HEIGHT, MAX_HEIGHT]
+     * @throws IllegalArgumentException if the width is outside [MIN_WIDTH,
+     *                                  MAX_WIDTH] or if the height is outside
+     *                                  [MIN_HEIGHT, MAX_HEIGHT]
      */
-    public WallObstacle(final Vector2D position, final double width, final double height, final Color color) {
+    // public WallObstacle(final Vector2D position, final double width, final double
+    // height, final Color color) {
+    public WallObstacle(final Vector2D position, final double width, final double height) {
         super(position);
         if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
             throw new IllegalArgumentException("Invalid dimensions. Width: " + width
-            + "; Height: " + height + ".\nWidth must be between [" + MIN_WIDTH + ", "
-            + MAX_WIDTH + "].\n Height must be between [" + MIN_HEIGHT + ", "
-            + MAX_HEIGHT + "].");
+                    + "; Height: " + height + ".\nWidth must be between [" + MIN_WIDTH + ", "
+                    + MAX_WIDTH + "].\n Height must be between [" + MIN_HEIGHT + ", "
+                    + MAX_HEIGHT + "].");
         }
         this.minX = position.getX();
         this.maxX = position.getX() + width;
@@ -52,8 +55,9 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
         this.normalRight = new Vector2D(1, 0);
         this.normalTop = new Vector2D(0, -1);
         this.normalBottom = new Vector2D(0, 1);
-        this.color = color;
-        this.shape = new Rectangle(position, width, height, this.color);
+        // this.color = color;
+        // this.shape = new Rectangle(position, width, height, this.color);
+        this.shape = new Rectangle(position, width, height);
     }
 
     /**
@@ -75,7 +79,8 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
 
     /**
      * Resolves the physical collision between the ball and the obstacle calculating
-     * the bounce based on the obstacle's shape and applies the new direction to the ball.
+     * the bounce based on the obstacle's shape and applies the new direction to the
+     * ball.
      * 
      * @param ball the Ball object that has collided with the obstacle
      */
@@ -95,7 +100,8 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
             final double distanceRight = maxX - positionX;
             final double distanceTop = positionY - minY;
             final double distanceBottom = maxY - positionY;
-            final double minDistance = Math.min(Math.min(distanceLeft, distanceRight), Math.min(distanceTop, distanceBottom));
+            final double minDistance = Math.min(Math.min(distanceLeft, distanceRight),
+                    Math.min(distanceTop, distanceBottom));
 
             if (minDistance == distanceLeft) {
                 normal = normalLeft;

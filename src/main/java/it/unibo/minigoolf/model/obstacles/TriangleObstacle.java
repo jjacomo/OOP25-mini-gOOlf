@@ -3,7 +3,7 @@ package it.unibo.minigoolf.model.obstacles;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Triangle;
 import it.unibo.minigoolf.model.ball.Ball;
-import java.awt.Color;
+// import java.awt.Color;
 
 /**
  * Represents a triangular obstacle in the minigolf course.
@@ -21,7 +21,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
     private final Vector2D normal23;
     private final Vector2D normal31;
     private final Triangle shape;
-    private final Color color;
+    // private final Color color;
 
     /**
      * Constructs a triangular obstacle.
@@ -29,12 +29,14 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
      * @param vertex1 the first vertex of the triangle
      * @param vertex2 the second vertex of the triangle
      * @param vertex3 the third vertex of the triangle
-     * @param color the color of the obstacle
+     * @param color   the color of the obstacle
      * @throws IllegalArgumentException if the triangle area is less than MIN_AREA
      */
-    public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final Vector2D vertex3, final Color color) {
+    // public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final
+    // Vector2D vertex3, final Color color) {
+    public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final Vector2D vertex3) {
         super(new Vector2D((vertex1.getX() + vertex2.getX() + vertex3.getX()) / 3.0,
-                            (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3.0));
+                (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3.0));
 
         checkDistanceBounds(vertex1, vertex2, "vertex1", "vertex2");
         checkDistanceBounds(vertex2, vertex3, "vertex2", "vertex3");
@@ -42,7 +44,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         final double area = computeTriangleArea(vertex1, vertex2, vertex3);
         if (area < MIN_AREA) {
             throw new IllegalArgumentException("Triangle too flat. Area: " + area
-            + ". It must be over " + MIN_AREA + ".");
+                    + ". It must be over " + MIN_AREA + ".");
         }
 
         this.vertex1 = vertex1;
@@ -51,8 +53,10 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         this.normal12 = computeOutwardNormal(this.vertex1, this.vertex2);
         this.normal23 = computeOutwardNormal(this.vertex2, this.vertex3);
         this.normal31 = computeOutwardNormal(this.vertex3, this.vertex1);
-        this.color = color;
-        this.shape = new Triangle(this.vertex1, this.vertex2, this.vertex3, this.color);
+        // this.color = color;
+        // this.shape = new Triangle(this.vertex1, this.vertex2, this.vertex3,
+        // this.color);
+        this.shape = new Triangle(this.vertex1, this.vertex2, this.vertex3);
     }
 
     /**
@@ -65,33 +69,40 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
     public boolean isColliding(final Ball ball) {
         final Vector2D ballPosition = ball.getPosition();
         final double radiusSquared = ball.getRadius() * ball.getRadius();
-        final double[] bestDistanceSquared = {Double.POSITIVE_INFINITY};
-        final Vector2D[] bestPoint = {null};
-        final Vector2D[] bestNormal = {null};
+        final double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
+        final Vector2D[] bestPoint = { null };
+        final Vector2D[] bestNormal = { null };
 
-        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint, bestNormal);
-        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint, bestNormal);
-        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint,
+                bestNormal);
+        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint,
+                bestNormal);
+        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint,
+                bestNormal);
 
         return bestDistanceSquared[0] <= radiusSquared;
     }
 
     /**
      * Resolves the physical collision between the ball and the obstacle calculating
-     * the bounce based on the obstacle's shape and applies the new direction to the ball.
+     * the bounce based on the obstacle's shape and applies the new direction to the
+     * ball.
      * 
      * @param ball the ball object that has collided with the obstacle
      */
     @Override
     public void resolveCollision(final Ball ball) {
         final Vector2D ballPosition = ball.getPosition();
-        final double[] bestDistanceSquared = {Double.POSITIVE_INFINITY};
-        final Vector2D[] bestPoint = {null};
-        final Vector2D[] bestNormal = {null};
+        final double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
+        final Vector2D[] bestPoint = { null };
+        final Vector2D[] bestNormal = { null };
 
-        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint, bestNormal);
-        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint, bestNormal);
-        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint, bestNormal);
+        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint,
+                bestNormal);
+        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint,
+                bestNormal);
+        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint,
+                bestNormal);
 
         final double distance = Math.sqrt(bestDistanceSquared[0]);
         final double penetrationDepth = ball.getRadius() - distance;
@@ -108,18 +119,19 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
      *
      * @param endpointA first endpoint of the segment ab
      * @param endpointB second endpoint of the segment ab
-     * @param nameA name of the first endpoint
-     * @param nameB name of the second endpoint
-     * @throws IllegalArgumentException if the side length is outside [MIN_SIDE_LENGTH, 
-     *          MAX_SIDE_LENGTH]
+     * @param nameA     name of the first endpoint
+     * @param nameB     name of the second endpoint
+     * @throws IllegalArgumentException if the side length is outside
+     *                                  [MIN_SIDE_LENGTH,
+     *                                  MAX_SIDE_LENGTH]
      */
     private void checkDistanceBounds(final Vector2D endpointA, final Vector2D endpointB,
-                                     final String nameA, final String nameB) {
+            final String nameA, final String nameB) {
         final double distance = endpointA.distance(endpointB);
         if (distance < MIN_SIDE_LENGTH || distance > MAX_SIDE_LENGTH) {
             throw new IllegalArgumentException("Distance " + nameA + " - " + nameB
-            + " = " + String.format("%.2f", distance) + ". It must be between ["
-            + MIN_SIDE_LENGTH + " and " + MAX_SIDE_LENGTH + "].");
+                    + " = " + String.format("%.2f", distance) + ". It must be between ["
+                    + MIN_SIDE_LENGTH + " and " + MAX_SIDE_LENGTH + "].");
         }
     }
 
@@ -152,27 +164,30 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         final Vector2D middle = endpointA.add(endpointB).scalarMultiply(0.5);
         final Vector2D toCentroid = getPosition().subtract(middle);
 
-        return (perpendicular1.dotProduct(toCentroid) < 0) ? perpendicular1.normalize() 
+        return (perpendicular1.dotProduct(toCentroid) < 0) ? perpendicular1.normalize()
                 : perpendicular2.normalize();
     }
 
     /**
      * Evaluates whether the side examined is the closest to the ball.
      *
-     * @param ballPosition the position of the ball.
-     * @param endpointA the first point of the edge.
-     * @param endpointB the second point of the edge.
-     * @param faceNormal the normal of the face.
-     * @param bestDistanceSquared an array used to store and update the minimum squared
-     *          distance found.
-     * @param bestPoint an array used to store and update the closest point on the
-     *          perimeter.
-     * @param bestNormal an array used to store and update the normal at the closest point.
+     * @param ballPosition        the position of the ball.
+     * @param endpointA           the first point of the edge.
+     * @param endpointB           the second point of the edge.
+     * @param faceNormal          the normal of the face.
+     * @param bestDistanceSquared an array used to store and update the minimum
+     *                            squared
+     *                            distance found.
+     * @param bestPoint           an array used to store and update the closest
+     *                            point on the
+     *                            perimeter.
+     * @param bestNormal          an array used to store and update the normal at
+     *                            the closest point.
      */
-    private void evaluateEdge(final Vector2D ballPosition, final Vector2D endpointA, 
-                                final Vector2D endpointB, final Vector2D faceNormal,
-                                final double[] bestDistanceSquared, 
-                                final Vector2D[] bestPoint, final Vector2D[] bestNormal) {
+    private void evaluateEdge(final Vector2D ballPosition, final Vector2D endpointA,
+            final Vector2D endpointB, final Vector2D faceNormal,
+            final double[] bestDistanceSquared,
+            final Vector2D[] bestPoint, final Vector2D[] bestNormal) {
         final Vector2D segmentAB = endpointB.subtract(endpointA);
         final Vector2D segmentAP = ballPosition.subtract(endpointA);
         final double lengthSquared = segmentAB.getNormSquared();

@@ -112,8 +112,8 @@ public class MapPanel extends JPanel {
         drawShape(mapController.getHoleController().getShape(), g2d, null);
         g2d.setColor(Color.WHITE);
         drawShape(mapController.getBallController().getBallShape(), g2d, null);
+        g2d.setColor(Color.DARK_GRAY);
         for (final Obstacle obstacle : mapController.getObstacles()) {
-            g2d.setColor(obstacle.getShape().getColor());
             drawShape(obstacle.getShape(), g2d, null);
         }
 
@@ -133,12 +133,12 @@ public class MapPanel extends JPanel {
         // pole:
         g2d.setColor(Color.lightGray);
         drawShape(new Rectangle(new Vector2D(position.getX() - poleOffsetX, position.getY() - poleHeight),
-                poleWidth, poleHeight, Color.RED), g2d, null);
+                poleWidth, poleHeight), g2d, null);
         // flag:
         g2d.setColor(Color.RED);
         drawShape(new Triangle(new Vector2D(position.getX() + poleOffsetX, position.getY() - poleHeight),
                 new Vector2D(position.getX() + flagWidth, position.getY() - poleHeight + flagHeight / 2),
-                new Vector2D(position.getX() + poleOffsetX, position.getY() - poleHeight + flagHeight), Color.RED),
+                new Vector2D(position.getX() + poleOffsetX, position.getY() - poleHeight + flagHeight)),
                 g2d, null);
     }
 
@@ -152,7 +152,7 @@ public class MapPanel extends JPanel {
      * @param texture the texture to apply
      */
     private void drawShape(final Shape shape, final Graphics2D g2d, final BufferedImage texture) {
-        if (shape instanceof Rectangle rect) { 
+        if (shape instanceof Rectangle rect) {
             if (Objects.isNull(texture)) {
                 g2d.fillRect((int) rect.position().getX(), (int) rect.position().getY(),
                         (int) rect.width(), (int) rect.height());
@@ -168,14 +168,14 @@ public class MapPanel extends JPanel {
                     (int) circ.position().getY() - (int) circ.radius(), (int) circ.radius() * 2,
                     (int) circ.radius() * 2);
         } else if (shape instanceof Triangle tria) {
-            final int[] xPoints = {(int) tria.vertex1().getX(), (int) tria.vertex2().getX(),
-                            (int) tria.vertex3().getX()};
-            final int[] yPoints = {(int) tria.vertex1().getY(), (int) tria.vertex2().getY(),
-                            (int) tria.vertex3().getY()};
+            final int[] xPoints = { (int) tria.vertex1().getX(), (int) tria.vertex2().getX(),
+                    (int) tria.vertex3().getX() };
+            final int[] yPoints = { (int) tria.vertex1().getY(), (int) tria.vertex2().getY(),
+                    (int) tria.vertex3().getY() };
             g2d.fillPolygon(xPoints, yPoints, 3);
         } else {
             // For future shape types, add more cases here
             throw new UnsupportedOperationException("Drawing not implemented for shape type: " + shape.getClass());
         }
     }
- }
+}

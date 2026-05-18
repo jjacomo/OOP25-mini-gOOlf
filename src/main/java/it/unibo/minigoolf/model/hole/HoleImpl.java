@@ -1,12 +1,11 @@
 package it.unibo.minigoolf.model.hole;
 
-import java.awt.Color;
-
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 
 /**
- * Implementation of the Hole interface representing the hole in the mini golf game.
+ * Implementation of the Hole interface representing the hole in the mini golf
+ * game.
  * 
  * @author jack
  */
@@ -22,7 +21,7 @@ public final class HoleImpl implements Hole {
      */
     public HoleImpl(final Vector2D position, final double radius) {
         this.position = position;
-        this.circle = new Circle(position, radius, Color.BLACK);
+        this.circle = new Circle(position, radius);
     }
 
     @Override
