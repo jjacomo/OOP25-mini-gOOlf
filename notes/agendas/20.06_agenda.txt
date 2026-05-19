@@ -1,4 +1,0 @@
-Fede:
-
-- game context è un contenitore di dati condivisi, che richiede un warning, dobbiamo decidere se usare dei suppresswarning o se 
-    "sporcare" pattern mvc

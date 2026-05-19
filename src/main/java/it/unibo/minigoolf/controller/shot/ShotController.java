@@ -5,13 +5,6 @@ import it.unibo.minigoolf.util.Vector2D;
 /**
  * Controller that coordinates shot input between the view and the game logic.
  *
- * <p>Responsibilities:
- * <ul>
- *   <li>Enabling shot input when it is the player's turn.</li>
- *   <li>Consuming the pending shot each tick and forwarding it to the game loop.</li>
- *   <li>Notifying the view when the ball has stopped so input can be re-enabled.</li>
- * </ul>
- *
  * @author fede
  */
 public interface ShotController {
@@ -31,4 +24,11 @@ public interface ShotController {
      * @param ballPosition the ball centre in logical coordinates
      */
     void onBallStopped(Vector2D ballPosition);
+
+    /**
+     * Returns the shot view interface wired to this controller.
+     *
+     * @return the shot view
+     */
+    ShotView getShotView();
 }

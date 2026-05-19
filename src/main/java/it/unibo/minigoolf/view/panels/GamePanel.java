@@ -1,7 +1,6 @@
 package it.unibo.minigoolf.view.panels;
 
-import it.unibo.minigoolf.controller.game.GameContext;
-import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.controller.game.GameController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.controller.shot.ShotView;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
@@ -22,7 +21,7 @@ import java.io.Serial;
 
 /**
  * The game scene panel.
- * Receives a {@link GameContext} instead of individual model objects.
+ * Receives a {@link GameController} to read match state and render the game.
  *
  * @author dani
  */
@@ -40,25 +39,23 @@ public final class GamePanel extends JPanel {
     private final MapPanel mapPanel;
 
     /**
-     * @param controller    the main controller
-     * @param navController the navigation controller
-     * @param ctx           the game context holding all match objects
+     * @param navController  the navigation controller
+     * @param gameController the active match controller
      */
-    public GamePanel(final MainController controller,
-            final NavigationController navController,
-            final GameContext ctx) {
+    public GamePanel(final NavigationController navController,
+            final GameController gameController) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
         final JPanel uiPanel = new JPanel();
         uiPanel.setBackground(Color.DARK_GRAY);
-        final JLabel turnoLabel = new JLabel(ctx.gameState().getCurrentPlayer().toString());
+        final JLabel turnoLabel = new JLabel(gameController.getCurrentPlayerName());
         turnoLabel.setForeground(Color.WHITE);
         uiPanel.add(turnoLabel);
         this.add(uiPanel, BorderLayout.NORTH);
 
-        this.mapPanel = new MapPanel(ctx.gameMapController());
-        this.shotViewPanel = new ShotViewPanel(ctx.shotState());
+        this.mapPanel = new MapPanel(gameController.getGameMapController());
+        this.shotViewPanel = new ShotViewPanel(gameController.getShotState());
 
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
@@ -112,8 +109,7 @@ public final class GamePanel extends JPanel {
     }
 
     /**
-     * Returns the shot view as the narrow {@link ShotView} interface,
-     * so callers stay decoupled from the concrete {@link ShotViewPanel}.
+     * Returns the shot view as the narrow {@link ShotView} interface.
      *
      * @return the shot view interface
      */
