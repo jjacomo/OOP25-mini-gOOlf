@@ -5,6 +5,8 @@ import it.unibo.minigoolf.util.Vector2D;
 /**
  * Minimal interface for submitting a shot from the view layer.
  * Avoids exposing the full {@link GameState} to view components.
+ * 
+ * @author fede
  */
 @FunctionalInterface
 public interface ShotAcceptor {

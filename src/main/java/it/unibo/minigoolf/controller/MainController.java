@@ -3,7 +3,7 @@ package it.unibo.minigoolf.controller;
 /**
  * Manages the game loop for the minigolf application.
  *
- * @author fede and dani
+ * @author dani
  */
 
 public interface MainController {
@@ -18,4 +18,3 @@ public interface MainController {
      */
     void stop();
 }
-

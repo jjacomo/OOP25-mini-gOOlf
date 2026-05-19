@@ -26,3 +26,6 @@
         classi: GameContext e GameFactory
 
 2 ore: sistemato warning di spotbugs
+
+8 ore: sistemato per bene l'archittetura del progetto in modo che rispetti l'mvc, alleggerito MainControllerImpl, tolto tutti
+        i suppressWarning

@@ -12,7 +12,7 @@ import java.util.Optional;
  * Implements {@link TurnState} so controllers can depend on the narrow
  * interface rather than this full class, avoiding EI2 warnings.
  *
- * @author fede
+ * @author fede and dani
  */
 public final class GameState implements TurnState {
 
