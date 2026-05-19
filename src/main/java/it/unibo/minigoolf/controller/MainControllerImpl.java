@@ -28,7 +28,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
     private final Timer timer;
     private final MainWindow mainWindow;
     private final NavigationController navigationController;
-    private GameController activeMatch;
+    private final GameController activeMatch;
 
     /**
      * Creates and wires all components.
@@ -39,8 +39,6 @@ public final class MainControllerImpl implements MainController, ActionListener 
         this.activeMatch = GameFactory.buildMatch(List.of("Player 1"));
         this.mainWindow = new MainWindow(this, navigationController, activeMatch);
         this.navigationController.setMainWindow(mainWindow);
-        // Wire the shot view now that the window (and its panels) exist.
-        activeMatch.setShotView(mainWindow.getShotView());
         this.timer = new Timer(1000 / FPS, this);
     }
 

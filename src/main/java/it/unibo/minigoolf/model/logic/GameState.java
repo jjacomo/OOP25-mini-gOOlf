@@ -9,12 +9,12 @@ import java.util.Optional;
 
 /**
  * Central game logic for a minigolf match.
- * Manages turn order, player state, and ball-moving flag.
- * Shot queuing has been moved to {@link ShotState}.
+ * Implements {@link TurnState} so controllers can depend on the narrow
+ * interface rather than this full class, avoiding EI2 warnings.
  *
  * @author fede
  */
-public final class GameState {
+public final class GameState implements TurnState {
 
     /** Minimum squared length a shot vector must have to be considered valid. */
     private static final double MIN_SQUARE_POWER = 100.0;
@@ -72,34 +72,22 @@ public final class GameState {
         return Collections.unmodifiableList(players);
     }
 
-    /**
-     * Returns true if the ball is currently moving.
-     *
-     * @return true if ball is moving
-     */
+    /** {@inheritDoc} */
+    @Override
     public boolean isBallMoving() {
         return ballMoving;
     }
 
-    /**
-     * Called by {@link it.unibo.minigoolf.controller.shot.ShotControllerImpl}
-     * once a valid shot has been confirmed by the player.
-     *
-     * @param shot the direction/power vector of the intended shot
-     */
+    /** {@inheritDoc} */
+    @Override
     public synchronized void setPendingShot(final Vector2D shot) {
         if (!ballMoving && shot != null && shot.getNormSquared() >= MIN_SQUARE_POWER) {
             this.pendingShot = shot;
         }
     }
 
-    /**
-     * Called by the game loop each tick.
-     * If a shot is pending, consumes it, increments the shot counter,
-     * marks the ball as moving and returns the vector.
-     *
-     * @return an Optional containing the shot vector, or empty if no shot this tick
-     */
+    /** {@inheritDoc} */
+    @Override
     public synchronized Optional<Vector2D> update() {
         if (pendingShot != null) {
             final Vector2D shot = pendingShot;
@@ -111,9 +99,8 @@ public final class GameState {
         return Optional.empty();
     }
 
-    /**
-     * Called by the physics layer once the ball has stopped moving.
-     */
+    /** {@inheritDoc} */
+    @Override
     public synchronized void onBallStopped() {
         this.ballMoving = false;
     }

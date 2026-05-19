@@ -11,7 +11,6 @@ public interface ShotController {
 
     /**
      * Called each tick by the game loop.
-     * Consumes a pending shot if available and applies it to the ball.
      *
      * @return true if a shot was fired this tick, false otherwise
      */
@@ -19,16 +18,8 @@ public interface ShotController {
 
     /**
      * Called when the ball has stopped moving.
-     * Re-enables shot input at the current ball position.
      *
      * @param ballPosition the ball centre in logical coordinates
      */
     void onBallStopped(Vector2D ballPosition);
-
-    /**
-     * Returns the shot view interface wired to this controller.
-     *
-     * @return the shot view
-     */
-    ShotView getShotView();
 }

@@ -6,11 +6,11 @@ import java.awt.Point;
  * Minimal interface through which {@link ShotControllerImpl}
  * communicates with the shot-input view.
  * Keeping this boundary narrow means the controller stays decoupled
- * from the full view implementation: it only needs to enable input
- * at a given position.
+ * from the full view implementation.
  *
  * @author fede
  */
+@FunctionalInterface
 public interface ShotView {
 
     /**

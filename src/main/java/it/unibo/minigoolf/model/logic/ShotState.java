@@ -19,9 +19,6 @@ import java.util.Optional;
  */
 public final class ShotState {
 
-    /** Minimum squared power for a shot to be accepted. */
-    private static final double MIN_SQUARE_POWER = 100.0;
-
     /**
      * Maximum power of a shot in logical pixels.
      * Matches the maximum display length of the indicator line in
@@ -29,6 +26,9 @@ public final class ShotState {
      * visual and the physics are always in sync.
      */
     public static final double MAX_POWER = 150.0;
+
+    /** Minimum squared power for a shot to be accepted. */
+    private static final double MIN_SQUARE_POWER = 100.0;
 
     /** Current drag vector set by the view while the user is dragging. */
     private Vector2D intent;

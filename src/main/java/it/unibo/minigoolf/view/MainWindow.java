@@ -3,7 +3,7 @@ package it.unibo.minigoolf.view;
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.game.GameController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
-import it.unibo.minigoolf.controller.shot.ShotView;
+import it.unibo.minigoolf.view.input.ShotViewPanel;
 import it.unibo.minigoolf.view.panels.GamePanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
 import it.unibo.minigoolf.view.panels.NewGamePanel;
@@ -18,6 +18,9 @@ import java.io.Serial;
 /**
  * The main application window.
  * Hosts the panel that is currently active.
+ * Creates the {@link ShotViewPanel} and wires it to both
+ * the {@link GamePanel} and the {@link GameController},
+ * so neither exposes internal references.
  *
  * @author dani and fede
  */
@@ -31,10 +34,12 @@ public final class MainWindow extends JFrame {
 
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel mainContainer = new JPanel(cardLayout);
-    private GamePanel gamePanel;
 
     /**
      * Creates and displays the main application window.
+     * The {@link ShotViewPanel} is created here and passed to both
+     * the {@link GamePanel} and {@link GameController#setShotView},
+     * eliminating the need for any {@code getShotView()} method on {@link GamePanel}.
      *
      * @param controller           the main controller
      * @param navigationController the navigation controller
@@ -47,7 +52,13 @@ public final class MainWindow extends JFrame {
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        this.gamePanel = new GamePanel(navigationController, gameController);
+        // ShotViewPanel is created here so it can be passed to both
+        // GamePanel (for rendering) and GameController (for input wiring)
+        // without either needing to expose it via a getter.
+        final ShotViewPanel shotViewPanel = new ShotViewPanel(gameController.getShotState());
+        gameController.setShotView(shotViewPanel);
+
+        final GamePanel gamePanel = new GamePanel(navigationController, gameController, shotViewPanel);
         mainContainer.add(new MenuPanel(navigationController), "MENU");
         mainContainer.add(new NewGamePanel(navigationController), "NEW_GAME");
         mainContainer.add(gamePanel, "GAME");
@@ -65,39 +76,6 @@ public final class MainWindow extends JFrame {
      * @param name the panel key ("MENU", "GAME", "NEW_GAME", …)
      */
     public void showScene(final String name) {
-        cardLayout.show(mainContainer, name);
-    }
-
-    /**
-     * Rebuilds the game panel with a new match controller.
-     * Called when starting a new match mid-session.
-     *
-     * @param navigationController the navigation controller
-     * @param gameController       the new match controller
-     */
-    public void rebuildGamePanel(final NavigationController navigationController,
-            final GameController gameController) {
-        this.gamePanel = new GamePanel(navigationController, gameController);
-        mainContainer.add(gamePanel, "GAME");
-    }
-
-    /**
-     * Returns the shot view interface so
-     * {@link it.unibo.minigoolf.controller.game.GameController#setShotView(ShotView)}
-     * can be called after construction.
-     *
-     * @return the shot view interface
-     */
-    public ShotView getShotView() {
-        return gamePanel.getShotView();
-    }
-
-    /**
-     * Switches the active panel.
-     *
-     * @param name the panel key
-     */
-    public void showPanel(final String name) {
         cardLayout.show(mainContainer, name);
     }
 }

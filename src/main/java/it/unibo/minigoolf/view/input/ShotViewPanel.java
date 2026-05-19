@@ -25,7 +25,7 @@ import java.util.Optional;
  *
  * @author fede
  */
-public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotView {
+public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotView, ShotCoordinateConverter {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -59,7 +59,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
      */
     public ShotViewPanel(final ShotState shotState) {
         this.shotState = shotState;
-        this.shotListener = new ShotListener(this);
+        this.shotListener = new ShotListener(this, this);
         this.addMouseListener(shotListener);
         this.addMouseMotionListener(shotListener);
         this.setOpaque(false);

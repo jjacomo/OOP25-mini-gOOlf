@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 
 /**
  * Mouse listener that translates drag gestures into shot vectors.
+ * Depends on the narrow {@link ShotVisualizer} and {@link ShotCoordinateConverter}
+ * interfaces instead of the full {@link ShotViewPanel}, avoiding EI2 warnings.
  *
  * @author fede
  */
@@ -19,13 +21,8 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
      */
     private static final double CLICK_RADIUS = 40.0;
 
-    /**
-     * The panel that draws the shot indicator, handles shots, and converts
-     * physical mouse coordinates to logical ones.
-     * A single reference is kept since {@link ShotViewPanel} implements
-     * {@link ShotVisualizer} directly.
-     */
-    private final transient ShotViewPanel panel;
+    private final ShotVisualizer visualizer;
+    private final ShotCoordinateConverter converter;
 
     /** Where the drag started in logical coordinates (null when no drag is in progress). */
     private transient Point startingPoint;
@@ -34,20 +31,22 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
     private boolean enable;
 
     /**
-     * Creates a new ShotListener linked to the given panel.
+     * Creates a new ShotListener.
      *
-     * @param panel the panel that draws the indicator and handles shots
+     * @param visualizer the panel that draws the indicator and handles shots
+     * @param converter  the panel that converts coordinates and checks ball proximity
      */
-    public ShotListener(final ShotViewPanel panel) {
-        this.panel = panel;
+    public ShotListener(final ShotVisualizer visualizer, final ShotCoordinateConverter converter) {
+        this.visualizer = visualizer;
+        this.converter = converter;
     }
 
     /** {@inheritDoc} */
     @Override
     public void mousePressed(final MouseEvent e) {
         if (this.enable) {
-            final Point logical = panel.toLogical(e.getPoint());
-            if (panel.isNearBall(logical, CLICK_RADIUS)) {
+            final Point logical = converter.toLogical(e.getPoint());
+            if (converter.isNearBall(logical, CLICK_RADIUS)) {
                 this.startingPoint = logical;
             }
         }
@@ -57,10 +56,10 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
     @Override
     public void mouseDragged(final MouseEvent e) {
         if (this.enable && this.startingPoint != null) {
-            final Point logicalCurrent = panel.toLogical(e.getPoint());
+            final Point logicalCurrent = converter.toLogical(e.getPoint());
             final Vector2D raw = new Vector2D(this.startingPoint, logicalCurrent);
             final Vector2D shotDirection = raw.getOppositeVector();
-            panel.updateShotIntent(shotDirection);
+            visualizer.updateShotIntent(shotDirection);
         }
     }
 
@@ -68,7 +67,7 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
     @Override
     public void mouseReleased(final MouseEvent e) {
         if (this.enable && this.startingPoint != null) {
-            panel.shoot();
+            visualizer.shoot();
             this.startingPoint = null;
         }
     }

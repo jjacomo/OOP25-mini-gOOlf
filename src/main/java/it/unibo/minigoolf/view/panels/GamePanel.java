@@ -2,7 +2,6 @@ package it.unibo.minigoolf.view.panels;
 
 import it.unibo.minigoolf.controller.game.GameController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
-import it.unibo.minigoolf.controller.shot.ShotView;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 
 import javax.swing.AbstractAction;
@@ -21,7 +20,8 @@ import java.io.Serial;
 
 /**
  * The game scene panel.
- * Receives a {@link GameController} to read match state and render the game.
+ * Receives a pre-built {@link ShotViewPanel} from {@link it.unibo.minigoolf.view.MainWindow}
+ * so it does not need to expose any internal reference via a getter.
  *
  * @author dani
  */
@@ -35,15 +35,16 @@ public final class GamePanel extends JPanel {
     private static final double ASPECT_W = 16.0;
     private static final double ASPECT_H = 9.0;
 
-    private final ShotViewPanel shotViewPanel;
     private final MapPanel mapPanel;
 
     /**
      * @param navController  the navigation controller
      * @param gameController the active match controller
+     * @param shotViewPanel  the pre-built shot view panel, created and wired by MainWindow
      */
     public GamePanel(final NavigationController navController,
-            final GameController gameController) {
+            final GameController gameController,
+            final ShotViewPanel shotViewPanel) {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
@@ -55,7 +56,7 @@ public final class GamePanel extends JPanel {
         this.add(uiPanel, BorderLayout.NORTH);
 
         this.mapPanel = new MapPanel(gameController.getGameMapController());
-        this.shotViewPanel = new ShotViewPanel(gameController.getShotState());
+        // shotViewPanel is used directly from the parameter — no field needed.
 
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
@@ -106,14 +107,5 @@ public final class GamePanel extends JPanel {
                 navController.pauseGame();
             }
         });
-    }
-
-    /**
-     * Returns the shot view as the narrow {@link ShotView} interface.
-     *
-     * @return the shot view interface
-     */
-    public ShotView getShotView() {
-        return shotViewPanel;
     }
 }
