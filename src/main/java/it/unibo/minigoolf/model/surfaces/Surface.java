@@ -50,4 +50,14 @@ public interface Surface {
      * @return the shape of the surface
      */
     Shape getShape();
+
+    /**
+     * Returns the wind velocity applied by this surface.
+     * By default, a surface does not apply any wind.
+     * 
+     * @return the wind vector
+     */
+    default Vector2D getWind() {
+        return Vector2D.ZERO;
+    }
 }

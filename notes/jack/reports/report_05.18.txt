@@ -40,8 +40,6 @@ PER AGENDA FUTURA:
 * Accumulatore per il dt nel game loop?
 
 * Dovrebbe esserci una velocita' massima della palla? (Con fede)
-* Guarda il primo punto delle cose fatte oggi
-* Non modificare la velcoita' della palla in MainControllerImpl (per fede)
 * MapPanel non deve importare nulla del model (Obstacles) (per Mattia)
 * Per mattia: ho rimosso color da shape, se si vogliono colorare gli ostacoli sarebbe meglio
     creare una enum tipo...

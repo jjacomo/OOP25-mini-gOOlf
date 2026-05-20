@@ -68,17 +68,21 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
         } else if (velocityNorm != 0) {
             LOGGER.debug("Very low speed: setting velocity to zero.");
             ball.setVelocity(Vector2D.ZERO); // Non c'e' bisogno di stoppare la palla in MainController
-            return;
-        } else if (velocityNorm == 0) {
-            return;
         }
 
-        final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
-        final Vector2D deltaV = frictionForce.scalarMultiply(deltaTime);
-        if (deltaV.getNorm() >= velocityNorm) {
-            ball.setVelocity(Vector2D.ZERO);
-        } else {
-            ball.setVelocity(velocity.add(deltaV));
+        if (velocityNorm > LOW_SPEED_THRESHOLD) {
+            final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
+            final Vector2D deltaV = frictionForce.scalarMultiply(deltaTime);
+            if (deltaV.getNorm() >= velocityNorm) {
+                ball.setVelocity(Vector2D.ZERO);
+            } else {
+                ball.setVelocity(velocity.add(deltaV));
+            }
+        }
+
+        final Vector2D wind = surface.getWind();
+        if (wind.getNormSquared() > 0) {
+            ball.setVelocity(ball.getVelocity().add(wind.scalarMultiply(deltaTime)));
         }
     }
 
