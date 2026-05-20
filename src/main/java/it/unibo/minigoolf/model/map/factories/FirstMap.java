@@ -172,34 +172,34 @@ public class FirstMap implements GameMapFactory {
                 final List<Obstacle> obstacles = new ArrayList<>();
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+                                SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS2_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+                                SurfaceType.GRASS.getFriction(), GRASS2_Z_INDEX, SurfaceType.GRASS));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS3_X, GRASS3_Y), GRASS3_WIDTH, GRASS3_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS3_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+                                SurfaceType.GRASS.getFriction(), GRASS3_Z_INDEX, SurfaceType.GRASS));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS4_X, GRASS4_Y), GRASS4_WIDTH, GRASS4_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS4_Z_INDEX, SurfaceType.GRASS.getTexturePath()));
+                                SurfaceType.GRASS.getFriction(), GRASS4_Z_INDEX, SurfaceType.GRASS));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(SAND_X, SAND_Y), SAND_WIDTH,
                                                 SAND_HEIGHT),
-                                SurfaceType.SAND.getFriction(), SAND_Z_INDEX, SurfaceType.SAND.getTexturePath()));
+                                SurfaceType.SAND.getFriction(), SAND_Z_INDEX, SurfaceType.SAND));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_WIDTH,
                                                 ICE_HEIGHT),
-                                SurfaceType.ICE.getFriction(), ICE_Z_INDEX, SurfaceType.ICE.getTexturePath()));
+                                SurfaceType.ICE.getFriction(), ICE_Z_INDEX, SurfaceType.ICE));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(DIRT_X, DIRT_Y), DIRT_WIDTH,
                                                 DIRT_HEIGHT),
-                                SurfaceType.DIRT.getFriction(), DIRT_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
+                                SurfaceType.DIRT.getFriction(), DIRT_Z_INDEX, SurfaceType.DIRT));
                 surfaces.add(new ShapedSurface(
                                 new Circle(new Vector2D(DIRT2_X, DIRT2_Y), DIRT2_RADIUS),
-                                SurfaceType.DIRT.getFriction(), DIRT2_Z_INDEX, SurfaceType.DIRT.getTexturePath()));
+                                SurfaceType.DIRT.getFriction(), DIRT2_Z_INDEX, SurfaceType.DIRT));
                 surfaces.add(new ShapedSurface(
                                 new Oval(SAND2_POSITION, SAND2_RADIUS_X, SAND2_RADIUS_Y),
-                                SurfaceType.SAND.getFriction(), DIRT2_Z_INDEX, SurfaceType.SAND.getTexturePath()));
+                                SurfaceType.SAND.getFriction(), DIRT2_Z_INDEX, SurfaceType.SAND));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));

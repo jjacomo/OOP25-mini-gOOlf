@@ -20,4 +20,8 @@ public abstract class DecoratedSurface implements Surface {
         return baseSurface.contains(position);
     }
 
+    @Override
+    public SurfaceType getType() {
+        return baseSurface.getType();
+    }
 }

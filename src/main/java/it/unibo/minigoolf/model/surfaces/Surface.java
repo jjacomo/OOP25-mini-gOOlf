@@ -38,11 +38,11 @@ public interface Surface {
     int getZIndex();
 
     /**
-     * Returns the texture path of this surface for rendering purposes.
+     * Returns the type of this surface.
      *
-     * @return the texture path of the surface
+     * @return the SurfaceType of the surface
      */
-    String getTexturePath();
+    SurfaceType getType();
 
     /**
      * Returns the shape representing the boundaries of this surface.

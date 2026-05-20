@@ -108,17 +108,17 @@ public class TestGameMapFactory implements GameMapFactory {
                                 new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH,
                                                 MAIN_SURFACE_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX,
-                                SurfaceType.GRASS.getTexturePath()));
+                                SurfaceType.GRASS));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
                                                 SECOND_SURFACE_HEIGHT),
                                 SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX,
-                                SurfaceType.SAND.getTexturePath()));
+                                SurfaceType.SAND));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
                                                 THIRD_SURFACE_HEIGHT),
                                 SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX,
-                                SurfaceType.DIRT.getTexturePath()));
+                                SurfaceType.DIRT));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));

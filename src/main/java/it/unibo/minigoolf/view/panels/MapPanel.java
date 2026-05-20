@@ -101,11 +101,11 @@ public class MapPanel extends JPanel {
         mapController.getSurfaces().stream()
                 .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
                 .forEach(surface -> {
-                    final BufferedImage texture = loadTexture(surface.getTexturePath());
+                    final BufferedImage texture = loadTexture(surface.getType().getTexturePath());
                     if (texture != null) {
                         drawShape(surface.getShape(), g2d, texture);
                     } else {
-                        throw new IllegalStateException("Texture not found for surface: " + surface.getTexturePath());
+                        throw new IllegalStateException("Texture not found for surface type: " + surface.getType());
                     }
                 });
 

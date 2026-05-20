@@ -1,9 +1,9 @@
 package it.unibo.minigoolf.model.surfaces;
+// TODO: puoi anche togliere il path e ricostruirlo dal nome della superficie
 
 /**
  * Enumeration of different surface types in the mini-golf game.
- * Each surface type has a friction coefficient, a display name, and a texture
- * path.
+ * Each surface type has a friction coefficient and a display name.
  * 
  * @author jack
  */
@@ -18,11 +18,11 @@ public enum SurfaceType {
     private final String texturePath;
 
     /**
-     * Constructs a SurfaceType with the specified friction, name, and texture path.
+     * Constructs a SurfaceType with the specified friction and name.
      * 
      * @param friction    the friction coefficient
      * @param name        the display name
-     * @param texturePath the path to the texture image in resources
+     * @param texturePath the texture path
      */
     SurfaceType(final double friction, final String name, final String texturePath) {
         this.friction = friction;
@@ -49,7 +49,7 @@ public enum SurfaceType {
     }
 
     /**
-     * Returns the texture path for this surface type.
+     * Returns the texture path of this surface type.
      * 
      * @return the texture path
      */

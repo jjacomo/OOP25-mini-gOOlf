@@ -13,7 +13,7 @@ public final class ShapedSurface implements Surface {
     private final double friction;
     private final Shape shape;
     private final int zIndex;
-    private final String texturePath;
+    private final SurfaceType type;
 
     /**
      * Constructs a ShapedSurface with the given shape and type.
@@ -21,13 +21,13 @@ public final class ShapedSurface implements Surface {
      * @param shape       The geometric shape defining the surface area.
      * @param friction    The friction coefficient of the surface.
      * @param zIndex      The z-index of the surface (for rendering purposes).
-     * @param texturePath The path to the texture of the surface.
+     * @param type        The surface type.
      */
-    public ShapedSurface(final Shape shape, final double friction, final int zIndex, final String texturePath) {
+    public ShapedSurface(final Shape shape, final double friction, final int zIndex, final SurfaceType type) {
         this.shape = shape;
         this.friction = friction;
         this.zIndex = zIndex;
-        this.texturePath = texturePath;
+        this.type = type;
     }
 
     /**
@@ -58,11 +58,11 @@ public final class ShapedSurface implements Surface {
     }
 
     /**
-     * @return the texture path of the surface.
+     * @return the type of the surface.
      */
     @Override
-    public String getTexturePath() {
-        return texturePath;
+    public SurfaceType getType() {
+        return type;
     }
 
     /**
