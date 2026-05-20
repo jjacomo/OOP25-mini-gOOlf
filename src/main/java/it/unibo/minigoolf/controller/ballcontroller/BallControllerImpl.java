@@ -67,4 +67,9 @@ public final class BallControllerImpl implements BallController {
     public void updateVelocity(final Vector2D velocity) {
         ball.setVelocity(velocity);
     }
+
+    @Override
+    public boolean isBallMoving() {
+        return !ball.getVelocity().equals(Vector2D.ZERO);
+    }
 }

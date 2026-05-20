@@ -97,9 +97,14 @@ public final class GameControllerImpl implements GameController {
         if (ballMovingChecker.getAsBoolean()) {
             physicsUpdater.accept(deltaTime);
 
-            final Vector2D vel = gameMapController.getBallController().getVelocity();
-            if (vel.getNormSquared() < STOP_THRESHOLD_SQ) {
-                gameMapController.getBallController().updateVelocity(new Vector2D(0, 0));
+            // final Vector2D vel = gameMapController.getBallController().getVelocity();
+            // if (vel.getNormSquared() < STOP_THRESHOLD_SQ) {
+            //     gameMapController.getBallController().updateVelocity(new Vector2D(0, 0));
+            //     ballStoppedNotifier.run();
+            //     shotController.onBallStopped(
+            //         gameMapController.getBallController().getPosition());
+            // }
+            if (!gameMapController.getBallController().isBallMoving()) {
                 ballStoppedNotifier.run();
                 shotController.onBallStopped(
                     gameMapController.getBallController().getPosition());

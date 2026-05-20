@@ -52,4 +52,11 @@ public interface BallController {
      * @param velocity the new velocity of the ball
      */
     void updateVelocity(Vector2D velocity);
+
+    /**
+     * Checks if the ball is currently moving.
+     *
+     * @return true if the ball is moving, false otherwise
+     */
+    boolean isBallMoving();
 }
