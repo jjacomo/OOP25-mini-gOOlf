@@ -1,0 +1,14 @@
+Dani:
+
+- In questi giorni Fede ha suddiviso diversamente le sue classi -> ora al posto di gamecontext c'è gamecontroller, ed il maincotroller è bello snello!
+
+- Per le mappe, direi di crearne almeno una testa così variamo un po'
+
+- Io in queste due settimane farò una partita semplice con stats, quindi il multi.
+
+- Direi che finiremo di programmare, con anche le feature in più se non troppo complicate, o a fine maggio, o comunque la prima settimana di giugno.
+ Quindi pulizie varie, relazione ecc... direi in una settimana 2 max si fanno.
+
+ - Io personalmente avrò molto più tempo a disposizione non andando più a lezione quindi cerco di dare un bel boost al progetto.
+
+ 
