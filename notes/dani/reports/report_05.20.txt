@@ -1,0 +1,18 @@
+Report - 05/20 - 36 ore
+
+FATTO:
+- Dopo non poche bestemmie (ed immagino ne dovrò tirare altre) ho fatto il template del report.md, lo trovate nella cartella dedicata in fondo alla cartella delle
+note. Alla fine si dovrà solo consegnare il PDF alla radice del progetto. Ho trovato uno strumento che vi fa vedere l'anteprima di quello che scrivete in tempo reale
+si chiama Markdown Preview Enhanced non è malaccio se solo riuscisse veramente a convertire in PDF ma vabbè poi me la smazzo con calma.
+
+DA FARE:
+- Gamestate: studiare ed implementare il multiplayer: importare i nomi dei player, adattare le schermate NewGame,
+PauseGame, ecc.. -> guardato, forse devo aspettare che fede sistemi le classi nuove, credo di aver bisogno di un controller per il gamestate
+- Se non troppo complicato, faccio anche le regole della partita (7 shot max o buca, ecc...) altrimenti lascio a Fede
+
+- Gestire l'HUD (anche dal punto di vista logico) delle stats della partita (nomi player, shots corrispondenti)
+  *nota estetica*: vogliamo mettere il colore della bandierina in base al giocatore che sta giocando? Potrei mettere
+  nella schermata dell'inserimento dei nomi dei giocatori, un pallino col colore del giocatore corrispondente,
+  solo un dettaglio grafico marginale vedremo poi verso la fine.
+
+AGENDA:
