@@ -1,9 +1,11 @@
-Report - 18/05 - 1h (tot: 49h)
+Report - 18/05 - 2h (tot: 50h)
 
 * Convertito report.md in .pdf
 * Aggiunto attributo vento per le superfici (di default returnano ZERO)
 * Creata SurfaceDecorator
 * Rimossa RectangularSurface (Aggiornato TestGameMapFactory per usare ShapedSurface al suo posto)
+* Rimosso getTexturePath da Surface e aggiunto getType; ora map panel decide per ogni surface che 
+    texture utilizzare a seconda della sua type
 
 -------------------------------------------------------------------------------------------------
 CONTROLLO ERRORI DA METTERE (TEST):
@@ -22,7 +24,9 @@ TODO:
 * Migliore algoritmo per l'update della velocita'
 
 * Fare che se la palla va sull'acqua ritorna alla posizione precedente? (Con fede?)
-* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)|
+* Guarda se MapPanel non prende niente da model (se rispetta pattern MVC).
+* Crea usando il decorator supoerfici ventose
 
 -------------------------------------------------------------------------------------------------
 POSSIBILI FEATURE:
