@@ -7,7 +7,7 @@ import it.unibo.minigoolf.controller.shot.ShotControllerImpl;
 import it.unibo.minigoolf.controller.shot.ShotView;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.model.logic.ShotState;
-import it.unibo.minigoolf.model.physics.velocity.BasicFrictionStrategy;
+import it.unibo.minigoolf.model.physics.velocity.BasicFrictionStrategy; //TODO: implementa switch automatico tra strategie di attrito a seconda del terreno
 import it.unibo.minigoolf.util.Vector2D;
 
 import java.util.Optional;
@@ -22,9 +22,6 @@ import java.util.function.Supplier;
  * @author fede
  */
 public final class GameControllerImpl implements GameController {
-
-    /** Squared speed below which the ball is considered stopped. */
-    private static final double STOP_THRESHOLD_SQ = 0.5;
 
     private final GameMapController gameMapController;
     private final ShotState shotState;
@@ -97,13 +94,6 @@ public final class GameControllerImpl implements GameController {
         if (ballMovingChecker.getAsBoolean()) {
             physicsUpdater.accept(deltaTime);
 
-            // final Vector2D vel = gameMapController.getBallController().getVelocity();
-            // if (vel.getNormSquared() < STOP_THRESHOLD_SQ) {
-            //     gameMapController.getBallController().updateVelocity(new Vector2D(0, 0));
-            //     ballStoppedNotifier.run();
-            //     shotController.onBallStopped(
-            //         gameMapController.getBallController().getPosition());
-            // }
             if (!gameMapController.getBallController().isBallMoving()) {
                 ballStoppedNotifier.run();
                 shotController.onBallStopped(
