@@ -50,9 +50,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
             navigationController::goToMainMenu,
             mainWindow::rebuildGamePanel);
 
-        // Wire the first match panel before the game starts.
-        mainWindow.rebuildGamePanel(matchManager.getActiveMatch());
-
+        navigationController.setResetMatch(matchManager::reset);
         this.timer = new Timer(1000 / FPS, this);
     }
 
@@ -65,7 +63,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
             deltaTime = 1.0 / FPS;
         }
         lastTime = now;
-        matchManager.getActiveMatch().updateTick(deltaTime);
+        matchManager.tickActiveMatch(deltaTime);
         mainWindow.repaint();
     }
 

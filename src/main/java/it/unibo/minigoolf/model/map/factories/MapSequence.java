@@ -68,4 +68,11 @@ public final class MapSequence {
     public int getCurrentIndex() {
         return currentIndex;
     }
+
+    /**
+     * Resets the sequence back to the first map.
+     */
+    public void reset() {
+        this.currentIndex = 0;
+    }
 }

@@ -10,26 +10,23 @@ import java.util.function.Consumer;
  * Uses functional callbacks instead of storing collaborators directly,
  * avoiding EI2 warnings and keeping coupling minimal.
  *
- * @author fede 
+ * @author fede
  */
 public final class MatchManager {
 
     private final MapSequence mapSequence;
     private final List<String> playerNames;
 
-    /** {@code mainController::stop} */
+    /** Stops the game loop. */
     private final Runnable stopGame;
 
-    /** {@code navigationController::startGame} */
+    /** Starts the game loop and shows the game scene. */
     private final Runnable startGame;
 
-    /** {@code navigationController::goToMainMenu} */
+    /** Returns to the main menu. */
     private final Runnable goToMenu;
 
-    /**
-     * Rebuilds and shows the game panel for a new match.
-     * Wraps {@code mainWindow::rebuildGamePanel}.
-     */
+    /** Rebuilds the game panel for a new match. */
     private final Consumer<GameController> rebuildPanel;
 
     private GameController activeMatch;
@@ -56,15 +53,26 @@ public final class MatchManager {
         this.goToMenu = goToMenu;
         this.rebuildPanel = rebuildPanel;
         this.activeMatch = buildMatch();
+        rebuildPanel.accept(activeMatch);
     }
 
     /**
-     * Returns the currently active match controller.
+     * Runs one tick of the active match.
      *
-     * @return the active {@link GameController}
+     * @param deltaTime elapsed time since the last frame in seconds
      */
-    public GameController getActiveMatch() {
-        return activeMatch;
+    public void tickActiveMatch(final double deltaTime) {
+        activeMatch.updateTick(deltaTime);
+    }
+
+    /**
+     * Resets the sequence to the first map and builds a fresh match.
+     * Called when the player starts a new game from the main menu.
+     */
+    public void reset() {
+        mapSequence.reset();
+        activeMatch = buildMatch();
+        rebuildPanel.accept(activeMatch);
     }
 
     /**

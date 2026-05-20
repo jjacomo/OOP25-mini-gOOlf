@@ -31,3 +31,7 @@
         i suppressWarning
 
 3 ore: impostato tramite una lista di mappe la loro sequenza e il controllo che la pallina finisca in buca
+
+2 orette: ora il controllo che la pallia finisca in buca è attivato non solo se la pallina ci si ferma, ma anche se ci finisce a 
+        1/3 della velocità iniziale
+        

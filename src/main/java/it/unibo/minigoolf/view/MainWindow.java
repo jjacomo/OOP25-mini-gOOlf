@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.io.Serial;
+import java.util.function.Function;
 
 /**
  * The main application window.
@@ -31,7 +32,12 @@ public final class MainWindow extends JFrame {
 
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel mainContainer = new JPanel(cardLayout);
-    private final NavigationController navigationController;
+
+    /**
+     * Builds a {@link GamePanel} from a {@link GameController}.
+     * Stored as a function so {@code NavigationController} is not kept as a field.
+     */
+    private final transient Function<GameController, GamePanel> gamePanelFactory;
 
     /**
      * Creates and displays the main application window without a game panel.
@@ -42,7 +48,12 @@ public final class MainWindow extends JFrame {
      */
     public MainWindow(final MainController controller,
             final NavigationController navigationController) {
-        this.navigationController = navigationController;
+        this.gamePanelFactory = gc -> {
+            final ShotViewPanel svp = new ShotViewPanel(gc.getShotState());
+            gc.setShotView(svp);
+            return new GamePanel(navigationController, gc, svp);
+        };
+
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -68,15 +79,11 @@ public final class MainWindow extends JFrame {
 
     /**
      * Builds or replaces the game panel with the given match controller.
-     * Creates and wires the {@link ShotViewPanel} internally so neither
-     * {@link GamePanel} nor the caller needs to expose it.
+     * Creates and wires the {@link ShotViewPanel} internally.
      *
      * @param gameController the match controller to wire
      */
     public void rebuildGamePanel(final GameController gameController) {
-        final ShotViewPanel shotViewPanel = new ShotViewPanel(gameController.getShotState());
-        gameController.setShotView(shotViewPanel);
-        final GamePanel gamePanel = new GamePanel(navigationController, gameController, shotViewPanel);
-        mainContainer.add(gamePanel, "GAME");
+        mainContainer.add(gamePanelFactory.apply(gameController), "GAME");
     }
 }

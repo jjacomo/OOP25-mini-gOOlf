@@ -23,36 +23,43 @@ import java.util.function.Supplier;
  * @author fede
  */
 public final class GameControllerImpl implements GameController {
-
+ 
+    /**
+     * Maximum squared speed at which the ball can enter the hole while still moving.
+     * Set to (MAX_POWER * SHOT_SCALE / 3)² = (1500 / 3)² = 500² = 250_000.
+     * Above this speed the ball is too fast to fall in.
+     */
+    private static final double HOLE_ENTRY_MAX_SPEED_SQ = 250_000.0;
+ 
     private final GameMapController gameMapController;
     private final ShotState shotState;
-
+ 
     /** {@code gameState::isBallMoving} — avoids storing GameState directly. */
     private final BooleanSupplier ballMovingChecker;
-
+ 
     /** {@code gameState::onBallStopped} — avoids storing GameState directly. */
     private final Runnable ballStoppedNotifier;
-
+ 
     /** {@code gameState::setPendingShot} — passed to ShotControllerImpl. */
     private final Consumer<Vector2D> pendingShotSubmitter;
-
+ 
     /** {@code gameState::update} — passed to ShotControllerImpl. */
     private final Supplier<Optional<Vector2D>> shotUpdater;
-
+ 
     /** {@code physicsController::update} — avoids storing PhysicsController directly. */
     private final Consumer<Double> physicsUpdater;
-
+ 
     /** {@code () -> gameState.getCurrentPlayer().getName()} — avoids storing GameState. */
     private final Supplier<String> currentPlayerNameSupplier;
-
+ 
     /** Checks whether the ball has reached the hole. */
     private final HoleChecker holeChecker;
-
+ 
     /** Called when the ball enters the hole. Default is a no-op. */
     private Runnable onHoleCompleted = () -> { };
-
+ 
     private ShotController shotController;
-
+ 
     /**
      * @param gameState         the central game logic
      * @param gameMapController the map controller facade
@@ -80,13 +87,13 @@ public final class GameControllerImpl implements GameController {
             gameMapController.getHoleController().getPosition(),
             gameMapController.getHoleController().getRadius());
     }
-
+ 
     /** {@inheritDoc} */
     @Override
     public void setOnHoleCompleted(final Runnable onHoleCompleted) {
         this.onHoleCompleted = onHoleCompleted;
     }
-
+ 
     /** {@inheritDoc} */
     @Override
     public void setShotView(final ShotView shotView) {
@@ -99,7 +106,7 @@ public final class GameControllerImpl implements GameController {
         shotController.onBallStopped(
             gameMapController.getBallController().getPosition());
     }
-
+ 
     /** {@inheritDoc} */
     @Override
     public void updateTick(final double deltaTime) {
@@ -107,34 +114,42 @@ public final class GameControllerImpl implements GameController {
             return;
         }
         shotController.tick();
-
+ 
         if (ballMovingChecker.getAsBoolean()) {
             physicsUpdater.accept(deltaTime);
-
+ 
+            final Vector2D ballPos = gameMapController.getBallController().getPosition();
+            final Vector2D vel = gameMapController.getBallController().getVelocity();
+            final boolean slowEnoughForHole = vel.getNormSquared() <= HOLE_ENTRY_MAX_SPEED_SQ;
+ 
             if (!gameMapController.getBallController().isBallMoving()) {
+                // Ball has stopped — check hole then re-enable input.
                 ballStoppedNotifier.run();
-                final Vector2D ballPos = gameMapController.getBallController().getPosition();
                 if (holeChecker.isBallInHole(ballPos)) {
                     onHoleCompleted.run();
                 } else {
                     shotController.onBallStopped(ballPos);
                 }
+            } else if (slowEnoughForHole && holeChecker.isBallInHole(ballPos)) {
+                // Ball is still moving but slow enough and over the hole.
+                ballStoppedNotifier.run();
+                onHoleCompleted.run();
             }
         }
     }
-
+ 
     /** {@inheritDoc} */
     @Override
     public String getCurrentPlayerName() {
         return currentPlayerNameSupplier.get();
     }
-
+ 
     /** {@inheritDoc} */
     @Override
     public ShotState getShotState() {
         return shotState;
     }
-
+ 
     /** {@inheritDoc} */
     @Override
     public GameMapController getGameMapController() {
