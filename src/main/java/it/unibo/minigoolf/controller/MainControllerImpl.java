@@ -1,8 +1,9 @@
 package it.unibo.minigoolf.controller;
 
-import it.unibo.minigoolf.controller.game.GameController;
-import it.unibo.minigoolf.controller.game.GameFactory;
+import it.unibo.minigoolf.controller.game.MatchManager;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
+import it.unibo.minigoolf.model.map.factories.FirstMap;
+import it.unibo.minigoolf.model.map.factories.MapSequence;
 import it.unibo.minigoolf.view.MainWindow;
 
 import javax.swing.Timer;
@@ -12,8 +13,8 @@ import java.util.List;
 
 /**
  * Main controller.
- * Manages the application lifecycle: timer, navigation and the active match.
- * All match logic is fully delegated to {@link GameController}.
+ * Manages the application lifecycle: timer and navigation.
+ * All match logic is delegated to {@link MatchManager}.
  *
  * @author dani and fede
  */
@@ -27,18 +28,31 @@ public final class MainControllerImpl implements MainController, ActionListener 
 
     private final Timer timer;
     private final MainWindow mainWindow;
-    private final NavigationController navigationController;
-    private final GameController activeMatch;
+    private final MatchManager matchManager;
 
     /**
      * Creates and wires all components.
      */
     public MainControllerImpl() {
-        this.navigationController = new NavigationController(this);
         // TODO: pass real player names from NewGamePanel
-        this.activeMatch = GameFactory.buildMatch(List.of("Player 1"));
-        this.mainWindow = new MainWindow(this, navigationController, activeMatch);
-        this.navigationController.setMainWindow(mainWindow);
+        final List<String> playerNames = List.of("Player 1");
+        final MapSequence mapSequence = new MapSequence(List.of(new FirstMap()));
+        final NavigationController navigationController = new NavigationController(this);
+
+        this.mainWindow = new MainWindow(this, navigationController);
+        navigationController.setMainWindow(mainWindow);
+
+        this.matchManager = new MatchManager(
+            mapSequence,
+            playerNames,
+            this::stop,
+            navigationController::startGame,
+            navigationController::goToMainMenu,
+            mainWindow::rebuildGamePanel);
+
+        // Wire the first match panel before the game starts.
+        mainWindow.rebuildGamePanel(matchManager.getActiveMatch());
+
         this.timer = new Timer(1000 / FPS, this);
     }
 
@@ -51,7 +65,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
             deltaTime = 1.0 / FPS;
         }
         lastTime = now;
-        activeMatch.updateTick(deltaTime);
+        matchManager.getActiveMatch().updateTick(deltaTime);
         mainWindow.repaint();
     }
 

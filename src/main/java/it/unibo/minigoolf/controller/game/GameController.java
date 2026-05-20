@@ -20,6 +20,14 @@ public interface GameController {
     void updateTick(double deltaTime);
 
     /**
+     * Sets the callback to invoke when the ball enters the hole.
+     * Called by the main controller after construction.
+     *
+     * @param onHoleCompleted the action to run when the hole is completed
+     */
+    void setOnHoleCompleted(Runnable onHoleCompleted);
+
+    /**
      * Sets the shot view that will be notified when the ball stops.
      * Called by {@link it.unibo.minigoolf.view.MainWindow} after
      * constructing the {@link it.unibo.minigoolf.view.input.ShotViewPanel}.

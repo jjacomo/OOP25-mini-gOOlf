@@ -7,38 +7,43 @@ import it.unibo.minigoolf.controller.physics.PhysicsControllerImpl;
 import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.model.logic.ShotState;
 import it.unibo.minigoolf.model.map.GameMap;
-import it.unibo.minigoolf.model.map.factories.FirstMap;
+import it.unibo.minigoolf.model.map.factories.MapSequence;
 
 import java.util.List;
 
 /**
- * Factory that builds and wires all objects needed for a match,
- * returning a ready-to-use {@link GameController}.
+ * Factory that builds a {@link GameController} from a {@link MapSequence}.
+ * Accepts an {@code onHoleCompleted} callback so that match-level navigation
+ * logic stays outside {@code MainControllerImpl}.
  *
  * @author fede
  */
 public final class GameFactory {
 
     private GameFactory() {
-        // utility class — not instantiable
+        // utility class
     }
 
     /**
-     * Builds a new {@link GameController} for a match with the given players.
-     * The returned controller awaits a
-     * {@link GameController#setShotView(it.unibo.minigoolf.controller.shot.ShotView)}
-     * call before the first tick.
+     * Builds a {@link GameController} for the current map in the sequence.
      *
-     * @param playerNames ordered list of player display names (at least one)
-     * @return a fully initialised {@link GameController}
+     * @param playerNames      ordered list of player display names
+     * @param mapSequence      the map sequence managing available maps
+     * @param onHoleCompleted  callback invoked when the ball enters the hole
+     * @return a fully wired {@link GameController}
      */
-    public static GameController buildMatch(final List<String> playerNames) {
+    public static GameController buildMatch(
+            final List<String> playerNames,
+            final MapSequence mapSequence,
+            final Runnable onHoleCompleted) {
         final GameState gameState = new GameState(playerNames);
-        // TODO: choose map based on game mode / level selection
-        final GameMap map = new FirstMap().buildGameMap();
+        final GameMap map = mapSequence.buildCurrent();
         final GameMapController gameMapController = new GameMapControllerImpl(map);
         final ShotState shotState = new ShotState();
         final PhysicsController physicsController = new PhysicsControllerImpl(gameMapController);
-        return new GameControllerImpl(gameState, gameMapController, shotState, physicsController);
+        final GameControllerImpl match =
+            new GameControllerImpl(gameState, gameMapController, shotState, physicsController);
+        match.setOnHoleCompleted(onHoleCompleted);
+        return match;
     }
 }

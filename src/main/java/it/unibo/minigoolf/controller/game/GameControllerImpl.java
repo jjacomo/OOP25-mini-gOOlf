@@ -6,8 +6,9 @@ import it.unibo.minigoolf.controller.shot.ShotController;
 import it.unibo.minigoolf.controller.shot.ShotControllerImpl;
 import it.unibo.minigoolf.controller.shot.ShotView;
 import it.unibo.minigoolf.model.logic.GameState;
+import it.unibo.minigoolf.model.logic.HoleChecker;
 import it.unibo.minigoolf.model.logic.ShotState;
-import it.unibo.minigoolf.model.physics.velocity.BasicFrictionStrategy; //TODO: implementa switch automatico tra strategie di attrito a seconda del terreno
+import it.unibo.minigoolf.model.physics.velocity.BasicFrictionStrategy;//TODO: implementa switch automatico tra strategie di attrito a seconda del terreno
 import it.unibo.minigoolf.util.Vector2D;
 
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.function.Supplier;
 
 /**
  * Implementation of {@link GameController}.
- * Uses functional callbacks instead of storing stateful collaborators directly,
+ * Uses functional callbacks instead of storing stateful collaborators directly.
  *
  * @author fede
  */
@@ -44,6 +45,12 @@ public final class GameControllerImpl implements GameController {
     /** {@code () -> gameState.getCurrentPlayer().getName()} — avoids storing GameState. */
     private final Supplier<String> currentPlayerNameSupplier;
 
+    /** Checks whether the ball has reached the hole. */
+    private final HoleChecker holeChecker;
+
+    /** Called when the ball enters the hole. Default is a no-op. */
+    private Runnable onHoleCompleted = () -> { };
+
     private ShotController shotController;
 
     /**
@@ -68,6 +75,16 @@ public final class GameControllerImpl implements GameController {
         // Extract only the update behavior from physicsController — avoids EI2.
         physicsController.setVelocityStrategy(new BasicFrictionStrategy());
         this.physicsUpdater = physicsController::update;
+        // Build the hole checker from the map controller — no direct reference stored.
+        this.holeChecker = new HoleChecker(
+            gameMapController.getHoleController().getPosition(),
+            gameMapController.getHoleController().getRadius());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setOnHoleCompleted(final Runnable onHoleCompleted) {
+        this.onHoleCompleted = onHoleCompleted;
     }
 
     /** {@inheritDoc} */
@@ -96,8 +113,12 @@ public final class GameControllerImpl implements GameController {
 
             if (!gameMapController.getBallController().isBallMoving()) {
                 ballStoppedNotifier.run();
-                shotController.onBallStopped(
-                    gameMapController.getBallController().getPosition());
+                final Vector2D ballPos = gameMapController.getBallController().getPosition();
+                if (holeChecker.isBallInHole(ballPos)) {
+                    onHoleCompleted.run();
+                } else {
+                    shotController.onBallStopped(ballPos);
+                }
             }
         }
     }

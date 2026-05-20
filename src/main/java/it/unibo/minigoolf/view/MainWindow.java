@@ -18,9 +18,6 @@ import java.io.Serial;
 /**
  * The main application window.
  * Hosts the panel that is currently active.
- * Creates the {@link ShotViewPanel} and wires it to both
- * the {@link GamePanel} and the {@link GameController},
- * so neither exposes internal references.
  *
  * @author dani and fede
  */
@@ -34,34 +31,24 @@ public final class MainWindow extends JFrame {
 
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel mainContainer = new JPanel(cardLayout);
+    private final NavigationController navigationController;
 
     /**
-     * Creates and displays the main application window.
-     * The {@link ShotViewPanel} is created here and passed to both
-     * the {@link GamePanel} and {@link GameController#setShotView},
-     * eliminating the need for any {@code getShotView()} method on {@link GamePanel}.
+     * Creates and displays the main application window without a game panel.
+     * Call {@link #rebuildGamePanel(GameController)} before showing the game scene.
      *
      * @param controller           the main controller
      * @param navigationController the navigation controller
-     * @param gameController       the active match controller
      */
     public MainWindow(final MainController controller,
-            final NavigationController navigationController,
-            final GameController gameController) {
+            final NavigationController navigationController) {
+        this.navigationController = navigationController;
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // ShotViewPanel is created here so it can be passed to both
-        // GamePanel (for rendering) and GameController (for input wiring)
-        // without either needing to expose it via a getter.
-        final ShotViewPanel shotViewPanel = new ShotViewPanel(gameController.getShotState());
-        gameController.setShotView(shotViewPanel);
-
-        final GamePanel gamePanel = new GamePanel(navigationController, gameController, shotViewPanel);
         mainContainer.add(new MenuPanel(navigationController), "MENU");
         mainContainer.add(new NewGamePanel(navigationController), "NEW_GAME");
-        mainContainer.add(gamePanel, "GAME");
         this.setContentPane(mainContainer);
         cardLayout.show(mainContainer, "MENU");
 
@@ -77,5 +64,19 @@ public final class MainWindow extends JFrame {
      */
     public void showScene(final String name) {
         cardLayout.show(mainContainer, name);
+    }
+
+    /**
+     * Builds or replaces the game panel with the given match controller.
+     * Creates and wires the {@link ShotViewPanel} internally so neither
+     * {@link GamePanel} nor the caller needs to expose it.
+     *
+     * @param gameController the match controller to wire
+     */
+    public void rebuildGamePanel(final GameController gameController) {
+        final ShotViewPanel shotViewPanel = new ShotViewPanel(gameController.getShotState());
+        gameController.setShotView(shotViewPanel);
+        final GamePanel gamePanel = new GamePanel(navigationController, gameController, shotViewPanel);
+        mainContainer.add(gamePanel, "GAME");
     }
 }
