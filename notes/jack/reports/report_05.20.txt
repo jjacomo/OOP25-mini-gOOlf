@@ -1,4 +1,4 @@
-Report - 18/05 - 2h (tot: 50h)
+Report - 20/05 - 2h (tot: 50h)
 
 * Convertito report.md in .pdf
 * Aggiunto attributo vento per le superfici (di default returnano ZERO)
