@@ -45,7 +45,4 @@ PER AGENDA FUTURA:
 * MainController che li contiene tutti? CONTROLLER STATICI
 * Accumulatore per il dt nel game loop?
 
-* Dovrebbe esserci una velocita' massima della palla? (Con fede)
 * MapPanel non deve importare nulla del model (Obstacles) (per Mattia)
-* Per mattia: ho rimosso color da shape, se si vogliono colorare gli ostacoli sarebbe meglio
-    creare una enum tipo...

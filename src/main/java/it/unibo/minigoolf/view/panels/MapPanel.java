@@ -6,18 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import it.unibo.minigoolf.view.TextureManager;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.util.Vector2D;
@@ -38,12 +31,10 @@ import it.unibo.minigoolf.util.shapes.Triangle;
  */
 public class MapPanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(MapPanel.class); // non sono sicuro di cosa faccia
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
     private final GameMapController mapController;
-    private final Map<String, BufferedImage> textureCache = new HashMap<>();
 
     /**
      * Constructs a MapPanel with the specified game map controller.
@@ -54,29 +45,6 @@ public class MapPanel extends JPanel {
      */
     public MapPanel(final GameMapController mapController) {
         this.mapController = mapController;
-    }
-
-    /**
-     * Loads a texture from the resource cache or from disk if not cached.
-     * Uses a HashMap to store previously loaded textures for improved performance.
-     *
-     * @param texturePath the relative path to the texture file in
-     *                    src/main/resources/
-     * @return the loaded BufferedImage, or null if loading fails
-     */
-    private BufferedImage loadTexture(final String texturePath) {
-        if (textureCache.containsKey(texturePath)) {
-            return textureCache.get(texturePath);
-        }
-        try {
-            final File file = new File("src/main/resources/" + texturePath);
-            final BufferedImage image = ImageIO.read(file);
-            textureCache.put(texturePath, image);
-            return image;
-        } catch (final IOException e) {
-            LOGGER.error("Failed to load texture: {}", texturePath, e);
-            return null;
-        }
     }
 
     /**
@@ -95,17 +63,14 @@ public class MapPanel extends JPanel {
         // physical pixel on screen as the shot-indicator overlay.
         g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
 
-        // qui va disegnato tutto quello che si vede nella mappa, quindi superfici,
-        // ostacoli, buche, palla, ...
-        // mappa (utilizzo degli stream)
         mapController.getSurfaces().stream()
                 .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
                 .forEach(surface -> {
-                    final BufferedImage texture = loadTexture(surface.getType().getTexturePath());
+                    final BufferedImage texture = TextureManager.loadTexture(surface.getType().getTexturePath());
                     if (texture != null) {
                         drawShape(surface.getShape(), g2d, texture);
                         if (surface.getWind().getNorm() > 0) {
-                            final BufferedImage windTexture = loadTexture("surfaces/wind/up_arrows.png");
+                            final BufferedImage windTexture = TextureManager.loadTexture("surfaces/wind/up_arrows.png");
                             drawShape(surface.getShape(), g2d, windTexture);
                         }
                     } else {
@@ -135,11 +100,9 @@ public class MapPanel extends JPanel {
         final int poleOffsetX = 5;
         final int flagWidth = 55;
         final int flagHeight = 45;
-        // pole:
         g2d.setColor(Color.lightGray);
         drawShape(new Rectangle(new Vector2D(position.getX() - poleOffsetX, position.getY() - poleHeight),
                 poleWidth, poleHeight), g2d, null);
-        // flag:
         g2d.setColor(Color.RED);
         drawShape(new Triangle(new Vector2D(position.getX() + poleOffsetX, position.getY() - poleHeight),
                 new Vector2D(position.getX() + flagWidth, position.getY() - poleHeight + flagHeight / 2),
