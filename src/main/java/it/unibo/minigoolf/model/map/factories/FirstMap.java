@@ -14,6 +14,8 @@ import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.ShapedSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.SurfaceType;
+import it.unibo.minigoolf.model.surfaces.WindDirection;
+import it.unibo.minigoolf.model.surfaces.WindySurface;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
@@ -171,8 +173,14 @@ public class FirstMap implements GameMapFactory {
                 final List<Surface> surfaces = new ArrayList<>();
                 final List<Obstacle> obstacles = new ArrayList<>();
                 surfaces.add(new ShapedSurface(
-                                new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS));
+                new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT),
+                SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS));
+                // surfaces.add(new WindySurface(
+                //                 new ShapedSurface(
+                //                                 new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH,
+                //                                                 GRASS1_HEIGHT),
+                //                                 SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS),
+                //                 WindDirection.UP, 10));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS2_Z_INDEX, SurfaceType.GRASS));

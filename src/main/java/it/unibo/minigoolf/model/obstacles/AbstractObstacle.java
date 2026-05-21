@@ -1,7 +1,7 @@
 package it.unibo.minigoolf.model.obstacles;
 
-import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.model.ball.Ball;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * Represents a generic obstacle in the game world.
@@ -10,7 +10,9 @@ import it.unibo.minigoolf.model.ball.Ball;
  */
 public abstract class AbstractObstacle {
 
-    /** Tolerance threshold for floating‑point comparisons in collision detection. */
+    /**
+     * Tolerance threshold for floating‑point comparisons in collision detection.
+     */
     protected static final double EPSILON = 1e-10;
     private final Vector2D position;
 
@@ -57,8 +59,7 @@ public abstract class AbstractObstacle {
      * @param normal the collision normal (unit vector pointing outward from the obstacle)
      * @param penetrationDepth the amount of overlap (positive value)
      */
-    protected void correctPosition(final Ball ball, final Vector2D ballPosition, 
-                                final Vector2D normal, final double penetrationDepth) {
+    protected void correctPosition(final Ball ball, final Vector2D ballPosition, final Vector2D normal, final double penetrationDepth) {
         final Vector2D newPosition = ballPosition.add(normal.scalarMultiply(penetrationDepth));
         ball.setPosition(newPosition);
     }
@@ -77,7 +78,18 @@ public abstract class AbstractObstacle {
         if (dotProduct >= 0) {
             return;
         }
-        final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
-        ball.setVelocity(velocity.subtract(reflection));
+        // final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
+        // ball.setVelocity(velocity.subtract(reflection));
+
+        // Ho commentato il codice sopra; Questo mi serve per non fare rimbalzare la
+        // palla all'infinito quando si "ferma" vicino ad un ostacolo
+        final double BOUNCE_THRESHOLD = 40.0;
+        if (Math.abs(dotProduct) < BOUNCE_THRESHOLD) {
+            final Vector2D projection = normal.scalarMultiply(dotProduct);
+            ball.setVelocity(velocity.subtract(projection));
+        } else {
+            final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
+            ball.setVelocity(velocity.subtract(reflection));
+        }
     }
 }

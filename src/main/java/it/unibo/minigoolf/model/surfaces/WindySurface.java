@@ -11,14 +11,15 @@ public class WindySurface extends SurfaceDecorator {
     private final Vector2D wind;
 
     /**
-     * Constructs a WindySurface decorating the given base surface with the specified wind vector.
+     * Constructs a WindySurface decorating the given base surface with the specified wind direction and intensity.
      * 
      * @param baseSurface the surface to decorate
-     * @param wind the wind vector to apply
+     * @param direction the direction of the wind (UP, DOWN, LEFT, RIGHT)
+     * @param intensity the strength/speed of the wind
      */
-    public WindySurface(final Surface baseSurface, final Vector2D wind) {
+    public WindySurface(final Surface baseSurface, final WindDirection direction, final double intensity) {
         super(baseSurface);
-        this.wind = wind;
+        this.wind = direction.getVector(intensity);
     }
 
     @Override

@@ -1,0 +1,48 @@
+Report - 21/05 - 2h (tot: 52h)
+
+* Creata WindySurface estendendo SurfaceDecorator (pattern decorator)
+* Creata enum WindDirection (il vento puo' essere solo a dx, sx, su o giu)
+* Modificato AbstractObstacle per fixare il bug dei rimbalzi infiniti quando la palla si appoggia 
+    ad un ostacolo quando si trova su una superficie ventosa.
+* Tolti i commenti da BasicFricitonStrategy e adesso ci calcolo anche il vento li'
+* Cambiato BallControllerImpl.isBallMoving con un check piu' sicuro (eguaglianza float pericolosa)
+* Caricato il file resources/surfaces/wind/up_arrow.png
+
+-------------------------------------------------------------------------------------------------
+CONTROLLO ERRORI DA METTERE (TEST):
+- check che la mappa venga creata con almeno una palla, una buca, una superficie
+- check che la palla sia sempre sopra una superficie
+- check che il raggio della palla sia > di un raggio minimo consentito
+- altri check?
+
+-------------------------------------------------------------------------------------------------
+MEMO:
+Nel report finale fai uno schema UML che illustri il pattern adapter implementato.
+
+-------------------------------------------------------------------------------------------------
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+* Migliore algoritmo per l'update della velocita'
+
+* Fare che se la palla va sull'acqua ritorna alla posizione precedente? (Con fede?)
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)|
+* Guarda se MapPanel non prende niente da model (se rispetta pattern MVC).
+* Crea usando il decorator supoerfici ventose
+
+-------------------------------------------------------------------------------------------------
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());
+* oppure combinare più effetti (attrito + vento) (Decorator Pattern)
+
+-------------------------------------------------------------------------------------------------
+PER AGENDA FUTURA:
+* MainController che li contiene tutti? CONTROLLER STATICI
+* Accumulatore per il dt nel game loop?
+
+* Dovrebbe esserci una velocita' massima della palla? (Con fede)
+* MapPanel non deve importare nulla del model (Obstacles) (per Mattia)
+* Per mattia: ho rimosso color da shape, se si vogliono colorare gli ostacoli sarebbe meglio
+    creare una enum tipo...

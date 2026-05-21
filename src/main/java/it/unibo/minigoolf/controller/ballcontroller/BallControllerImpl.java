@@ -70,6 +70,6 @@ public final class BallControllerImpl implements BallController {
 
     @Override
     public boolean isBallMoving() {
-        return !ball.getVelocity().equals(Vector2D.ZERO);
+        return ball.getVelocity().getNormSquared() > 0.001;
     }
 }

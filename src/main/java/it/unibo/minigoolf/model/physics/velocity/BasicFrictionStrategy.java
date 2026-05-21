@@ -25,6 +25,7 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
     private static final int HIGH_FRICTION_MULTIPLIER = 15_000;
     private static final int MEDIUM_FRICTION_MULTIPLIER = 10_000;
     private static final int LOW_FRICTION_MULTIPLIER = 500;
+    private static final int WIND_MULTIPLIER = 150;
 
     /**
      * Updates the velocity of the ball based on the surface it is currently on and
@@ -50,24 +51,20 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
         double friction = 0;
 
         if (velocityNorm > HIGH_SPEED_THRESHOLD) {
-            // Attrito dinamico più forte a velocità molto elevate, per evitare che la palla diventi incontrollabile.
-            friction = HIGH_FRICTION_MULTIPLIER * surfaceFriction / Math.sqrt(velocityNorm); // per test, da tarare meglio
+            friction = HIGH_FRICTION_MULTIPLIER * surfaceFriction / Math.sqrt(velocityNorm);
             LOGGER.debug("High speed: Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm,
                     surfaceFriction, deltaTime);
         } else if (velocityNorm > MEDIUM_SPEED_THRESHOLD) {
-            // Attrito diretto dalla superficie e modulato dalla velocità:
-            // basso quando la palla è veloce, crescente man mano che rallenta.
-            friction = MEDIUM_FRICTION_MULTIPLIER * surfaceFriction / velocityNorm; // per test, da tarare meglio
+            friction = MEDIUM_FRICTION_MULTIPLIER * surfaceFriction / velocityNorm;
             LOGGER.debug("Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm, surfaceFriction,
                     deltaTime);
         } else if (velocityNorm > LOW_SPEED_THRESHOLD) {
-            // Attrito più forte quando la palla è lenta, per evitare che si trascini troppo.
-            friction = LOW_FRICTION_MULTIPLIER * surfaceFriction; // per test, da tarare meglio
+            friction = LOW_FRICTION_MULTIPLIER * surfaceFriction;
             LOGGER.debug("Low speed: Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm,
                     surfaceFriction, deltaTime);
-        } else if (velocityNorm != 0) {
-            LOGGER.debug("Very low speed: setting velocity to zero.");
-            ball.setVelocity(Vector2D.ZERO); // Non c'e' bisogno di stoppare la palla in MainController
+        } else if (velocityNorm != 0 && surface.getWind().getNormSquared() == 0) {
+            LOGGER.debug("Very low speed and no wind: setting velocity to zero.");
+            ball.setVelocity(Vector2D.ZERO);
         }
 
         if (velocityNorm > LOW_SPEED_THRESHOLD) {
@@ -82,7 +79,7 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
 
         final Vector2D wind = surface.getWind();
         if (wind.getNormSquared() > 0) {
-            ball.setVelocity(ball.getVelocity().add(wind.scalarMultiply(deltaTime)));
+            ball.setVelocity(ball.getVelocity().add(wind.scalarMultiply(WIND_MULTIPLIER).scalarMultiply(deltaTime)));
         }
     }
 
