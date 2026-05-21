@@ -7,6 +7,9 @@ Report - 21/05 - 2h (tot: 52h)
 * Tolti i commenti da BasicFricitonStrategy e adesso ci calcolo anche il vento li'
 * Cambiato BallControllerImpl.isBallMoving con un check piu' sicuro (eguaglianza float pericolosa)
 * Caricato il file resources/surfaces/wind/up_arrow.png
+* Disegnate le freccie (solo in su per ora) sulla WindySurface
+
+- devo fare che anche con venti bassi la palla accelera comunque
 
 -------------------------------------------------------------------------------------------------
 CONTROLLO ERRORI DA METTERE (TEST):

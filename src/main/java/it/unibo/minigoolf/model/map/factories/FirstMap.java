@@ -40,8 +40,13 @@ public class FirstMap implements GameMapFactory {
         private static final double GRASS1_X = 0;
         private static final double GRASS1_Y = 0;
         private static final double GRASS1_WIDTH = 550;
-        private static final double GRASS1_HEIGHT = 1080;
+        private static final double GRASS1_HEIGHT = 400;
         private static final int GRASS1_Z_INDEX = 0;
+        private static final double WINDYGRASS1_X = 0;
+        private static final double WINDYGRASS1_Y = 400;
+        private static final double WINDYGRASS1_WIDTH = 550;
+        private static final double WINDYGRASS1_HEIGHT = 680;
+        private static final int WINDYGRASS1_Z_INDEX = 0;
         private static final double DIRT_X = 550;
         private static final double DIRT_Y = 0;
         private static final double DIRT_WIDTH = 690;
@@ -173,14 +178,14 @@ public class FirstMap implements GameMapFactory {
                 final List<Surface> surfaces = new ArrayList<>();
                 final List<Obstacle> obstacles = new ArrayList<>();
                 surfaces.add(new ShapedSurface(
-                new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT),
-                SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS));
-                // surfaces.add(new WindySurface(
-                //                 new ShapedSurface(
-                //                                 new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH,
-                //                                                 GRASS1_HEIGHT),
-                //                                 SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS),
-                //                 WindDirection.UP, 10));
+                                new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT),
+                                SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS));
+                surfaces.add(new WindySurface(
+                                new ShapedSurface(
+                                                new Rectangle(new Vector2D(WINDYGRASS1_X, WINDYGRASS1_Y), WINDYGRASS1_WIDTH,
+                                                                WINDYGRASS1_HEIGHT),
+                                                SurfaceType.GRASS.getFriction(), WINDYGRASS1_Z_INDEX, SurfaceType.GRASS),
+                                WindDirection.UP, 10));
                 surfaces.add(new ShapedSurface(
                                 new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT),
                                 SurfaceType.GRASS.getFriction(), GRASS2_Z_INDEX, SurfaceType.GRASS));

@@ -104,6 +104,10 @@ public class MapPanel extends JPanel {
                     final BufferedImage texture = loadTexture(surface.getType().getTexturePath());
                     if (texture != null) {
                         drawShape(surface.getShape(), g2d, texture);
+                        if (surface.getWind().getNorm() > 0) {
+                            final BufferedImage windTexture = loadTexture("surfaces/wind/up_arrows.png");
+                            drawShape(surface.getShape(), g2d, windTexture);
+                        }
                     } else {
                         throw new IllegalStateException("Texture not found for surface type: " + surface.getType());
                     }
