@@ -1,5 +1,7 @@
 package it.unibo.minigoolf.controller;
 
+import java.util.List;
+
 /**
  * Manages the game loop for the minigolf application.
  *
@@ -17,4 +19,10 @@ public interface MainController {
      * Stops the game loop.
      */
     void stop();
+
+    /**
+     * Starts a new match with given players names
+     * @param playerNames
+     */
+    void startNewMatch(List<String> playerNames);
 }

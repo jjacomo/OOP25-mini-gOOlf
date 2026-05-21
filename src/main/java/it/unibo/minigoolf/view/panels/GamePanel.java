@@ -16,6 +16,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.Graphics;
 import java.io.Serial;
 
 /**
@@ -36,6 +37,9 @@ public final class GamePanel extends JPanel {
     private static final double ASPECT_H = 9.0;
 
     private final MapPanel mapPanel;
+    private final JLabel turnoLabel;
+    private final JLabel shotsLabel;
+    private final GameController gameController;
 
     /**
      * @param navController  the navigation controller
@@ -48,11 +52,21 @@ public final class GamePanel extends JPanel {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
+        this.gameController = gameController;
+
+        // The panel for the current player and the shots counter
         final JPanel uiPanel = new JPanel();
         uiPanel.setBackground(Color.DARK_GRAY);
-        final JLabel turnoLabel = new JLabel(gameController.getCurrentPlayerName());
-        turnoLabel.setForeground(Color.WHITE);
+        
+        this.turnoLabel = new JLabel("Player: " + gameController.getCurrentPlayerName());
+        this.turnoLabel.setForeground(Color.WHITE);
+        
+        this.shotsLabel = new JLabel(" | Shots: " + gameController.getCurrentPlayerShots());
+        this.shotsLabel.setForeground(Color.WHITE);
+        
         uiPanel.add(turnoLabel);
+        uiPanel.add(shotsLabel);
+        
         this.add(uiPanel, BorderLayout.NORTH);
 
         this.mapPanel = new MapPanel(gameController.getGameMapController());
@@ -107,5 +121,18 @@ public final class GamePanel extends JPanel {
                 navController.pauseGame();
             }
         });
+    }
+    /**
+     * Called automatically by the MainController repaint loop to keep the HUD updated in real time
+     */
+    @Override
+    protected void paintComponent(final Graphics g) {
+        super.paintComponent(g);
+        
+        // Se il controller esiste, aggiorniamo i testi delle etichette
+        if (this.gameController != null) {
+            this.turnoLabel.setText("Player: " + gameController.getCurrentPlayerName());
+            this.shotsLabel.setText(" | Shots: " + gameController.getCurrentPlayerShots());
+        }
     }
 }

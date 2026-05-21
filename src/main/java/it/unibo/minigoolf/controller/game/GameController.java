@@ -44,6 +44,11 @@ public interface GameController {
     String getCurrentPlayerName();
 
     /**
+     * @return the number of shots taken by the current player in this hole.
+     */
+    int getCurrentPlayerShots();
+
+    /**
      * Returns the shot state for this match.
      * Used by {@link it.unibo.minigoolf.view.MainWindow} to build the
      * {@link it.unibo.minigoolf.view.input.ShotViewPanel}.

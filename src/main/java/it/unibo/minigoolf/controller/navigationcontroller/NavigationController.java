@@ -1,5 +1,7 @@
 package it.unibo.minigoolf.controller.navigationcontroller;
 
+import java.util.List;
+
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.view.MainWindow;
 
@@ -10,9 +12,6 @@ public final class NavigationController {
 
     private MainWindow mainWindow;
     private final MainController mainController;
-
-    /** Called when a new match must be created from scratch. */
-    private Runnable resetMatch = () -> { };
 
     /**
      * @param mainController the main controller
@@ -29,16 +28,6 @@ public final class NavigationController {
     }
 
     /**
-     * Sets the callback to invoke when a new match needs to be created.
-     * Called by {@link it.unibo.minigoolf.controller.MainControllerImpl}.
-     *
-     * @param resetMatch the action to run to reset the match
-     */
-    public void setResetMatch(final Runnable resetMatch) {
-        this.resetMatch = resetMatch;
-    }
-
-    /**
      * Handles the transition from the menu to the NewGamePanel.
      */
     public void goToNewGameMenu() {
@@ -46,20 +35,29 @@ public final class NavigationController {
     }
 
     /**
-     * TODO: Handles the transition from the PauseMenu to the MenuPanel.
+     * Handles the transition to the MenuPanel.
      */
     public void goToMainMenu() {
         this.mainWindow.showScene("MENU");
     }
 
     /**
-     * Handles the transition from the menu to the actual game.
-     * Resets the match, starts the timer and switches the view.
+     * Handles the transition from the menu, to the new game menu and then to the actual game.
+     * Passes the names to the logic and starts everything.
+     * * @param playerNames list of the players names
      */
-    public void startGame() {
-        resetMatch.run();
-        this.mainController.start();
+    public void setupMatchAndStart(final List<String> playerNames) {
+        this.mainController.startNewMatch(playerNames);
+        this.showGameScene();
+    }
+
+    /**
+     * Shows the game scene and starts the game loop.
+     * Used both when starting a new match and when advancing to the next hole.
+     */
+    public void showGameScene() {
         this.mainWindow.showScene("GAME");
+        this.mainController.start();
     }
 
     /**
@@ -80,10 +78,9 @@ public final class NavigationController {
 
     /**
      * Handles the transition from the pause menu to the main menu.
-     * TODO: Reset the game status!
      */
     public void quitToMenu() {
         this.mainWindow.getGlassPane().setVisible(false);
-        this.mainWindow.showScene("MENU");
+        this.goToMainMenu();
     }
 }

@@ -12,7 +12,8 @@ import it.unibo.minigoolf.model.physics.velocity.BasicFrictionStrategy;//TODO: i
 import it.unibo.minigoolf.util.Vector2D;
 
 import java.util.Optional;
-import java.util.function.BooleanSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.BooleanSupplier; 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -59,6 +60,13 @@ public final class GameControllerImpl implements GameController {
     private Runnable onHoleCompleted = () -> { };
  
     private ShotController shotController;
+    
+    // Variables for multiplayer match
+    private final Runnable nextTurnTrigger;
+    private final IntSupplier currentShotsSupplier;
+    private final BooleanSupplier isLastPlayerSupplier;
+    private final Vector2D initialBallPosition; 
+    private static final int MAX_SHOTS = 7;
  
     /**
      * @param gameState         the central game logic
@@ -86,6 +94,14 @@ public final class GameControllerImpl implements GameController {
         this.holeChecker = new HoleChecker(
             gameMapController.getHoleController().getPosition(),
             gameMapController.getHoleController().getRadius());
+
+        this.nextTurnTrigger = gameState::nextTurn;
+        this.currentShotsSupplier = () -> gameState.getCurrentPlayer().getShots();
+        // To determine if the current player is the last player, to switch map later
+        this.isLastPlayerSupplier = () -> gameState.getCurrentPlayerIndex() == (gameState.getPlayers().size() - 1);
+        // To save the ball's starting position
+        this.initialBallPosition = gameMapController.getBallController().getPosition();
+
     }
  
     /** {@inheritDoc} */
@@ -121,8 +137,36 @@ public final class GameControllerImpl implements GameController {
             final Vector2D ballPos = gameMapController.getBallController().getPosition();
             final Vector2D vel = gameMapController.getBallController().getVelocity();
             final boolean slowEnoughForHole = vel.getNormSquared() <= HOLE_ENTRY_MAX_SPEED_SQ;
- 
+
             if (!gameMapController.getBallController().isBallMoving()) {
+                ballStoppedNotifier.run();
+                
+                final boolean holeScored = holeChecker.isBallInHole(ballPos);
+                final boolean maxShotsReached = currentShotsSupplier.getAsInt() >= MAX_SHOTS;
+
+                if (holeScored || maxShotsReached) {
+                    // IL GIOCATORE HA FINITO LA SUA BUCA!
+                    
+                    if (isLastPlayerSupplier.getAsBoolean()) {
+                        // Era l'ultimo giocatore. La buca è finita per tutti, andiamo alla prossima mappa!
+                        onHoleCompleted.run();
+                    } else {
+                        // Ci sono ancora altri giocatori che devono giocare questa buca.
+                        nextTurnTrigger.run(); // Passa il turno nel GameState
+                        
+                        //TODO: Nota per fede: qui bisogna mettere la pallina alla posizione iniziale!
+                        
+                        // Riabilitiamo il tiro per il nuovo giocatore dalla posizione iniziale
+                        shotController.onBallStopped(initialBallPosition);
+                    }
+                    
+                } else {
+                    // Il giocatore non ha ancora finito. Tira di nuovo da dove si è fermata la palla.
+                    shotController.onBallStopped(ballPos);
+                }
+            }}
+ 
+            /*if (!gameMapController.getBallController().isBallMoving()) {
                 // Ball has stopped — check hole then re-enable input.
                 ballStoppedNotifier.run();
                 if (holeChecker.isBallInHole(ballPos)) {
@@ -134,8 +178,8 @@ public final class GameControllerImpl implements GameController {
                 // Ball is still moving but slow enough and over the hole.
                 ballStoppedNotifier.run();
                 onHoleCompleted.run();
-            }
-        }
+            } */
+        
     }
  
     /** {@inheritDoc} */
@@ -143,7 +187,13 @@ public final class GameControllerImpl implements GameController {
     public String getCurrentPlayerName() {
         return currentPlayerNameSupplier.get();
     }
- 
+    
+    /** {@inheritDoc} */
+    @Override
+    public int getCurrentPlayerShots() {
+    return this.currentShotsSupplier.getAsInt();
+    }
+
     /** {@inheritDoc} */
     @Override
     public ShotState getShotState() {

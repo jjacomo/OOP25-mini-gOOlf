@@ -16,7 +16,7 @@ import java.util.List;
  * Manages the application lifecycle: timer and navigation.
  * All match logic is delegated to {@link MatchManager}.
  *
- * @author dani and fede
+ * @author dani, giacomo and fede
  */
 public final class MainControllerImpl implements MainController, ActionListener {
 
@@ -28,30 +28,37 @@ public final class MainControllerImpl implements MainController, ActionListener 
 
     private final Timer timer;
     private final MainWindow mainWindow;
-    private final MatchManager matchManager;
+    private final NavigationController navigationController;
+    private MatchManager matchManager;  //TODO: dire a fede che ho tolto il final qui! (dani)
 
     /**
      * Creates and wires all components.
      */
     public MainControllerImpl() {
-        // TODO: pass real player names from NewGamePanel
-        final List<String> playerNames = List.of("Player 1");
-        final MapSequence mapSequence = new MapSequence(List.of(new FirstMap()));
-        final NavigationController navigationController = new NavigationController(this);
-
+        this.navigationController = new NavigationController(this);
         this.mainWindow = new MainWindow(this, navigationController);
         navigationController.setMainWindow(mainWindow);
+        this.timer = new Timer(1000 / FPS, this);
+    }
 
+    /**
+     * TODO: Dire a fede che ho creato questa classe dedicata! (dani)
+     * Initializes the match logic once the real player names are chosen.
+     * @param playerNames the names inserted in the NewGamePanel
+     */
+    @Override
+    public void startNewMatch(final List<String> playerNames) {
+        final MapSequence mapSequence = new MapSequence(List.of(new FirstMap()));
         this.matchManager = new MatchManager(
             mapSequence,
             playerNames,
             this::stop,
-            navigationController::startGame,
+            navigationController::showGameScene,
             navigationController::goToMainMenu,
-            mainWindow::rebuildGamePanel);
+            mainWindow::rebuildGamePanel
+        );
 
-        navigationController.setResetMatch(matchManager::reset);
-        this.timer = new Timer(1000 / FPS, this);
+        
     }
 
     /** {@inheritDoc} */
