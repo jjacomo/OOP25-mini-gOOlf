@@ -35,3 +35,6 @@
 2 orette: ora il controllo che la pallia finisca in buca è attivato non solo se la pallina ci si ferma, ma anche se ci finisce a 
         1/3 della velocità iniziale
         
+5 ore: creato cartella test e alcune classi, più avanti ne dovrò creare una in più per il controllo del ciclo di vita del match
+        multiplayer. Scritto una buona bozza iniziale sul report generale, da sistemare e aggiungere pezzi una volta ultimata
+        la parte di salvataggio dati partita
