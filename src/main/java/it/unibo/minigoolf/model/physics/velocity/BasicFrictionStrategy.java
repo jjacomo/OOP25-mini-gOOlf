@@ -19,7 +19,7 @@ import it.unibo.minigoolf.util.Vector2D;
 public final class BasicFrictionStrategy implements BallVelocityStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(BasicFrictionStrategy.class);
 
-    private static final int HIGH_SPEED_THRESHOLD = 800;
+    private static final int HIGH_SPEED_THRESHOLD = 1_000;
     private static final int MEDIUM_SPEED_THRESHOLD = 200;
     private static final int LOW_SPEED_THRESHOLD = 5;
     private static final int HIGH_FRICTION_MULTIPLIER = 15_000;

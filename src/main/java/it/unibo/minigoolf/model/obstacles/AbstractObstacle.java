@@ -85,8 +85,7 @@ public abstract class AbstractObstacle {
         // palla all'infinito quando si "ferma" vicino ad un ostacolo
         final double BOUNCE_THRESHOLD = 40.0;
         if (Math.abs(dotProduct) < BOUNCE_THRESHOLD) {
-            final Vector2D projection = normal.scalarMultiply(dotProduct);
-            ball.setVelocity(velocity.subtract(projection));
+            ball.setVelocity(Vector2D.ZERO);
         } else {
             final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
             ball.setVelocity(velocity.subtract(reflection));
