@@ -63,18 +63,21 @@ public class MapPanel extends JPanel {
         // physical pixel on screen as the shot-indicator overlay.
         g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
 
-        mapController.getSurfaces().stream()
+        mapController.getSurfaceControllers().stream()
                 .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
-                .forEach(surface -> {
-                    final BufferedImage texture = TextureManager.loadTexture(surface.getType().getTexturePath());
+                .forEach(surfaceController -> {
+                    final BufferedImage texture = TextureManager
+                            .loadTexture(surfaceController.getTexturePath());
                     if (texture != null) {
-                        drawShape(surface.getShape(), g2d, texture);
-                        if (surface.getWind().getNorm() > 0) {
-                            final BufferedImage windTexture = TextureManager.loadTexture("surfaces/wind/up_arrows.png");
-                            drawShape(surface.getShape(), g2d, windTexture);
+                        drawShape(surfaceController.getShape(), g2d, texture);
+                        final String windOverlay = surfaceController.getWindOverlayTexturePath();
+                        if (windOverlay != null) {
+                            final BufferedImage windTexture = TextureManager.loadTexture(windOverlay);
+                            drawShape(surfaceController.getShape(), g2d, windTexture);
                         }
                     } else {
-                        throw new IllegalStateException("Texture not found for surface type: " + surface.getType());
+                        throw new IllegalStateException(
+                                "Texture not found for surface type: " + surfaceController.getType());
                     }
                 });
 

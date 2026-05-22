@@ -1,6 +1,8 @@
 package it.unibo.minigoolf.controller.surfacecontroller;
 
 import it.unibo.minigoolf.model.surfaces.Surface;
+import it.unibo.minigoolf.model.surfaces.SurfaceType;
+import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
@@ -36,9 +38,28 @@ public class SurfaceControllerImpl implements SurfaceController {
 
     @Override
     public String getWindOverlayTexturePath() {
-        if (surface.getWind().getNorm() > 0) {
-            return "surfaces/wind/up_arrows.png";
+        final Vector2D wind = surface.getWind();
+        if (wind.getNorm() == 0) {
+            return null;
         }
-        return null;
+        if (Math.abs(wind.getX()) >= Math.abs(wind.getY())) {
+            return wind.getX() > 0
+                    ? "surfaces/wind/right_arrow.png"
+                    : "surfaces/wind/left_arrow.png";
+        } else {
+            return wind.getY() > 0
+                    ? "surfaces/wind/down_arrow.png"
+                    : "surfaces/wind/up_arrow2.png";
+        }
+    }
+
+    @Override
+    public SurfaceType getType() {
+        return surface.getType();
+    }
+
+    @Override
+    public Vector2D getWind() {
+        return surface.getWind();
     }
 }

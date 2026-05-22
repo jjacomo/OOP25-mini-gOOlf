@@ -6,9 +6,11 @@ import it.unibo.minigoolf.controller.ballcontroller.BallController;
 import it.unibo.minigoolf.controller.ballcontroller.BallControllerImpl;
 import it.unibo.minigoolf.controller.holecontroller.HoleController;
 import it.unibo.minigoolf.controller.holecontroller.HoleControllerImpl;
+import it.unibo.minigoolf.controller.surfacecontroller.SurfaceController;
+import it.unibo.minigoolf.controller.surfacecontroller.SurfaceControllerImpl;
 import it.unibo.minigoolf.model.map.GameMap;
-import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
 
 /**
@@ -21,6 +23,7 @@ public final class GameMapControllerImpl implements GameMapController {
     private final GameMap map;
     private final BallController ballController;
     private final HoleController holeController;
+    private final List<SurfaceController> surfaceControllers;
 
     /**
      * Creates a new GameMapController for the given game map.
@@ -32,16 +35,20 @@ public final class GameMapControllerImpl implements GameMapController {
         this.map = map;
         this.ballController = new BallControllerImpl(map.getBall());
         this.holeController = new HoleControllerImpl(map.getHole());
+        this.surfaceControllers = map.getSurfaces().stream()
+                .map(SurfaceControllerImpl::new)
+                .map(sc -> (SurfaceController) sc)
+                .toList();
     }
 
     /**
-     * Returns a list of all surfaces in the game map.
+     * Returns a list of all surface controllers in the game map.
      *
-     * @return a list of surfaces
+     * @return a list of surface controllers
      */
     @Override
-    public List<Surface> getSurfaces() {
-        return map.getSurfaces();
+    public List<SurfaceController> getSurfaceControllers() {
+        return surfaceControllers;
     }
 
     /**
@@ -66,9 +73,9 @@ public final class GameMapControllerImpl implements GameMapController {
     }
 
     /**
-     * Returns a list of all surfaces in the game map.
+     * Returns a list of all obstacles in the game map.
      *
-     * @return a list of surfaces
+     * @return a list of obstacles
      */
     @Override
     public List<Obstacle> getObstacles() {

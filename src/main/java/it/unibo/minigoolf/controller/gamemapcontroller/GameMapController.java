@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.unibo.minigoolf.controller.ballcontroller.BallController;
 import it.unibo.minigoolf.controller.holecontroller.HoleController;
+import it.unibo.minigoolf.controller.surfacecontroller.SurfaceController;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
@@ -20,7 +21,7 @@ public interface GameMapController {
      *
      * @return a list of all surfaces
      */
-    List<Surface> getSurfaces();
+    List<SurfaceController> getSurfaceControllers();
 
     /**
      * Returns all obstacles on the game map.
@@ -36,8 +37,6 @@ public interface GameMapController {
      * @return the surface under the given position
      */
     Surface getSurfaceAt(Vector2D position);
-
-    // Hole getHole();
 
     /**
      * Returns the controller for managing the ball.
