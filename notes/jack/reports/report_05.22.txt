@@ -1,0 +1,40 @@
+Report - 22/05 - 2h (tot: 54h)
+
+* Aggiunta la lista di SurfaceController in GameMapController
+* Ora MapPanel usa quest'ultima per disegnare le superfici 
+* Aggiunti test sulla palla
+
+-------------------------------------------------------------------------------------------------
+CONTROLLO ERRORI DA METTERE (TEST):
+- check che la mappa venga creata con almeno una palla, una buca, una superficie
+- check che la palla sia sempre sopra una superficie
+- check che il raggio della palla sia > di un raggio minimo consentito
+- altri check?
+
+-------------------------------------------------------------------------------------------------
+MEMO:
+Nel report finale fai uno schema UML che illustri il pattern adapter implementato.
+
+-------------------------------------------------------------------------------------------------
+TODO:
+* Guarda se surface dovrebbe avere al suo interno sia surfaceType che friction (una delle due in teoria basterebbe)
+* Riguarda e aggiungi i commenti della javadoc;
+* Migliore algoritmo per l'update della velocita'
+
+* Fare che se la palla va sull'acqua ritorna alla posizione precedente? (Con fede?)
+* Controllo errori (anche i piu' banali: ad esempio check che il raggio della pallina sia >0)
+* Guarda se MapPanel non prende niente da model (se rispetta pattern MVC).
+
+-------------------------------------------------------------------------------------------------
+POSSIBILI FEATURE:
+* Caricare mappe da file
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());
+
+-------------------------------------------------------------------------------------------------
+PER AGENDA FUTURA:
+* MainController che li contiene tutti? CONTROLLER STATICI
+* Accumulatore per il dt nel game loop?
+
+* MapPanel non deve importare nulla del model (Obstacles) (per Mattia) (fare un controller per gli ostacoli)

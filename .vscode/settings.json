@@ -1,5 +1,6 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.dependency.packagePresentation": "hierarchical",
-    "java.compile.nullAnalysis.mode": "disabled"
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.project.explorer.showNonJavaResources": true
 }
