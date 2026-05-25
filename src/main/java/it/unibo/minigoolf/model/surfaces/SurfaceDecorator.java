@@ -7,7 +7,16 @@ public abstract class SurfaceDecorator implements Surface {
 
     protected final Surface baseSurface;
 
+    /**
+     * Constructs a SurfaceDecorator with the given base surface.
+     * 
+     * @param baseSurface the surface to decorate
+     * @throws IllegalArgumentException if baseSurface is null
+     */
     public SurfaceDecorator(final Surface baseSurface) {
+        if (baseSurface == null) {
+            throw new IllegalArgumentException("Base surface cannot be null");
+        }
         this.baseSurface = baseSurface;
     }
 

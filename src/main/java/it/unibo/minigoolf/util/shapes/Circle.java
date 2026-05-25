@@ -14,6 +14,15 @@ import it.unibo.minigoolf.util.Vector2D;
 public record Circle(Vector2D position, double radius) implements Shape {
 
     /**
+     * Compact constructor to validate the radius.
+     */
+    public Circle {
+        if (radius <= 0) {
+            throw new IllegalArgumentException("Radius must be greater than 0, got: " + radius);
+        }
+    }
+
+    /**
      * Checks if a given position is contained within this circle.
      * A point is considered inside the circle if its distance from the center is
      * less than the radius.

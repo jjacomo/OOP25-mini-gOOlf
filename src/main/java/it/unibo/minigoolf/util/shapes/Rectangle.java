@@ -14,6 +14,18 @@ import it.unibo.minigoolf.util.Vector2D;
 public record Rectangle(Vector2D position, double width, double height) implements Shape {
 
     /**
+     * Compact constructor to validate width and height.
+     */
+    public Rectangle {
+        if (width <= 0) {
+            throw new IllegalArgumentException("Width must be greater than 0, got: " + width);
+        }
+        if (height <= 0) {
+            throw new IllegalArgumentException("Height must be greater than 0, got: " + height);
+        }
+    }
+
+    /**
      * Checks if the given position is contained within this rectangle.
      * 
      * @param position the position to check
