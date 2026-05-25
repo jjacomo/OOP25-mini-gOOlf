@@ -155,6 +155,7 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
         reflectVelocity(ball, normal);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Rectangle getShape() {
         return this.shape;

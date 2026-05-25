@@ -84,6 +84,7 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle {
         return velocity.scalarMultiply(-1).normalize();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Circle getShape() {
         return this.shape;

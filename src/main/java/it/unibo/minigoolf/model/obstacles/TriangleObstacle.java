@@ -207,6 +207,7 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public Triangle getShape() {
         return this.shape;
