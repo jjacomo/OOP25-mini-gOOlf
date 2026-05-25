@@ -72,10 +72,10 @@ public final class MenuPanel extends JPanel {
         this.add(playButton, gbc);
 
         // Test game button: for testing purpose, it starts the game immediately, to be removed!
-        final JButton testButton = UserInterfaceFactory.createButton("TEST GAME");
-        testButton.addActionListener(e -> navigationController.showGameScene());
-        gbc.gridy++;
-        this.add(testButton, gbc);
+        // final JButton testButton = UserInterfaceFactory.createButton("TEST GAME");
+        // testButton.addActionListener(e -> navigationController.showGameScene());
+        //gbc.gridy++;
+        // this.add(testButton, gbc); 
 
         // TEST FOR NOW
         final JButton leaderboardButton = UserInterfaceFactory.createButton("LEADERBOARD");

@@ -11,4 +11,6 @@ DA FARE:
   nella schermata dell'inserimento dei nomi dei giocatori, un pallino col colore del giocatore corrispondente,
   solo un dettaglio grafico marginale vedremo poi verso la fine.
 
+  - Mettere una sorta di schermata di riepilogo a fine mappa
+
 AGENDA:
