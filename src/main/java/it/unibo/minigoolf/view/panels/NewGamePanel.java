@@ -68,10 +68,6 @@ public final class NewGamePanel extends JPanel {
         scrollPane.setBorder(null);
         this.add(scrollPane, BorderLayout.CENTER);
 
-        // Start match button, for now it doesn't do anything.
-        final JButton startButton = new JButton("START MATCH");
-        this.add(startButton, BorderLayout.SOUTH);
-
         // To limit the number of players, but could be redefined in the future
         confirmNumButton.addActionListener(e -> {
             try {
@@ -88,8 +84,28 @@ public final class NewGamePanel extends JPanel {
         /* 
          Here I need something to pass the names to @fedesparvo1-a11y to initialize the game!
         */
-        // One default field always present (single player)
-        generateFields(1);
+
+
+         // Start match button, it starts a new single/multiplayermatch
+        final JButton startButton = new JButton("START MATCH");
+        this.add(startButton, BorderLayout.SOUTH);
+        startButton.addActionListener(e -> {
+            // Creates the list of players with given names
+            final List<String> playerNames = new ArrayList<>();
+            for (int i = 0; i < nameFields.size(); i++) {
+                String name = nameFields.get(i).getText().trim();
+                
+                // Adds a default name if no name is provided
+                if (name.isEmpty()) {
+                    name = "Player " + (i + 1);
+                }
+                playerNames.add(name);
+            }
+            navigationController.setupMatchAndStart(playerNames);
+        });
+
+
+
     }
 
     /**
