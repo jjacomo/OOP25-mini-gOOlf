@@ -1,5 +1,8 @@
 package it.unibo.minigoolf.model.surfaces;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
@@ -9,6 +12,7 @@ import it.unibo.minigoolf.util.shapes.Shape;
  * @author jack
  */
 public final class ShapedSurface implements Surface {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShapedSurface.class.getName());
 
     private final double friction;
     private final Shape shape;
@@ -26,6 +30,7 @@ public final class ShapedSurface implements Surface {
      */
     public ShapedSurface(final Shape shape, final double friction, final int zIndex, final SurfaceType type) {
         if (friction < 0) {
+            LOGGER.error("Attempted to create a surface with negative friction: " + friction);
             throw new IllegalArgumentException("Friction must be non-negative, got: " + friction);
         }
         this.shape = shape;

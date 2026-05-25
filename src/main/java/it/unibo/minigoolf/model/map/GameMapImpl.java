@@ -2,14 +2,16 @@ package it.unibo.minigoolf.model.map;
 
 import java.util.List;
 
-import it.unibo.minigoolf.util.Vector2D;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.hole.Hole;
 import it.unibo.minigoolf.model.hole.HoleImpl;
-import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.model.surfaces.Surface;
+import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * Implementation of the GameMap interface.
@@ -19,6 +21,7 @@ import it.unibo.minigoolf.model.obstacles.Obstacle;
  * @author jack
  */
 public final class GameMapImpl implements GameMap {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameMapImpl.class);
 
     /** The list of surfaces in the game map. */
     private final List<Surface> surfaces;
@@ -41,6 +44,10 @@ public final class GameMapImpl implements GameMap {
      * @param obstacles the list of obstacles
      */
     public GameMapImpl(final List<Surface> surfaces, final Ball ball, final Hole hole, final List<Obstacle> obstacles) {
+        if(surfaces == null || ball == null || hole == null || obstacles == null) {
+            LOGGER.error("Attempted to create a GameMapImpl with null parameters");
+            throw new IllegalArgumentException("Surfaces, ball, hole and obstacles cannot be null");
+        }
         this.surfaces = List.copyOf(surfaces);
         this.ball = new BallImpl(ball.getPosition(), ball.getRadius());
         this.obstacles = List.copyOf(obstacles);
@@ -61,25 +68,26 @@ public final class GameMapImpl implements GameMap {
                     .max((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
                     .orElseThrow(() -> new IllegalStateException("No surface found at the given position"));
         } catch (final IllegalStateException e) {
+            LOGGER.error("No surface found at the given position: " + position);
             throw new IllegalStateException("No surface found at the given position: " + position, e);
         }
         return highestSurface;
     }
 
     /**
-     * Returns the list of surfaces in the game map.
+     * Returns a copy of the list of surfaces in the game map.
      * 
      * @return the list of surfaces
      */
     @Override
     public List<Surface> getSurfaces() {
         return List.copyOf(this.surfaces);
-        // TODO farlo qui o in GameMapControllerImpl?
-        // return this.surfaces;
     }
 
     /**
-     * {@inheritDoc}
+     * Returns a copy of the ball in the game map.
+     *
+     * @return the ball
      */
     @Override
     public Ball getBall() {
@@ -89,7 +97,9 @@ public final class GameMapImpl implements GameMap {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns a copy of the hole in the game map.
+     *
+     * @return the hole
      */
     @Override
     public Hole getHole() {
@@ -97,14 +107,13 @@ public final class GameMapImpl implements GameMap {
     }
 
     /**
-     * Returns the list of obstacles in the game map.
+     * Returns a copy of the list of obstacles in the game map.
      *
      * @return the list of obstacles
      */
     @Override
     public List<Obstacle> getObstacles() {
         return List.copyOf(this.obstacles);
-        // return this.obstacles;
     }
 
 }

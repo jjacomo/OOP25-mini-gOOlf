@@ -49,7 +49,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
      */
     @Override
     public void startNewMatch(final List<String> playerNames) {
-        final MapSequence mapSequence = new MapSequence(List.of(new TestGameMapFactory()));
+        final MapSequence mapSequence = new MapSequence(List.of(new TestGameMapFactory(), new FirstMap()));
         this.matchManager = new MatchManager(
             mapSequence,
             playerNames,
