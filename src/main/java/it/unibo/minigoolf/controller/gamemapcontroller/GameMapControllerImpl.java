@@ -8,8 +8,9 @@ import it.unibo.minigoolf.controller.holecontroller.HoleController;
 import it.unibo.minigoolf.controller.holecontroller.HoleControllerImpl;
 import it.unibo.minigoolf.controller.surfacecontroller.SurfaceController;
 import it.unibo.minigoolf.controller.surfacecontroller.SurfaceControllerImpl;
+import it.unibo.minigoolf.controller.obstaclecontroller.ObstacleController;
+import it.unibo.minigoolf.controller.obstaclecontroller.ObstacleControllerImpl;
 import it.unibo.minigoolf.model.map.GameMap;
-import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
 
@@ -24,6 +25,7 @@ public final class GameMapControllerImpl implements GameMapController {
     private final BallController ballController;
     private final HoleController holeController;
     private final List<SurfaceController> surfaceControllers;
+    private final ObstacleController obstacleController;
 
     /**
      * Creates a new GameMapController for the given game map.
@@ -35,6 +37,7 @@ public final class GameMapControllerImpl implements GameMapController {
         this.map = map;
         this.ballController = new BallControllerImpl(map.getBall());
         this.holeController = new HoleControllerImpl(map.getHole());
+        this.obstacleController = new ObstacleControllerImpl(map.getObstacles());
         this.surfaceControllers = map.getSurfaces().stream()
                 .map(SurfaceControllerImpl::new)
                 .map(sc -> (SurfaceController) sc)
@@ -73,14 +76,14 @@ public final class GameMapControllerImpl implements GameMapController {
     }
 
     /**
-     * Returns a list of all obstacles in the game map.
+     * Returns the obstacle controller for managing obstacle interactions.
      *
-     * @return a list of obstacles
+     * @return the obstacle controller
      */
     @Override
-    public List<Obstacle> getObstacles() {
-        return map.getObstacles();
-    }
+    public ObstacleController getObstacleController() {
+        return obstacleController;
+}
 
     /**
      * Returns the hole controller for managing hole interactions.

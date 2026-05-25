@@ -33,7 +33,7 @@ public final class PhysicsControllerImpl implements PhysicsController {
         PhysicsEngine.update(
                 ballAdapter,
                 gameMapController.getSurfaceAt(ballAdapter.getPosition()),
-                gameMapController.getObstacles(),
+                gameMapController.getObstacleController().getObstacles(),
                 deltaTime);
     }
 

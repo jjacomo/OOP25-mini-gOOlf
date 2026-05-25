@@ -105,5 +105,12 @@ Report 17/05 - 1 ore
   lo attraverserebbe. Nel caso dei muri esterni della mappa, manderebbe in crash il gioco perchè la pallina
   esce dal campo.
 
+Report 25/05 - 2 ore
+- Aggiunta l'interfaccia e l'implementazione di ObstacleController, così da separare la parte di fisica 
+  degli oggetti da quella visiva.
+- Aggiornato GameMapControllerImpl per fargli utilizzare direttamente il nuovo controller e non più 
+  direttamente gli ostacoli
+
 TO DO:
-Verificare che i rimbalzi della pallina sugli ostacoli siano corretti
+- Sistemare la questione della palla che si ferma se vicino ad un ostacolo
+- Creare ostacoli avanzati (appiccicosi, che aumentano il rimbalzo) e trovarne anche di nuovi possibili

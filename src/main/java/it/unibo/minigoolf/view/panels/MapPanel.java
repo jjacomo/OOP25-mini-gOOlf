@@ -86,8 +86,8 @@ public class MapPanel extends JPanel {
         g2d.setColor(Color.WHITE);
         drawShape(mapController.getBallController().getBallShape(), g2d, null);
         g2d.setColor(Color.DARK_GRAY);
-        for (final Obstacle obstacle : mapController.getObstacles()) {
-            drawShape(obstacle.getShape(), g2d, null);
+        for (final Shape obstacleShape : mapController.getObstacleController().getObstacleShapes()) {
+            drawShape(obstacleShape, g2d, null);
         }
 
         drawFlag(g2d,
