@@ -16,9 +16,13 @@ public class WindySurface extends SurfaceDecorator {
      * @param baseSurface the surface to decorate
      * @param direction the direction of the wind (UP, DOWN, LEFT, RIGHT)
      * @param intensity the strength/speed of the wind
+     * @throws IllegalArgumentException if intensity is not positive
      */
     public WindySurface(final Surface baseSurface, final WindDirection direction, final double intensity) {
         super(baseSurface);
+        if (intensity <= 0) {
+            throw new IllegalArgumentException("Wind intensity must be greater than 0, got: " + intensity);
+        }
         this.wind = direction.getVector(intensity);
     }
 

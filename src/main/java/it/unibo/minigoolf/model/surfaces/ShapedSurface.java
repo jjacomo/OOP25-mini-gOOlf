@@ -22,8 +22,12 @@ public final class ShapedSurface implements Surface {
      * @param friction    The friction coefficient of the surface.
      * @param zIndex      The z-index of the surface (for rendering purposes).
      * @param type        The surface type.
+     * @throws IllegalArgumentException if friction is negative
      */
     public ShapedSurface(final Shape shape, final double friction, final int zIndex, final SurfaceType type) {
+        if (friction < 0) {
+            throw new IllegalArgumentException("Friction must be non-negative, got: " + friction);
+        }
         this.shape = shape;
         this.friction = friction;
         this.zIndex = zIndex;
