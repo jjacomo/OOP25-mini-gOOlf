@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 
 import it.unibo.minigoolf.view.TextureManager;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
-import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Oval;

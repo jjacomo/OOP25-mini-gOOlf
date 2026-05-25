@@ -6,7 +6,6 @@ import it.unibo.minigoolf.controller.ballcontroller.BallController;
 import it.unibo.minigoolf.controller.holecontroller.HoleController;
 import it.unibo.minigoolf.controller.obstaclecontroller.ObstacleController;
 import it.unibo.minigoolf.controller.surfacecontroller.SurfaceController;
-import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
 
