@@ -19,82 +19,85 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
 
 class BallImplTest {
 
+    private static final double RADIUS = 1.0;
+
     @Test
     void testConstructorInitializesPositionVelocityAndRadius() {
         final var position = new Vector2D(1.5, 2.5);
-        final var ball = new BallImpl(position, 1.0);
+        final var ball = new BallImpl(position, RADIUS);
 
         assertAll("initial ball state",
-                () -> assertEquals(1.5, ball.getPosition().getX(), 0.0),
-                () -> assertEquals(2.5, ball.getPosition().getY(), 0.0),
-                () -> assertEquals(1.0, ball.getRadius(), 0.0),
-                () -> assertEquals(0.0, ball.getVelocity().getX(), 0.0),
-                () -> assertEquals(0.0, ball.getVelocity().getY(), 0.0)
+                () -> assertEquals(position.getX(), ball.getPosition().getX()),
+                () -> assertEquals(position.getY(), ball.getPosition().getY()),
+                () -> assertEquals(RADIUS, ball.getRadius()),
+                () -> assertEquals(0.0, ball.getVelocity().getX()),
+                () -> assertEquals(0.0, ball.getVelocity().getY())
         );
     }
 
     @Test
     void testSetVelocityUpdatesVelocity() {
-        final var ball = new BallImpl(new Vector2D(0.0, 0.0), 2.0);
+        final var ball = new BallImpl(new Vector2D(0.0, 0.0), RADIUS);
         final var velocity = new Vector2D(3.0, -4.0);
 
         ball.setVelocity(velocity);
 
         assertAll("updated velocity",
-                () -> assertEquals(3.0, ball.getVelocity().getX(), 0.0),
-                () -> assertEquals(-4.0, ball.getVelocity().getY(), 0.0)
+                () -> assertEquals(velocity.getX(), ball.getVelocity().getX()),
+                () -> assertEquals(velocity.getY(), ball.getVelocity().getY())
         );
     }
 
     @Test
     void testSetPositionUpdatesPositionWithoutChangingRadius() {
-        final var ball = new BallImpl(new Vector2D(10.0, 10.0), 1.5);
+        final var ball = new BallImpl(new Vector2D(10.0, 10.0), RADIUS);
         final var newPosition = new Vector2D(-5.0, 7.0);
 
         ball.setPosition(newPosition);
 
         assertAll("updated position and radius",
-                () -> assertEquals(-5.0, ball.getPosition().getX(), 0.0),
-                () -> assertEquals(7.0, ball.getPosition().getY(), 0.0),
-                () -> assertEquals(1.5, ball.getRadius(), 0.0)
+                () -> assertEquals(newPosition.getX(), ball.getPosition().getX()),
+                () -> assertEquals(newPosition.getY(), ball.getPosition().getY()),
+                () -> assertEquals(RADIUS, ball.getRadius())
         );
     }
 
     @Test
     void testSetVelocityThenSetPositionMaintainsRadiusAndStateSeparately() {
-        final var ball = new BallImpl(new Vector2D(5.0, 5.0), 2.5);
-        ball.setVelocity(new Vector2D(1.0, 1.0));
+        final var ball = new BallImpl(new Vector2D(5.0, 5.0), RADIUS);
+        final var velocity = new Vector2D(2.0, 3.0);
+        ball.setVelocity(velocity);
         ball.setPosition(new Vector2D(0.0, 0.0));
 
         assertAll("position and velocity after updates",
-                () -> assertEquals(0.0, ball.getPosition().getX(), 0.0),
-                () -> assertEquals(0.0, ball.getPosition().getY(), 0.0),
-                () -> assertEquals(1.0, ball.getVelocity().getX(), 0.0),
-                () -> assertEquals(1.0, ball.getVelocity().getY(), 0.0),
-                () -> assertEquals(2.5, ball.getRadius(), 0.0)
+                () -> assertEquals(0.0, ball.getPosition().getX()),
+                () -> assertEquals(0.0, ball.getPosition().getY()),
+                () -> assertEquals(velocity.getX(), ball.getVelocity().getX()),
+                () -> assertEquals(velocity.getY(), ball.getVelocity().getY()),
+                () -> assertEquals(RADIUS, ball.getRadius())
         );
     }
 
     @Test
     void testUpdateVelocity() {
-        final var ball = new BallImpl(new Vector2D(0.0, 0.0), 1.0);
+        final var ball = new BallImpl(new Vector2D(0.0, 0.0), RADIUS);
         ball.setVelocity(new Vector2D(100.0, 100.0));
         final var grassSurface = new ShapedSurface(new Rectangle(new Vector2D(0, 0), 1000, 1000), 10, 1, SurfaceType.GRASS);
         PhysicsEngine.setVelocityStrategy(new BasicFrictionStrategy());
         PhysicsEngine.update(ball, grassSurface, List.of(), 10.0);
 
         assertAll("updated velocity",
-                () -> assertEquals(0.0, ball.getVelocity().getX(), 0.0),
-                () -> assertEquals(0.0, ball.getVelocity().getY(), 0.0)
+                () -> assertEquals(0.0, ball.getVelocity().getX()),
+                () -> assertEquals(0.0, ball.getVelocity().getY())
         );
     }
 
     @Test
     void testOutOfBounds() {
-        final var ball = new BallImpl(new Vector2D(-10.0, -10.0), 1.0);
+        final var ball = new BallImpl(new Vector2D(-10.0, -10.0), RADIUS);
         final var grassSurface = new ShapedSurface(new Rectangle(new Vector2D(0, 0), 1000, 1000), 10, 1,
                 SurfaceType.GRASS);
-        final var map = new GameMapImpl(List.of(grassSurface), ball, new HoleImpl(new Vector2D(0, 0), 1.0), List.of());
+        final var map = new GameMapImpl(List.of(grassSurface), ball, new HoleImpl(new Vector2D(0, 0), RADIUS), List.of());
 
         assertThrows(IllegalStateException.class,
                 () -> map.getSurfaceAt(ball.getPosition()));

@@ -1,7 +1,11 @@
-Report - 25/05 - 1h (tot: 55h)
+Report - 25/05 - 2h (tot: 56h)
 
 * Aggiunto controllo dimensioni di shape (raggio>0, width>0, height>0)
 * Aggiunto controllo friction > 0; wind intensity > 0
+* Risolti errori di spotbugs
+* Guardato come fare report
+
+- secondo me dovrei togliere SurfaceType (fare una SurfaceFactory tipo)
 
 -------------------------------------------------------------------------------------------------
 MEMO:

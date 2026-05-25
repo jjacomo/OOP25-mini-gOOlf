@@ -6,7 +6,7 @@ import it.unibo.minigoolf.util.Vector2D;
  * A decorator that adds a wind effect to a base surface.
  * The wind from this decorator is added to any wind already present in the base surface.
  */
-public class WindySurface extends SurfaceDecorator {
+public class WindySurface extends AbstractSurfaceDecorator {
 
     private final Vector2D wind;
 
