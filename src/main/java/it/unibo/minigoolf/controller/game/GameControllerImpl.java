@@ -144,34 +144,33 @@ public final class GameControllerImpl implements GameController {
                 final boolean holeScored = holeChecker.isBallInHole(ballPos);
                 final boolean maxShotsReached = currentShotsSupplier.getAsInt() >= MAX_SHOTS;
 
+                // Rules to finish a turn
                 if (holeScored || maxShotsReached) {
-                    // IL GIOCATORE HA FINITO LA SUA BUCA!
+                    
                     
                     if (isLastPlayerSupplier.getAsBoolean()) {
-                        // Era l'ultimo giocatore. La buca è finita per tutti, andiamo alla prossima mappa!
+                        // The last player has finished his turn
                         onHoleCompleted.run();
                     } else {
-                        // Ci sono ancora altri giocatori che devono giocare questa buca.
-                        nextTurnTrigger.run(); // Passa il turno nel GameState
-                        
-                        // --- RISOLUZIONE DEL TODO ---
-                        // 1. Riportiamo la pallina alla posizione iniziale (usando il metodo di Jack/Fede)
+                        // Next player
+                        nextTurnTrigger.run(); 
+                        // To reset the position of the ball for the next player
                         gameMapController.getBallController().updatePosition(initialBallPosition);
                         
-                        // 2. Fermiamo completamente la pallina (vettore zero)
+                        // To stop the ball from moving when set on the default position
                         gameMapController.getBallController().updateVelocity(Vector2D.ZERO);
-                        // ----------------------------
-                        
-                        // Diciamo al gioco di far ripartire il tiro da questa posizione!
+
                         shotController.onBallStopped(initialBallPosition);
                     }
                     
                 } else {
-                    // Il giocatore non ha ancora finito. Tira di nuovo da dove si è fermata la palla.
+                    // Remainig shots for the current player
                     shotController.onBallStopped(ballPos);
                 }
             }}
- 
+
+
+            // TODO: vecchio codice di Fede!
             /*if (!gameMapController.getBallController().isBallMoving()) {
                 // Ball has stopped — check hole then re-enable input.
                 ballStoppedNotifier.run();
