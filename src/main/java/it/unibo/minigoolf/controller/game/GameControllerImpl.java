@@ -154,9 +154,15 @@ public final class GameControllerImpl implements GameController {
                         // Ci sono ancora altri giocatori che devono giocare questa buca.
                         nextTurnTrigger.run(); // Passa il turno nel GameState
                         
-                        //TODO: Nota per fede: qui bisogna mettere la pallina alla posizione iniziale!
+                        // --- RISOLUZIONE DEL TODO ---
+                        // 1. Riportiamo la pallina alla posizione iniziale (usando il metodo di Jack/Fede)
+                        gameMapController.getBallController().updatePosition(initialBallPosition);
                         
-                        // Riabilitiamo il tiro per il nuovo giocatore dalla posizione iniziale
+                        // 2. Fermiamo completamente la pallina (vettore zero)
+                        gameMapController.getBallController().updateVelocity(Vector2D.ZERO);
+                        // ----------------------------
+                        
+                        // Diciamo al gioco di far ripartire il tiro da questa posizione!
                         shotController.onBallStopped(initialBallPosition);
                     }
                     
