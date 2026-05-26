@@ -1,6 +1,8 @@
 package it.unibo.minigoolf.controller.game;
 
+import it.unibo.minigoolf.controller.save.SaveController;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
+import it.unibo.minigoolf.model.save.SaveData;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -10,7 +12,7 @@ import java.util.function.Consumer;
  * Uses functional callbacks instead of storing collaborators directly,
  * avoiding EI2 warnings and keeping coupling minimal.
  *
- * @author fede
+ * @author fede and dani
  */
 public final class MatchManager {
 
@@ -32,12 +34,14 @@ public final class MatchManager {
     private GameController activeMatch;
 
     /**
-     * @param mapSequence  the ordered sequence of maps
-     * @param playerNames  the player names for all matches
-     * @param stopGame     callback to stop the game loop
-     * @param startGame    callback to start the game loop and show the game scene
-     * @param goToMenu     callback to return to the main menu
-     * @param rebuildPanel callback to rebuild the game panel with a new match
+     * @param mapSequence    the ordered sequence of maps
+     * @param playerNames    the player names for all matches
+     * @param stopGame       callback to stop the game loop
+     * @param startGame      callback to start the game loop and show the game scene
+     * @param goToMenu       callback to return to the main menu
+     * @param rebuildPanel   callback to rebuild the game panel with a new match
+     * @param saveController handles persistence — MatchManager registers its
+     *                       snapshot and restore callbacks on it
      */
     public MatchManager(
             final MapSequence mapSequence,
@@ -45,7 +49,8 @@ public final class MatchManager {
             final Runnable stopGame,
             final Runnable startGame,
             final Runnable goToMenu,
-            final Consumer<GameController> rebuildPanel) {
+            final Consumer<GameController> rebuildPanel,
+            final SaveController saveController) {
         this.mapSequence = mapSequence;
         this.playerNames = List.copyOf(playerNames);
         this.stopGame = stopGame;
@@ -54,7 +59,11 @@ public final class MatchManager {
         this.rebuildPanel = rebuildPanel;
         this.activeMatch = buildMatch();
         rebuildPanel.accept(activeMatch);
-    }
+        // Register save/restore behaviors on SaveController — no field stored.
+        saveController.setSnapshotSupplier(
+            () -> activeMatch.createSaveData(
+                String.valueOf(mapSequence.getCurrentIndex())));
+        saveController.setRestoreCallback(this::restoreFromSaveData);    }
 
     /**
      * Runs one tick of the active match.
@@ -82,6 +91,23 @@ public final class MatchManager {
      */
     private GameController buildMatch() {
         return GameFactory.buildMatch(playerNames, mapSequence, this::onHoleCompleted);
+    }
+
+    /**
+     * Restores a match from a {@link SaveData} snapshot.
+     * Advances the map sequence to the saved index and rebuilds the match.
+     *
+     * @param data the snapshot to restore
+     */
+    private void restoreFromSaveData(final SaveData data) {
+        mapSequence.reset();
+        while (mapSequence.getCurrentIndex() < Integer.parseInt(data.mapId())
+                && mapSequence.hasNext()) {
+            mapSequence.advance();
+        }
+        activeMatch = buildMatch();
+        rebuildPanel.accept(activeMatch);
+        startGame.run();
     }
 
     /**

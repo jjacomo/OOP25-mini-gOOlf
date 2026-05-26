@@ -30,7 +30,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
     private final Timer timer;
     private final MainWindow mainWindow;
     private final NavigationController navigationController;
-    private MatchManager matchManager;  //TODO: dire a fede che ho tolto il final qui! (dani)
+    private MatchManager matchManager;
 
     /**
      * Creates and wires all components.
@@ -43,21 +43,22 @@ public final class MainControllerImpl implements MainController, ActionListener 
     }
 
     /**
-     * TODO: Dire a fede che ho creato questa classe dedicata! (dani)
      * Initializes the match logic once the real player names are chosen.
+     *
      * @param playerNames the names inserted in the NewGamePanel
      */
     @Override
     public void startNewMatch(final List<String> playerNames) {
-        final MapSequence mapSequence = new MapSequence(List.of(new TestGameMapFactory(), new FirstMap()));
+        final MapSequence mapSequence = new MapSequence(
+            List.of(new TestGameMapFactory(), new FirstMap()));
         this.matchManager = new MatchManager(
             mapSequence,
             playerNames,
             this::stop,
             navigationController::showGameScene,
             navigationController::goToMainMenu,
-            mainWindow::rebuildGamePanel
-        );
+            mainWindow::rebuildGamePanel,
+            navigationController.getSaveController());
     }
 
     /** {@inheritDoc} */
@@ -69,7 +70,9 @@ public final class MainControllerImpl implements MainController, ActionListener 
             deltaTime = 1.0 / FPS;
         }
         lastTime = now;
-        matchManager.tickActiveMatch(deltaTime);
+        if (matchManager != null) {
+            matchManager.tickActiveMatch(deltaTime);
+        }
         mainWindow.repaint();
     }
 

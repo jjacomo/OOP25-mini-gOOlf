@@ -8,7 +8,7 @@ import it.unibo.minigoolf.model.logic.ShotState;
  * Controller responsible for the lifecycle of a single match.
  * Manages shot input, physics, turn logic and ball-stop detection.
  *
- * @author fede
+ * @author fede and dani
  */
 public interface GameController {
 
@@ -44,7 +44,9 @@ public interface GameController {
     String getCurrentPlayerName();
 
     /**
-     * @return the number of shots taken by the current player in this hole.
+     * Returns the number of shots taken by the current player on this hole.
+     *
+     * @return the current player's shot count
      */
     int getCurrentPlayerShots();
 
@@ -64,4 +66,14 @@ public interface GameController {
      * @return the game map controller
      */
     GameMapController getGameMapController();
+
+    /**
+     * Builds a {@link it.unibo.minigoolf.model.save.SaveData} snapshot of the
+     * current match state, ready to be persisted by
+     * {@link it.unibo.minigoolf.model.save.SaveManager}.
+     *
+     * @param mapId the string identifier of the current map
+     * @return an immutable snapshot of the match
+     */
+    it.unibo.minigoolf.model.save.SaveData createSaveData(String mapId);
 }

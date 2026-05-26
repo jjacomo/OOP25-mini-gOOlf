@@ -38,3 +38,6 @@
 5 ore: creato cartella test e alcune classi, più avanti ne dovrò creare una in più per il controllo del ciclo di vita del match
         multiplayer. Scritto una buona bozza iniziale sul report generale, da sistemare e aggiungere pezzi una volta ultimata
         la parte di salvataggio dati partita
+
+6 ore: sistemato la velocità della pallina a 1/2 della velocità iniziale, poi ho iniziato a preparare il controller e la logica
+        finale per il salvataggio dei dati, che però ancora non funziona

@@ -12,17 +12,25 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
+import java.io.Serial;
 
 /**
- * The pause menu. It is NOT a panel within the cardlayout! It's an overlay if gamepanel.
- * * @author dani
+ * The pause menu overlay.
+ * It is NOT a panel within the CardLayout — it is a glass pane over GamePanel.
+ *
+ * @author dani
  */
 public final class PausePanel extends JPanel {
+
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final int TINT = 150;
 
+    /**
+     * @param navController the navigation controller
+     */
     public PausePanel(final NavigationController navController) {
-        this.setOpaque(false); 
+        this.setOpaque(false);
         this.setLayout(new GridBagLayout());
 
         final JPanel menuBox = new JPanel();
@@ -37,28 +45,28 @@ public final class PausePanel extends JPanel {
         final JButton quitButton = UserInterfaceFactory.createButton("QUIT");
         quitButton.setAlignmentX(CENTER_ALIGNMENT);
         quitButton.addActionListener(e -> {
-            final int choice = UserInterfaceFactory.showConfirmDialog(this, "Do you want to save before quitting?", "Quit Game");
+            final int choice = UserInterfaceFactory.showConfirmDialog(
+                this, "Do you want to save before quitting?", "Quit Game");
 
             if (choice == JOptionPane.YES_OPTION) {
-                // TODO: Logica di salvataggio da implementare!
+                navController.saveGame();
                 navController.quitToMenu();
-                
             } else if (choice == JOptionPane.NO_OPTION) {
                 navController.quitToMenu();
             }
-
+            // CANCEL: do nothing, stay in pause
         });
         menuBox.add(quitButton);
 
         this.add(menuBox, new GridBagConstraints());
-        // This is needed so if the player clicks with his mouse during pause-state, the ball won't react
-        this.addMouseListener(new MouseAdapter() { }); 
+        // Block mouse events from reaching the game while paused.
+        this.addMouseListener(new MouseAdapter() { });
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
-        // Tinted effect for the background
         g.setColor(new Color(0, 0, 0, TINT));
         g.fillRect(0, 0, getWidth(), getHeight());
     }

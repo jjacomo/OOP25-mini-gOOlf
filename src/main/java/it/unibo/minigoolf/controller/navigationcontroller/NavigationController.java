@@ -1,23 +1,39 @@
 package it.unibo.minigoolf.controller.navigationcontroller;
 
-import java.util.List;
-
 import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.controller.save.SaveController;
+import it.unibo.minigoolf.model.save.SaveManager;
 import it.unibo.minigoolf.view.MainWindow;
+
+import java.util.List;
 
 /**
  * Controller for navigation between panels.
+ * Also owns the {@link SaveController} since it lives for the full
+ * application lifetime, allowing save/load before any match is started.
  */
 public final class NavigationController {
 
     private MainWindow mainWindow;
     private final MainController mainController;
+    private final SaveController saveController;
 
     /**
      * @param mainController the main controller
      */
     public NavigationController(final MainController mainController) {
         this.mainController = mainController;
+        this.saveController = new SaveController(new SaveManager());
+    }
+
+    /**
+     * Returns the save controller so {@link it.unibo.minigoolf.controller.game.MatchManager}
+     * can register its snapshot and restore callbacks.
+     *
+     * @return the save controller
+     */
+    public SaveController getSaveController() {
+        return saveController;
     }
 
     /**
@@ -25,6 +41,31 @@ public final class NavigationController {
      */
     public void setMainWindow(final MainWindow mainWindow) {
         this.mainWindow = mainWindow;
+    }
+
+    /**
+     * Returns true if a save file is available to load.
+     *
+     * @return true if a save exists
+     */
+    public boolean hasSave() {
+        return saveController.hasSave();
+    }
+
+    /**
+     * Saves the current match state to disk.
+     * Called by the pause panel when the player chooses to save before quitting.
+     */
+    public void saveGame() {
+        saveController.save();
+    }
+
+    /**
+     * Loads the saved match and starts it.
+     * Called by the menu panel when the player chooses to load.
+     */
+    public void loadGame() {
+        saveController.load();
     }
 
     /**
@@ -42,9 +83,10 @@ public final class NavigationController {
     }
 
     /**
-     * Handles the transition from the menu, to the new game menu and then to the actual game.
+     * Handles the transition from the new game menu to the actual game.
      * Passes the names to the logic and starts everything.
-     * * @param playerNames list of the players names
+     *
+     * @param playerNames list of the players names
      */
     public void setupMatchAndStart(final List<String> playerNames) {
         this.mainController.startNewMatch(playerNames);
