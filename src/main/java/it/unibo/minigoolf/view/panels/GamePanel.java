@@ -12,12 +12,14 @@ import javax.swing.KeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.Graphics;
 import java.io.Serial;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 /**
  * The game scene panel.
@@ -39,7 +41,12 @@ public final class GamePanel extends JPanel {
     private final MapPanel mapPanel;
     private final JLabel turnoLabel;
     private final JLabel shotsLabel;
-    private final GameController gameController;
+
+    /** Supplies the current player name — avoids storing GameController directly. */
+    private final transient Supplier<String> playerNameSupplier;
+
+    /** Supplies the current player shots — avoids storing GameController directly. */
+    private final transient IntSupplier playerShotsSupplier;
 
     /**
      * @param navController  the navigation controller
@@ -52,25 +59,25 @@ public final class GamePanel extends JPanel {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
-        this.gameController = gameController;
+        // Extract only the needed behaviors from gameController — avoids EI2.
+        this.playerNameSupplier = gameController::getCurrentPlayerName;
+        this.playerShotsSupplier = gameController::getCurrentPlayerShots;
 
-        // The panel for the current player and the shots counter
         final JPanel uiPanel = new JPanel();
         uiPanel.setBackground(Color.DARK_GRAY);
-        
-        this.turnoLabel = new JLabel("Player: " + gameController.getCurrentPlayerName());
+
+        this.turnoLabel = new JLabel("Player: " + playerNameSupplier.get());
         this.turnoLabel.setForeground(Color.WHITE);
-        
-        this.shotsLabel = new JLabel(" | Shots: " + gameController.getCurrentPlayerShots());
+
+        this.shotsLabel = new JLabel(" | Shots: " + playerShotsSupplier.getAsInt());
         this.shotsLabel.setForeground(Color.WHITE);
-        
+
         uiPanel.add(turnoLabel);
         uiPanel.add(shotsLabel);
-        
+
         this.add(uiPanel, BorderLayout.NORTH);
 
         this.mapPanel = new MapPanel(gameController.getGameMapController());
-        // shotViewPanel is used directly from the parameter — no field needed.
 
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
@@ -109,7 +116,6 @@ public final class GamePanel extends JPanel {
             }
         });
 
-        // ESC → pause.
         this.getInputMap(WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("ESCAPE"), "pauseAction");
         this.getActionMap().put("pauseAction", new AbstractAction() {
@@ -122,17 +128,16 @@ public final class GamePanel extends JPanel {
             }
         });
     }
+
     /**
-     * Called automatically by the MainController repaint loop to keep the HUD updated in real time
+     * Called automatically by the repaint loop to keep the HUD updated in real time.
+     *
+     * @param g the graphics context
      */
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
-        
-        // Se il controller esiste, aggiorniamo i testi delle etichette
-        if (this.gameController != null) {
-            this.turnoLabel.setText("Player: " + gameController.getCurrentPlayerName());
-            this.shotsLabel.setText(" | Shots: " + gameController.getCurrentPlayerShots());
-        }
+        turnoLabel.setText("Player: " + playerNameSupplier.get());
+        shotsLabel.setText(" | Shots: " + playerShotsSupplier.getAsInt());
     }
 }

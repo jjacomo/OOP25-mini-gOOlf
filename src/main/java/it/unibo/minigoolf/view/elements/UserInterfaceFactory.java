@@ -46,23 +46,34 @@ public final class UserInterfaceFactory {
         field.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         return field;
     }
+
     /**
-     * Creates and shows a Yes/No confirmation dialog.
+     * Creates and shows a Yes/No confirmation dialog with English button labels,
+     * regardless of the system locale.
      *
      * @param parent  the parent component of the dialog (usually 'this' from the calling panel)
      * @param message the message to display
      * @param title   the title of the dialog window
-     * @return the integer representing the user's choice (e.g., JOptionPane.YES_OPTION)
+     * @return {@link JOptionPane#YES_OPTION} or {@link JOptionPane#NO_OPTION}
      */
     public static int showConfirmDialog(final Component parent, final String message, final String title) {
-        return JOptionPane.showConfirmDialog(
+        final Object[] options = {"Yes", "No"};
+        final int result = JOptionPane.showOptionDialog(
                 parent,
                 message,
                 title,
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.PLAIN_MESSAGE
-        );
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]);
+        // showOptionDialog returns the index of the chosen option (0=Yes, 1=No)
+        // or CLOSED_OPTION (-1) if the dialog is dismissed.
+        if (result == 0) {
+            return JOptionPane.YES_OPTION;
+        } else if (result == 1) {
+            return JOptionPane.NO_OPTION;
+        }
+        return JOptionPane.CLOSED_OPTION;
     }
 }
-
-

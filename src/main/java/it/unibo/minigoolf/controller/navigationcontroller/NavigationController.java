@@ -2,10 +2,13 @@ package it.unibo.minigoolf.controller.navigationcontroller;
 
 import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.save.SaveController;
+import it.unibo.minigoolf.model.save.SaveData;
 import it.unibo.minigoolf.model.save.SaveManager;
 import it.unibo.minigoolf.view.MainWindow;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Controller for navigation between panels.
@@ -14,33 +17,50 @@ import java.util.List;
  */
 public final class NavigationController {
 
-    private MainWindow mainWindow;
+    /** Stored as a callback to avoid EI2. */
+    private final Runnable showMenuCallback;
+    private final Runnable showGameCallback;
+    private final Runnable showNewGameCallback;
+    private final Runnable pauseWindowCallback;
+    private final Runnable resumeWindowCallback;
+
     private final MainController mainController;
     private final SaveController saveController;
 
     /**
      * @param mainController the main controller
+     * @param mainWindow     the main application window
      */
-    public NavigationController(final MainController mainController) {
+    public NavigationController(final MainController mainController,
+            final MainWindow mainWindow) {
         this.mainController = mainController;
         this.saveController = new SaveController(new SaveManager());
+        // Extract only the needed behaviors from mainWindow — avoids EI2.
+        this.showMenuCallback = () -> mainWindow.showScene("MENU");
+        this.showGameCallback = () -> mainWindow.showScene("GAME");
+        this.showNewGameCallback = () -> mainWindow.showScene("NEW_GAME");
+        this.pauseWindowCallback = () -> mainWindow.getGlassPane().setVisible(true);
+        this.resumeWindowCallback = () -> mainWindow.getGlassPane().setVisible(false);
     }
 
     /**
-     * Returns the save controller so {@link it.unibo.minigoolf.controller.game.MatchManager}
-     * can register its snapshot and restore callbacks.
+     * Registers the snapshot supplier on the save controller.
+     * Called by {@link it.unibo.minigoolf.controller.game.MatchManager}.
      *
-     * @return the save controller
+     * @param supplier supplies the current match snapshot
      */
-    public SaveController getSaveController() {
-        return saveController;
+    public void registerSnapshotSupplier(final Supplier<SaveData> supplier) {
+        saveController.setSnapshotSupplier(supplier);
     }
 
     /**
-     * @param mainWindow the main window
+     * Registers the restore callback on the save controller.
+     * Called by {@link it.unibo.minigoolf.controller.game.MatchManager}.
+     *
+     * @param callback receives the loaded snapshot and starts the match
      */
-    public void setMainWindow(final MainWindow mainWindow) {
-        this.mainWindow = mainWindow;
+    public void registerRestoreCallback(final Consumer<SaveData> callback) {
+        saveController.setRestoreCallback(callback);
     }
 
     /**
@@ -54,7 +74,6 @@ public final class NavigationController {
 
     /**
      * Saves the current match state to disk.
-     * Called by the pause panel when the player chooses to save before quitting.
      */
     public void saveGame() {
         saveController.save();
@@ -62,7 +81,6 @@ public final class NavigationController {
 
     /**
      * Loads the saved match and starts it.
-     * Called by the menu panel when the player chooses to load.
      */
     public void loadGame() {
         saveController.load();
@@ -72,19 +90,18 @@ public final class NavigationController {
      * Handles the transition from the menu to the NewGamePanel.
      */
     public void goToNewGameMenu() {
-        this.mainWindow.showScene("NEW_GAME");
+        showNewGameCallback.run();
     }
 
     /**
      * Handles the transition to the MenuPanel.
      */
     public void goToMainMenu() {
-        this.mainWindow.showScene("MENU");
+        showMenuCallback.run();
     }
 
     /**
      * Handles the transition from the new game menu to the actual game.
-     * Passes the names to the logic and starts everything.
      *
      * @param playerNames list of the players names
      */
@@ -95,10 +112,9 @@ public final class NavigationController {
 
     /**
      * Shows the game scene and starts the game loop.
-     * Used both when starting a new match and when advancing to the next hole.
      */
     public void showGameScene() {
-        this.mainWindow.showScene("GAME");
+        showGameCallback.run();
         this.mainController.start();
     }
 
@@ -107,14 +123,14 @@ public final class NavigationController {
      */
     public void pauseGame() {
         this.mainController.stop();
-        this.mainWindow.getGlassPane().setVisible(true);
+        pauseWindowCallback.run();
     }
 
     /**
      * Handles the transition from the pause to the game.
      */
     public void resumeGame() {
-        this.mainWindow.getGlassPane().setVisible(false);
+        resumeWindowCallback.run();
         this.mainController.start();
     }
 
@@ -122,7 +138,7 @@ public final class NavigationController {
      * Handles the transition from the pause menu to the main menu.
      */
     public void quitToMenu() {
-        this.mainWindow.getGlassPane().setVisible(false);
+        resumeWindowCallback.run();
         this.goToMainMenu();
     }
 }

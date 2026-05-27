@@ -19,6 +19,8 @@ import java.util.function.Function;
 /**
  * The main application window.
  * Hosts the panel that is currently active.
+ * The {@link NavigationController} is passed once via {@link #initPanels}
+ * and captured in a lambda factory — never stored as a field — avoiding EI2.
  *
  * @author dani and fede
  */
@@ -34,38 +36,44 @@ public final class MainWindow extends JFrame {
     private final JPanel mainContainer = new JPanel(cardLayout);
 
     /**
-     * Builds a {@link GamePanel} from a {@link GameController}.
-     * Stored as a function so {@code NavigationController} is not kept as a field.
+     * Lambda that builds a {@link GamePanel} from a {@link GameController}.
+     * Captures {@link NavigationController} at {@link #initPanels} time
+     * so it is never stored as a field — avoids EI2.
      */
-    private final transient Function<GameController, GamePanel> gamePanelFactory;
+    private transient Function<GameController, GamePanel> gamePanelFactory = gc -> null;
 
     /**
-     * Creates and displays the main application window without a game panel.
-     * Call {@link #rebuildGamePanel(GameController)} before showing the game scene.
+     * Creates and displays the main application window.
+     * Call {@link #initPanels} once the navigation controller is available.
      *
-     * @param controller           the main controller
-     * @param navigationController the navigation controller
+     * @param controller the main controller (unused directly; present for wiring context)
      */
-    public MainWindow(final MainController controller,
-            final NavigationController navigationController) {
-        this.gamePanelFactory = gc -> {
-            final ShotViewPanel svp = new ShotViewPanel(gc.getShotState());
-            gc.setShotView(svp);
-            return new GamePanel(navigationController, gc, svp);
-        };
-
+    public MainWindow(final MainController controller) {
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         this.setTitle("MinigOOlf");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        mainContainer.add(new MenuPanel(navigationController), "MENU");
-        mainContainer.add(new NewGamePanel(navigationController), "NEW_GAME");
         this.setContentPane(mainContainer);
-        cardLayout.show(mainContainer, "MENU");
-
-        this.setGlassPane(new PausePanel(navigationController));
         this.pack();
         this.setVisible(true);
+    }
+
+    /**
+     * Adds the static panels and wires the game panel factory.
+     * Must be called once immediately after the navigation controller is created.
+     *
+     * @param navController the navigation controller
+     */
+    public void initPanels(final NavigationController navController) {
+        mainContainer.add(new MenuPanel(navController), "MENU");
+        mainContainer.add(new NewGamePanel(navController), "NEW_GAME");
+        cardLayout.show(mainContainer, "MENU");
+        this.setGlassPane(new PausePanel(navController));
+        // Capture navController in the factory lambda — avoids storing it as a field.
+        this.gamePanelFactory = gc -> {
+            final ShotViewPanel svp = new ShotViewPanel(gc.getShotState());
+            gc.setShotView(svp);
+            return new GamePanel(navController, gc, svp);
+        };
     }
 
     /**

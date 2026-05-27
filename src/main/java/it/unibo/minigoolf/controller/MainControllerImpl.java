@@ -3,6 +3,7 @@ package it.unibo.minigoolf.controller;
 import it.unibo.minigoolf.controller.game.MatchManager;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.map.factories.FirstMap;
+import it.unibo.minigoolf.model.map.factories.SecondMap;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
 import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
 import it.unibo.minigoolf.view.MainWindow;
@@ -36,9 +37,9 @@ public final class MainControllerImpl implements MainController, ActionListener 
      * Creates and wires all components.
      */
     public MainControllerImpl() {
-        this.navigationController = new NavigationController(this);
-        this.mainWindow = new MainWindow(this, navigationController);
-        navigationController.setMainWindow(mainWindow);
+        this.mainWindow = new MainWindow(this);
+        this.navigationController = new NavigationController(this, mainWindow);
+        mainWindow.initPanels(navigationController);
         this.timer = new Timer(1000 / FPS, this);
     }
 
@@ -49,8 +50,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
      */
     @Override
     public void startNewMatch(final List<String> playerNames) {
-        final MapSequence mapSequence = new MapSequence(
-            List.of(new TestGameMapFactory(), new FirstMap()));
+        final MapSequence mapSequence = new MapSequence(List.of(new TestGameMapFactory(), new FirstMap(), new SecondMap()));
         this.matchManager = new MatchManager(
             mapSequence,
             playerNames,
@@ -58,7 +58,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
             navigationController::showGameScene,
             navigationController::goToMainMenu,
             mainWindow::rebuildGamePanel,
-            navigationController.getSaveController());
+            navigationController);
     }
 
     /** {@inheritDoc} */

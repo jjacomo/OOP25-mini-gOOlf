@@ -38,17 +38,26 @@ public final class Player {
 
     /**
      * Increments the shot counter by one.
-     * Called by GameState every time a valid shot is made.
      */
     public void addShot() {
         this.shots++;
     }
 
     /**
-     * Resets the shot counter to zero (example: when moving to the next hole).
+     * Resets the shot counter to zero.
      */
     public void resetShots() {
         this.shots = 0;
+    }
+
+    /**
+     * Restores the shot counter to a previously saved value.
+     * Used during save/load to reinstate the exact state at save time.
+     *
+     * @param savedShots the shot count to restore
+     */
+    public void restoreShots(final int savedShots) {
+        this.shots = savedShots;
     }
 
     /** {@inheritDoc} */

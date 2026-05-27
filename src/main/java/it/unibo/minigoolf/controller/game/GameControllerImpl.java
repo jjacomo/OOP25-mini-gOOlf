@@ -40,10 +40,10 @@ public final class GameControllerImpl implements GameController {
     private final GameMapController gameMapController;
     private final ShotState shotState;
 
-    /** {@code gameState::isBallMoving} */
+    /** {@code gameState::isBallMoving} — avoids storing GameState directly. */
     private final BooleanSupplier ballMovingChecker;
 
-    /** {@code gameState::onBallStopped} */
+    /** {@code gameState::onBallStopped} — avoids storing GameState directly. */
     private final Runnable ballStoppedNotifier;
 
     /** {@code gameState::setPendingShot} — passed to ShotControllerImpl. */
@@ -52,10 +52,10 @@ public final class GameControllerImpl implements GameController {
     /** {@code gameState::update} — passed to ShotControllerImpl. */
     private final Supplier<Optional<Vector2D>> shotUpdater;
 
-    /** {@code physicsController::update} */
+    /** {@code physicsController::update} — avoids storing PhysicsController directly. */
     private final Consumer<Double> physicsUpdater;
 
-    /** {@code () -> gameState.getCurrentPlayer().getName()} */
+    /** {@code () -> gameState.getCurrentPlayer().getName()} — avoids storing GameState. */
     private final Supplier<String> currentPlayerNameSupplier;
 
     /** {@code gameState::getCurrentPlayerIndex} — used for save/load. */
@@ -67,8 +67,8 @@ public final class GameControllerImpl implements GameController {
     /** {@code gameState::nextTurn} — advances to the next player. */
     private final Runnable nextTurnTrigger;
 
-    /** Returns true if the current player is the last in the list. */
-    private final BooleanSupplier isLastPlayerSupplier;
+    /** Checks whether the current player is the last in the list. */
+    private final BooleanSupplier lastPlayerChecker;
 
     /** Ball start position for the current map — used to reset position on next turn. */
     private final Vector2D initialBallPosition;
@@ -111,7 +111,7 @@ public final class GameControllerImpl implements GameController {
         this.currentPlayerIndexSupplier = gameState::getCurrentPlayerIndex;
         this.currentShotsSupplier = () -> gameState.getCurrentPlayer().getShots();
         this.nextTurnTrigger = gameState::nextTurn;
-        this.isLastPlayerSupplier = () ->
+        this.lastPlayerChecker = () ->
             gameState.getCurrentPlayerIndex() == gameState.getPlayers().size() - 1;
         this.playerSaveDataSupplier = () -> gameState.getPlayers().stream()
             .map(p -> new PlayerSaveData(p.getName(), p.getShots()))
@@ -188,7 +188,7 @@ public final class GameControllerImpl implements GameController {
      */
     private void handleTurnEnd(final Vector2D ballPos, final boolean turnFinished) {
         if (turnFinished) {
-            if (isLastPlayerSupplier.getAsBoolean()) {
+            if (lastPlayerChecker.getAsBoolean()) {
                 onHoleCompleted.run();
             } else {
                 nextTurnTrigger.run();
@@ -196,9 +196,11 @@ public final class GameControllerImpl implements GameController {
                     .updatePosition(initialBallPosition);
                 gameMapController.getBallController()
                     .updateVelocity(Vector2D.ZERO);
-                shotController.onBallStopped(initialBallPosition);
+                if (shotController != null) {
+                    shotController.onBallStopped(initialBallPosition);
+                }
             }
-        } else {
+        } else if (shotController != null) {
             shotController.onBallStopped(ballPos);
         }
     }

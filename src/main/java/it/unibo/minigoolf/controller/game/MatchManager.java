@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.controller.game;
 
-import it.unibo.minigoolf.controller.save.SaveController;
+import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
 import it.unibo.minigoolf.model.save.SaveData;
 
@@ -40,8 +40,7 @@ public final class MatchManager {
      * @param startGame      callback to start the game loop and show the game scene
      * @param goToMenu       callback to return to the main menu
      * @param rebuildPanel   callback to rebuild the game panel with a new match
-     * @param saveController handles persistence — MatchManager registers its
-     *                       snapshot and restore callbacks on it
+     * @param navController  navigation controller that owns the SaveController
      */
     public MatchManager(
             final MapSequence mapSequence,
@@ -50,7 +49,7 @@ public final class MatchManager {
             final Runnable startGame,
             final Runnable goToMenu,
             final Consumer<GameController> rebuildPanel,
-            final SaveController saveController) {
+            final NavigationController navController) {
         this.mapSequence = mapSequence;
         this.playerNames = List.copyOf(playerNames);
         this.stopGame = stopGame;
@@ -59,11 +58,12 @@ public final class MatchManager {
         this.rebuildPanel = rebuildPanel;
         this.activeMatch = buildMatch();
         rebuildPanel.accept(activeMatch);
-        // Register save/restore behaviors on SaveController — no field stored.
-        saveController.setSnapshotSupplier(
+        // Register save/restore behaviors on SaveController via NavigationController.
+        navController.registerSnapshotSupplier(
             () -> activeMatch.createSaveData(
                 String.valueOf(mapSequence.getCurrentIndex())));
-        saveController.setRestoreCallback(this::restoreFromSaveData);    }
+        navController.registerRestoreCallback(this::restoreFromSaveData);
+    }
 
     /**
      * Runs one tick of the active match.
@@ -95,7 +95,8 @@ public final class MatchManager {
 
     /**
      * Restores a match from a {@link SaveData} snapshot.
-     * Advances the map sequence to the saved index and rebuilds the match.
+     * Advances the map sequence to the saved index and rebuilds the match
+     * with full state (player index, shots, ball position) restored.
      *
      * @param data the snapshot to restore
      */
@@ -105,7 +106,9 @@ public final class MatchManager {
                 && mapSequence.hasNext()) {
             mapSequence.advance();
         }
-        activeMatch = buildMatch();
+        activeMatch = GameFactory.buildMatch(
+            playerNames, mapSequence, this::onHoleCompleted,
+            java.util.Optional.of(data));
         rebuildPanel.accept(activeMatch);
         startGame.run();
     }

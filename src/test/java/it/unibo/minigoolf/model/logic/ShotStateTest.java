@@ -6,9 +6,18 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ShotStateTest {
+
+    private static final double VALID_NORM = 20.0;
+    private static final double ABOVE_THRESHOLD_NORM = 11.0;
+    private static final double AT_THRESHOLD_NORM = 10.0;
+    private static final double BELOW_THRESHOLD_NORM = 5.0;
+    private static final double OVER_MAX_POWER_NORM = 200.0;
+    private static final double EPSILON = 1e-9;
 
     private ShotState shotState;
 
@@ -43,7 +52,7 @@ class ShotStateTest {
 
     @Test
     void testUpdateIntentStoresVector() {
-        final var v = new Vector2D(10, 0);
+        final var v = new Vector2D(AT_THRESHOLD_NORM, 0);
         shotState.updateIntent(v);
         assertEquals(Optional.of(v), shotState.getIntent());
     }
@@ -51,9 +60,9 @@ class ShotStateTest {
     @Test
     void testUpdateIntentResetsReadyFlag() {
         // confirm then update again → shotReady reset, consume returns empty
-        shotState.updateIntent(new Vector2D(20, 0));
+        shotState.updateIntent(new Vector2D(VALID_NORM, 0));
         shotState.confirmShot();
-        shotState.updateIntent(new Vector2D(20, 0));
+        shotState.updateIntent(new Vector2D(VALID_NORM, 0));
         assertTrue(shotState.consume().isEmpty());
     }
 
@@ -61,19 +70,19 @@ class ShotStateTest {
 
     @Test
     void testIsValidAboveThreshold() {
-        shotState.updateIntent(new Vector2D(11, 0)); // normSq = 121 >= 100
+        shotState.updateIntent(new Vector2D(ABOVE_THRESHOLD_NORM, 0)); // normSq = 121 >= 100
         assertTrue(shotState.isValid());
     }
 
     @Test
     void testIsValidAtExactThreshold() {
-        shotState.updateIntent(new Vector2D(10, 0)); // normSq = 100 >= 100
+        shotState.updateIntent(new Vector2D(AT_THRESHOLD_NORM, 0)); // normSq = 100 >= 100
         assertTrue(shotState.isValid());
     }
 
     @Test
     void testIsValidBelowThreshold() {
-        shotState.updateIntent(new Vector2D(5, 0)); // normSq = 25 < 100
+        shotState.updateIntent(new Vector2D(BELOW_THRESHOLD_NORM, 0)); // normSq = 25 < 100
         assertFalse(shotState.isValid());
     }
 
@@ -81,14 +90,14 @@ class ShotStateTest {
 
     @Test
     void testConfirmValidIntentMakesConsumable() {
-        shotState.updateIntent(new Vector2D(20, 0));
+        shotState.updateIntent(new Vector2D(VALID_NORM, 0));
         shotState.confirmShot();
         assertTrue(shotState.consume().isPresent());
     }
 
     @Test
     void testConfirmInvalidIntentNotConsumed() {
-        shotState.updateIntent(new Vector2D(5, 0)); // below threshold
+        shotState.updateIntent(new Vector2D(BELOW_THRESHOLD_NORM, 0));
         shotState.confirmShot();
         assertTrue(shotState.consume().isEmpty());
     }
@@ -101,7 +110,7 @@ class ShotStateTest {
 
     @Test
     void testConsumeReturnsCorrectVector() {
-        final var v = new Vector2D(20, 0); // norm 20 <= MAX_POWER, no clamping
+        final var v = new Vector2D(VALID_NORM, 0);
         shotState.updateIntent(v);
         shotState.confirmShot();
         assertEquals(Optional.of(v), shotState.consume());
@@ -109,16 +118,16 @@ class ShotStateTest {
 
     @Test
     void testConsumeClampsToPower() {
-        shotState.updateIntent(new Vector2D(200, 0)); // norm 200 > MAX_POWER 150
+        shotState.updateIntent(new Vector2D(OVER_MAX_POWER_NORM, 0));
         shotState.confirmShot();
         final var result = shotState.consume();
         assertTrue(result.isPresent());
-        assertTrue(result.get().getNorm() <= ShotState.MAX_POWER + 1e-9);
+        assertTrue(result.get().getNorm() <= ShotState.MAX_POWER + EPSILON);
     }
 
     @Test
     void testConsumeIsOneShot() {
-        shotState.updateIntent(new Vector2D(20, 0));
+        shotState.updateIntent(new Vector2D(VALID_NORM, 0));
         shotState.confirmShot();
         shotState.consume();
         assertTrue(shotState.consume().isEmpty());
@@ -126,7 +135,7 @@ class ShotStateTest {
 
     @Test
     void testConsumeResetsIntent() {
-        shotState.updateIntent(new Vector2D(20, 0));
+        shotState.updateIntent(new Vector2D(VALID_NORM, 0));
         shotState.confirmShot();
         shotState.consume();
         assertTrue(shotState.getIntent().isEmpty());
@@ -143,14 +152,14 @@ class ShotStateTest {
 
     @Test
     void testResetClearsIntent() {
-        shotState.updateIntent(new Vector2D(20, 0));
+        shotState.updateIntent(new Vector2D(VALID_NORM, 0));
         shotState.reset(new Vector2D(0, 0));
         assertTrue(shotState.getIntent().isEmpty());
     }
 
     @Test
     void testResetCancelsPendingShot() {
-        shotState.updateIntent(new Vector2D(20, 0));
+        shotState.updateIntent(new Vector2D(VALID_NORM, 0));
         shotState.confirmShot();
         shotState.reset(new Vector2D(0, 0));
         assertTrue(shotState.consume().isEmpty());

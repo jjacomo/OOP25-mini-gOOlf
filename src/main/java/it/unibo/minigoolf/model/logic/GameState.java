@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.model.logic;
 
+import it.unibo.minigoolf.model.save.SaveData;
 import it.unibo.minigoolf.util.Vector2D;
 
 import java.util.ArrayList;
@@ -43,6 +44,25 @@ public final class GameState implements TurnState {
             this.players.add(new Player(name));
         }
         this.currentPlayerIndex = 0;
+    }
+
+    /**
+     * Restores this game state from a {@link SaveData} snapshot.
+     * Sets the current player index and each player's shot count.
+     *
+     * @param data the snapshot to restore from
+     * @throws IllegalArgumentException if the snapshot is incompatible with this state
+     */
+    public synchronized void restoreFrom(final SaveData data) {
+        if (data.players().size() != players.size()) {
+            throw new IllegalArgumentException(
+                "Save data has " + data.players().size()
+                + " players but this state has " + players.size());
+        }
+        this.currentPlayerIndex = data.currentPlayerIndex();
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).restoreShots(data.players().get(i).shots());
+        }
     }
 
     /**
