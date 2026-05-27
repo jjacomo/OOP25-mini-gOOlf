@@ -33,7 +33,7 @@ public class MapPanel extends JPanel {
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
-    private final GameMapController mapController;
+    private final transient GameMapController mapController;
 
     /**
      * Constructs a MapPanel with the specified game map controller.

@@ -1,13 +1,13 @@
-Report - 27/05 - 1h (tot: 57h)
+Report - 27/05 - 2h (tot: 58h)
 
 * Ho tolto SurfaceType (rimpiazzato quel campo con SurfaceTypeId che e' una stringa che identifica 
     il tipo di superficie: sabbia, erba, ...)
-* Aggiunta model.surface.SurfaceFactoryImpl per creare diversi tipi di superficie (erba, ghiaccio, ....)
+* Aggiunta model.surface.factory.SurfaceFactoryImpl per creare diversi tipi di superficie (erba, ghiaccio, ....)
 * Sotituito Wind con un Optional di wind
+* Risolto internal representation error di BallController usando Supplier/Consumer
+* Copia difensiva dei SurfaceControllers
 
 - Optional di texture in mapPanel?
-
-- Guarda riga 56 del report per risolvere l'internal representation error di BallController (se si puo')
 
 -------------------------------------------------------------------------------------------------
 MEMO:

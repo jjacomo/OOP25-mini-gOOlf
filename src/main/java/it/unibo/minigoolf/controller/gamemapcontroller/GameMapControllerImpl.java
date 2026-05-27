@@ -51,7 +51,7 @@ public final class GameMapControllerImpl implements GameMapController {
      */
     @Override
     public List<SurfaceController> getSurfaceControllers() {
-        return surfaceControllers;
+        return List.copyOf(surfaceControllers);
     }
 
     /**
@@ -83,7 +83,7 @@ public final class GameMapControllerImpl implements GameMapController {
     @Override
     public ObstacleController getObstacleController() {
         return obstacleController;
-}
+    }
 
     /**
      * Returns the hole controller for managing hole interactions.

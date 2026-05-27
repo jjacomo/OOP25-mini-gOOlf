@@ -1,5 +1,9 @@
 package it.unibo.minigoolf.controller.ballcontroller;
 
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
@@ -13,63 +17,66 @@ import it.unibo.minigoolf.util.shapes.Shape;
  */
 public final class BallControllerImpl implements BallController {
 
-    private final Ball ball;
+    private static final double VELOCITY_THRESHOLD = 0.001;
+
+    private final Supplier<Vector2D> positionSupplier;
+    private final Consumer<Vector2D> positionConsumer;
+    private final Supplier<Vector2D> velocitySupplier;
+    private final Consumer<Vector2D> velocityConsumer;
+    private final Supplier<Double> radiusSupplier;
 
     /**
      * Creates a new BallController for the given ball.
      *
-     * <p>
-     * The shared reference to {@code ball} is intentional: this controller
-     * is responsible for mutating the ball's state (position and velocity)
-     * via {@link #updatePosition} and {@link #updateVelocity}. A defensive
-     * copy would break synchronisation with the model.
-     * </p>
-     *
      * @param ball the ball model to control
      */
-    @SuppressWarnings("EI_EXPOSE_REP2") // TODO: e' necessario?
     public BallControllerImpl(final Ball ball) {
-        this.ball = ball;
+        Objects.requireNonNull(ball);
+        this.positionSupplier = ball::getPosition;
+        this.positionConsumer = ball::setPosition;
+        this.velocitySupplier = ball::getVelocity;
+        this.velocityConsumer = ball::setVelocity;
+        this.radiusSupplier = ball::getRadius;
     }
 
     /** {@inheritDoc} */
     @Override
     public Shape getBallShape() {
-        return new Circle(ball.getPosition(), ball.getRadius());
+        return new Circle(positionSupplier.get(), radiusSupplier.get());
     }
 
     /** {@inheritDoc} */
     @Override
     public Vector2D getPosition() {
-        return ball.getPosition();
+        return positionSupplier.get();
     }
 
     /** {@inheritDoc} */
     @Override
     public Vector2D getVelocity() {
-        return ball.getVelocity();
+        return velocitySupplier.get();
     }
 
     /** {@inheritDoc} */
     @Override
     public double getRadius() {
-        return ball.getRadius();
+        return radiusSupplier.get();
     }
 
     /** {@inheritDoc} */
     @Override
     public void updatePosition(final Vector2D position) {
-        ball.setPosition(position);
+        positionConsumer.accept(position);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateVelocity(final Vector2D velocity) {
-        ball.setVelocity(velocity);
+        velocityConsumer.accept(velocity);
     }
 
     @Override
     public boolean isBallMoving() {
-        return ball.getVelocity().getNormSquared() > 0.001;
+        return velocitySupplier.get().getNormSquared() > VELOCITY_THRESHOLD;
     }
 }

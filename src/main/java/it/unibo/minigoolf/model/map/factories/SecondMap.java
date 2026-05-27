@@ -68,7 +68,7 @@ public final class SecondMap implements GameMapFactory {
     private static final double WINDY_EXIT_W = 400;
     private static final double WINDY_EXIT_H = 1080;
     private static final int WINDY_EXIT_Z = 0;
-    private static final double WIND_STRENGTH = 5.0;
+    private static final double WIND_STRENGTH = 10.0;
 
     // --- Boundary walls ---
     private static final double W_TOP_X = 0;
