@@ -1,0 +1,15 @@
+Dani:
+
+- Mettere una sorta di schermata di riepilogo delle stats dei giocatori a fine mappa 
+
+- Io pensavo di fare che si susseguono circa 4/7 mappe una dietro l'altra una volta che l'ultimo giocatore ha finito il proprio turno, schermata di riepilogo 
+  e si continua con la mappa successiva
+
+- Incomincio la leaderboard sperando di finirla entro fine settimana
+
+- Direi che dal 1* giugno se va tutto bene possiamo incominciare la fase di pulizia e scrittura di relazione! Ricordiamoci Spotbugs (io effettivamente non ci
+  guardo da un po')
+
+- C'è qualche cosina accessoria che io e Jack volevamo aggiungere tipo l'audio (soundtrack e qualche effetto sonoro), ma direi di farlo quando siamo ad un punto 
+  dove praticamente il lavoro è terminato e pronto per essere consegnato. Io volevo pulire un po' i tasti e i font, non dovrebbe essere difficile. Stavo pensando di
+  mettere un'immagine di sfondo di un campoo da minigolf nella schermata iniziale, anche quello quando siamo tranquilli.

@@ -3,10 +3,10 @@
   "mapId": "0",
   "players": [
     {
-      "name": "fede",
-      "shots": 0
+      "name": "fef",
+      "shots": 1
     }
   ],
-  "ballX": 150.0,
-  "ballY": 150.0
+  "ballX": 828.2375513596523,
+  "ballY": 698.753585955031
 }
