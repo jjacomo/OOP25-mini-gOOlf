@@ -1,11 +1,10 @@
-Report - 27/05 - h (tot: 56h)
+Report - 27/05 - 1h (tot: 57h)
 
-* Aggiunto controllo dimensioni di shape (raggio>0, width>0, height>0)
-* Aggiunto controllo friction > 0; wind intensity > 0
-* Risolti errori di spotbugs
-* Guardato come fare report
+* Ho tolto SurfaceType (rimpiazzato quel campo con SurfaceTypeId che e' una stringa che identifica 
+    il tipo di superficie: sabbia, erba, ...)
+* Aggiunta model.surface.SurfaceFactoryImpl per creare diversi tipi di superficie (erba, ghiaccio, ....)
 
-- secondo me dovrei togliere SurfaceType (fare una SurfaceFactory tipo)
+- Sostituisci Wind con un Optional di wind ?
 
 Guarda riga 56 del report
 

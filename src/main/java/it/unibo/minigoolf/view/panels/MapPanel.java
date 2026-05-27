@@ -76,7 +76,7 @@ public class MapPanel extends JPanel {
                         }
                     } else {
                         throw new IllegalStateException(
-                                "Texture not found for surface type: " + surfaceController.getType());
+                                "Texture not found for surface type: " + surfaceController.getTypeId());
                     }
                 });
 

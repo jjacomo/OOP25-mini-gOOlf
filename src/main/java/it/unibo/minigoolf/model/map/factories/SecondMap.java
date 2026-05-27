@@ -8,11 +8,10 @@ import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
-import it.unibo.minigoolf.model.surfaces.ShapedSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
-import it.unibo.minigoolf.model.surfaces.SurfaceType;
+import it.unibo.minigoolf.model.surfaces.SurfaceFactory;
+import it.unibo.minigoolf.model.surfaces.SurfaceFactoryImpl;
 import it.unibo.minigoolf.model.surfaces.WindDirection;
-import it.unibo.minigoolf.model.surfaces.WindySurface;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
@@ -149,6 +148,24 @@ public final class SecondMap implements GameMapFactory {
     private static final Vector2D HOLE_POS  = new Vector2D(1840, 540);
     private static final double   HOLE_R    = 40;
 
+    private final SurfaceFactory surfaceFactory;
+
+    /**
+     * Constructs a SecondMap using a default SurfaceFactory implementation.
+     */
+    public SecondMap() {
+        this(new SurfaceFactoryImpl());
+    }
+
+    /**
+     * Constructs a SecondMap using the provided SurfaceFactory.
+     *
+     * @param surfaceFactory the factory used to build surfaces
+     */
+    public SecondMap(final SurfaceFactory surfaceFactory) {
+        this.surfaceFactory = surfaceFactory;
+    }
+
     /** {@inheritDoc} */
     @Override
     public GameMap buildGameMap() {
@@ -156,25 +173,25 @@ public final class SecondMap implements GameMapFactory {
         final List<Obstacle> obstacles = new ArrayList<>();
 
         // Grass start
-        surfaces.add(new ShapedSurface(
+        surfaces.add(surfaceFactory.createGrass(
             new Rectangle(new Vector2D(GRASS_START_X, GRASS_START_Y), GRASS_START_W, GRASS_START_H),
-            SurfaceType.GRASS.getFriction(), GRASS_START_Z, SurfaceType.GRASS));
+            GRASS_START_Z));
 
         // Ice corridor
-        surfaces.add(new ShapedSurface(
+        surfaces.add(surfaceFactory.createIce(
             new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_W, ICE_H),
-            SurfaceType.ICE.getFriction(), ICE_Z, SurfaceType.ICE));
+            ICE_Z));
 
         // Sand trap circle
-        surfaces.add(new ShapedSurface(
+        surfaces.add(surfaceFactory.createSand(
             new Circle(SAND_CIRCLE_POS, SAND_CIRCLE_R),
-            SurfaceType.SAND.getFriction(), SAND_CIRCLE_Z, SurfaceType.SAND));
+            SAND_CIRCLE_Z));
 
         // Windy grass exit
-        surfaces.add(new WindySurface(
-            new ShapedSurface(
+        surfaces.add(surfaceFactory.createWindy(
+            surfaceFactory.createGrass(
                 new Rectangle(new Vector2D(WINDY_EXIT_X, WINDY_EXIT_Y), WINDY_EXIT_W, WINDY_EXIT_H),
-                SurfaceType.GRASS.getFriction(), WINDY_EXIT_Z, SurfaceType.GRASS),
+                WINDY_EXIT_Z),
             WindDirection.UP, WIND_STRENGTH));
 
         // Boundary walls

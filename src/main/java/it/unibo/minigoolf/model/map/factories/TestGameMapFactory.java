@@ -13,9 +13,9 @@ import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
-import it.unibo.minigoolf.model.surfaces.ShapedSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
-import it.unibo.minigoolf.model.surfaces.SurfaceType;
+import it.unibo.minigoolf.model.surfaces.SurfaceFactory;
+import it.unibo.minigoolf.model.surfaces.SurfaceFactoryImpl;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
@@ -83,6 +83,24 @@ public class TestGameMapFactory implements GameMapFactory {
         private static final Vector2D HOLE_POSITION = new Vector2D(1500, 800);
         private static final double HOLE_RADIUS = 40;
 
+        private final SurfaceFactory surfaceFactory;
+
+        /**
+         * Constructs a TestGameMapFactory using a default SurfaceFactory implementation.
+         */
+        public TestGameMapFactory() {
+                this(new SurfaceFactoryImpl());
+        }
+
+        /**
+         * Constructs a TestGameMapFactory using the provided SurfaceFactory.
+         * 
+         * @param surfaceFactory the factory used to build surfaces
+         */
+        public TestGameMapFactory(final SurfaceFactory surfaceFactory) {
+                this.surfaceFactory = surfaceFactory;
+        }
+
         /**
          * Builds a simple test game map.
          * 
@@ -104,21 +122,18 @@ public class TestGameMapFactory implements GameMapFactory {
         public GameMap buildGameMap() {
                 final List<Surface> surfaces = new ArrayList<>();
                 final List<Obstacle> obstacles = new ArrayList<>();
-                surfaces.add(new ShapedSurface(
+                surfaces.add(surfaceFactory.createGrass(
                                 new Rectangle(new Vector2D(MAIN_SURFACE_X, MAIN_SURFACE_Y), MAIN_SURFACE_WIDTH,
                                                 MAIN_SURFACE_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), MAIN_SURFACE_Z_INDEX,
-                                SurfaceType.GRASS));
-                surfaces.add(new ShapedSurface(
+                                MAIN_SURFACE_Z_INDEX));
+                surfaces.add(surfaceFactory.createSand(
                                 new Rectangle(new Vector2D(SECOND_SURFACE_X, SECOND_SURFACE_Y), SECOND_SURFACE_WIDTH,
                                                 SECOND_SURFACE_HEIGHT),
-                                SurfaceType.SAND.getFriction(), SECOND_SURFACE_Z_INDEX,
-                                SurfaceType.SAND));
-                surfaces.add(new ShapedSurface(
+                                SECOND_SURFACE_Z_INDEX));
+                surfaces.add(surfaceFactory.createDirt(
                                 new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
                                                 THIRD_SURFACE_HEIGHT),
-                                SurfaceType.DIRT.getFriction(), THIRD_SURFACE_Z_INDEX,
-                                SurfaceType.DIRT));
+                                THIRD_SURFACE_Z_INDEX));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));

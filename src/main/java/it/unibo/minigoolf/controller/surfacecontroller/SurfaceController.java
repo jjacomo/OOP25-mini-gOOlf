@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.controller.surfacecontroller;
 
-import it.unibo.minigoolf.model.surfaces.SurfaceType;
+
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
@@ -39,11 +39,11 @@ public interface SurfaceController {
     String getWindOverlayTexturePath();
 
     /**
-     * Returns the type of the surface.
+     * Returns the type identifier of the surface.
      * 
-     * @return the type
+     * @return the type ID as a String
      */
-    SurfaceType getType();
+    String getTypeId();
 
     /**
      * Returns the wind of the surface.

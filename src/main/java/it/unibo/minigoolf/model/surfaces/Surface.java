@@ -38,11 +38,11 @@ public interface Surface {
     int getZIndex();
 
     /**
-     * Returns the type of this surface.
+     * Returns the type identifier of this surface.
      *
-     * @return the SurfaceType of the surface
+     * @return the type ID as a String
      */
-    SurfaceType getType();
+    String getTypeId();
 
     /**
      * Returns the shape representing the boundaries of this surface.

@@ -57,8 +57,8 @@ public abstract class AbstractSurfaceDecorator implements Surface {
      * <p>This implementation delegates to the decorated base surface.
      */
     @Override
-    public SurfaceType getType() {
-        return baseSurface.getType();
+    public String getTypeId() {
+        return baseSurface.getTypeId();
     }
 
     /**

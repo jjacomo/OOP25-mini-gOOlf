@@ -17,7 +17,7 @@ public final class ShapedSurface implements Surface {
     private final double friction;
     private final Shape shape;
     private final int zIndex;
-    private final SurfaceType type;
+    private final String typeId;
 
     /**
      * Constructs a ShapedSurface with the given shape and type.
@@ -28,7 +28,7 @@ public final class ShapedSurface implements Surface {
      * @param type        The surface type.
      * @throws IllegalArgumentException if friction is negative
      */
-    public ShapedSurface(final Shape shape, final double friction, final int zIndex, final SurfaceType type) {
+    public ShapedSurface(final Shape shape, final double friction, final int zIndex, final String typeId) {
         if (friction < 0) {
             LOGGER.error("Attempted to create a surface with negative friction: " + friction);
             throw new IllegalArgumentException("Friction must be non-negative, got: " + friction);
@@ -36,7 +36,7 @@ public final class ShapedSurface implements Surface {
         this.shape = shape;
         this.friction = friction;
         this.zIndex = zIndex;
-        this.type = type;
+        this.typeId = typeId;
     }
 
     /**
@@ -67,11 +67,11 @@ public final class ShapedSurface implements Surface {
     }
 
     /**
-     * @return the type of the surface.
+     * @return the type identifier of the surface.
      */
     @Override
-    public SurfaceType getType() {
-        return type;
+    public String getTypeId() {
+        return typeId;
     }
 
     /**

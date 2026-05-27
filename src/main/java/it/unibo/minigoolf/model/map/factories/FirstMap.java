@@ -11,11 +11,10 @@ import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
-import it.unibo.minigoolf.model.surfaces.ShapedSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
-import it.unibo.minigoolf.model.surfaces.SurfaceType;
+import it.unibo.minigoolf.model.surfaces.SurfaceFactory;
+import it.unibo.minigoolf.model.surfaces.SurfaceFactoryImpl;
 import it.unibo.minigoolf.model.surfaces.WindDirection;
-import it.unibo.minigoolf.model.surfaces.WindySurface;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
@@ -156,6 +155,24 @@ public class FirstMap implements GameMapFactory {
         private static final double HOLE_RADIUS = 40;
         private static final Vector2D HOLE_POSITION = new Vector2D(1780, 520);
 
+        private final SurfaceFactory surfaceFactory;
+
+        /**
+         * Constructs a FirstMap using a default SurfaceFactory implementation.
+         */
+        public FirstMap() {
+                this(new SurfaceFactoryImpl());
+        }
+
+        /**
+         * Constructs a FirstMap using the provided SurfaceFactory.
+         * 
+         * @param surfaceFactory the factory used to build surfaces
+         */
+        public FirstMap(final SurfaceFactory surfaceFactory) {
+                this.surfaceFactory = surfaceFactory;
+        }
+
         /**
          * Builds a simple test game map.
          * 
@@ -177,42 +194,42 @@ public class FirstMap implements GameMapFactory {
         public GameMap buildGameMap() {
                 final List<Surface> surfaces = new ArrayList<>();
                 final List<Obstacle> obstacles = new ArrayList<>();
-                surfaces.add(new ShapedSurface(
+                surfaces.add(surfaceFactory.createGrass(
                                 new Rectangle(new Vector2D(GRASS1_X, GRASS1_Y), GRASS1_WIDTH, GRASS1_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS1_Z_INDEX, SurfaceType.GRASS));
-                surfaces.add(new WindySurface(
-                                new ShapedSurface(
+                                GRASS1_Z_INDEX));
+                surfaces.add(surfaceFactory.createWindy(
+                                surfaceFactory.createGrass(
                                                 new Rectangle(new Vector2D(WINDYGRASS1_X, WINDYGRASS1_Y), WINDYGRASS1_WIDTH,
                                                                 WINDYGRASS1_HEIGHT),
-                                                SurfaceType.GRASS.getFriction(), WINDYGRASS1_Z_INDEX, SurfaceType.GRASS),
+                                                WINDYGRASS1_Z_INDEX),
                                 WindDirection.UP, 12.5));
-                surfaces.add(new ShapedSurface(
+                surfaces.add(surfaceFactory.createGrass(
                                 new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS2_Z_INDEX, SurfaceType.GRASS));
-                surfaces.add(new ShapedSurface(
+                                GRASS2_Z_INDEX));
+                surfaces.add(surfaceFactory.createGrass(
                                 new Rectangle(new Vector2D(GRASS3_X, GRASS3_Y), GRASS3_WIDTH, GRASS3_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS3_Z_INDEX, SurfaceType.GRASS));
-                surfaces.add(new ShapedSurface(
+                                GRASS3_Z_INDEX));
+                surfaces.add(surfaceFactory.createGrass(
                                 new Rectangle(new Vector2D(GRASS4_X, GRASS4_Y), GRASS4_WIDTH, GRASS4_HEIGHT),
-                                SurfaceType.GRASS.getFriction(), GRASS4_Z_INDEX, SurfaceType.GRASS));
-                surfaces.add(new ShapedSurface(
+                                GRASS4_Z_INDEX));
+                surfaces.add(surfaceFactory.createSand(
                                 new Rectangle(new Vector2D(SAND_X, SAND_Y), SAND_WIDTH,
                                                 SAND_HEIGHT),
-                                SurfaceType.SAND.getFriction(), SAND_Z_INDEX, SurfaceType.SAND));
-                surfaces.add(new ShapedSurface(
+                                SAND_Z_INDEX));
+                surfaces.add(surfaceFactory.createIce(
                                 new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_WIDTH,
                                                 ICE_HEIGHT),
-                                SurfaceType.ICE.getFriction(), ICE_Z_INDEX, SurfaceType.ICE));
-                surfaces.add(new ShapedSurface(
+                                ICE_Z_INDEX));
+                surfaces.add(surfaceFactory.createDirt(
                                 new Rectangle(new Vector2D(DIRT_X, DIRT_Y), DIRT_WIDTH,
                                                 DIRT_HEIGHT),
-                                SurfaceType.DIRT.getFriction(), DIRT_Z_INDEX, SurfaceType.DIRT));
-                surfaces.add(new ShapedSurface(
+                                DIRT_Z_INDEX));
+                surfaces.add(surfaceFactory.createDirt(
                                 new Circle(new Vector2D(DIRT2_X, DIRT2_Y), DIRT2_RADIUS),
-                                SurfaceType.DIRT.getFriction(), DIRT2_Z_INDEX, SurfaceType.DIRT));
-                surfaces.add(new ShapedSurface(
+                                DIRT2_Z_INDEX));
+                surfaces.add(surfaceFactory.createSand(
                                 new Oval(SAND2_POSITION, SAND2_RADIUS_X, SAND2_RADIUS_Y),
-                                SurfaceType.SAND.getFriction(), DIRT2_Z_INDEX, SurfaceType.SAND));
+                                DIRT2_Z_INDEX));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));

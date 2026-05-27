@@ -1,7 +1,7 @@
 package it.unibo.minigoolf.controller.surfacecontroller;
 
 import it.unibo.minigoolf.model.surfaces.Surface;
-import it.unibo.minigoolf.model.surfaces.SurfaceType;
+
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
@@ -33,7 +33,13 @@ public final class SurfaceControllerImpl implements SurfaceController {
 
     @Override
     public String getTexturePath() {
-        return surface.getType().getTexturePath();
+        return switch (surface.getTypeId()) {
+            case "grass" -> "surfaces/grass.png";
+            case "sand" -> "surfaces/sand.png";
+            case "dirt" -> "surfaces/dirt.png";
+            case "ice" -> "surfaces/ice.png";
+            default -> "surfaces/default.png";
+        };
     }
 
     @Override
@@ -54,8 +60,8 @@ public final class SurfaceControllerImpl implements SurfaceController {
     }
 
     @Override
-    public SurfaceType getType() {
-        return surface.getType();
+    public String getTypeId() {
+        return surface.getTypeId();
     }
 
     @Override
