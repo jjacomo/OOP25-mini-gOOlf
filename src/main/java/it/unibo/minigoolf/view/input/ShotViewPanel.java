@@ -73,7 +73,6 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
      * @param radius  maximum allowed distance in logical pixels
      * @return true if the point is close enough to the ball
      */
-    @Override
     public boolean isNearBall(final Point logical, final double radius) {
         final Optional<Vector2D> ballPos = shotState.getBallPosition();
         if (ballPos.isEmpty()) {
@@ -90,7 +89,6 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
      * @param physical the raw point from a MouseEvent
      * @return the point in logical space
      */
-    @Override
     public Point toLogical(final Point physical) {
         final double factorX = (double) LOGICAL_WIDTH / getWidth();
         final double factorY = (double) LOGICAL_HEIGHT / getHeight();
@@ -142,35 +140,39 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
         final Vector2D dir = intentOpt.get();
         final Vector2D ballPos = ballPosOpt.get();
         final Point origin = new Point((int) ballPos.getX(), (int) ballPos.getY());
+        final Vector2D displayDir = dir.clampedTo(ShotState.MAX_POWER);
+        final Point tip = displayDir.translate(origin);
+        final Color lineColor = colorForPower(dir.getNormSquared());
 
         final Graphics2D g2d = (Graphics2D) g.create();
         try {
             g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            final Vector2D displayDir = dir.clampedTo(ShotState.MAX_POWER);
-            final Point tip = displayDir.translate(origin);
-
-            final double squaredPower = dir.getNormSquared();
-            final Color lineColor;
-            if (squaredPower < LOW_THRESHOLD) {
-                lineColor = Color.GREEN;
-            } else if (squaredPower < MED_THRESHOLD) {
-                lineColor = Color.YELLOW;
-            } else {
-                lineColor = Color.RED;
-            }
-
             g2d.setColor(lineColor);
             g2d.setStroke(DASHED_STROKE);
             g2d.draw(new Line2D.Float(origin.x, origin.y, tip.x, tip.y));
             drawArrowhead(g2d, displayDir, tip);
-
             g2d.setStroke(new BasicStroke(1f));
             g2d.fillOval(origin.x - 4, origin.y - 4, 8, 8);
         } finally {
             g2d.dispose();
         }
+    }
+
+    /**
+     * Returns the indicator colour based on the squared power of the shot.
+     *
+     * @param squaredPower the squared norm of the current drag vector
+     * @return green for low power, yellow for medium, red for high
+     */
+    private static Color colorForPower(final double squaredPower) {
+        if (squaredPower < LOW_THRESHOLD) {
+            return Color.GREEN;
+        }
+        if (squaredPower < MED_THRESHOLD) {
+            return Color.YELLOW;
+        }
+        return Color.RED;
     }
 
     /**

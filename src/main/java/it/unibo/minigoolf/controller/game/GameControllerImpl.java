@@ -156,25 +156,31 @@ public final class GameControllerImpl implements GameController {
         }
         shotController.tick();
 
-        if (ballMovingChecker.getAsBoolean()) {
-            physicsUpdater.accept(deltaTime);
-
-            final Vector2D ballPos = gameMapController.getBallController().getPosition();
-            final Vector2D vel = gameMapController.getBallController().getVelocity();
-            final boolean slowEnoughForHole =
-                vel.getNormSquared() <= HOLE_ENTRY_MAX_SPEED_SQ;
-
-            if (!gameMapController.getBallController().isBallMoving()) {
-                ballStoppedNotifier.run();
-                final boolean holeScored = holeChecker.isBallInHole(ballPos);
-                final boolean maxShotsReached =
-                    currentShotsSupplier.getAsInt() >= MAX_SHOTS;
-                handleTurnEnd(ballPos, holeScored || maxShotsReached);
-            } else if (slowEnoughForHole && holeChecker.isBallInHole(ballPos)) {
-                ballStoppedNotifier.run();
-                handleTurnEnd(ballPos, true);
-            }
+        if (!ballMovingChecker.getAsBoolean()) {
+            return;
         }
+        physicsUpdater.accept(deltaTime);
+
+        final Vector2D ballPos = gameMapController.getBallController().getPosition();
+        if (!gameMapController.getBallController().isBallMoving()) {
+            ballStoppedNotifier.run();
+            final boolean turnOver = holeChecker.isBallInHole(ballPos)
+                || currentShotsSupplier.getAsInt() >= MAX_SHOTS;
+            handleTurnEnd(ballPos, turnOver);
+        } else if (isSlowEnoughForHole() && holeChecker.isBallInHole(ballPos)) {
+            ballStoppedNotifier.run();
+            handleTurnEnd(ballPos, true);
+        }
+    }
+
+    /**
+     * Returns true if the ball's current speed is low enough to fall into the hole.
+     *
+     * @return true if speed squared is within the hole-entry threshold
+     */
+    private boolean isSlowEnoughForHole() {
+        return gameMapController.getBallController()
+            .getVelocity().getNormSquared() <= HOLE_ENTRY_MAX_SPEED_SQ;
     }
 
     /**

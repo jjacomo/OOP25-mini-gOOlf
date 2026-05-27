@@ -53,16 +53,15 @@ public final class ShotControllerImpl implements ShotController {
     /** {@inheritDoc} */
     @Override
     public boolean tick() {
-        final Optional<Vector2D> pending = shotState.consume();
-        pending.ifPresent(pendingShotSubmitter::accept);
+        shotState.consume().ifPresent(pendingShotSubmitter::accept);
 
-        final Optional<Vector2D> shot = shotUpdater.get();
-        if (shot.isPresent()) {
-            gameMapController.getBallController()
-                .updateVelocity(shot.get().scalarMultiply(SHOT_SCALE));
-            return true;
-        }
-        return false;
+        return shotUpdater.get()
+            .map(shot -> {
+                gameMapController.getBallController()
+                    .updateVelocity(shot.scalarMultiply(SHOT_SCALE));
+                return true;
+            })
+            .orElse(false);
     }
 
     /** {@inheritDoc} */

@@ -3,10 +3,11 @@ package it.unibo.minigoolf.model.logic;
 import it.unibo.minigoolf.model.save.SaveData;
 import it.unibo.minigoolf.util.Vector2D;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Central game logic for a minigolf match.
@@ -33,16 +34,15 @@ public final class GameState implements TurnState {
      * Creates a new GameState with the given list of player names.
      *
      * @param playerNames ordered list of player display names
-     * @throws IllegalArgumentException if the list is empty
+     * @throws IllegalArgumentException if the list is null or empty
      */
     public GameState(final List<String> playerNames) {
         if (playerNames == null || playerNames.isEmpty()) {
             throw new IllegalArgumentException("At least one player is required.");
         }
-        this.players = new ArrayList<>();
-        for (final String name : playerNames) {
-            this.players.add(new Player(name));
-        }
+        this.players = playerNames.stream()
+            .map(Player::new)
+            .collect(Collectors.toList());
         this.currentPlayerIndex = 0;
     }
 
@@ -60,9 +60,8 @@ public final class GameState implements TurnState {
                 + " players but this state has " + players.size());
         }
         this.currentPlayerIndex = data.currentPlayerIndex();
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).restoreShots(data.players().get(i).shots());
-        }
+        IntStream.range(0, players.size())
+            .forEach(i -> players.get(i).restoreShots(data.players().get(i).shots()));
     }
 
     /**
@@ -138,8 +137,6 @@ public final class GameState implements TurnState {
      * Resets shot counters for all players.
      */
     public void resetAllShots() {
-        for (final Player p : players) {
-            p.resetShots();
-        }
+        players.forEach(Player::resetShots);
     }
 }

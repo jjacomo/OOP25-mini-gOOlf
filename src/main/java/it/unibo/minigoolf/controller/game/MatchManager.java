@@ -6,6 +6,7 @@ import it.unibo.minigoolf.model.save.SaveData;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 /**
  * Manages the lifecycle of matches within a map sequence.
@@ -102,10 +103,10 @@ public final class MatchManager {
      */
     private void restoreFromSaveData(final SaveData data) {
         mapSequence.reset();
-        while (mapSequence.getCurrentIndex() < Integer.parseInt(data.mapId())
-                && mapSequence.hasNext()) {
-            mapSequence.advance();
-        }
+        final int targetIndex = Integer.parseInt(data.mapId());
+        IntStream.range(0, targetIndex)
+            .filter(i -> mapSequence.hasNext())
+            .forEach(i -> mapSequence.advance());
         activeMatch = GameFactory.buildMatch(
             playerNames, mapSequence, this::onHoleCompleted,
             java.util.Optional.of(data));

@@ -40,11 +40,15 @@ public final class SaveController {
         // Extract only behaviors from saveManager — avoids EI2.
         this.persistAction = () -> {
             try {
-                final SaveData data = snapshotSupplier.get();
-                if (data != null) {
-                    saveManager.save(data);
-                }
-            } catch (final IOException e) {
+                Optional.ofNullable(snapshotSupplier.get())
+                    .ifPresent(data -> {
+                        try {
+                            saveManager.save(data);
+                        } catch (final IOException e) {
+                            LOGGER.log(Level.WARNING, "Could not save match", e);
+                        }
+                    });
+            } catch (final RuntimeException e) {
                 LOGGER.log(Level.WARNING, "Could not save match", e);
             }
         };
