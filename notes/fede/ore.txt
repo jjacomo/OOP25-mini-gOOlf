@@ -44,4 +44,4 @@
 
 3 ore: finito il salvataggio partita, quando sarà completa anche la leaderboard mi assicurerò che funzioni correttamente
 
-4 ore: creato secondMap, per ora è banale con 2 tiri, da sistemare
+2 ore: creato secondMap, per ora è banale con 2 tiri, da sistemare
