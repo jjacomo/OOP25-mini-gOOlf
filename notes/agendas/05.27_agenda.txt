@@ -13,3 +13,9 @@ Dani:
 - C'è qualche cosina accessoria che io e Jack volevamo aggiungere tipo l'audio (soundtrack e qualche effetto sonoro), ma direi di farlo quando siamo ad un punto 
   dove praticamente il lavoro è terminato e pronto per essere consegnato. Io volevo pulire un po' i tasti e i font, non dovrebbe essere difficile. Stavo pensando di
   mettere un'immagine di sfondo di un campoo da minigolf nella schermata iniziale, anche quello quando siamo tranquilli.
+
+- Scrivere qualche classe di test!
+
+- tasto skip per andare avanti di mappa, mappa test con TUTTE le superfici, ostacoli
+
+- 
