@@ -62,7 +62,7 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
             friction = LOW_FRICTION_MULTIPLIER * surfaceFriction;
             LOGGER.debug("Low speed: Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm,
                     surfaceFriction, deltaTime);
-        } else if (velocityNorm != 0 && surface.getWind().getNormSquared() == 0) {
+        } else if (velocityNorm != 0 && surface.getWind().map(w -> w.getNormSquared() == 0).orElse(true)) {
             LOGGER.debug("Very low speed and no wind: setting velocity to zero.");
             ball.setVelocity(Vector2D.ZERO);
         }
@@ -77,10 +77,9 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
             }
         }
 
-        final Vector2D wind = surface.getWind();
-        if (wind.getNormSquared() > 0) {
+        surface.getWind().filter(w -> w.getNormSquared() > 0).ifPresent(wind -> {
             ball.setVelocity(ball.getVelocity().add(wind.scalarMultiply(WIND_MULTIPLIER).scalarMultiply(deltaTime)));
-        }
+        });
     }
 
 }

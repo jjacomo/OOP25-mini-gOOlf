@@ -1,4 +1,4 @@
-package it.unibo.minigoolf.model.surfaces;
+package it.unibo.minigoolf.model.surfaces.wind;
 
 import it.unibo.minigoolf.util.Vector2D;
 

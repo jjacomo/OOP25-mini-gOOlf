@@ -1,5 +1,9 @@
-package it.unibo.minigoolf.model.surfaces;
+package it.unibo.minigoolf.model.surfaces.factory;
 
+import it.unibo.minigoolf.model.surfaces.ShapedSurface;
+import it.unibo.minigoolf.model.surfaces.Surface;
+import it.unibo.minigoolf.model.surfaces.wind.WindDirection;
+import it.unibo.minigoolf.model.surfaces.wind.WindySurface;
 import it.unibo.minigoolf.util.shapes.Shape;
 
 /**

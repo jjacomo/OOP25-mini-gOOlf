@@ -9,9 +9,9 @@ import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
-import it.unibo.minigoolf.model.surfaces.SurfaceFactory;
-import it.unibo.minigoolf.model.surfaces.SurfaceFactoryImpl;
-import it.unibo.minigoolf.model.surfaces.WindDirection;
+import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactory;
+import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactoryImpl;
+import it.unibo.minigoolf.model.surfaces.wind.WindDirection;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
@@ -22,16 +22,19 @@ import java.util.List;
 /**
  * Second map — "The Ice Corridor".
  *
- * <p>Layout (1920×1080 logical pixels):</p>
+ * <p>
+ * Layout (1920×1080 logical pixels):
+ * </p>
  * <ul>
- *   <li>A wide grass starting area on the left (0–400, full height).</li>
- *   <li>A long narrow ice corridor in the centre (400–1520, 390–690)
- *       flanked by walls — the ball slides fast with minimal friction.</li>
- *   <li>A sand trap circular patch mid-corridor to slow the ball down.</li>
- *   <li>A windy grass exit area on the right (1520–1920, full height)
- *       with upward wind to push the ball toward the hole.</li>
- *   <li>Several round obstacles inside the corridor and a triangle near the exit.</li>
- *   <li>Ball starts at (80, 540), hole at (1840, 540).</li>
+ * <li>A wide grass starting area on the left (0–400, full height).</li>
+ * <li>A long narrow ice corridor in the centre (400–1520, 390–690)
+ * flanked by walls — the ball slides fast with minimal friction.</li>
+ * <li>A sand trap circular patch mid-corridor to slow the ball down.</li>
+ * <li>A windy grass exit area on the right (1520–1920, full height)
+ * with upward wind to push the ball toward the hole.</li>
+ * <li>Several round obstacles inside the corridor and a triangle near the
+ * exit.</li>
+ * <li>Ball starts at (80, 540), hole at (1840, 540).</li>
  * </ul>
  *
  * @author fede
@@ -45,27 +48,27 @@ public final class SecondMap implements GameMapFactory {
     private static final double GRASS_START_Y = 0;
     private static final double GRASS_START_W = 400;
     private static final double GRASS_START_H = 1080;
-    private static final int    GRASS_START_Z = 0;
+    private static final int GRASS_START_Z = 0;
 
     // Ice corridor (centre, narrow horizontal channel)
     private static final double ICE_X = 400;
     private static final double ICE_Y = 390;
     private static final double ICE_W = 1120;
     private static final double ICE_H = 300;
-    private static final int    ICE_Z = 1;
+    private static final int ICE_Z = 1;
 
     // Sand trap circle inside the corridor
     private static final Vector2D SAND_CIRCLE_POS = new Vector2D(960, 540);
-    private static final double   SAND_CIRCLE_R   = 90;
-    private static final int      SAND_CIRCLE_Z   = 2;
+    private static final double SAND_CIRCLE_R = 90;
+    private static final int SAND_CIRCLE_Z = 2;
 
     // Windy grass exit area (right) — wind pushes ball upward toward hole
     private static final double WINDY_EXIT_X = 1520;
     private static final double WINDY_EXIT_Y = 0;
     private static final double WINDY_EXIT_W = 400;
     private static final double WINDY_EXIT_H = 1080;
-    private static final int    WINDY_EXIT_Z = 0;
-    private static final double WIND_STRENGTH = 10.0;
+    private static final int WINDY_EXIT_Z = 0;
+    private static final double WIND_STRENGTH = 5.0;
 
     // --- Boundary walls ---
     private static final double W_TOP_X = 0;
@@ -102,28 +105,28 @@ public final class SecondMap implements GameMapFactory {
 
     // --- Round obstacles inside the ice corridor ---
     private static final Vector2D OBS1_POS = new Vector2D(600, 450);
-    private static final double   OBS1_R   = 30;
+    private static final double OBS1_R = 30;
 
     private static final Vector2D OBS2_POS = new Vector2D(600, 630);
-    private static final double   OBS2_R   = 30;
+    private static final double OBS2_R = 30;
 
     private static final Vector2D OBS3_POS = new Vector2D(1100, 460);
-    private static final double   OBS3_R   = 35;
+    private static final double OBS3_R = 35;
 
     private static final Vector2D OBS4_POS = new Vector2D(1300, 620);
-    private static final double   OBS4_R   = 35;
+    private static final double OBS4_R = 35;
 
     // Left gap — upper block (between left grass area and corridor top wall)
     private static final double GAP_L_TOP_X = 400;
     private static final double GAP_L_TOP_Y = 31;
     private static final double GAP_L_TOP_W = 31;
-    private static final double GAP_L_TOP_H = 328;   // from top wall to corridor top wall
+    private static final double GAP_L_TOP_H = 328; // from top wall to corridor top wall
 
     // Left gap — lower block (between corridor bottom wall and bottom boundary)
     private static final double GAP_L_BOT_X = 400;
     private static final double GAP_L_BOT_Y = 721;
     private static final double GAP_L_BOT_W = 31;
-    private static final double GAP_L_BOT_H = 328;   // from corridor bot wall to bottom boundary
+    private static final double GAP_L_BOT_H = 328; // from corridor bot wall to bottom boundary
 
     // Right gap — upper block (between corridor top wall and top boundary)
     private static final double GAP_R_TOP_X = 1489;
@@ -143,10 +146,10 @@ public final class SecondMap implements GameMapFactory {
     private static final Vector2D TRI_V3 = new Vector2D(1485, 480);
 
     // --- Ball and hole ---
-    private static final Vector2D BALL_POS  = new Vector2D(80, 540);
-    private static final double   BALL_R    = 30;
-    private static final Vector2D HOLE_POS  = new Vector2D(1840, 540);
-    private static final double   HOLE_R    = 40;
+    private static final Vector2D BALL_POS = new Vector2D(80, 540);
+    private static final double BALL_R = 30;
+    private static final Vector2D HOLE_POS = new Vector2D(1840, 540);
+    private static final double HOLE_R = 40;
 
     private final SurfaceFactory surfaceFactory;
 
@@ -174,30 +177,30 @@ public final class SecondMap implements GameMapFactory {
 
         // Grass start
         surfaces.add(surfaceFactory.createGrass(
-            new Rectangle(new Vector2D(GRASS_START_X, GRASS_START_Y), GRASS_START_W, GRASS_START_H),
-            GRASS_START_Z));
+                new Rectangle(new Vector2D(GRASS_START_X, GRASS_START_Y), GRASS_START_W, GRASS_START_H),
+                GRASS_START_Z));
 
         // Ice corridor
         surfaces.add(surfaceFactory.createIce(
-            new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_W, ICE_H),
-            ICE_Z));
+                new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_W, ICE_H),
+                ICE_Z));
 
         // Sand trap circle
         surfaces.add(surfaceFactory.createSand(
-            new Circle(SAND_CIRCLE_POS, SAND_CIRCLE_R),
-            SAND_CIRCLE_Z));
+                new Circle(SAND_CIRCLE_POS, SAND_CIRCLE_R),
+                SAND_CIRCLE_Z));
 
         // Windy grass exit
         surfaces.add(surfaceFactory.createWindy(
-            surfaceFactory.createGrass(
-                new Rectangle(new Vector2D(WINDY_EXIT_X, WINDY_EXIT_Y), WINDY_EXIT_W, WINDY_EXIT_H),
-                WINDY_EXIT_Z),
-            WindDirection.UP, WIND_STRENGTH));
+                surfaceFactory.createGrass(
+                        new Rectangle(new Vector2D(WINDY_EXIT_X, WINDY_EXIT_Y), WINDY_EXIT_W, WINDY_EXIT_H),
+                        WINDY_EXIT_Z),
+                WindDirection.UP, WIND_STRENGTH));
 
         // Boundary walls
-        obstacles.add(new WallObstacle(new Vector2D(W_TOP_X,   W_TOP_Y),   W_TOP_W,   W_TOP_H));
-        obstacles.add(new WallObstacle(new Vector2D(W_BOT_X,   W_BOT_Y),   W_BOT_W,   W_BOT_H));
-        obstacles.add(new WallObstacle(new Vector2D(W_LEFT_X,  W_LEFT_Y),  W_LEFT_W,  W_LEFT_H));
+        obstacles.add(new WallObstacle(new Vector2D(W_TOP_X, W_TOP_Y), W_TOP_W, W_TOP_H));
+        obstacles.add(new WallObstacle(new Vector2D(W_BOT_X, W_BOT_Y), W_BOT_W, W_BOT_H));
+        obstacles.add(new WallObstacle(new Vector2D(W_LEFT_X, W_LEFT_Y), W_LEFT_W, W_LEFT_H));
         obstacles.add(new WallObstacle(new Vector2D(W_RIGHT_X, W_RIGHT_Y), W_RIGHT_W, W_RIGHT_H));
 
         // Corridor walls
@@ -220,9 +223,9 @@ public final class SecondMap implements GameMapFactory {
         obstacles.add(new TriangleObstacle(TRI_V1, TRI_V2, TRI_V3));
 
         return new GameMapImpl(
-            surfaces,
-            new BallImpl(BALL_POS, BALL_R),
-            new HoleImpl(HOLE_POS, HOLE_R),
-            obstacles);
+                surfaces,
+                new BallImpl(BALL_POS, BALL_R),
+                new HoleImpl(HOLE_POS, HOLE_R),
+                obstacles);
     }
 }

@@ -22,10 +22,10 @@ public final class ShapedSurface implements Surface {
     /**
      * Constructs a ShapedSurface with the given shape and type.
      * 
-     * @param shape       The geometric shape defining the surface area.
-     * @param friction    The friction coefficient of the surface.
-     * @param zIndex      The z-index of the surface (for rendering purposes).
-     * @param type        The surface type.
+     * @param shape    The geometric shape defining the surface area.
+     * @param friction The friction coefficient of the surface.
+     * @param zIndex   The z-index of the surface (for rendering purposes).
+     * @param type     The surface type.
      * @throws IllegalArgumentException if friction is negative
      */
     public ShapedSurface(final Shape shape, final double friction, final int zIndex, final String typeId) {

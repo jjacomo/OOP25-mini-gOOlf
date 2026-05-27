@@ -14,8 +14,8 @@ import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
-import it.unibo.minigoolf.model.surfaces.SurfaceFactory;
-import it.unibo.minigoolf.model.surfaces.SurfaceFactoryImpl;
+import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactory;
+import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactoryImpl;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
@@ -86,7 +86,8 @@ public class TestGameMapFactory implements GameMapFactory {
         private final SurfaceFactory surfaceFactory;
 
         /**
-         * Constructs a TestGameMapFactory using a default SurfaceFactory implementation.
+         * Constructs a TestGameMapFactory using a default SurfaceFactory
+         * implementation.
          */
         public TestGameMapFactory() {
                 this(new SurfaceFactoryImpl());

@@ -12,9 +12,9 @@ import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
-import it.unibo.minigoolf.model.surfaces.SurfaceFactory;
-import it.unibo.minigoolf.model.surfaces.SurfaceFactoryImpl;
-import it.unibo.minigoolf.model.surfaces.WindDirection;
+import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactory;
+import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactoryImpl;
+import it.unibo.minigoolf.model.surfaces.wind.WindDirection;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
@@ -46,6 +46,7 @@ public class FirstMap implements GameMapFactory {
         private static final double WINDYGRASS1_WIDTH = 550;
         private static final double WINDYGRASS1_HEIGHT = 540;
         private static final int WINDYGRASS1_Z_INDEX = 0;
+        private static final double WIND_STRENGTH = 12.5;
         private static final double DIRT_X = 550;
         private static final double DIRT_Y = 0;
         private static final double DIRT_WIDTH = 690;
@@ -199,10 +200,11 @@ public class FirstMap implements GameMapFactory {
                                 GRASS1_Z_INDEX));
                 surfaces.add(surfaceFactory.createWindy(
                                 surfaceFactory.createGrass(
-                                                new Rectangle(new Vector2D(WINDYGRASS1_X, WINDYGRASS1_Y), WINDYGRASS1_WIDTH,
+                                                new Rectangle(new Vector2D(WINDYGRASS1_X, WINDYGRASS1_Y),
+                                                                WINDYGRASS1_WIDTH,
                                                                 WINDYGRASS1_HEIGHT),
                                                 WINDYGRASS1_Z_INDEX),
-                                WindDirection.UP, 12.5));
+                                WindDirection.UP, WIND_STRENGTH));
                 surfaces.add(surfaceFactory.createGrass(
                                 new Rectangle(new Vector2D(GRASS2_X, GRASS2_Y), GRASS2_WIDTH, GRASS2_HEIGHT),
                                 GRASS2_Z_INDEX));

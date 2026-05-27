@@ -1,7 +1,8 @@
 package it.unibo.minigoolf.model.surfaces;
 
-import it.unibo.minigoolf.util.Vector2D;
+import java.util.Optional;
 
+import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
@@ -52,12 +53,12 @@ public interface Surface {
     Shape getShape();
 
     /**
-     * Returns the wind velocity applied by this surface.
+     * Returns the wind velocity applied by this surface, if any.
      * By default, a surface does not apply any wind.
      * 
-     * @return the wind vector
+     * @return an optional wind vector
      */
-    default Vector2D getWind() {
-        return Vector2D.ZERO;
+    default Optional<Vector2D> getWind() {
+        return Optional.empty();
     }
 }

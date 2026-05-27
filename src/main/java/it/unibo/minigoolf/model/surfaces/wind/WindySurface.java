@@ -1,21 +1,27 @@
-package it.unibo.minigoolf.model.surfaces;
+package it.unibo.minigoolf.model.surfaces.wind;
 
+import java.util.Optional;
+
+import it.unibo.minigoolf.model.surfaces.AbstractSurfaceDecorator;
+import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * A decorator that adds a wind effect to a base surface.
- * The wind from this decorator is added to any wind already present in the base surface.
+ * The wind from this decorator is added to any wind already present in the base
+ * surface.
  */
 public final class WindySurface extends AbstractSurfaceDecorator {
 
     private final Vector2D wind;
 
     /**
-     * Constructs a WindySurface decorating the given base surface with the specified wind direction and intensity.
+     * Constructs a WindySurface decorating the given base surface with the
+     * specified wind direction and intensity.
      * 
      * @param baseSurface the surface to decorate
-     * @param direction the direction of the wind (UP, DOWN, LEFT, RIGHT)
-     * @param intensity the strength/speed of the wind
+     * @param direction   the direction of the wind (UP, DOWN, LEFT, RIGHT)
+     * @param intensity   the strength/speed of the wind
      * @throws IllegalArgumentException if intensity is not positive
      */
     public WindySurface(final Surface baseSurface, final WindDirection direction, final double intensity) {
@@ -27,7 +33,7 @@ public final class WindySurface extends AbstractSurfaceDecorator {
     }
 
     @Override
-    public Vector2D getWind() {
-        return super.getWind().add(this.wind);
+    public Optional<Vector2D> getWind() {
+        return Optional.of(this.wind);
     }
 }

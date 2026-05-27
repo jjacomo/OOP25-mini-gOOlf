@@ -1,5 +1,7 @@
 package it.unibo.minigoolf.model.surfaces;
 
+import java.util.Optional;
+
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
@@ -88,7 +90,7 @@ public abstract class AbstractSurfaceDecorator implements Surface {
      * Subclasses may override this method to augment the wind effect.
      */
     @Override
-    public Vector2D getWind() {
+    public Optional<Vector2D> getWind() {
         return baseSurface.getWind();
     }
 }

@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.controller.surfacecontroller;
 
+import java.util.Optional;
 
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
@@ -46,9 +47,9 @@ public interface SurfaceController {
     String getTypeId();
 
     /**
-     * Returns the wind of the surface.
+     * Returns the wind of the surface, if any.
      * 
-     * @return the wind
+     * @return an optional wind vector
      */
-    Vector2D getWind();
+    Optional<Vector2D> getWind();
 }
