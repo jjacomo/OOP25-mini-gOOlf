@@ -31,17 +31,19 @@ public final class GameControllerImpl implements GameController {
     /**
      * Maximum squared speed at which the ball can enter the hole while still moving.
      * Set to (MAX_POWER * SHOT_SCALE / 2)² = (1500 / 2)² = 750² = 562_500.
-     * Above this speed the ball is too fast to fall in.
      */
     private static final double HOLE_ENTRY_MAX_SPEED_SQ = 562_500.0;
+
+    /** Maximum shots a player can take before their turn ends automatically. */
+    private static final int MAX_SHOTS = 7;
 
     private final GameMapController gameMapController;
     private final ShotState shotState;
 
-    /** {@code gameState::isBallMoving} — avoids storing GameState directly. */
+    /** {@code gameState::isBallMoving} */
     private final BooleanSupplier ballMovingChecker;
 
-    /** {@code gameState::onBallStopped} — avoids storing GameState directly. */
+    /** {@code gameState::onBallStopped} */
     private final Runnable ballStoppedNotifier;
 
     /** {@code gameState::setPendingShot} — passed to ShotControllerImpl. */
@@ -50,34 +52,40 @@ public final class GameControllerImpl implements GameController {
     /** {@code gameState::update} — passed to ShotControllerImpl. */
     private final Supplier<Optional<Vector2D>> shotUpdater;
 
-    /** {@code physicsController::update} — avoids storing PhysicsController directly. */
+    /** {@code physicsController::update} */
     private final Consumer<Double> physicsUpdater;
 
-    /** {@code () -> gameState.getCurrentPlayer().getName()} — avoids storing GameState. */
+    /** {@code () -> gameState.getCurrentPlayer().getName()} */
     private final Supplier<String> currentPlayerNameSupplier;
 
     /** {@code gameState::getCurrentPlayerIndex} — used for save/load. */
     private final IntSupplier currentPlayerIndexSupplier;
 
-    /** {@code () -> gameState.getCurrentPlayer().getShots()} — used for HUD display. */
+    /** {@code () -> gameState.getCurrentPlayer().getShots()} — used for HUD and turn limit. */
     private final IntSupplier currentShotsSupplier;
 
-    /**
-     * Supplies the list of player save snapshots.
-     * Built as a lambda over gameState to avoid storing GameState directly.
-     */
+    /** {@code gameState::nextTurn} — advances to the next player. */
+    private final Runnable nextTurnTrigger;
+
+    /** Returns true if the current player is the last in the list. */
+    private final BooleanSupplier isLastPlayerSupplier;
+
+    /** Ball start position for the current map — used to reset position on next turn. */
+    private final Vector2D initialBallPosition;
+
+    /** Supplies player save snapshots without storing GameState directly. */
     private final Supplier<List<PlayerSaveData>> playerSaveDataSupplier;
 
-    /** Supplies the current ball X position in logical coordinates. */
+    /** Supplies current ball X in logical coordinates. */
     private final Supplier<Double> ballXSupplier;
 
-    /** Supplies the current ball Y position in logical coordinates. */
+    /** Supplies current ball Y in logical coordinates. */
     private final Supplier<Double> ballYSupplier;
 
     /** Checks whether the ball has reached the hole. */
     private final HoleChecker holeChecker;
 
-    /** Called when the ball enters the hole. Default is a no-op. */
+    /** Called when all players have completed the hole. Default is a no-op. */
     private Runnable onHoleCompleted = () -> { };
 
     private ShotController shotController;
@@ -95,7 +103,6 @@ public final class GameControllerImpl implements GameController {
             final PhysicsController physicsController) {
         this.gameMapController = gameMapController;
         this.shotState = shotState;
-        // Extract only the needed behaviors from gameState — avoids EI2.
         this.ballMovingChecker = gameState::isBallMoving;
         this.ballStoppedNotifier = gameState::onBallStopped;
         this.pendingShotSubmitter = gameState::setPendingShot;
@@ -103,19 +110,23 @@ public final class GameControllerImpl implements GameController {
         this.currentPlayerNameSupplier = () -> gameState.getCurrentPlayer().getName();
         this.currentPlayerIndexSupplier = gameState::getCurrentPlayerIndex;
         this.currentShotsSupplier = () -> gameState.getCurrentPlayer().getShots();
+        this.nextTurnTrigger = gameState::nextTurn;
+        this.isLastPlayerSupplier = () ->
+            gameState.getCurrentPlayerIndex() == gameState.getPlayers().size() - 1;
         this.playerSaveDataSupplier = () -> gameState.getPlayers().stream()
             .map(p -> new PlayerSaveData(p.getName(), p.getShots()))
             .toList();
-        // Ball position read via gameMapController — no direct reference to GameMap.
-        this.ballXSupplier = () -> gameMapController.getBallController().getPosition().getX();
-        this.ballYSupplier = () -> gameMapController.getBallController().getPosition().getY();
-        // Extract only the update behavior from physicsController — avoids EI2.
+        this.ballXSupplier =
+            () -> gameMapController.getBallController().getPosition().getX();
+        this.ballYSupplier =
+            () -> gameMapController.getBallController().getPosition().getY();
         physicsController.setVelocityStrategy(new BasicFrictionStrategy());
         this.physicsUpdater = physicsController::update;
-        // Build the hole checker from the map controller — no direct reference stored.
         this.holeChecker = new HoleChecker(
             gameMapController.getHoleController().getPosition(),
             gameMapController.getHoleController().getRadius());
+        this.initialBallPosition =
+            gameMapController.getBallController().getPosition();
     }
 
     /** {@inheritDoc} */
@@ -150,21 +161,45 @@ public final class GameControllerImpl implements GameController {
 
             final Vector2D ballPos = gameMapController.getBallController().getPosition();
             final Vector2D vel = gameMapController.getBallController().getVelocity();
-            final boolean slowEnoughForHole = vel.getNormSquared() <= HOLE_ENTRY_MAX_SPEED_SQ;
+            final boolean slowEnoughForHole =
+                vel.getNormSquared() <= HOLE_ENTRY_MAX_SPEED_SQ;
 
             if (!gameMapController.getBallController().isBallMoving()) {
-                // Ball has stopped — check hole then re-enable input.
                 ballStoppedNotifier.run();
-                if (holeChecker.isBallInHole(ballPos)) {
-                    onHoleCompleted.run();
-                } else {
-                    shotController.onBallStopped(ballPos);
-                }
+                final boolean holeScored = holeChecker.isBallInHole(ballPos);
+                final boolean maxShotsReached =
+                    currentShotsSupplier.getAsInt() >= MAX_SHOTS;
+                handleTurnEnd(ballPos, holeScored || maxShotsReached);
             } else if (slowEnoughForHole && holeChecker.isBallInHole(ballPos)) {
-                // Ball is still moving but slow enough and over the hole.
                 ballStoppedNotifier.run();
-                onHoleCompleted.run();
+                handleTurnEnd(ballPos, true);
             }
+        }
+    }
+
+    /**
+     * Handles the end of a player's turn.
+     * If the turn condition is met (hole scored or max shots reached), advances
+     * to the next player or fires {@code onHoleCompleted} if it was the last.
+     * Otherwise simply re-enables input for the current player.
+     *
+     * @param ballPos      current ball position
+     * @param turnFinished true if this player's turn is over
+     */
+    private void handleTurnEnd(final Vector2D ballPos, final boolean turnFinished) {
+        if (turnFinished) {
+            if (isLastPlayerSupplier.getAsBoolean()) {
+                onHoleCompleted.run();
+            } else {
+                nextTurnTrigger.run();
+                gameMapController.getBallController()
+                    .updatePosition(initialBallPosition);
+                gameMapController.getBallController()
+                    .updateVelocity(Vector2D.ZERO);
+                shotController.onBallStopped(initialBallPosition);
+            }
+        } else {
+            shotController.onBallStopped(ballPos);
         }
     }
 
