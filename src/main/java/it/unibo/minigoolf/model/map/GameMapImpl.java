@@ -44,7 +44,7 @@ public final class GameMapImpl implements GameMap {
      * @param obstacles the list of obstacles
      */
     public GameMapImpl(final List<Surface> surfaces, final Ball ball, final Hole hole, final List<Obstacle> obstacles) {
-        if(surfaces == null || ball == null || hole == null || obstacles == null) {
+        if (surfaces == null || ball == null || hole == null || obstacles == null) {
             LOGGER.error("Attempted to create a GameMapImpl with null parameters");
             throw new IllegalArgumentException("Surfaces, ball, hole and obstacles cannot be null");
         }

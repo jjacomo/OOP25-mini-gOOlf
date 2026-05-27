@@ -1,0 +1,26 @@
+Report - 27/05 - h (tot: 56h)
+
+* Aggiunto controllo dimensioni di shape (raggio>0, width>0, height>0)
+* Aggiunto controllo friction > 0; wind intensity > 0
+* Risolti errori di spotbugs
+* Guardato come fare report
+
+- secondo me dovrei togliere SurfaceType (fare una SurfaceFactory tipo)
+
+Guarda riga 56 del report
+
+-------------------------------------------------------------------------------------------------
+MEMO:
+Nel report finale fai uno schema UML che illustri il pattern adapter implementato.
+
+-------------------------------------------------------------------------------------------------
+TODO:
+* Guarda se surface dovrebbe avere al suo interno sia surfaceType che friction (una delle due in teoria basterebbe)
+* Riguarda e aggiungi i commenti della javadoc;
+* Migliore algoritmo per l'update della velocita'
+
+-------------------------------------------------------------------------------------------------
+POSSIBILI FEATURE:
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());

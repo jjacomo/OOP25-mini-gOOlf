@@ -3,6 +3,13 @@ package it.unibo.minigoolf.model.surfaces;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
+/**
+ * An abstract decorator for surfaces that delegates all methods to a base surface.
+ * Subclasses can override specific methods to modify behavior while preserving the
+ * contract of the {@link Surface} interface.
+ * 
+ * @author jack
+ */
 public abstract class AbstractSurfaceDecorator implements Surface {
 
     private final Surface baseSurface;
@@ -22,6 +29,7 @@ public abstract class AbstractSurfaceDecorator implements Surface {
 
     /**
      * {@inheritDoc}
+     * 
      * <p>This implementation delegates to the decorated base surface.
      * Subclasses may override this method only if they preserve the {@link Surface}
      * contract for friction.
@@ -33,6 +41,7 @@ public abstract class AbstractSurfaceDecorator implements Surface {
 
     /**
      * {@inheritDoc}
+     * 
      * <p>This implementation delegates to the decorated base surface.
      * Subclasses may override this method only if they preserve the {@link Surface}
      * containment semantics.
@@ -44,6 +53,7 @@ public abstract class AbstractSurfaceDecorator implements Surface {
 
     /**
      * {@inheritDoc}
+     * 
      * <p>This implementation delegates to the decorated base surface.
      */
     @Override
@@ -53,6 +63,7 @@ public abstract class AbstractSurfaceDecorator implements Surface {
 
     /**
      * {@inheritDoc}
+     * 
      * <p>This implementation delegates to the decorated base surface.
      */
     @Override
@@ -62,6 +73,7 @@ public abstract class AbstractSurfaceDecorator implements Surface {
 
     /**
      * {@inheritDoc}
+     * 
      * <p>This implementation delegates to the decorated base surface.
      */
     @Override
@@ -71,6 +83,7 @@ public abstract class AbstractSurfaceDecorator implements Surface {
 
     /**
      * {@inheritDoc}
+     * 
      * <p>This implementation delegates to the decorated base surface.
      * Subclasses may override this method to augment the wind effect.
      */
