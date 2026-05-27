@@ -41,3 +41,7 @@
 
 6 ore: sistemato la velocità della pallina a 1/2 della velocità iniziale, poi ho iniziato a preparare il controller e la logica
         finale per il salvataggio dei dati, che però ancora non funziona
+
+3 ore: finito il salvataggio partita, quando sarà completa anche la leaderboard mi assicurerò che funzioni correttamente
+
+4 ore: creato secondMap, per ora è banale con 2 tiri, da sistemare
