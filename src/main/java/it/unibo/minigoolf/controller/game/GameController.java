@@ -8,7 +8,7 @@ import it.unibo.minigoolf.model.logic.ShotState;
  * Controller responsible for the lifecycle of a single match.
  * Manages shot input, physics, turn logic and ball-stop detection.
  *
- * @author fede and dani
+ * @author fede
  */
 public interface GameController {
 
