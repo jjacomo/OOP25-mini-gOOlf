@@ -121,11 +121,11 @@ public class FirstMap implements GameMapFactory {
         private static final double O5_Y = 245;
         private static final double O5_WIDTH = 50;
         private static final double O5_HEIGHT = 590;
-        private static final double O6_X = 1230;
+        private static final double O6_X = 1215;
         private static final double O6_Y = 245;
-        private static final double O6_WIDTH = 410;
+        private static final double O6_WIDTH = 460;
         private static final double O6_HEIGHT = 50;
-        private static final double O7_X = 1230;
+        private static final double O7_X = 1265;
         private static final double O7_Y = 785;
         private static final double O7_WIDTH = 410;
         private static final double O7_HEIGHT = 50;
@@ -236,7 +236,7 @@ public class FirstMap implements GameMapFactory {
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT));
-                obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT));
+                //obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(O2_X, O2_Y), O2_WIDTH, O2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(O3_X, O3_Y), O3_WIDTH, O3_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(O4_X, O4_Y), O4_WIDTH, O4_HEIGHT));
