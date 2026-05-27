@@ -85,14 +85,14 @@ public final class GameControllerImpl implements GameController {
     /** Checks whether the ball has reached the hole. */
     private final HoleChecker holeChecker;
 
-    /** Called when all players have completed the hole. Default is a no-op. */
+    /** Called when all players have completed the hole. By default it does nothing (no-op). */
     private Runnable onHoleCompleted = () -> { };
 
     private ShotController shotController;
 
     /**
      * @param gameState         the central game logic
-     * @param gameMapController the map controller facade
+     * @param gameMapController the map controller 
      * @param shotState         the shot input state
      * @param physicsController the physics engine
      */

@@ -27,7 +27,7 @@ public final class GameFactory {
     }
 
     /**
-     * Builds a fresh {@link GameController} for the current map in the sequence.
+     * Builds a{@link GameController} for the current map in the sequence.
      *
      * @param playerNames     ordered list of player display names
      * @param mapSequence     the map sequence managing available maps
@@ -42,7 +42,7 @@ public final class GameFactory {
     }
 
     /**
-     * Builds a {@link GameController} and restores state from a {@link SaveData} snapshot.
+     * Builds a {@link GameController} and eventually restores state from a {@link SaveData} snapshot.
      *
      * @param playerNames     ordered list of player display names
      * @param mapSequence     the map sequence managing available maps

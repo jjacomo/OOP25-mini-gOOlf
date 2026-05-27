@@ -11,9 +11,9 @@ import java.util.stream.IntStream;
 /**
  * Manages the lifecycle of matches within a map sequence.
  * Uses functional callbacks instead of storing collaborators directly,
- * avoiding EI2 warnings and keeping coupling minimal.
+ * (to avoid EI2 warnings).
  *
- * @author fede and dani
+ * @author fede
  */
 public final class MatchManager {
 
@@ -59,7 +59,7 @@ public final class MatchManager {
         this.rebuildPanel = rebuildPanel;
         this.activeMatch = buildMatch();
         rebuildPanel.accept(activeMatch);
-        // Register save/restore behaviors on SaveController via NavigationController.
+        // Register save/restore data on SaveController via NavigationController.
         navController.registerSnapshotSupplier(
             () -> activeMatch.createSaveData(
                 String.valueOf(mapSequence.getCurrentIndex())));
@@ -67,7 +67,7 @@ public final class MatchManager {
     }
 
     /**
-     * Runs one tick of the active match.
+     * Runs one tick of the active match in {@link MainControllerImpl}.
      *
      * @param deltaTime elapsed time since the last frame in seconds
      */
