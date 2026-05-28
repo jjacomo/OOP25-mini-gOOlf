@@ -75,6 +75,52 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
         return bestDistanceSquared[0] <= radiusSquared;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public double getPenetrationDepth(final Ball ball) {
+        final Vector2D pos = ball.getPosition();
+        final double d1 = distanceToSegment(pos, vertex1, vertex2);
+        final double d2 = distanceToSegment(pos, vertex2, vertex3);
+        final double d3 = distanceToSegment(pos, vertex3, vertex1);
+        final double minDist = Math.min(d1, Math.min(d2, d3));
+        final double penetration = ball.getRadius() - minDist;
+        return penetration > 0 ? penetration : 0;
+    }
+
+    /**
+     * Calculates the shortest distance from a point to a line segment.
+     *
+     * @param point the point
+     * @param a     start of segment
+     * @param b     end of segment
+     * @return the distance
+     */
+    private double distanceToSegment(final Vector2D point, final Vector2D a, final Vector2D b) {
+        final Vector2D closest = closestPointOnSegment(point, a, b);
+        return point.distance(closest);
+    }
+
+    /**
+     * Finds the closest point on a segment to a given point.
+     *
+     * @param p the point
+     * @param a segment start
+     * @param b segment end
+     * @return the closest point on the segment
+     */
+    private Vector2D closestPointOnSegment(final Vector2D p, final Vector2D a, final Vector2D b) {
+        final Vector2D ab = b.subtract(a);
+        final Vector2D ap = p.subtract(a);
+        final double abSq = ab.getX() * ab.getX() + ab.getY() * ab.getY();
+        if (abSq == 0) {
+            return a;
+        }
+        double t = (ap.getX() * ab.getX() + ap.getY() * ab.getY()) / abSq;
+        if (t < 0) t = 0;
+        if (t > 1) t = 1;
+        return new Vector2D(a.getX() + t * ab.getX(), a.getY() + t * ab.getY());
+    }
+
     /**
      * Resolves the physical collision between the ball and the obstacle calculating
      * the bounce based on the obstacle's shape and applies the new direction to the
@@ -168,11 +214,9 @@ public final class TriangleObstacle extends AbstractObstacle implements Obstacle
      * @param endpointB           the second point of the edge.
      * @param faceNormal          the normal of the face.
      * @param bestDistanceSquared an array used to store and update the minimum
-     *                            squared
-     *                            distance found.
+     *                            squared distance found.
      * @param bestPoint           an array used to store and update the closest
-     *                            point on the
-     *                            perimeter.
+     *                            point on the perimeter.
      * @param bestNormal          an array used to store and update the normal at
      *                            the closest point.
      */

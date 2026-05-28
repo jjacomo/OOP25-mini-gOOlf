@@ -33,6 +33,14 @@ public interface Obstacle {
     void resolveCollision(Ball ball);
 
     /**
+     * Returns how deep the ball is penetrating this obstacle.
+     *
+     * @param ball the ball to check
+     * @return penetration depth (0 indicates no collision)
+     */
+    double getPenetrationDepth(Ball ball);
+
+    /**
      * Returns the shape of the obstacle.
      * 
      * @return the shape of the obstacle

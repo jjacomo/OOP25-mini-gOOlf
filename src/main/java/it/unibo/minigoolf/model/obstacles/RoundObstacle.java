@@ -44,6 +44,14 @@ public final class RoundObstacle extends AbstractObstacle implements Obstacle {
         return distance <= (ball.getRadius() + this.radius);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public double getPenetrationDepth(final Ball ball) {
+        final double distance = ball.getPosition().distance(this.getPosition());
+        final double sumRadii = ball.getRadius() + this.radius;
+        return distance < sumRadii ? sumRadii - distance : 0;
+    }
+
     /**
      * Resolves the physical collision between the ball and the obstacle calculating
      * the bounce based on the obstacle's shape and applies the new direction to the

@@ -109,17 +109,21 @@ public final class PhysicsEngine {
      * @param obstacles list with all the obstacles of the map
      */
     private static void resolveCollisions(final Ball ball, final List<Obstacle> obstacles) {
-        for (int iter = 0; iter < MAX_COLLISION_ITERATIONS; iter++) {
-            boolean anyCollision = false;
-            for (final Obstacle obs : obstacles) {
-                if (obs.isColliding(ball)) {
-                    obs.resolveCollision(ball);
-                    anyCollision = true;
-                }
-            }
-            if (!anyCollision) {
-                break;
+    for (int iter = 0; iter < MAX_COLLISION_ITERATIONS; iter++) {
+        Obstacle deepest = null;
+        double maxDepth = 0.0;
+        for (final Obstacle obs : obstacles) {
+            final double depth = obs.getPenetrationDepth(ball);
+            if (depth > maxDepth) {
+                maxDepth = depth;
+                deepest = obs;
             }
         }
+        if (deepest != null) {
+            deepest.resolveCollision(ball);
+        } else {
+            break;
+        }
     }
+}
 }

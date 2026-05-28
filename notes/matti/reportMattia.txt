@@ -116,8 +116,13 @@ Report 27/05 - 2 ore
   problema non viene risolto nè facendo sovrapporre correttamente i vertici, nè facendo in modo che gli 
   ostacoli non si sovrappongano per niente (se non nel lato in cui sono adiacenti).
 
+Report 28/05 - 3 ore
+- Risolti i problemi di collisioni non regolari tra due ostacoli adiacenti
+- Aggiunti alcuni metodi helper in WallObstacle per snellire i metodi necessari a fare i vari calcoli
+  ed evitare inutili ripetizioni di codice
+
 TO DO:
-- Sistemare le collisioni sugli spigoli degli ostacoli che si sovrappongono
+- Sistemare tutte le classi degli ostacoli, per vedere se c'è modo di snellire parti ripetute
 - Sistemare la questione della palla che si ferma se vicino ad un ostacolo
 - Creare ostacoli avanzati (appiccicosi, che aumentano il rimbalzo) e trovarne anche di nuovi possibili 
   (teletrasporto, bottone che fa scomparire un ostacolo)

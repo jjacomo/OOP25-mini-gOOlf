@@ -62,12 +62,23 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
     @Override
     public boolean isColliding(final Ball ball) {
         final Vector2D position = ball.getPosition();
-        final double closestX = Math.max(minX, Math.min(position.getX(), maxX));
-        final double closestY = Math.max(minY, Math.min(position.getY(), maxY));
-        final double dx = position.getX() - closestX;
-        final double dy = position.getY() - closestY;
-        final double distSq = dx * dx + dy * dy;
-        return distSq <= ball.getRadius() * ball.getRadius();
+        final Vector2D closestPoint = getClosestPoint(position);
+        final double dx = position.getX() - closestPoint.getX();
+        final double dy = position.getY() - closestPoint.getY();
+        return (dx * dx + dy * dy) <= ball.getRadius() * ball.getRadius();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getPenetrationDepth(final Ball ball) {
+        final Vector2D pos = ball.getPosition();
+        if (isInside(pos)) {
+            // MATEMATICA CORRETTA: Raggio + distanza dal centro al bordo per uscire del tutto
+            return ball.getRadius() + getMinDistanceToEdge(pos);
+        } else {
+            final double distance = pos.distance(getClosestPoint(pos));
+            return distance < ball.getRadius() ? ball.getRadius() - distance : 0;
+        }
     }
 
     /**
@@ -79,80 +90,123 @@ public final class WallObstacle extends AbstractObstacle implements Obstacle {
      */
     @Override
     public void resolveCollision(final Ball ball) {
-        final Vector2D ballPosition = ball.getPosition();
-        final double positionX = ballPosition.getX();
-        final double positionY = ballPosition.getY();
-        final double closestX = Math.max(minX, Math.min(positionX, maxX));
-        final double closestY = Math.max(minY, Math.min(positionY, maxY));
-        final boolean inside = positionX > minX && positionX < maxX && positionY > minY && positionY < maxY;
+        final Vector2D pos = ball.getPosition();
         final Vector2D normal;
         final double penetrationDepth;
 
-        if (inside) {
-            final double distanceLeft = positionX - minX;
-            final double distanceRight = maxX - positionX;
-            final double distanceTop = positionY - minY;
-            final double distanceBottom = maxY - positionY;
-            final double minDistance = Math.min(Math.min(distanceLeft, distanceRight),
-                    Math.min(distanceTop, distanceBottom));
-
-            if (minDistance == distanceLeft) {
-                normal = normalLeft;
-            } else if (minDistance == distanceRight) {
-                normal = normalRight;
-            } else if (minDistance == distanceTop) {
-                normal = normalTop;
-            } else {
-                normal = normalBottom;
-            }
-            penetrationDepth = ball.getRadius() + minDistance;
+        if (isInside(pos)) {
+            normal = getInsideNormal(pos);
+            penetrationDepth = ball.getRadius() + getMinDistanceToEdge(pos);
         } else {
-            final Vector2D closestPoint = new Vector2D(closestX, closestY);
-            final Vector2D toCenter = ballPosition.subtract(closestPoint);
+            final Vector2D closestPoint = getClosestPoint(pos);
+            final Vector2D toCenter = pos.subtract(closestPoint);
             final double distance = toCenter.getNorm();
             penetrationDepth = ball.getRadius() - distance;
 
             if (distance < EPSILON) {
-                final boolean onLeft = Math.abs(positionX - minX) < EPSILON;
-                final boolean onRight = Math.abs(positionX - maxX) < EPSILON;
-                final boolean onTop = Math.abs(positionY - minY) < EPSILON;
-                final boolean onBottom = Math.abs(positionY - maxY) < EPSILON;
-
-                if ((onLeft || onRight) && (onTop || onBottom)) {
-                    double accX = 0;
-                    double accY = 0;
-
-                    if (onLeft) {
-                        accX -= 1;
-                    } else {
-                        accX += 1;
-                    }
-                    if (onTop) {
-                        accY -= 1;
-                    } else {
-                        accY += 1;
-                    }
-                    normal = new Vector2D(accX, accY).normalize();
-                } else {
-                    if (onLeft) {
-                        normal = normalLeft;
-                    } else if (onRight) {
-                        normal = normalRight;
-                    } else if (onTop) {
-                        normal = normalTop;
-                    } else {
-                        normal = normalBottom;
-                    }
-                }
+                normal = getBoundaryNormal(pos);
             } else {
                 normal = toCenter.normalize();
             }
         }
 
         if (penetrationDepth > 0) {
-            correctPosition(ball, ballPosition, normal, penetrationDepth);
+            correctPosition(ball, pos, normal, penetrationDepth);
         }
         reflectVelocity(ball, normal);
+    }
+
+    /**
+     * Finds the closest point on the rectangle's boundary or within its surface
+     * to the given position.
+     *
+     * @param position the position to project onto the rectangle
+     * @return a new {@link Vector2D} representing the closest point
+     */
+    private Vector2D getClosestPoint(final Vector2D position) {
+        final double closestX = Math.max(minX, Math.min(position.getX(), maxX));
+        final double closestY = Math.max(minY, Math.min(position.getY(), maxY));
+        return new Vector2D(closestX, closestY);
+    }
+
+    /**
+     * Checks if a given position is strictly inside the rectangle's boundaries.
+     *
+     * @param position the position to check
+     * @return true if the position is inside the boundaries, false otherwise
+     */
+    private boolean isInside(final Vector2D position) {
+        return position.getX() > minX && position.getX() < maxX 
+            && position.getY() > minY && position.getY() < maxY;
+    }
+
+    /**
+     * Calculates the minimum perpendicular distance from a position inside the
+     * rectangle to its closest edge.
+     *
+     * @param pos the position inside the rectangle
+     * @return the minimum distance to an edge
+     */
+    private double getMinDistanceToEdge(final Vector2D pos) {
+        final double distLeft = pos.getX() - minX;
+        final double distRight = maxX - pos.getX();
+        final double distTop = pos.getY() - minY;
+        final double distBottom = maxY - pos.getY();
+        return Math.min(Math.min(distLeft, distRight), Math.min(distTop, distBottom));
+    }
+
+    /**
+     * Determines the collision normal vector when the ball's center is inside
+     * the obstacle, pointing outward from the closest edge.
+     *
+     * @param pos the position of the ball's center
+     * @return the outward normal vector corresponding to the closest edge
+     */
+    private Vector2D getInsideNormal(final Vector2D pos) {
+        final double distLeft = pos.getX() - minX;
+        final double distRight = maxX - pos.getX();
+        final double distTop = pos.getY() - minY;
+        final double distBottom = maxY - pos.getY();
+        final double minDist = Math.min(Math.min(distLeft, distRight), Math.min(distTop, distBottom));
+
+        if (minDist == distLeft) {
+            return normalLeft;
+        }
+        if (minDist == distRight) {
+            return normalRight;
+        }
+        if (minDist == distTop) {
+            return normalTop;
+        }
+        return normalBottom;
+    }
+
+    /**
+     * Determines the collision normal vector when the ball hits exactly on a
+     * boundary edge or corner of the rectangle.
+     *
+     * @param pos the position of the ball's center
+     * @return the normalized vector representing the collision normal
+     */
+    private Vector2D getBoundaryNormal(final Vector2D pos) {
+        final boolean onLeft = Math.abs(pos.getX() - minX) < EPSILON;
+        final boolean onRight = Math.abs(pos.getX() - maxX) < EPSILON;
+        final boolean onTop = Math.abs(pos.getY() - minY) < EPSILON;
+        final boolean onBottom = Math.abs(pos.getY() - maxY) < EPSILON;
+
+        if ((onLeft || onRight) && (onTop || onBottom)) {
+            final double accX = onLeft ? -1.0 : 1.0;
+            final double accY = onTop ? -1.0 : 1.0;
+            return new Vector2D(accX, accY).normalize();
+        } else if (onLeft) {
+            return normalLeft;
+        } else if (onRight) {
+            return normalRight;
+        } else if (onTop) {
+            return normalTop;
+        } else {
+            return normalBottom;
+        }
     }
 
     /** {@inheritDoc} */

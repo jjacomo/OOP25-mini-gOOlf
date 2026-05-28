@@ -153,7 +153,7 @@ public class FirstMap implements GameMapFactory {
 
         private static final double BALL_RADIUS = 30;
         private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(80, 80);
-        private static final double HOLE_RADIUS = 40;
+        private static final double HOLE_RADIUS = 30;
         private static final Vector2D HOLE_POSITION = new Vector2D(1780, 520);
 
         private final SurfaceFactory surfaceFactory;
