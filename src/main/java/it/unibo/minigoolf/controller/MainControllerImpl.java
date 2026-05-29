@@ -5,7 +5,7 @@ import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.map.factories.FirstMap;
 import it.unibo.minigoolf.model.map.factories.SecondMap;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
-import it.unibo.minigoolf.model.map.factories.TestGameMapFactory;
+import it.unibo.minigoolf.model.map.factories.TestMap;
 import it.unibo.minigoolf.view.MainWindow;
 
 import javax.swing.Timer;
@@ -50,7 +50,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
      */
     @Override
     public void startNewMatch(final List<String> playerNames) {
-        final MapSequence mapSequence = new MapSequence(List.of(new TestGameMapFactory(), new FirstMap(), new SecondMap()));
+        final MapSequence mapSequence = new MapSequence(List.of(new TestMap(), new FirstMap(), new SecondMap()));
         this.matchManager = new MatchManager(
             mapSequence,
             playerNames,

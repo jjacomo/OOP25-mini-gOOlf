@@ -16,6 +16,8 @@ import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactory;
 import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactoryImpl;
+import it.unibo.minigoolf.model.surfaces.wind.WindDirection;
+import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
@@ -33,7 +35,7 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * @see RectangularSurface
  * @see Surface
  */
-public class TestGameMapFactory implements GameMapFactory {
+public class TestMap implements GameMapFactory {
 
         private static final double MAIN_SURFACE_X = 0;
         private static final double MAIN_SURFACE_Y = 0;
@@ -52,6 +54,12 @@ public class TestGameMapFactory implements GameMapFactory {
         private static final int THIRD_SURFACE_Z_INDEX = 2;
         private static final double BALL_RADIUS = 30;
         private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(150, 150);
+        private static final double WINDYGRASS1_X = 1200;
+        private static final double WINDYGRASS1_Y = 300;
+        private static final double WINDYGRASS1_RADIUS1 = 100;
+        private static final double WINDYGRASS1_RADIUS2 = 150;
+        private static final int WINDYGRASS1_Z_INDEX = 3;
+        private static final double WIND_STRENGTH = 10.5;
 
         private static final double W1_X = 0;
         private static final double W1_Y = 0;
@@ -89,7 +97,7 @@ public class TestGameMapFactory implements GameMapFactory {
          * Constructs a TestGameMapFactory using a default SurfaceFactory
          * implementation.
          */
-        public TestGameMapFactory() {
+        public TestMap() {
                 this(new SurfaceFactoryImpl());
         }
 
@@ -98,7 +106,7 @@ public class TestGameMapFactory implements GameMapFactory {
          * 
          * @param surfaceFactory the factory used to build surfaces
          */
-        public TestGameMapFactory(final SurfaceFactory surfaceFactory) {
+        public TestMap(final SurfaceFactory surfaceFactory) {
                 this.surfaceFactory = surfaceFactory;
         }
 
@@ -135,6 +143,11 @@ public class TestGameMapFactory implements GameMapFactory {
                                 new Rectangle(new Vector2D(THIRD_SURFACE_X, THIRD_SURFACE_Y), THIRD_SURFACE_WIDTH,
                                                 THIRD_SURFACE_HEIGHT),
                                 THIRD_SURFACE_Z_INDEX));
+                surfaces.add(surfaceFactory.createWindy(
+                                surfaceFactory.createDirt(
+                                                new Oval(new Vector2D(WINDYGRASS1_X, WINDYGRASS1_Y), WINDYGRASS1_RADIUS1, WINDYGRASS1_RADIUS2),
+                                                WINDYGRASS1_Z_INDEX),
+                                WindDirection.UP, WIND_STRENGTH));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
