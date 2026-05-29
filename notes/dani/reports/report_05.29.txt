@@ -1,10 +1,16 @@
-Report - 05/21 - 45 ore
+Report - 05/21 - 47 ore
 
 FATTO:
 
-- Preparata la parte per la raccolta dei punteggi tra le mappe, servirà anche per la leaderboard (semplicemente sommerà questi punteggi e li riorganizzerà).
+- Finita la parte per la raccolta dei punteggi tra le mappe, servirà anche per la leaderboard (semplicemente sommerà questi punteggi e li riorganizzerà).
 Stavo pensando che praticamente la schermata della leaderboard potrei mostrarla sia dal menu principale (come già stabilito prima) sia a fine partita.
 
+- Preparata la prima bozza di leaderboard, per ora non funziona ancora, forse oggi pomeriggio o domani ci lavoro su: non credo di usare il sistema di salvataggio
+di @fedesparvo1-a11y perché sono due cose separate. Ho messo anche delle "medaglie", per ora non le ho provate ma sembra che possa funzionare con delle semplici
+emoji: faccio fatica a crederlo ma non appena sarà operativa la leaderboard vedremo.
+
 DA FARE:
+
+- Finire la leaderboard: gestire il salvataggio dei nomi corrispondenti agli shots ed importarli nella leaderboard.
 
 AGENDA:
