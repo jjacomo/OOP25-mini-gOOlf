@@ -19,6 +19,8 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * Implementation of {@link GameController}.
@@ -88,6 +90,9 @@ public final class GameControllerImpl implements GameController {
     /** Called when all players have completed the hole. By default it does nothing (no-op). */
     private Runnable onHoleCompleted = () -> { };
 
+    /** {@code () -> { ... }} estrae tutti i giocatori e i loro tiri */
+    private final Supplier<Map<String, Integer>> allScoresSupplier;
+
     private ShotController shotController;
 
     /**
@@ -127,6 +132,14 @@ public final class GameControllerImpl implements GameController {
             gameMapController.getHoleController().getRadius());
         this.initialBallPosition =
             gameMapController.getBallController().getPosition();
+            //Scores supplier to get the scores of each player from a particular map
+            this.allScoresSupplier = () -> {
+            final Map<String, Integer> scores = new LinkedHashMap<>();
+            for (var p : gameState.getPlayers()) {
+                scores.put(p.getName(), p.getShots());
+            }
+            return scores;
+        };
     }
 
     /** {@inheritDoc} */
@@ -245,5 +258,11 @@ public final class GameControllerImpl implements GameController {
             ballXSupplier.get(),
             ballYSupplier.get()
         );
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public Map<String, Integer> getHoleScores() {
+        return allScoresSupplier.get();
     }
 }

@@ -76,4 +76,9 @@ public interface GameController {
      * @return an immutable snapshot of the match
      */
     it.unibo.minigoolf.model.save.SaveData createSaveData(String mapId);
+
+    /**
+     * @return a map associating each player's name with the shots taken in this hole.
+     */
+    java.util.Map<String, Integer> getHoleScores();
 }

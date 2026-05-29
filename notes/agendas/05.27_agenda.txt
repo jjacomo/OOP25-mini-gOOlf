@@ -18,4 +18,4 @@ Dani:
 
 - tasto skip per andare avanti di mappa, mappa test con TUTTE le superfici, ostacoli
 
-- 
+- mappe da un pool random, la prima come tutorial

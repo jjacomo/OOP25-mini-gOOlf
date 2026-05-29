@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.controller.game;
 
+import it.unibo.minigoolf.controller.MainControllerImpl;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
 import it.unibo.minigoolf.model.save.SaveData;
@@ -7,6 +8,8 @@ import it.unibo.minigoolf.model.save.SaveData;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * Manages the lifecycle of matches within a map sequence.
@@ -32,6 +35,12 @@ public final class MatchManager {
     /** Rebuilds the game panel for a new match. */
     private final Consumer<GameController> rebuildPanel;
 
+    /** Stores the scores, used in the leaderboard */
+    private final Map<String, Integer> globalScores = new LinkedHashMap<>();
+
+    /** Callback to show the summary-leaderboard after a map is completed */
+    private final Consumer<Map<String, Integer>> showSummaryPanel;
+
     private GameController activeMatch;
 
     /**
@@ -50,15 +59,21 @@ public final class MatchManager {
             final Runnable startGame,
             final Runnable goToMenu,
             final Consumer<GameController> rebuildPanel,
-            final NavigationController navController) {
+            final NavigationController navController,
+            final Consumer<Map<String, Integer>> showSummaryPanel) {
+        
         this.mapSequence = mapSequence;
         this.playerNames = List.copyOf(playerNames);
         this.stopGame = stopGame;
         this.startGame = startGame;
         this.goToMenu = goToMenu;
-        this.rebuildPanel = rebuildPanel;
         this.activeMatch = buildMatch();
+        this.rebuildPanel = rebuildPanel;
         rebuildPanel.accept(activeMatch);
+        this.showSummaryPanel = showSummaryPanel;
+        for (String name : this.playerNames) {
+            this.globalScores.put(name, 0);
+        }
         // Register save/restore data on SaveController via NavigationController.
         navController.registerSnapshotSupplier(
             () -> activeMatch.createSaveData(
@@ -116,10 +131,24 @@ public final class MatchManager {
 
     /**
      * Called when the ball enters the hole.
-     * Advances to the next map if available, otherwise returns to the main menu.
+     * Gets the current scores.
      */
     private void onHoleCompleted() {
         stopGame.run();
+        
+        final Map<String, Integer> holeScores = activeMatch.getHoleScores();
+        for (Map.Entry<String, Integer> entry : holeScores.entrySet()) {
+            globalScores.put(entry.getKey(), globalScores.get(entry.getKey()) + entry.getValue());
+        }
+        showSummaryPanel.accept(holeScores);
+    }
+
+    /**
+     * TODO: Per Fede: Ho cambiato la classe OnHoleCompleted: praticamente ora è questa, l'altra mi serve per la leaderboard.
+     * Called when the map is completed, goes to the next "hole"
+     * Advances to the next map if available, otherwise returns to the main menu.
+     */
+    private void advanceToNextHole() {
         if (mapSequence.hasNext()) {
             mapSequence.advance();
             activeMatch = buildMatch();

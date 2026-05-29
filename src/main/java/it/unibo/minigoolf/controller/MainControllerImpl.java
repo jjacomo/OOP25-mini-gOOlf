@@ -58,7 +58,8 @@ public final class MainControllerImpl implements MainController, ActionListener 
             navigationController::showGameScene,
             navigationController::goToMainMenu,
             mainWindow::rebuildGamePanel,
-            navigationController);
+            navigationController,
+            scores -> System.out.println("TODO: Scores:" + scores));
     }
 
     /** {@inheritDoc} */
