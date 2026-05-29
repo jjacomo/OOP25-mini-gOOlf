@@ -74,6 +74,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
      * @param radius  maximum allowed distance in logical pixels
      * @return true if the point is close enough to the ball
      */
+    @Override
     public boolean isNearBall(final Point logical, final double radius) {
         final Optional<Vector2D> ballPos = shotState.getBallPosition();
         if (ballPos.isEmpty()) {
@@ -90,6 +91,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
      * @param physical the raw point from a MouseEvent
      * @return the point in logical space
      */
+    @Override
     public Point toLogical(final Point physical) {
         final double factorX = (double) LOGICAL_WIDTH / getWidth();
         final double factorY = (double) LOGICAL_HEIGHT / getHeight();

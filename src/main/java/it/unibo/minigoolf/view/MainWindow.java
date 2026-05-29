@@ -101,32 +101,31 @@ public final class MainWindow extends JFrame {
     }
 
     /**
-     * Shows the midleadearboardpanel as an overlay.
+     * Shows the mid-leaderboard panel as an overlay.
      * Safely swaps the current glass pane (pausepanel) and restores it afterwards.
-     * * @param scores the map of players and their shots
+     *
+     * @param scores     the map of players and their shots
      * @param onNextHole the action to run when clicking "Next Hole"
      */
-    public void showMidLeaderBoard (final java.util.Map<String, Integer> scores, final Runnable onNextHole) {
+    public void showMidLeaderBoard(final java.util.Map<String, Integer> scores, final Runnable onNextHole) {
         // This is needed to save the pause panel
         final java.awt.Component oldGlassPane = this.getGlassPane();
-        
+
         final MidLeaderBoardPanel summaryPanel = new MidLeaderBoardPanel(scores, () -> {
-            
             this.getGlassPane().setVisible(false);
             // This is needed for the pause panel to appear in the next map.
-            this.setGlassPane(oldGlassPane); 
-            
+            this.setGlassPane(oldGlassPane);
             onNextHole.run();
         });
-        
+
         this.setGlassPane(summaryPanel);
         this.getGlassPane().setVisible(true);
     }
 
-
     /**
-     * To update the leaderboard with last scores.
-     * * @param finalscores 
+     * Updates the leaderboard with the latest scores.
+     *
+     * @param finalScores the map of player names to their total scores
      */
     public void updateLeaderboard(final java.util.Map<String, Integer> finalScores) {
         this.leaderboardPanel.updateScores(finalScores);

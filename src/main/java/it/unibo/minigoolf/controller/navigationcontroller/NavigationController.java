@@ -30,7 +30,7 @@ public final class NavigationController {
     private final SaveController saveController;
 
     /** Returns true if the ball is not moving and the game can be paused. */
-    private BooleanSupplier canPause = () -> true;
+    private BooleanSupplier pauseChecker = () -> true;
 
     /**
      * @param mainController the main controller
@@ -81,10 +81,10 @@ public final class NavigationController {
      * Called by {@link it.unibo.minigoolf.controller.game.MatchManager}
      * when a match is active.
      *
-     * @param canPause returns true if the ball is not moving
+     * @param pauseChecker returns true if the ball is not moving
      */
-    public void setCanPause(final BooleanSupplier canPause) {
-        this.canPause = canPause;
+    public void setpauseChecker(final BooleanSupplier pauseChecker) {
+        this.pauseChecker = pauseChecker;
     }
 
     /**
@@ -147,7 +147,7 @@ public final class NavigationController {
      * Does nothing if the ball is currently moving.
      */
     public void pauseGame() {
-        if (!canPause.getAsBoolean()) {
+        if (!pauseChecker.getAsBoolean()) {
             return;
         }
         this.mainController.stop();

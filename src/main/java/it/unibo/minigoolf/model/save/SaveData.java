@@ -2,8 +2,6 @@ package it.unibo.minigoolf.model.save;
 
 import java.util.List;
 
-import it.unibo.minigoolf.model.map.factories.GameMapFactory;
-
 /**
  * Immutable snapshot of a minigolf match that can be serialised to JSON and
  * restored later.
@@ -13,19 +11,18 @@ import it.unibo.minigoolf.model.map.factories.GameMapFactory;
  * This makes the save file smaller and avoids saving
  * complicated geometry objects.
  *
- * 
  * @author fede
  * @param currentPlayerIndex index into {@code players} of whose turn it is
- * @param mapId              identifier used by {@link GameMapFactory} to rebuild the map
+ * @param mapId              identifier used by GameMapFactory to rebuild the map
  * @param players            ordered list of player snapshots
- * @param ballX              ball X position in logical (1920×1080) coordinates
- * @param ballY              ball Y position in logical (1920×1080) coordinates
+ * @param ballX              ball X position in logical (1920x1080) coordinates
+ * @param ballY              ball Y position in logical (1920x1080) coordinates
  */
 public record SaveData(
     int currentPlayerIndex,
     String mapId,
     List<PlayerSaveData> players,
-    double ballX,   
+    double ballX,
     double ballY
 ) {
 
@@ -33,10 +30,10 @@ public record SaveData(
      * Compact canonical constructor that defensively copies the players list.
      *
      * @param currentPlayerIndex index into {@code players} of whose turn it is
-     * @param mapId              identifier used by {@link GameMapFactory} to rebuild the map
+     * @param mapId              identifier used by GameMapFactory to rebuild the map
      * @param players            ordered list of player snapshots
-     * @param ballX              ball X position in logical (1920×1080) coordinates
-     * @param ballY              ball Y position in logical (1920×1080) coordinates
+     * @param ballX              ball X position in logical (1920x1080) coordinates
+     * @param ballY              ball Y position in logical (1920x1080) coordinates
      */
     public SaveData {
         players = List.copyOf(players);

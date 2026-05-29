@@ -45,3 +45,7 @@
 3 ore: finito il salvataggio partita, quando sarà completa anche la leaderboard mi assicurerò che funzioni correttamente
 
 2 ore: creato secondMap, per ora è banale con 2 tiri, da sistemare
+
+5 ore: completato definitivamente il salvataggio dati partita, ora non ha più bug o problemi
+
+4 ore: pulizia di tutte le classi, rese più efficienti e tolto/aggiunto commenti dove necessario

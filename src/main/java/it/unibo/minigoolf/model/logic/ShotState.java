@@ -10,8 +10,8 @@ import java.util.Optional;
  *
  * <p>The flow is:
  * <ol>
- *   <li>The view calls {@link #updateIntent(Vector2D)} while the user drags.   </li>
- *   <li>The view calls {@link #confirmShot()} on mouse release.                </li>
+ *   <li>The view calls {@link #updateIntent(Vector2D)} while the user drags.</li>
+ *   <li>The view calls {@link #confirmShot()} on mouse release.</li>
  *   <li>The controller calls {@link #consume()} each tick to retrieve the shot.</li>
  * </ol>
  *
@@ -78,7 +78,7 @@ public final class ShotState {
     /**
      * Returns the current drag intent vector, or empty if no drag is in progress.
      * Used by the view to draw the indicator.
-     *  
+     *
      * @return an Optional containing the current drag vector
      */
     public synchronized Optional<Vector2D> getIntent() {
