@@ -1,19 +1,19 @@
 package it.unibo.minigoolf.model.save;
 
-import it.unibo.minigoolf.model.logic.GameState;
-import it.unibo.minigoolf.model.map.GameMap;
-
 import java.util.List;
+
+import it.unibo.minigoolf.model.map.factories.GameMapFactory;
 
 /**
  * Immutable snapshot of a minigolf match that can be serialised to JSON and
  * restored later.
+ * The map is saved only as a string id, not as a complete object.
+ * When loading, the program uses this id to find the correct
+ * GameMapFactory and rebuild the map from the beginning.
+ * This makes the save file smaller and avoids saving
+ * complicated geometry objects.
  *
- * <p>The map is stored as a string identifier rather than a full object graph:
- * on load the factory looks up the right {@code GameMapFactory} implementation
- * by this id and rebuilds the map from scratch. This keeps the save file small
- * and avoids serialising complex geometry.</p>
- *
+ * 
  * @author fede
  * @param currentPlayerIndex index into {@code players} of whose turn it is
  * @param mapId              identifier used by {@link GameMapFactory} to rebuild the map
@@ -25,7 +25,7 @@ public record SaveData(
     int currentPlayerIndex,
     String mapId,
     List<PlayerSaveData> players,
-    double ballX,
+    double ballX,   
     double ballY
 ) {
 
@@ -40,31 +40,5 @@ public record SaveData(
      */
     public SaveData {
         players = List.copyOf(players);
-    }
-
-    /**
-     * Builds a {@code SaveData} snapshot from the current game state and map.
-     *
-     * @param gameState the current game state
-     * @param map       the current game map (used to read ball position)
-     * @param mapId     the string identifier of the map, used to rebuild it on load
-     *
-     * @return a new SaveData ready to be persisted
-     */
-    public static SaveData from(final GameState gameState, final GameMap map, final String mapId) {
-        final List<PlayerSaveData> playerSnapshots = gameState.getPlayers().stream()
-            .map(p -> new PlayerSaveData(p.getName(), p.getShots()))
-            .toList();
-
-        final double ballX = map.getBall().getPosition().getX();
-        final double ballY = map.getBall().getPosition().getY();
-
-        return new SaveData(
-            gameState.getCurrentPlayerIndex(),
-            mapId,
-            playerSnapshots,
-            ballX,
-            ballY
-        );
     }
 }

@@ -12,19 +12,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Handles persistence of a minigolf match to a JSON file using Gson.
- *
- * <p>Usage example:
- * <pre>
- *   // saving
- *   saveManager.save(SaveData.from(gameState, mapId));
- *
- *   // loading
- *   if (saveManager.hasSave()) {
- *       SaveData data = saveManager.load();
- *       // restore game from data …
- *   }
- * </pre>
+ * Saves and loads a minigolf match in a JSON file using Gson.
  *
  * @author fede
  */
@@ -35,7 +23,7 @@ public final class SaveManager {
     private static final String SAVE_FILE = SAVE_DIR + "/savefile.json";
 
     /**
-     * Persists the given snapshot to disk.
+     * Saves the given snapshot to file.
      *
      * @param data the match snapshot to save
      * @throws IOException if the file cannot be written
@@ -51,7 +39,7 @@ public final class SaveManager {
     }
 
     /**
-     * Loads the previously saved snapshot from disk.
+     * Loads the previously saved snapshot from file.
      *
      * @return the deserialized {@link SaveData}
      * @throws IOException if the file cannot be read or does not exist
@@ -73,7 +61,7 @@ public final class SaveManager {
 
     /**
      * Deletes the save file if it exists.
-     * Call this when the player finishes the match so a stale save is not offered.
+     * Call this when the player finishes the match so the old save is not offered.
      */
     public void deleteSave() {
         final File file = new File(SAVE_FILE);

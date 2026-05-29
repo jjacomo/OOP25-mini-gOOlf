@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
  *
  * @author fede
  */
-public final class ShotListener extends MouseAdapter implements ShotInput {
+public final class ShotListener extends MouseAdapter {
 
     /**
      * Maximum distance (in logical pixels) from the ball centre
@@ -72,8 +72,12 @@ public final class ShotListener extends MouseAdapter implements ShotInput {
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Enables or disables this listener.
+     * When disabled, clears any drag in progress.
+     *
+     * @param enable true to accept input, false to ignore it
+     */
     public void setEnable(final boolean enable) {
         this.enable = enable;
         if (!enable) {

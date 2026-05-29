@@ -54,11 +54,6 @@ public final class GameState implements TurnState {
      * @throws IllegalArgumentException if the snapshot is incompatible with this state
      */
     public synchronized void restoreFrom(final SaveData data) {
-        if (data.players().size() != players.size()) {
-            throw new IllegalArgumentException(
-                "Save data has " + data.players().size()
-                + " players but this state has " + players.size());
-        }
         this.currentPlayerIndex = data.currentPlayerIndex();
         IntStream.range(0, players.size())
             .forEach(i -> players.get(i).restoreShots(data.players().get(i).shots()));

@@ -37,7 +37,7 @@ public final class GameControllerImpl implements GameController {
     private static final double HOLE_ENTRY_MAX_SPEED_SQ = 562_500.0;
 
     /** Maximum shots a player can take before their turn ends automatically. */
-    private static final int MAX_SHOTS = 1000;
+    private static final int MAX_SHOTS = 7;
 
     private final GameMapController gameMapController;
     private final ShotState shotState;

@@ -27,6 +27,7 @@ import java.util.Optional;
  */
 public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotView, ShotCoordinateConverter {
 
+    /** Required by {@link java.io.Serializable} inherited from {@link javax.swing.JPanel}. */
     @Serial
     private static final long serialVersionUID = 1L;
 
