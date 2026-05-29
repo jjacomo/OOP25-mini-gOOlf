@@ -20,37 +20,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Second map — "The Ice Corridor".
- *
- * <p>
- * Layout (1920×1080 logical pixels):
- * </p>
- * <ul>
- * <li>A wide grass starting area on the left (0–400, full height).</li>
- * <li>A long narrow ice corridor in the centre (400–1520, 390–690)
- * flanked by walls — the ball slides fast with minimal friction.</li>
- * <li>A sand trap circular patch mid-corridor to slow the ball down.</li>
- * <li>A windy grass exit area on the right (1520–1920, full height)
- * with upward wind to push the ball toward the hole.</li>
- * <li>Several round obstacles inside the corridor and a triangle near the
- * exit.</li>
- * <li>Ball starts at (80, 540), hole at (1840, 540).</li>
- * </ul>
+ * Second map.
  *
  * @author fede
  */
+
 public final class SecondMap implements GameMapFactory {
 
-    // --- Surfaces ---
-
-    // Grass start area (left)
+    // Grass start area
     private static final double GRASS_START_X = 0;
     private static final double GRASS_START_Y = 0;
     private static final double GRASS_START_W = 400;
     private static final double GRASS_START_H = 1080;
     private static final int GRASS_START_Z = 0;
 
-    // Ice corridor (centre, narrow horizontal channel)
+    // Ice corridor 
     private static final double ICE_X = 400;
     private static final double ICE_Y = 390;
     private static final double ICE_W = 1120;
@@ -62,7 +46,7 @@ public final class SecondMap implements GameMapFactory {
     private static final double SAND_CIRCLE_R = 90;
     private static final int SAND_CIRCLE_Z = 2;
 
-    // Windy grass exit area (right) — wind pushes ball upward toward hole
+    // Windy grass exit area
     private static final double WINDY_EXIT_X = 1520;
     private static final double WINDY_EXIT_Y = 0;
     private static final double WINDY_EXIT_W = 400;
@@ -70,7 +54,7 @@ public final class SecondMap implements GameMapFactory {
     private static final int WINDY_EXIT_Z = 0;
     private static final double WIND_STRENGTH = 10.0;
 
-    // --- Boundary walls ---
+    // Boundary walls 
     private static final double W_TOP_X = 0;
     private static final double W_TOP_Y = 0;
     private static final double W_TOP_W = 1920;
@@ -103,7 +87,7 @@ public final class SecondMap implements GameMapFactory {
     private static final double COR_BOT_W = 1120;
     private static final double COR_BOT_H = 31;
 
-    // --- Round obstacles inside the ice corridor ---
+    // Round obstacles inside the ice corridor
     private static final Vector2D OBS1_POS = new Vector2D(600, 450);
     private static final double OBS1_R = 30;
 
@@ -145,7 +129,7 @@ public final class SecondMap implements GameMapFactory {
     private static final Vector2D TRI_V2 = new Vector2D(1520, 359);
     private static final Vector2D TRI_V3 = new Vector2D(1485, 480);
 
-    // --- Ball and hole ---
+    // Ball and hole
     private static final Vector2D BALL_POS = new Vector2D(80, 540);
     private static final double BALL_R = 30;
     private static final Vector2D HOLE_POS = new Vector2D(1840, 540);
@@ -207,7 +191,7 @@ public final class SecondMap implements GameMapFactory {
         obstacles.add(new WallObstacle(new Vector2D(COR_TOP_X, COR_TOP_Y), COR_TOP_W, COR_TOP_H));
         obstacles.add(new WallObstacle(new Vector2D(COR_BOT_X, COR_BOT_Y), COR_BOT_W, COR_BOT_H));
 
-        // Gap-closing walls (prevent ball escaping into void above/below corridor)
+        // Closing walls
         obstacles.add(new WallObstacle(new Vector2D(GAP_L_TOP_X, GAP_L_TOP_Y), GAP_L_TOP_W, GAP_L_TOP_H));
         obstacles.add(new WallObstacle(new Vector2D(GAP_L_BOT_X, GAP_L_BOT_Y), GAP_L_BOT_W, GAP_L_BOT_H));
         obstacles.add(new WallObstacle(new Vector2D(GAP_R_TOP_X, GAP_R_TOP_Y), GAP_R_TOP_W, GAP_R_TOP_H));

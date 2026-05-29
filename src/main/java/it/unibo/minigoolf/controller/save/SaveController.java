@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Manages persistence of the match state independently from the match lifecycle.
  * Created once at application startup so save/load is available before any match
- * is started, without requiring MainControllerImpl to know anything about serialisation.
+ * is started.
  *
  * @author fede
  */
@@ -21,40 +21,34 @@ public final class SaveController {
 
     private static final Logger LOGGER = Logger.getLogger(SaveController.class.getName());
 
-    /** Supplies the snapshot to persist — set by MatchManager when a match is active. */
+    /** Supplies the snapshot. */
     private Supplier<SaveData> snapshotSupplier = () -> null;
 
     /** Called after a successful load to start the restored match. */
     private Consumer<SaveData> restoreCallback = data -> { };
 
-    /** Saves and checks for save files — stored only as behavior callbacks. */
-    private final Runnable persistAction;
-    private final Runnable deleteAction;
-    private final Supplier<Boolean> saveExistsSupplier;
-    private final Supplier<Optional<SaveData>> loadAction;
+    /** Saves, loads, checks and deletes save files, stored only as behavior callbacks. */
+    private final Runnable saver;
+    private final Runnable deleter;
+    private final Supplier<Boolean> existsChecker;
+    private final Supplier<Optional<SaveData>> loader;
 
     /**
      * @param saveManager handles the actual file I/O
      */
     public SaveController(final SaveManager saveManager) {
-        // Extract only behaviors from saveManager — avoids EI2.
-        this.persistAction = () -> {
-            try {
-                Optional.ofNullable(snapshotSupplier.get())
-                    .ifPresent(data -> {
-                        try {
-                            saveManager.save(data);
-                        } catch (final IOException e) {
-                            LOGGER.log(Level.WARNING, "Could not save match", e);
-                        }
-                    });
-            } catch (final RuntimeException e) {
-                LOGGER.log(Level.WARNING, "Could not save match", e);
-            }
-        };
-        this.saveExistsSupplier = saveManager::hasSave;
-        this.deleteAction = saveManager::deleteSave;
-        this.loadAction = () -> {
+        // Extract only behaviors from saveManager.
+        this.saver = () -> Optional.ofNullable(snapshotSupplier.get())
+            .ifPresent(data -> {
+                try {
+                    saveManager.save(data);
+                } catch (final IOException e) {
+                    LOGGER.log(Level.WARNING, "Could not save match", e);
+                }
+            });
+        this.existsChecker = saveManager::hasSave;
+        this.deleter = saveManager::deleteSave;
+        this.loader = () -> {
             try {
                 return Optional.of(saveManager.load());
             } catch (final IOException e) {
@@ -70,7 +64,7 @@ public final class SaveController {
      * @return true if a save exists on disk
      */
     public boolean hasSave() {
-        return saveExistsSupplier.get();
+        return existsChecker.get();
     }
 
     /**
@@ -96,7 +90,7 @@ public final class SaveController {
      * No-op if no snapshot supplier has been registered yet.
      */
     public void save() {
-        persistAction.run();
+        saver.run();
     }
 
     /**
@@ -106,9 +100,9 @@ public final class SaveController {
         if (!hasSave()) {
             return;
         }
-        loadAction.get().ifPresent(data -> {
+        loader.get().ifPresent(data -> {
             restoreCallback.accept(data);
-            deleteAction.run();
+            deleter.run();
         });
     }
 }

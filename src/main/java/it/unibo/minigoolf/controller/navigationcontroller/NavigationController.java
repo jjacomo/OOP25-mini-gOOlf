@@ -36,7 +36,7 @@ public final class NavigationController {
             final MainWindow mainWindow) {
         this.mainController = mainController;
         this.saveController = new SaveController(new SaveManager());
-        // Extract only the needed behaviors from mainWindow — avoids EI2.
+        // Extract only the needed behaviors from mainWindow
         this.showMenuCallback = () -> mainWindow.showScene("MENU");
         this.showGameCallback = () -> mainWindow.showScene("GAME");
         this.showNewGameCallback = () -> mainWindow.showScene("NEW_GAME");
@@ -75,7 +75,7 @@ public final class NavigationController {
     }
 
     /**
-     * Saves the current match state to disk.
+     * Saves the current match state.
      */
     public void saveGame() {
         saveController.save();

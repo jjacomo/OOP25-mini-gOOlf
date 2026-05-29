@@ -10,8 +10,8 @@ import java.util.Optional;
  *
  * <p>The flow is:
  * <ol>
- *   <li>The view calls {@link #updateIntent(Vector2D)} while the user drags.</li>
- *   <li>The view calls {@link #confirmShot()} on mouse release.</li>
+ *   <li>The view calls {@link #updateIntent(Vector2D)} while the user drags.   </li>
+ *   <li>The view calls {@link #confirmShot()} on mouse release.                </li>
  *   <li>The controller calls {@link #consume()} each tick to retrieve the shot.</li>
  * </ol>
  *
@@ -19,12 +19,7 @@ import java.util.Optional;
  */
 public final class ShotState {
 
-    /**
-     * Maximum power of a shot in logical pixels.
-     * Matches the maximum display length of the indicator line in
-     * {@link it.unibo.minigoolf.view.input.ShotViewPanel} so the
-     * visual and the physics are always in sync.
-     */
+    /** Maximum power of a shot in logical pixels. */
     public static final double MAX_POWER = 150.0;
 
     /** Minimum squared power for a shot to be accepted. */
@@ -65,8 +60,7 @@ public final class ShotState {
 
     /**
      * Consumes and returns the pending shot if one is ready.
-     * The shot vector is clamped to {@link #MAX_POWER} so the physics
-     * never receive more power than what the visual indicator shows.
+     * The shot vector is clamped to {@link #MAX_POWER}.
      * Clears internal state after consumption.
      *
      * @return an Optional containing the clamped shot vector, or empty if none is ready
@@ -84,7 +78,7 @@ public final class ShotState {
     /**
      * Returns the current drag intent vector, or empty if no drag is in progress.
      * Used by the view to draw the indicator.
-     *
+     *  
      * @return an Optional containing the current drag vector
      */
     public synchronized Optional<Vector2D> getIntent() {

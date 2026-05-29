@@ -1,8 +1,8 @@
 package it.unibo.minigoolf.model.logic;
 
 /**
- * Represents a single player in the minigolf game.
- * Tracks the player's name and how many shots they have taken on the current hole.
+ * Rapresents a single player in the minigolf game.
+ * Tracks the player's name and how many shots they have taken on the current map.
  *
  * @author fede
  */
@@ -60,9 +60,4 @@ public final class Player {
         this.shots = savedShots;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public String toString() {
-        return name + " | Shots: " + shots;
-    }
 }

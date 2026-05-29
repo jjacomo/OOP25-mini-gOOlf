@@ -11,15 +11,14 @@ import java.util.function.Supplier;
 
 /**
  * Implementation of {@link ShotController}.
- * Uses functional callbacks instead of storing stateful collaborators,
- * avoiding EI2 warnings while keeping coupling minimal.
+ * Uses functional callbacks to avoid EI2 warnings while keeping coupling minimal.
  *
  * @author fede
  */
 public final class ShotControllerImpl implements ShotController {
 
     /**
-     * Converts the shot vector from logical-pixel units (max {@link ShotState#MAX_POWER})
+     * Converts the shot vector from logical pixel units (max {@link ShotState#MAX_POWER})
      * to physics velocity units.
      */
     private static final double SHOT_SCALE = 10.0;

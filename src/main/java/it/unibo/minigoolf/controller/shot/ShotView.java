@@ -5,8 +5,7 @@ import java.awt.Point;
 /**
  * Minimal interface through which {@link ShotControllerImpl}
  * communicates with the shot-input view.
- * Keeping this boundary narrow means the controller stays decoupled
- * from the full view implementation.
+ * Created to respetc the mvc pattern.
  *
  * @author fede
  */

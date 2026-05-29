@@ -7,8 +7,8 @@ import java.util.Optional;
 /**
  * Minimal interface exposing only the turn-management operations needed
  * by the shot and game controllers.
- * Using this narrow type instead of the full {@link GameState} prevents
- * SpotBugs EI2 warnings and keeps the controllers decoupled from the
+ * Create this interface instead of the full {@link GameState} to avoid
+ * EI2 warnings and to keep the controllers decoupled from the
  * full game-state object.
  *
  * @author fede
