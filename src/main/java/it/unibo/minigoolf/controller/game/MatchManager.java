@@ -155,6 +155,8 @@ public final class MatchManager {
             rebuildPanel.accept(activeMatch);
             startGame.run();
         } else {
+            final it.unibo.minigoolf.model.LeaderBoardManager leaderManager = new it.unibo.minigoolf.model.LeaderBoardManager();
+            leaderManager.updateAndSaveScores(this.globalScores);
             goToMenu.run();
         }
     }
