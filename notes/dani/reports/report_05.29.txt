@@ -1,16 +1,26 @@
-Report - 05/21 - 47 ore
+Report - 05/21 - 50 ore
 
 FATTO:
 
 - Finita la parte per la raccolta dei punteggi tra le mappe, servirà anche per la leaderboard (semplicemente sommerà questi punteggi e li riorganizzerà).
 Stavo pensando che praticamente la schermata della leaderboard potrei mostrarla sia dal menu principale (come già stabilito prima) sia a fine partita.
 
-- Preparata la prima bozza di leaderboard, per ora non funziona ancora, forse oggi pomeriggio o domani ci lavoro su: non credo di usare il sistema di salvataggio
-di @fedesparvo1-a11y perché sono due cose separate. Ho messo anche delle "medaglie", per ora non le ho provate ma sembra che possa funzionare con delle semplici
-emoji: faccio fatica a crederlo ma non appena sarà operativa la leaderboard vedremo.
+- Finita la leaderboard! Creata la classe LeaderboardManager per gestirla a livello logico. Ho valutato inizialmente di usare il sistema di salvataggio di Fede
+ma alla fine non volevo mischiare le cose e ho optato per un salvataggio più easy su un file txt. Ho usato la cartella saves e creato una sottocartella leaderboard.
+Sembra funzionare, ho fatto un paio di partite e sono apparsi i nomi con tanto di medaglie del podio. Ho eliminato il file per altri test ma se fate qualche partita
+potete vedere voi stessi. Affinchè salvi dovete completare TUTTE le mappe.
 
 DA FARE:
 
-- Finire la leaderboard: gestire il salvataggio dei nomi corrispondenti agli shots ed importarli nella leaderboard.
+- Aggiungere il tasto go back to menu anche nel newgamepanel.
+
+- Spotbugs!
+
+- Scrivere qualche classe di test! idee: testare il salvataggio nella leaderboard, testare gli shots durante la partita, testare l'interfaccia.
+
+- tasto skip per andare avanti di mappa
+
+- mappe da un pool random, la prima come tutorial
+
 
 AGENDA:

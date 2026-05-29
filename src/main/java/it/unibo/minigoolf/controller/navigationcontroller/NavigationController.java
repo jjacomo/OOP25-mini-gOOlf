@@ -42,7 +42,14 @@ public final class NavigationController {
         this.showNewGameCallback = () -> mainWindow.showScene("NEW_GAME");
         this.pauseWindowCallback = () -> mainWindow.getGlassPane().setVisible(true);
         this.resumeWindowCallback = () -> mainWindow.getGlassPane().setVisible(false);
-        this.showLeaderboardCallback = () -> mainWindow.showScene("LEADERBOARD");
+        // TODO: Maybe I can move it somewhere else, it's getting crouded here
+        this.showLeaderboardCallback = () -> {
+            final it.unibo.minigoolf.model.LeaderBoardManager leaderManager = 
+            new it.unibo.minigoolf.model.LeaderBoardManager();
+            final java.util.Map<String, Integer> bestScores = leaderManager.loadBestScores();
+            mainWindow.updateLeaderboard(bestScores);
+            mainWindow.showScene("LEADERBOARD");
+        };
     }
 
     /**

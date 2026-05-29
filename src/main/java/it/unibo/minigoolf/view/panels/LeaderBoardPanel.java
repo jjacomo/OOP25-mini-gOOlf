@@ -21,7 +21,6 @@ import java.util.Map;
  * One of the possibile scenes, this is the leaderboard, a table with
  * the scores of each player. 
  * * @author dani
- * * TODO:  only after the basegame is working!
  */ 
 public final class LeaderBoardPanel extends JPanel {
     /**
@@ -68,9 +67,9 @@ public final class LeaderBoardPanel extends JPanel {
         this.tableContainer.removeAll();
 
         if (scores == null || scores.isEmpty()) {
-            final JLabel emptyLabel = new JLabel("No matches played yet!");
+            final JLabel emptyLabel = new JLabel("EMPTY!");
             emptyLabel.setForeground(Color.WHITE);
-            emptyLabel.setFont(new Font("Comic Sans MS", Font.ITALIC, 18));
+            emptyLabel.setFont(new Font("Comic Sans MS", Font.ITALIC, 25));
             this.tableContainer.add(emptyLabel);
         } else {
             // To order the scores

@@ -19,12 +19,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
+import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 
 /**
  * One of the possibile scenes, this is the menu where the user can choose the n° of
  * players, therefore it starts a singleplayer or a multiplayer match.
  * * @author dani
- * * TODO: only when the core singleplayer is working! (not really lol, done some part of it before ooops)
  */
 public final class NewGamePanel extends JPanel {
     /**
@@ -81,12 +81,8 @@ public final class NewGamePanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "The number is not valid.");
             }
         });
-        /* 
-         Here I need something to pass the names to @fedesparvo1-a11y to initialize the game!
-        */
 
-
-         // Start match button, it starts a new single/multiplayermatch
+        // Start match button, it starts a new single/multiplayermatch
         final JButton startButton = new JButton("START MATCH");
         this.add(startButton, BorderLayout.SOUTH);
         startButton.addActionListener(e -> {
@@ -103,8 +99,6 @@ public final class NewGamePanel extends JPanel {
             }
             navigationController.setupMatchAndStart(playerNames);
         });
-
-
 
     }
 
