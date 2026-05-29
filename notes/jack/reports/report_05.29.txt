@@ -1,0 +1,19 @@
+Report - 27/05 - 1h (tot: 59h)
+
+* Rinominato TestGameMapFactory in TestMap e ci ho aggiunto una superficie ventosa ovale;
+
+- Optional di texture in mapPanel?
+
+-------------------------------------------------------------------------------------------------
+MEMO:
+Nel report finale fai uno schema UML che illustri il pattern adapter implementato.
+
+-------------------------------------------------------------------------------------------------
+TODO:
+* Riguarda e aggiungi i commenti della javadoc;
+
+-------------------------------------------------------------------------------------------------
+POSSIBILI FEATURE:
+
+* puoi far scegliere la strategy in base al terreno:
+    velocityStrategy = strategyFactory.getStrategy(ball.getCurrentTerrain());

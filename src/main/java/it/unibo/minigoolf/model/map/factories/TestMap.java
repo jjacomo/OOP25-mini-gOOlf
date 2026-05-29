@@ -147,7 +147,7 @@ public class TestMap implements GameMapFactory {
                                 surfaceFactory.createDirt(
                                                 new Oval(new Vector2D(WINDYGRASS1_X, WINDYGRASS1_Y), WINDYGRASS1_RADIUS1, WINDYGRASS1_RADIUS2),
                                                 WINDYGRASS1_Z_INDEX),
-                                WindDirection.UP, WIND_STRENGTH));
+                                WindDirection.RIGHT, WIND_STRENGTH));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
