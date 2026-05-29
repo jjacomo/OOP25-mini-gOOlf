@@ -259,10 +259,16 @@ public final class GameControllerImpl implements GameController {
             ballYSupplier.get()
         );
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public Map<String, Integer> getHoleScores() {
         return allScoresSupplier.get();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isBallMoving() {
+        return ballMovingChecker.getAsBoolean();
     }
 }

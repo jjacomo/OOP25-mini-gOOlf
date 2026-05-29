@@ -7,6 +7,7 @@ import it.unibo.minigoolf.model.save.SaveManager;
 import it.unibo.minigoolf.view.MainWindow;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -27,6 +28,9 @@ public final class NavigationController {
 
     private final MainController mainController;
     private final SaveController saveController;
+
+    /** Returns true if the ball is not moving and the game can be paused. */
+    private BooleanSupplier canPause = () -> true;
 
     /**
      * @param mainController the main controller
@@ -70,6 +74,17 @@ public final class NavigationController {
      */
     public void registerRestoreCallback(final Consumer<SaveData> callback) {
         saveController.setRestoreCallback(callback);
+    }
+
+    /**
+     * Sets the supplier that checks whether the game can be paused.
+     * Called by {@link it.unibo.minigoolf.controller.game.MatchManager}
+     * when a match is active.
+     *
+     * @param canPause returns true if the ball is not moving
+     */
+    public void setCanPause(final BooleanSupplier canPause) {
+        this.canPause = canPause;
     }
 
     /**
@@ -129,8 +144,12 @@ public final class NavigationController {
 
     /**
      * Handles the transition from the game to the pause menu.
+     * Does nothing if the ball is currently moving.
      */
     public void pauseGame() {
+        if (!canPause.getAsBoolean()) {
+            return;
+        }
         this.mainController.stop();
         pauseWindowCallback.run();
     }
@@ -150,7 +169,7 @@ public final class NavigationController {
         resumeWindowCallback.run();
         this.goToMainMenu();
     }
-    
+
     /**
      * Handles the transition from the pause menu to the leaderboard.
      */

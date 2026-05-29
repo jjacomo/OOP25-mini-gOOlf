@@ -61,7 +61,7 @@ public final class MatchManager {
             final Consumer<GameController> rebuildPanel,
             final NavigationController navController,
             final Consumer<Map<String, Integer>> showSummaryPanel) {
-        
+
         this.mapSequence = mapSequence;
         this.playerNames = List.copyOf(playerNames);
         this.stopGame = stopGame;
@@ -79,6 +79,8 @@ public final class MatchManager {
             () -> activeMatch.createSaveData(
                 String.valueOf(mapSequence.getCurrentIndex())));
         navController.registerRestoreCallback(this::restoreFromSaveData);
+        // Prevent pausing while the ball is moving.
+        navController.setCanPause(() -> !activeMatch.isBallMoving());
     }
 
     /**
@@ -135,7 +137,7 @@ public final class MatchManager {
      */
     private void onHoleCompleted() {
         stopGame.run();
-        
+
         final Map<String, Integer> holeScores = activeMatch.getHoleScores();
         for (Map.Entry<String, Integer> entry : holeScores.entrySet()) {
             globalScores.put(entry.getKey(), globalScores.get(entry.getKey()) + entry.getValue());
@@ -144,7 +146,6 @@ public final class MatchManager {
     }
 
     /**
-     * TODO: Per Fede: Ho cambiato la classe OnHoleCompleted: praticamente ora è questa, l'altra mi serve per la leaderboard.
      * Called when the map is completed, goes to the next "hole"
      * Advances to the next map if available, otherwise returns to the main menu.
      */

@@ -81,4 +81,12 @@ public interface GameController {
      * @return a map associating each player's name with the shots taken in this hole.
      */
     java.util.Map<String, Integer> getHoleScores();
+
+    /**
+     * Returns true if the ball is currently moving.
+     * Used to prevent pausing while a shot is in progress.
+     *
+     * @return true if the ball is in motion
+     */
+    boolean isBallMoving();
 }
