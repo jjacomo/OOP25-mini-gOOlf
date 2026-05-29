@@ -23,6 +23,7 @@ public final class NavigationController {
     private final Runnable showNewGameCallback;
     private final Runnable pauseWindowCallback;
     private final Runnable resumeWindowCallback;
+    private final Runnable showLeaderboardCallback;
 
     private final MainController mainController;
     private final SaveController saveController;
@@ -41,6 +42,7 @@ public final class NavigationController {
         this.showNewGameCallback = () -> mainWindow.showScene("NEW_GAME");
         this.pauseWindowCallback = () -> mainWindow.getGlassPane().setVisible(true);
         this.resumeWindowCallback = () -> mainWindow.getGlassPane().setVisible(false);
+        this.showLeaderboardCallback = () -> mainWindow.showScene("LEADERBOARD");
     }
 
     /**
@@ -140,5 +142,12 @@ public final class NavigationController {
     public void quitToMenu() {
         resumeWindowCallback.run();
         this.goToMainMenu();
+    }
+    
+    /**
+     * Handles the transition from the pause menu to the leaderboard.
+     */
+    public void goToLeaderBoard() {
+        this.showLeaderboardCallback.run();
     }
 }

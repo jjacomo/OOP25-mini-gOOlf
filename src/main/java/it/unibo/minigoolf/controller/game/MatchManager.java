@@ -148,7 +148,7 @@ public final class MatchManager {
      * Called when the map is completed, goes to the next "hole"
      * Advances to the next map if available, otherwise returns to the main menu.
      */
-    private void advanceToNextHole() {
+    public void advanceToNextHole() {
         if (mapSequence.hasNext()) {
             mapSequence.advance();
             activeMatch = buildMatch();

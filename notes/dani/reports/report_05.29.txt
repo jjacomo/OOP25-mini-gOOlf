@@ -1,0 +1,10 @@
+Report - 05/21 - 45 ore
+
+FATTO:
+
+- Preparata la parte per la raccolta dei punteggi tra le mappe, servirà anche per la leaderboard (semplicemente sommerà questi punteggi e li riorganizzerà).
+Stavo pensando che praticamente la schermata della leaderboard potrei mostrarla sia dal menu principale (come già stabilito prima) sia a fine partita.
+
+DA FARE:
+
+AGENDA:

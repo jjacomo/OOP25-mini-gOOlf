@@ -5,7 +5,9 @@ import it.unibo.minigoolf.controller.game.GameController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 import it.unibo.minigoolf.view.panels.GamePanel;
+import it.unibo.minigoolf.view.panels.LeaderBoardPanel;
 import it.unibo.minigoolf.view.panels.MenuPanel;
+import it.unibo.minigoolf.view.panels.MidLeaderBoardPanel;
 import it.unibo.minigoolf.view.panels.NewGamePanel;
 import it.unibo.minigoolf.view.panels.PausePanel;
 
@@ -34,6 +36,7 @@ public final class MainWindow extends JFrame {
 
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel mainContainer = new JPanel(cardLayout);
+    private LeaderBoardPanel leaderboardPanel;
 
     /**
      * Lambda that builds a {@link GamePanel} from a {@link GameController}.
@@ -66,6 +69,8 @@ public final class MainWindow extends JFrame {
     public void initPanels(final NavigationController navController) {
         mainContainer.add(new MenuPanel(navController), "MENU");
         mainContainer.add(new NewGamePanel(navController), "NEW_GAME");
+        this.leaderboardPanel = new LeaderBoardPanel(navController);
+        mainContainer.add(this.leaderboardPanel, "LEADERBOARD");
         cardLayout.show(mainContainer, "MENU");
         this.setGlassPane(new PausePanel(navController));
         // Capture navController in the factory lambda — avoids storing it as a field.
@@ -93,5 +98,37 @@ public final class MainWindow extends JFrame {
      */
     public void rebuildGamePanel(final GameController gameController) {
         mainContainer.add(gamePanelFactory.apply(gameController), "GAME");
+    }
+
+    /**
+     * Shows the midleadearboardpanel as an overlay.
+     * Safely swaps the current glass pane (pausepanel) and restores it afterwards.
+     * * @param scores the map of players and their shots
+     * @param onNextHole the action to run when clicking "Next Hole"
+     */
+    public void showMidLeaderBoard (final java.util.Map<String, Integer> scores, final Runnable onNextHole) {
+        // This is needed to save the pause panel
+        final java.awt.Component oldGlassPane = this.getGlassPane();
+        
+        final MidLeaderBoardPanel summaryPanel = new MidLeaderBoardPanel(scores, () -> {
+            
+            this.getGlassPane().setVisible(false);
+            // This is needed for the pause panel to appear in the next map.
+            this.setGlassPane(oldGlassPane); 
+            
+            onNextHole.run();
+        });
+        
+        this.setGlassPane(summaryPanel);
+        this.getGlassPane().setVisible(true);
+    }
+
+
+    /**
+     * To update the leaderboard with last scores.
+     * * @param finalscores 
+     */
+    public void updateLeaderboard(final java.util.Map<String, Integer> finalScores) {
+        this.leaderboardPanel.updateScores(finalScores);
     }
 }

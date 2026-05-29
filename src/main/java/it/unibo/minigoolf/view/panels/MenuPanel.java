@@ -72,6 +72,7 @@ public final class MenuPanel extends JPanel {
         final JButton leaderboardButton = UserInterfaceFactory.createButton("LEADERBOARD");
         gbc.gridy++;
         this.add(leaderboardButton, gbc);
+        leaderboardButton.addActionListener(e -> navigationController.goToLeaderBoard());
 
         final JButton creditsButton = UserInterfaceFactory.createButton("CREDITS");
         gbc.gridy++;
