@@ -40,7 +40,7 @@ public final class MidLeaderBoardPanel extends JPanel {
         final JLabel title = UserInterfaceFactory.createTitle("MAP COMPLETED!");
         title.setAlignmentX(CENTER_ALIGNMENT);
         menuBox.add(title);
-        
+
         menuBox.add(Box.createVerticalStrut(30));
 
         // To sort the scores
@@ -53,11 +53,10 @@ public final class MidLeaderBoardPanel extends JPanel {
         tablePanel.add(UserInterfaceFactory.createTitle("PLAYER"));
         tablePanel.add(UserInterfaceFactory.createTitle("SHOTS"));
 
-        
         for (final Map.Entry<String, Integer> entry : sortedScores) {
             final JLabel nameLabel = new JLabel(entry.getKey());
             nameLabel.setForeground(Color.WHITE);
-            nameLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20)); 
+            nameLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
             
             final JLabel scoreLabel = new JLabel(String.valueOf(entry.getValue()));
             scoreLabel.setForeground(Color.WHITE);

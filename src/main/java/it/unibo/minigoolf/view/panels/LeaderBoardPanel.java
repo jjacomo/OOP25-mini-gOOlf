@@ -78,7 +78,7 @@ public final class LeaderBoardPanel extends JPanel {
 
             final JPanel table = new JPanel(new GridLayout(sortedScores.size() + 1, 2, 40, 10));
             table.setOpaque(false);
-            
+
             table.add(UserInterfaceFactory.createTitle("PLAYER"));
             table.add(UserInterfaceFactory.createTitle("TOTAL SHOTS"));
             

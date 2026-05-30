@@ -22,6 +22,7 @@ public final class LeaderBoardManager {
 
     /**
      * Loads the scores from the file.
+     * 
      * @return a map of player names and their best (lowest) scores
      */
     public Map<String, Integer> loadBestScores() {
@@ -53,7 +54,7 @@ public final class LeaderBoardManager {
      * @param matchScores the scores from the just finished match.
      */
     public void updateAndSaveScores(final Map<String, Integer> matchScores) {
-    
+
         final Map<String, Integer> historicalScores = this.loadBestScores();
 
         // It updates with the new scores following some rules.
@@ -73,7 +74,7 @@ public final class LeaderBoardManager {
                 writer.write(entry.getKey() + ":" + entry.getValue());
                 writer.newLine();
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.err.println("Error saving leadearboard data: " + e.getMessage());
         }
     }
