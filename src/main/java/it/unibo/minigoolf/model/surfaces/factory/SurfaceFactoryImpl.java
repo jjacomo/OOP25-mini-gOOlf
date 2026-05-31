@@ -2,6 +2,7 @@ package it.unibo.minigoolf.model.surfaces.factory;
 
 import it.unibo.minigoolf.model.surfaces.ShapedSurface;
 import it.unibo.minigoolf.model.surfaces.Surface;
+import it.unibo.minigoolf.model.surfaces.boost.BoostSurface;
 import it.unibo.minigoolf.model.surfaces.wind.WindDirection;
 import it.unibo.minigoolf.model.surfaces.wind.WindySurface;
 import it.unibo.minigoolf.util.shapes.Shape;
@@ -40,6 +41,11 @@ public final class SurfaceFactoryImpl implements SurfaceFactory {
     @Override
     public Surface createWindy(final Surface baseSurface, final WindDirection direction, final double intensity) {
         return new WindySurface(baseSurface, direction, intensity);
+    }
+
+    @Override
+    public Surface createBoost(final Surface baseSurface, final double intensity) {
+        return new BoostSurface(baseSurface, intensity);
     }
 
     @Override

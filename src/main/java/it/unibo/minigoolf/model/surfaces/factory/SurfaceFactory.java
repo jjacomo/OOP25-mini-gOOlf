@@ -58,6 +58,15 @@ public interface SurfaceFactory {
     Surface createWindy(Surface baseSurface, WindDirection direction, double intensity);
 
     /**
+     * Creates a boost surface wrapping a base surface.
+     * 
+     * @param baseSurface the base surface to decorate with boost
+     * @param intensity   the intensity/strength of the boost (will result in negative friction)
+     * @return a new decorated boost surface
+     */
+    Surface createBoost(Surface baseSurface, double intensity);
+
+    /**
      * Creates a custom surface with specific properties.
      * 
      * @param shape    the geometric shape defining the surface boundaries

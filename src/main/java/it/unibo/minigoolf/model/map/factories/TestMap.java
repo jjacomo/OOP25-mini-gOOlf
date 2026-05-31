@@ -90,6 +90,12 @@ public class TestMap implements GameMapFactory {
 
         private static final Vector2D HOLE_POSITION = new Vector2D(1500, 800);
         private static final double HOLE_RADIUS = 40;
+        private static final double BOOST_SURFACE_X = 600;
+        private static final double BOOST_SURFACE_Y = 500;
+        private static final double BOOST_SURFACE_WIDTH = 250;
+        private static final double BOOST_SURFACE_HEIGHT = 100;
+        private static final int BOOST_SURFACE_Z_INDEX = 2;
+        private static final double BOOST_INTENSITY = 8.0;
 
         private final SurfaceFactory surfaceFactory;
 
@@ -145,9 +151,17 @@ public class TestMap implements GameMapFactory {
                                 THIRD_SURFACE_Z_INDEX));
                 surfaces.add(surfaceFactory.createWindy(
                                 surfaceFactory.createDirt(
-                                                new Oval(new Vector2D(WINDYGRASS1_X, WINDYGRASS1_Y), WINDYGRASS1_RADIUS1, WINDYGRASS1_RADIUS2),
+                                                new Oval(new Vector2D(WINDYGRASS1_X, WINDYGRASS1_Y),
+                                                                WINDYGRASS1_RADIUS1, WINDYGRASS1_RADIUS2),
                                                 WINDYGRASS1_Z_INDEX),
                                 WindDirection.RIGHT, WIND_STRENGTH));
+                surfaces.add(surfaceFactory.createBoost(
+                                surfaceFactory.createDirt(
+                                                new Rectangle(new Vector2D(BOOST_SURFACE_X, BOOST_SURFACE_Y),
+                                                                BOOST_SURFACE_WIDTH,
+                                                                BOOST_SURFACE_HEIGHT),
+                                                BOOST_SURFACE_Z_INDEX),
+                                BOOST_INTENSITY));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));

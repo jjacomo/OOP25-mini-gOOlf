@@ -40,6 +40,7 @@ public final class SurfaceControllerImpl implements SurfaceController {
             case "sand" -> "surfaces/sand.png";
             case "dirt" -> "surfaces/dirt.png";
             case "ice" -> "surfaces/ice.png";
+            case "boost" -> "surfaces/boost/boost.png";
             default -> "surfaces/default.png";
         };
     }
