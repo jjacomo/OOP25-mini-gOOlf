@@ -18,6 +18,7 @@ public abstract class AbstractObstacle implements Obstacle {
      */
     private static final double RESTING_THRESHOLD = 30.0;
     private final Vector2D position;
+    private final double bounciness;
 
     /**
      * Constructs an obstacle at the given position.
@@ -25,7 +26,18 @@ public abstract class AbstractObstacle implements Obstacle {
      * @param position the 2D vector representing the coordinates of the obstacle
      */
     public AbstractObstacle(final Vector2D position) {
+        this(position, 1.0);
+    }
+
+    /**
+     * Constructs an sticky or bouncy obstacle at the given position.
+     *
+     * @param position the 2D vector representing the coordinates of the obstacle
+     * @param bounciness the bounciness of the bouncy obstacle
+     */
+    public AbstractObstacle(final Vector2D position, final double bounciness) {
         this.position = position;
+        this.bounciness = bounciness;
     }
 
     /**
@@ -69,7 +81,8 @@ public abstract class AbstractObstacle implements Obstacle {
             final Vector2D projection = normal.scalarMultiply(dot);
             ball.setVelocity(velocity.subtract(projection));
         } else {
-            final Vector2D reflection = normal.scalarMultiply(2 * dot);
+            final double restitutionFactor = 1.0 + this.bounciness;
+            final Vector2D reflection = normal.scalarMultiply(restitutionFactor * dot);
             ball.setVelocity(velocity.subtract(reflection));
         }
     }
