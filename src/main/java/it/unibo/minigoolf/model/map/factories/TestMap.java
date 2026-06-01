@@ -92,10 +92,15 @@ public class TestMap implements GameMapFactory {
         private static final double HOLE_RADIUS = 40;
         private static final double BOOST_SURFACE_X = 600;
         private static final double BOOST_SURFACE_Y = 500;
-        private static final double BOOST_SURFACE_WIDTH = 250;
-        private static final double BOOST_SURFACE_HEIGHT = 100;
+        private static final double BOOST_SURFACE_WIDTH = 950;
+        private static final double BOOST_SURFACE_HEIGHT = 800;
         private static final int BOOST_SURFACE_Z_INDEX = 2;
         private static final double BOOST_INTENSITY = 8.0;
+        private static final double WINDYGRASS2_X = 700;
+        private static final double WINDYGRASS2_Y = 600;
+        private static final double WINDYGRASS2_RADIUS1 = 150;
+        private static final double WINDYGRASS2_RADIUS2 = 200;
+        private static final int WINDYGRASS2_Z_INDEX = 3;
 
         private final SurfaceFactory surfaceFactory;
 
@@ -162,6 +167,12 @@ public class TestMap implements GameMapFactory {
                                                                 BOOST_SURFACE_HEIGHT),
                                                 BOOST_SURFACE_Z_INDEX),
                                 BOOST_INTENSITY));
+                surfaces.add(surfaceFactory.createWindy(
+                                surfaceFactory.createDirt(
+                                                new Oval(new Vector2D(WINDYGRASS2_X, WINDYGRASS2_Y),
+                                                                WINDYGRASS2_RADIUS1, WINDYGRASS2_RADIUS2),
+                                                WINDYGRASS2_Z_INDEX),
+                                WindDirection.DOWN, WIND_STRENGTH));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));

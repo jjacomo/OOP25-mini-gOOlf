@@ -26,6 +26,7 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
     private static final int MEDIUM_FRICTION_MULTIPLIER = 10_000;
     private static final int LOW_FRICTION_MULTIPLIER = 500;
     private static final int WIND_MULTIPLIER = 150;
+    private static final double MAX_BOOST_SPEED = 1500.0;
 
     /**
      * Updates the velocity of the ball based on the surface it is currently on and
@@ -50,7 +51,9 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
         final double surfaceFriction = surface.getFriction();
         double friction = 0;
 
-        if (velocityNorm > HIGH_SPEED_THRESHOLD) {
+        if (surfaceFriction < 0) {
+            friction = LOW_FRICTION_MULTIPLIER * surfaceFriction;
+        } else if (velocityNorm > HIGH_SPEED_THRESHOLD) {
             friction = HIGH_FRICTION_MULTIPLIER * surfaceFriction / Math.sqrt(velocityNorm);
             LOGGER.debug("High speed: Velocity norm: {}, surface friction: {}, deltaTime: {}", velocityNorm,
                     surfaceFriction, deltaTime);
@@ -67,7 +70,15 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
             ball.setVelocity(Vector2D.ZERO);
         }
 
-        if (velocityNorm > LOW_SPEED_THRESHOLD) {
+        if (velocityNorm > 0 && surfaceFriction < 0) {
+            final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
+            final Vector2D deltaV = frictionForce.scalarMultiply(deltaTime);
+            Vector2D newVelocity = velocity.add(deltaV);
+            if (newVelocity.getNorm() > MAX_BOOST_SPEED) {
+                newVelocity = newVelocity.normalize().scalarMultiply(MAX_BOOST_SPEED);
+            }
+            ball.setVelocity(newVelocity);
+        } else if (velocityNorm > LOW_SPEED_THRESHOLD) {
             final Vector2D frictionForce = velocity.normalize().scalarMultiply(-friction);
             final Vector2D deltaV = frictionForce.scalarMultiply(deltaTime);
             if (deltaV.getNorm() >= velocityNorm) {
@@ -83,3 +94,4 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
     }
 
 }
+

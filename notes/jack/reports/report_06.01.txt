@@ -1,9 +1,8 @@
-Report - 27/05 - 1h (tot: 60h)
+Report - 31/05 - 1h (tot: 61h)
 
-* Implementata superficie boost (decorator che returna attrito negativo)
-* Aggiunto boost.png
+* Fatto test per bokst Surface
+* Messo cap a 1500 (norma) per la velocita'
 
-- mettere un cap alla velocita'
 - Tests
 
 -------------------------------------------------------------------------------------------------
