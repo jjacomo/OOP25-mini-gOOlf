@@ -92,10 +92,10 @@ public class TestMap implements GameMapFactory {
         private static final double HOLE_RADIUS = 40;
         private static final double BOOST_SURFACE_X = 600;
         private static final double BOOST_SURFACE_Y = 500;
-        private static final double BOOST_SURFACE_WIDTH = 950;
-        private static final double BOOST_SURFACE_HEIGHT = 800;
+        private static final double BOOST_SURFACE_WIDTH = 500;
+        private static final double BOOST_SURFACE_HEIGHT = 400;
         private static final int BOOST_SURFACE_Z_INDEX = 2;
-        private static final double BOOST_INTENSITY = 8.0;
+        private static final double BOOST_INTENSITY = 4.0;
         private static final double WINDYGRASS2_X = 700;
         private static final double WINDYGRASS2_Y = 600;
         private static final double WINDYGRASS2_RADIUS1 = 150;

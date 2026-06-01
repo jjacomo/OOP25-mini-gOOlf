@@ -16,7 +16,7 @@ public abstract class AbstractObstacle implements Obstacle {
     /**
      * Threshold for resting contact to prevent infinite bouncing against continuous forces (e.g. wind).
      */
-    private static final double RESTING_THRESHOLD = 5.0;
+    private static final double RESTING_THRESHOLD = 30.0;
     private final Vector2D position;
 
     /**
