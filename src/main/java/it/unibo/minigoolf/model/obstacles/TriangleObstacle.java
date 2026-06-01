@@ -51,104 +51,86 @@ public final class TriangleObstacle extends AbstractObstacle {
         this.shape = new Triangle(this.vertex1, this.vertex2, this.vertex3);
     }
 
-    /**
-     * Checks if the ball is colliding with the obstacle's boundaries.
-     *
-     * @param ball the ball object to be checked for collisions
-     * @return true if the ball's boundaries touch the obstacle, false otherwise
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean isColliding(final Ball ball) {
-        final Vector2D ballPosition = ball.getPosition();
-        final double radiusSquared = ball.getRadius() * ball.getRadius();
-        final double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
-        final Vector2D[] bestPoint = { null };
-        final Vector2D[] bestNormal = { null };
+        final Vector2D pos = ball.getPosition();
+        if (isInside(pos)) {
+            return true;
+        }
 
-        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint,
-                bestNormal);
-        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint,
-                bestNormal);
-        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint,
-                bestNormal);
-
-        return bestDistanceSquared[0] <= radiusSquared;
+        return getMinDistanceToPerimeter(pos) <= ball.getRadius();
     }
 
     /** {@inheritDoc} */
     @Override
     public double getPenetrationDepth(final Ball ball) {
         final Vector2D pos = ball.getPosition();
-        final double d1 = distanceToSegment(pos, vertex1, vertex2);
-        final double d2 = distanceToSegment(pos, vertex2, vertex3);
-        final double d3 = distanceToSegment(pos, vertex3, vertex1);
-        final double minDist = Math.min(d1, Math.min(d2, d3));
-        final double penetration = ball.getRadius() - minDist;
-        return penetration > 0 ? penetration : 0;
-    }
+        final double minDist = getMinDistanceToPerimeter(pos);
 
-    /**
-     * Calculates the shortest distance from a point to a line segment.
-     *
-     * @param point the point
-     * @param a     start of segment
-     * @param b     end of segment
-     * @return the distance
-     */
-    private double distanceToSegment(final Vector2D point, final Vector2D a, final Vector2D b) {
-        final Vector2D closest = closestPointOnSegment(point, a, b);
-        return point.distance(closest);
-    }
-
-    /**
-     * Finds the closest point on a segment to a given point.
-     *
-     * @param p the point
-     * @param a segment start
-     * @param b segment end
-     * @return the closest point on the segment
-     */
-    private Vector2D closestPointOnSegment(final Vector2D p, final Vector2D a, final Vector2D b) {
-        final Vector2D ab = b.subtract(a);
-        final Vector2D ap = p.subtract(a);
-        final double abSq = ab.getX() * ab.getX() + ab.getY() * ab.getY();
-        if (abSq == 0) {
-            return a;
+        if (isInside(pos)) {
+            return ball.getRadius() + minDist;
+        } else {
+            return minDist < ball.getRadius() ? ball.getRadius() - minDist : 0.0;
         }
-        double t = (ap.getX() * ab.getX() + ap.getY() * ab.getY()) / abSq;
-        if (t < 0) t = 0;
-        if (t > 1) t = 1;
-        return new Vector2D(a.getX() + t * ab.getX(), a.getY() + t * ab.getY());
     }
 
-    /**
-     * Resolves the physical collision between the ball and the obstacle calculating
-     * the bounce based on the obstacle's shape and applies the new direction to the
-     * ball.
-     * 
-     * @param ball the ball object that has collided with the obstacle
-     */
+    /** {@inheritDoc} */
     @Override
     public void resolveCollision(final Ball ball) {
-        final Vector2D ballPosition = ball.getPosition();
-        final double[] bestDistanceSquared = { Double.POSITIVE_INFINITY };
-        final Vector2D[] bestPoint = { null };
-        final Vector2D[] bestNormal = { null };
+        final Vector2D pos = ball.getPosition();
+        final boolean inside = isInside(pos);
+        final Vector2D cp1 = getClosestPointOnSegment(pos, vertex1, vertex2);
+        final Vector2D cp2 = getClosestPointOnSegment(pos, vertex2, vertex3);
+        final Vector2D cp3 = getClosestPointOnSegment(pos, vertex3, vertex1);
+        final double d1 = pos.distanceSquared(cp1);
+        final double d2 = pos.distanceSquared(cp2);
+        final double d3 = pos.distanceSquared(cp3);
+        final double minDistSq = Math.min(d1, Math.min(d2, d3));
+        final double minDist = Math.sqrt(minDistSq);
+        final double penetrationDepth = inside ? ball.getRadius() + minDist : ball.getRadius() - minDist;
+        final Vector2D normal;
+       
+        if (inside) {
+            double sumX = 0;
+            double sumY = 0;
 
-        evaluateEdge(ballPosition, this.vertex1, this.vertex2, this.normal12, bestDistanceSquared, bestPoint,
-                bestNormal);
-        evaluateEdge(ballPosition, this.vertex2, this.vertex3, this.normal23, bestDistanceSquared, bestPoint,
-                bestNormal);
-        evaluateEdge(ballPosition, this.vertex3, this.vertex1, this.normal31, bestDistanceSquared, bestPoint,
-                bestNormal);
+            if (Math.abs(d1 - minDistSq) < EPSILON) {
+                sumX += normal12.getX();
+                sumY += normal12.getY();
+            }
+            if (Math.abs(d2 - minDistSq) < EPSILON) {
+                sumX += normal23.getX();
+                sumY += normal23.getY();
+            }
+            if (Math.abs(d3 - minDistSq) < EPSILON) {
+                sumX += normal31.getX();
+                sumY += normal31.getY();
+            }
+            normal = new Vector2D(sumX, sumY).normalize();
+        } else {
+            final Vector2D closestPoint;
+            final Vector2D faceNormal;
 
-        final double distance = Math.sqrt(bestDistanceSquared[0]);
-        final double penetrationDepth = ball.getRadius() - distance;
-        final Vector2D normal = bestNormal[0];
+            if (minDistSq == d1) {
+                closestPoint = cp1;
+                faceNormal = normal12;
+            } else if (minDistSq == d2) {
+                closestPoint = cp2;
+                faceNormal = normal23;
+            } else {
+                closestPoint = cp3;
+                faceNormal = normal31;
+            }
 
-        if (penetrationDepth > 0) {
-            correctPosition(ball, ballPosition, normal, penetrationDepth);
+            if (minDist < EPSILON) {
+                normal = faceNormal;
+            } else {
+                normal = pos.subtract(closestPoint).normalize();
+            }
         }
+
+        correctPosition(ball, pos, normal, penetrationDepth);
         reflectVelocity(ball, normal);
     }
 
@@ -189,7 +171,60 @@ public final class TriangleObstacle extends AbstractObstacle {
     }
 
     /**
-     * Computes the outward normal of a given edge.
+     * Checks if a point lies strictly inside the triangle using outward normals.
+     *
+     * @param pos the position to check
+     * @return true if the point is inside the triangle
+     */
+    private boolean isInside(final Vector2D pos) {
+        final boolean in1 = pos.subtract(vertex1).dotProduct(normal12) <= 0;
+        final boolean in2 = pos.subtract(vertex2).dotProduct(normal23) <= 0;
+        final boolean in3 = pos.subtract(vertex3).dotProduct(normal31) <= 0;
+        return in1 && in2 && in3;
+    }
+
+    /**
+     * Calculates the minimum distance from a point to the perimeter of the triangle.
+     *
+     * @param pos the point
+     * @return the minimum distance
+     */
+    private double getMinDistanceToPerimeter(final Vector2D pos) {
+        final double d1 = pos.distance(getClosestPointOnSegment(pos, vertex1, vertex2));
+        final double d2 = pos.distance(getClosestPointOnSegment(pos, vertex2, vertex3));
+        final double d3 = pos.distance(getClosestPointOnSegment(pos, vertex3, vertex1));
+        return Math.min(d1, Math.min(d2, d3));
+    }
+
+    /**
+     * Finds the closest point on a segment to a given point.
+     *
+     * @param p the point
+     * @param a segment start
+     * @param b segment end
+     * @return the closest point on the segment
+     */
+    private Vector2D getClosestPointOnSegment(final Vector2D p, final Vector2D a, final Vector2D b) {
+        final Vector2D ab = b.subtract(a);
+        final Vector2D ap = p.subtract(a);
+        final double abSq = ab.getNormSquared(); // Sostituito calcolo manuale
+        
+        if (abSq == 0) {
+            return a;
+        }
+        
+        double t = ap.dotProduct(ab) / abSq; // Sostituito calcolo manuale
+        if (t < 0) {
+            t = 0;
+        } else if (t > 1) {
+            t = 1;
+        }
+        
+        return new Vector2D(a.getX() + t * ab.getX(), a.getY() + t * ab.getY());
+    }
+
+    /**
+     * Computes the outward normal of a given edge using the centroid.
      *
      * @param endpointA start point of the edge
      * @param endpointB end point of the edge
@@ -204,51 +239,6 @@ public final class TriangleObstacle extends AbstractObstacle {
 
         return (perpendicular1.dotProduct(toCentroid) < 0) ? perpendicular1.normalize()
                 : perpendicular2.normalize();
-    }
-
-    /**
-     * Evaluates whether the side examined is the closest to the ball.
-     *
-     * @param ballPosition        the position of the ball.
-     * @param endpointA           the first point of the edge.
-     * @param endpointB           the second point of the edge.
-     * @param faceNormal          the normal of the face.
-     * @param bestDistanceSquared an array used to store and update the minimum
-     *                            squared distance found.
-     * @param bestPoint           an array used to store and update the closest
-     *                            point on the perimeter.
-     * @param bestNormal          an array used to store and update the normal at
-     *                            the closest point.
-     */
-    private void evaluateEdge(final Vector2D ballPosition, final Vector2D endpointA,
-            final Vector2D endpointB, final Vector2D faceNormal,
-            final double[] bestDistanceSquared,
-            final Vector2D[] bestPoint, final Vector2D[] bestNormal) {
-        final Vector2D segmentAB = endpointB.subtract(endpointA);
-        final Vector2D segmentAP = ballPosition.subtract(endpointA);
-        final double lengthSquared = segmentAB.getNormSquared();
-        final double scalarProjection = segmentAP.dotProduct(segmentAB) / lengthSquared;
-        final Vector2D closestPoint;
-        final Vector2D normal;
-
-        if (scalarProjection <= 0) {
-            closestPoint = endpointA;
-            final Vector2D radial = ballPosition.subtract(endpointA);
-            normal = (radial.getNormSquared() < EPSILON) ? faceNormal : radial.normalize();
-        } else if (scalarProjection >= 1) {
-            closestPoint = endpointB;
-            final Vector2D radial = ballPosition.subtract(endpointB);
-            normal = (radial.getNormSquared() < EPSILON) ? faceNormal : radial.normalize();
-        } else {
-            closestPoint = endpointA.add(segmentAB.scalarMultiply(scalarProjection));
-            normal = faceNormal;
-        }
-        final double distSq = ballPosition.distanceSquared(closestPoint);
-        if (distSq < bestDistanceSquared[0]) {
-            bestDistanceSquared[0] = distSq;
-            bestPoint[0] = closestPoint;
-            bestNormal[0] = normal;
-        }
     }
 
     /** {@inheritDoc} */
