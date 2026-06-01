@@ -73,6 +73,7 @@ public abstract class AbstractObstacle implements Obstacle {
     protected void reflectVelocity(final Ball ball, final Vector2D normal) {
         final Vector2D velocity = ball.getVelocity();
         final double dot = velocity.dotProduct(normal);
+        final double safeBounciness = Math.max(0.0, this.bounciness);
         
         if (dot >= 0) {
             return;
@@ -81,9 +82,11 @@ public abstract class AbstractObstacle implements Obstacle {
             final Vector2D projection = normal.scalarMultiply(dot);
             ball.setVelocity(velocity.subtract(projection));
         } else {
-            final double restitutionFactor = 1.0 + this.bounciness;
-            final Vector2D reflection = normal.scalarMultiply(restitutionFactor * dot);
-            ball.setVelocity(velocity.subtract(reflection));
+            //final double restitutionFactor = 1.0 + this.bounciness;
+            //final Vector2D reflection = normal.scalarMultiply(restitutionFactor * dot);
+            //ball.setVelocity(velocity.subtract(reflection));
+            final Vector2D perfectBounce = velocity.subtract(normal.scalarMultiply(2 * dot));
+            ball.setVelocity(perfectBounce.scalarMultiply(safeBounciness));
         }
     }
 

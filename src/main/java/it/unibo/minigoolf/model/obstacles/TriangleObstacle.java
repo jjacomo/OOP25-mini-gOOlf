@@ -30,8 +30,22 @@ public final class TriangleObstacle extends AbstractObstacle {
      * @throws IllegalArgumentException if the triangle area is less than MIN_AREA
      */
     public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final Vector2D vertex3) {
+        this(vertex1, vertex2, vertex3, 1.0);
+    }
+
+    /**
+     * Constructs a bouncy or sticky triangular obstacle.
+     *
+     * @param vertex1 the first vertex of the triangle
+     * @param vertex2 the second vertex of the triangle
+     * @param vertex3 the third vertex of the triangle
+     * @param bounciness the bounciness of the bouncy triangle obstacle 
+     * @throws IllegalArgumentException if the triangle area is less than MIN_AREA
+     */
+    public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, 
+                            final Vector2D vertex3, final double bounciness) {
         super(new Vector2D((vertex1.getX() + vertex2.getX() + vertex3.getX()) / 3.0,
-                (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3.0));
+                (vertex1.getY() + vertex2.getY() + vertex3.getY()) / 3.0), bounciness);
 
         checkDistanceBounds(vertex1, vertex2, "vertex1", "vertex2");
         checkDistanceBounds(vertex2, vertex3, "vertex2", "vertex3");

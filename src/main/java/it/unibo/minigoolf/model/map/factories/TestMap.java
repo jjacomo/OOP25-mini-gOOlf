@@ -160,19 +160,19 @@ public class TestMap implements GameMapFactory {
                                                                 WINDYGRASS1_RADIUS1, WINDYGRASS1_RADIUS2),
                                                 WINDYGRASS1_Z_INDEX),
                                 WindDirection.RIGHT, WIND_STRENGTH));
-                surfaces.add(surfaceFactory.createBoost(
-                                surfaceFactory.createDirt(
-                                                new Rectangle(new Vector2D(BOOST_SURFACE_X, BOOST_SURFACE_Y),
-                                                                BOOST_SURFACE_WIDTH,
-                                                                BOOST_SURFACE_HEIGHT),
-                                                BOOST_SURFACE_Z_INDEX),
-                                BOOST_INTENSITY));
-                surfaces.add(surfaceFactory.createWindy(
-                                surfaceFactory.createDirt(
-                                                new Oval(new Vector2D(WINDYGRASS2_X, WINDYGRASS2_Y),
-                                                                WINDYGRASS2_RADIUS1, WINDYGRASS2_RADIUS2),
-                                                WINDYGRASS2_Z_INDEX),
-                                WindDirection.DOWN, WIND_STRENGTH));
+                //surfaces.add(surfaceFactory.createBoost(
+                //                surfaceFactory.createDirt(
+                //                                new Rectangle(new Vector2D(BOOST_SURFACE_X, BOOST_SURFACE_Y),
+                //                                                BOOST_SURFACE_WIDTH,
+                //                                                BOOST_SURFACE_HEIGHT),
+                //                                BOOST_SURFACE_Z_INDEX),
+                //                BOOST_INTENSITY));
+                //surfaces.add(surfaceFactory.createWindy(
+                //                surfaceFactory.createDirt(
+                //                                new Oval(new Vector2D(WINDYGRASS2_X, WINDYGRASS2_Y),
+                //                                                WINDYGRASS2_RADIUS1, WINDYGRASS2_RADIUS2),
+                //                                WINDYGRASS2_Z_INDEX),
+                //                WindDirection.DOWN, WIND_STRENGTH));
                 obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
@@ -180,6 +180,8 @@ public class TestMap implements GameMapFactory {
                 obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT));
                 obstacles.add(new RoundObstacle(new Vector2D(O2_X, O2_Y), O2_RADIUS));
                 obstacles.add(new TriangleObstacle(O3_V1, O3_V2, O3_V3));
+                obstacles.add(new TriangleObstacle(new Vector2D(900,700), new Vector2D(900,750), new Vector2D(750, 700), 1.5));
+                obstacles.add(new TriangleObstacle(new Vector2D(600,700), new Vector2D(600,750), new Vector2D(450, 700), 0.5));
                 return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
                                 new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
         }
