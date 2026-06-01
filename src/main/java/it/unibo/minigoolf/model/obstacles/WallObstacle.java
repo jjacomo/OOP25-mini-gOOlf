@@ -35,7 +35,22 @@ public final class WallObstacle extends AbstractObstacle {
      *                                  [MIN_HEIGHT, MAX_HEIGHT]
      */
     public WallObstacle(final Vector2D position, final double width, final double height) {
-        super(position);
+        this(position, width, height, 1.0);
+    }
+
+    /**
+     * Constructs a bouncy rectangular wall.
+     * 
+     * @param position the 2D vector representing the top-left corner of the wall
+     * @param width    the width of the wall
+     * @param height   the height of the wall
+     * @param bounciness the bounciness of the bouncy rectangular wall
+     * @throws IllegalArgumentException if the width is outside [MIN_WIDTH,
+     *                                  MAX_WIDTH] or if the height is outside
+     *                                  [MIN_HEIGHT, MAX_HEIGHT]
+     */
+    public WallObstacle(final Vector2D position, final double width, final double height, final double bounciness) {
+        super(position, bounciness);
         if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
             throw new IllegalArgumentException("Invalid dimensions. Width: " + width
                     + "; Height: " + height + ".\nWidth must be between [" + MIN_WIDTH + ", "

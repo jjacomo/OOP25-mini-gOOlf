@@ -23,7 +23,20 @@ public final class RoundObstacle extends AbstractObstacle {
      *                                  MAX_RADIUS]
      */
     public RoundObstacle(final Vector2D position, final double radius) {
-        super(position);
+        this(position, radius, 1.0);
+    }
+
+    /**
+     * Constructs a circular obstacle.
+     *
+     * @param radius   the radius of the circular obstacle
+     * @param position the position of the obstacle
+     * @param bounciness the bounciness of the bouncy circular obstacle
+     * @throws IllegalArgumentException if radius is not between [MIN_RADIUS,
+     *                                  MAX_RADIUS]
+     */
+    public RoundObstacle(final Vector2D position, final double radius, final double bounciness) {
+        super(position, bounciness);
         if (radius < MIN_RADIUS || radius > MAX_RADIUS) {
             throw new IllegalArgumentException("The radius must be between "
                     + MIN_RADIUS + " and " + MAX_RADIUS);
