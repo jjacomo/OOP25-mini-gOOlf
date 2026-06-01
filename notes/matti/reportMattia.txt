@@ -121,6 +121,9 @@ Report 28/05 - 3 ore
 - Aggiunti alcuni metodi helper in WallObstacle per snellire i metodi necessari a fare i vari calcoli
   ed evitare inutili ripetizioni di codice
 
+Report 01/06 - 0.5 ore
+- Sistemata la classe AbstractObstacle
+
 TO DO:
 - Sistemare tutte le classi degli ostacoli, per vedere se c'è modo di snellire parti ripetute
 - Sistemare la questione della palla che si ferma se vicino ad un ostacolo

@@ -8,12 +8,15 @@ import it.unibo.minigoolf.util.Vector2D;
  * Obstacles can have different shapes and interact with the ball,
  * modifying its trajectory upon collision.
  */
-public abstract class AbstractObstacle {
-
+public abstract class AbstractObstacle implements Obstacle {
     /**
-     * Tolerance threshold for floating‑point comparisons in collision detection.
+     * Tolerance threshold for floating-point comparisons in collision detection.
      */
     protected static final double EPSILON = 1e-10;
+    /**
+     * Threshold for resting contact to prevent infinite bouncing against continuous forces (e.g. wind).
+     */
+    private static final double RESTING_THRESHOLD = 5.0;
     private final Vector2D position;
 
     /**
@@ -25,38 +28,27 @@ public abstract class AbstractObstacle {
         this.position = position;
     }
 
-    /**
-     * Gets the position of the obstacle.
-     *
-     * @return the Vector2D representing the obstacle's coordinates
-     */
+    /** {@inheritDoc} */
+    @Override
     public Vector2D getPosition() {
         return this.position;
     }
 
     /**
-     * Checks if the ball is colliding with the obstacle's boundaries.
+     * Calculates the penetration depth of the ball into the obstacle.
      *
-     * @param ball the ball object to be checked for collisions
-     * @return true if the ball's boundaries touch the obstacle, false otherwise
+     * @param ball the ball to check
+     * @return the penetration depth (a value > 0 if colliding, 0 otherwise)
      */
-    public abstract boolean isColliding(Ball ball);
-
-    /**
-     * Resolves the physical collision between the ball and the obstacle calculating
-     * the bounce based on the obstacle's shape and applies the new direction to the ball.
-     * 
-     * @param ball the Ball object that has collided with the obstacle
-     */
-    public abstract void resolveCollision(Ball ball);
+    public abstract double getPenetrationDepth(Ball ball);
 
     /**
      * Corrects the ball's position to resolve penetration with the obstacle.
      * Moves the ball outward along the collision normal by the penetration depth.
      *
-     * @param ball the ball to reposition
-     * @param ballPosition the position of the ball
-     * @param normal the collision normal (unit vector pointing outward from the obstacle)
+     * @param ball             the ball to reposition
+     * @param ballPosition     the position of the ball
+     * @param normal           the collision normal (unit vector pointing outward from the obstacle)
      * @param penetrationDepth the amount of overlap (positive value)
      */
     protected void correctPosition(final Ball ball, final Vector2D ballPosition, final Vector2D normal, final double penetrationDepth) {
@@ -67,28 +59,23 @@ public abstract class AbstractObstacle {
     /**
      * Reflects the ball's velocity according to the collision normal.
      * Uses the elastic reflection formula: v' = v - 2 (v·n) n.
-     * If the ball is already moving away from the obstacle (dot ≥ 0), no change is made.
+     * If the impact is very soft, it applies resting contact to let the ball slide instead of jittering.
      *
      * @param ball   the ball whose velocity to modify
      * @param normal the collision normal (unit vector pointing outward from the obstacle)
      */
     protected void reflectVelocity(final Ball ball, final Vector2D normal) {
         final Vector2D velocity = ball.getVelocity();
-        final double dotProduct = velocity.dotProduct(normal);
-        if (dotProduct >= 0) {
+        final double dot = velocity.dotProduct(normal);
+        
+        if (dot >= 0) {
             return;
         }
-        // final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
-        // ball.setVelocity(velocity.subtract(reflection));
-
-        // Ho commentato il codice sopra; Questo mi serve per non fare rimbalzare la
-        // palla all'infinito quando si "ferma" vicino ad un ostacolo
-        final double BOUNCE_THRESHOLD = 40.0;
-        if (Math.abs(dotProduct) < BOUNCE_THRESHOLD) {
-            final Vector2D projection = normal.scalarMultiply(dotProduct);
+        if (Math.abs(dot) < RESTING_THRESHOLD) {
+            final Vector2D projection = normal.scalarMultiply(dot);
             ball.setVelocity(velocity.subtract(projection));
         } else {
-            final Vector2D reflection = normal.scalarMultiply(2 * dotProduct);
+            final Vector2D reflection = normal.scalarMultiply(2 * dot);
             ball.setVelocity(velocity.subtract(reflection));
         }
     }
