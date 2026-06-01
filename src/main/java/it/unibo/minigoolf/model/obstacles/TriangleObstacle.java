@@ -8,7 +8,7 @@ import it.unibo.minigoolf.model.ball.Ball;
  * Represents a triangular obstacle in the minigolf course.
  * This obstacle is defined by its three vertex and centroid.
  */
-public final class TriangleObstacle extends AbstractObstacle implements Obstacle {
+public final class TriangleObstacle extends AbstractObstacle {
     private static final double MIN_SIDE_LENGTH = 10.0;
     private static final double MAX_SIDE_LENGTH = 800.0;
     private static final double MIN_AREA = 25.0;
