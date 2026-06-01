@@ -32,24 +32,19 @@ public final class RoundObstacle extends AbstractObstacle {
         this.shape = new Circle(position, this.radius);
     }
 
-    /**
-     * Checks if the ball is colliding with the obstacle's boundaries.
-     *
-     * @param ball the Ball object to be checked for collisions
-     * @return true if the ball's boundaries touch the obstacle, false otherwise
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean isColliding(final Ball ball) {
-        final double distance = ball.getPosition().distance(this.getPosition());
-        return distance <= (ball.getRadius() + this.radius);
+        return getCenterDistance(ball) <= getSumRadii(ball);
     }
 
     /** {@inheritDoc} */
     @Override
     public double getPenetrationDepth(final Ball ball) {
-        final double distance = ball.getPosition().distance(this.getPosition());
-        final double sumRadii = ball.getRadius() + this.radius;
-        return distance < sumRadii ? sumRadii - distance : 0;
+        final double distance = getCenterDistance(ball);
+        final double sumRadii = getSumRadii(ball);
+
+        return distance < sumRadii ? sumRadii - distance : 0.0;
     }
 
     /**
@@ -61,35 +56,34 @@ public final class RoundObstacle extends AbstractObstacle {
      */
     @Override
     public void resolveCollision(final Ball ball) {
-        final Vector2D ballPosition = ball.getPosition();
-        final Vector2D obstaclePos = this.getPosition();
-        final Vector2D collisionVector = ballPosition.subtract(obstaclePos);
-        final double distance = collisionVector.getNorm();
-        final Vector2D normal = computeCollisionNormal(collisionVector, distance, ball.getVelocity());
-        final double penetrationDepth = (ball.getRadius() + this.radius) - distance;
-
-        if (penetrationDepth > 0) {
-            correctPosition(ball, ballPosition, normal, penetrationDepth);
-        }
+        final Vector2D ballPos = ball.getPosition();
+        final Vector2D toBall = ballPos.subtract(getPosition());
+        final double distance = toBall.getNorm(); 
+        final double penetrationDepth = getSumRadii(ball) - distance;
+        final Vector2D normal = toBall.normalize();
+        correctPosition(ball, ballPos, normal, penetrationDepth);
         reflectVelocity(ball, normal);
     }
 
     /**
-     * Computes the collision normal pointing from the obstacle to the ball.
-     * Handles the edge case where the centers perfectly overlap.
+     * Calculates the sum of the ball's radius and this obstacle's radius.
      *
-     * @param collisionVector vector from obstacle center to ball center
-     * @param distance        the distance between the two centers
-     * @param velocity        the velocity of the ball
-     * @return the normalized collision normal
+     * @param ball the ball to check
+     * @return the sum of the radii
      */
-    private Vector2D computeCollisionNormal(final Vector2D collisionVector, final double distance,
-            final Vector2D velocity) {
-        if (distance >= EPSILON) {
-            return collisionVector.normalize();
-        }
+    private double getSumRadii(final Ball ball) {
+        return ball.getRadius() + this.radius;
+    }
 
-        return velocity.scalarMultiply(-1).normalize();
+    /**
+     * Calculates the distance between the center of the ball and the center
+     * of this obstacle.
+     *
+     * @param ball the ball to check
+     * @return the distance between centers
+     */
+    private double getCenterDistance(final Ball ball) {
+        return ball.getPosition().distance(getPosition());
     }
 
     /** {@inheritDoc} */
