@@ -28,12 +28,6 @@ public abstract class AbstractObstacle implements Obstacle {
         this.position = position;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Vector2D getPosition() {
-        return this.position;
-    }
-
     /**
      * Calculates the penetration depth of the ball into the obstacle.
      *
@@ -78,5 +72,11 @@ public abstract class AbstractObstacle implements Obstacle {
             final Vector2D reflection = normal.scalarMultiply(2 * dot);
             ball.setVelocity(velocity.subtract(reflection));
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D getPosition() {
+        return this.position;
     }
 }

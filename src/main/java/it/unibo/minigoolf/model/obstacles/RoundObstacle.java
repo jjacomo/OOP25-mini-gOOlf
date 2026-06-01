@@ -32,21 +32,6 @@ public final class RoundObstacle extends AbstractObstacle {
         this.shape = new Circle(position, this.radius);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean isColliding(final Ball ball) {
-        return getCenterDistance(ball) <= getSumRadii(ball);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public double getPenetrationDepth(final Ball ball) {
-        final double distance = getCenterDistance(ball);
-        final double sumRadii = getSumRadii(ball);
-
-        return distance < sumRadii ? sumRadii - distance : 0.0;
-    }
-
     /**
      * Resolves the physical collision between the ball and the obstacle calculating
      * the bounce based on the obstacle's shape and applies the new direction to the
@@ -84,6 +69,21 @@ public final class RoundObstacle extends AbstractObstacle {
      */
     private double getCenterDistance(final Ball ball) {
         return ball.getPosition().distance(getPosition());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isColliding(final Ball ball) {
+        return getCenterDistance(ball) <= getSumRadii(ball);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getPenetrationDepth(final Ball ball) {
+        final double distance = getCenterDistance(ball);
+        final double sumRadii = getSumRadii(ball);
+
+        return distance < sumRadii ? sumRadii - distance : 0.0;
     }
 
     /** {@inheritDoc} */

@@ -68,19 +68,6 @@ public final class WallObstacle extends AbstractObstacle {
         return (dx * dx + dy * dy) <= ball.getRadius() * ball.getRadius();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public double getPenetrationDepth(final Ball ball) {
-        final Vector2D pos = ball.getPosition();
-        if (isInside(pos)) {
-            // MATEMATICA CORRETTA: Raggio + distanza dal centro al bordo per uscire del tutto
-            return ball.getRadius() + getMinDistanceToEdge(pos);
-        } else {
-            final double distance = pos.distance(getClosestPoint(pos));
-            return distance < ball.getRadius() ? ball.getRadius() - distance : 0;
-        }
-    }
-
     /**
      * Resolves the physical collision between the ball and the obstacle calculating
      * the bounce based on the obstacle's shape and applies the new direction to the
@@ -206,6 +193,19 @@ public final class WallObstacle extends AbstractObstacle {
             return normalTop;
         } else {
             return normalBottom;
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getPenetrationDepth(final Ball ball) {
+        final Vector2D pos = ball.getPosition();
+        if (isInside(pos)) {
+            // MATEMATICA CORRETTA: Raggio + distanza dal centro al bordo per uscire del tutto
+            return ball.getRadius() + getMinDistanceToEdge(pos);
+        } else {
+            final double distance = pos.distance(getClosestPoint(pos));
+            return distance < ball.getRadius() ? ball.getRadius() - distance : 0;
         }
     }
 
