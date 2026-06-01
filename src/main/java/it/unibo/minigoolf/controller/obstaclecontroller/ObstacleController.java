@@ -14,7 +14,7 @@ public interface ObstacleController {
      *
      * @return a list of shapes
      */
-    List<Shape> getObstacleShapes();
+    //List<Shape> getObstacleShapes();
 
     /**
      * Returns an unmodifiable list of all obstacles currently managed.

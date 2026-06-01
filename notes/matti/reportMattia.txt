@@ -121,11 +121,23 @@ Report 28/05 - 3 ore
 - Aggiunti alcuni metodi helper in WallObstacle per snellire i metodi necessari a fare i vari calcoli
   ed evitare inutili ripetizioni di codice
 
-Report 01/06 - 0.5 ore
-- Sistemata la classe AbstractObstacle
+Report 01/06 - 9 ore
+- Sistemata la leggibilità di tutte le classi ostacoli
+- Migliorati i commenti JavaDoc di tutte le classi ostacoli
+- Sostitui i commenti JavaDoc con /** {@inheritDoc} */ in tutte le classi ostacoli
+- Modificata la classe AbstractObstacle per implementare l'elasticità degli ostacoli avanzati 
+  appiccicosi e rimbalzanti, aggiungendo il l'implementazionedel metodo getBounciness(), modificando il metodo reflectVelocity
+- Aggiunto un secondo costruttore in tutte le classi ostacoli che prenda l'elasticità dell'ostacolo. Nel
+  caso in cui non abbia elasticità, il costruttore base richiama il secondario passandogli l'elasticità 
+  di default 'DEFAULT_BOUNCINESS' di valore 1.0
+- Aggiunto il metodo getBounciness() nell'interfaccia Obstacle
+- Modificato il ciclo for in MapPanel che disegnava gli ostacoli; adesso viene iterata direttamente una 
+  lista di ostacoli, da cui si ottiene la forma tramite il metodo getObstacleController().getShape e non 
+  più con getObstacleController().getObstacleShapes()
+- Creato lo scheletro della classe PortalObstacle, ovvero un portale che teletrasporta la pallina dal portale A al portale B e viceversa
+- Fatti vari test sugli ostacoli appiccicosi e rimbalzanti;
+- Corretta la direzione errata della pallina a seguito di un rimbalzo su un ostacolo appiccicoso
+
 
 TO DO:
-- Sistemare tutte le classi degli ostacoli, per vedere se c'è modo di snellire parti ripetute
-- Sistemare la questione della palla che si ferma se vicino ad un ostacolo
-- Creare ostacoli avanzati (appiccicosi, che aumentano il rimbalzo) e trovarne anche di nuovi possibili 
-  (teletrasporto, bottone che fa scomparire un ostacolo)
+- Completare l'ostacolo avanzato PortalObstacle

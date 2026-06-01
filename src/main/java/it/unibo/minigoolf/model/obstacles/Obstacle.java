@@ -41,6 +41,12 @@ public interface Obstacle {
     double getPenetrationDepth(Ball ball);
 
     /**
+     * Returns the bounciness of the obstacle.
+     * @return the bounciness
+     */
+    double getBounciness();
+
+    /**
      * Returns the shape of the obstacle.
      * 
      * @return the shape of the obstacle

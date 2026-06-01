@@ -35,7 +35,7 @@ public final class WallObstacle extends AbstractObstacle {
      *                                  [MIN_HEIGHT, MAX_HEIGHT]
      */
     public WallObstacle(final Vector2D position, final double width, final double height) {
-        this(position, width, height, 1.0);
+        this(position, width, height, DEFAULT_BOUNCINESS);
     }
 
     /**

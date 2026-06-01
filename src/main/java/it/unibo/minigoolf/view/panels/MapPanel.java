@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 
 import it.unibo.minigoolf.view.TextureManager;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
+import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Oval;
@@ -85,8 +87,24 @@ public class MapPanel extends JPanel {
         g2d.setColor(Color.WHITE);
         drawShape(mapController.getBallController().getBallShape(), g2d, null);
         g2d.setColor(Color.DARK_GRAY);
-        for (final Shape obstacleShape : mapController.getObstacleController().getObstacleShapes()) {
-            drawShape(obstacleShape, g2d, null);
+        //for (final Shape obstacleShape : mapController.getObstacleController().getObstacleShapes()) {
+        //    drawShape(obstacleShape, g2d, null);
+        //}
+        for (final Obstacle obstacle : mapController.getObstacleController().getObstacles()) {
+            final Color obstacleColor;
+
+            if (obstacle instanceof PortalObstacle) {
+                obstacleColor = Color.BLUE;
+            } else if (obstacle.getBounciness() > 1.0) {
+                obstacleColor = Color.RED;
+            } else if (obstacle.getBounciness() < 1.0) {
+                obstacleColor = Color.GREEN;
+            } else {
+                obstacleColor = Color.DARK_GRAY;
+            }
+
+            g2d.setColor(obstacleColor);
+            drawShape(obstacle.getShape(), g2d, null);
         }
 
         drawFlag(g2d,

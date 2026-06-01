@@ -23,12 +23,12 @@ public final class ObstacleControllerImpl implements ObstacleController {
     }
 
     /** {@inheritDoc} */
-    @Override
+    /*@Override
     public List<Shape> getObstacleShapes() {
         return this.obstacles.stream()
                 .map(Obstacle::getShape)
                 .collect(Collectors.toList());
-    }
+    }*/
 
     /** {@inheritDoc} */
     @Override

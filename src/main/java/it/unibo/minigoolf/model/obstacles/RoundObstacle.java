@@ -23,7 +23,7 @@ public final class RoundObstacle extends AbstractObstacle {
      *                                  MAX_RADIUS]
      */
     public RoundObstacle(final Vector2D position, final double radius) {
-        this(position, radius, 1.0);
+        this(position, radius, DEFAULT_BOUNCINESS);
     }
 
     /**

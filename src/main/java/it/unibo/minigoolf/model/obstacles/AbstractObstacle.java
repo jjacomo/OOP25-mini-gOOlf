@@ -13,10 +13,17 @@ public abstract class AbstractObstacle implements Obstacle {
      * Tolerance threshold for floating-point comparisons in collision detection.
      */
     protected static final double EPSILON = 1e-10;
+
     /**
-     * Threshold for resting contact to prevent infinite bouncing against continuous forces (e.g. wind).
+     * Default bounciness value used to create the normal obstacles.
+     */
+    protected static final double DEFAULT_BOUNCINESS = 1.0;
+
+    /**
+     * Threshold for resting contact to prevent infinite bouncing against continuous forces.
      */
     private static final double RESTING_THRESHOLD = 30.0;
+
     private final Vector2D position;
     private final double bounciness;
 
@@ -26,7 +33,7 @@ public abstract class AbstractObstacle implements Obstacle {
      * @param position the 2D vector representing the coordinates of the obstacle
      */
     public AbstractObstacle(final Vector2D position) {
-        this(position, 1.0);
+        this(position, DEFAULT_BOUNCINESS);
     }
 
     /**
@@ -88,6 +95,12 @@ public abstract class AbstractObstacle implements Obstacle {
             final Vector2D perfectBounce = velocity.subtract(normal.scalarMultiply(2 * dot));
             ball.setVelocity(perfectBounce.scalarMultiply(safeBounciness));
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getBounciness() {
+        return this.bounciness;
     }
 
     /** {@inheritDoc} */

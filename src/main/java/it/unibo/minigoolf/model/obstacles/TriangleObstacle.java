@@ -30,7 +30,7 @@ public final class TriangleObstacle extends AbstractObstacle {
      * @throws IllegalArgumentException if the triangle area is less than MIN_AREA
      */
     public TriangleObstacle(final Vector2D vertex1, final Vector2D vertex2, final Vector2D vertex3) {
-        this(vertex1, vertex2, vertex3, 1.0);
+        this(vertex1, vertex2, vertex3, DEFAULT_BOUNCINESS);
     }
 
     /**
