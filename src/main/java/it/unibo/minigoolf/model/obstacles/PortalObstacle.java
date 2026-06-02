@@ -21,6 +21,9 @@ public final class PortalObstacle extends AbstractObstacle {
     /**
      * PRIVATE Constructor. 
      * Portals can only be created in pairs using the createPair() factory method.
+     * 
+     * @param position the position of the portal
+     * @param portalRadius the radius of the portal
      */
     private PortalObstacle(final Vector2D position, final double portalRadius) {
         super(position, 1.0); 
@@ -39,10 +42,9 @@ public final class PortalObstacle extends AbstractObstacle {
     public static List<PortalObstacle> createPair(final Vector2D posA, final Vector2D posB, final double portalRadius) {
         final PortalObstacle portalA = new PortalObstacle(posA, portalRadius);
         final PortalObstacle portalB = new PortalObstacle(posB, portalRadius);
-        
         portalA.linkedPortal = portalB;
         portalB.linkedPortal = portalA;
-        
+
         return Arrays.asList(portalA, portalB);
     }
 

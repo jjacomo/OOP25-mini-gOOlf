@@ -104,7 +104,7 @@ public final class TriangleObstacle extends AbstractObstacle {
         final double minDist = Math.sqrt(minDistSq);
         final double penetrationDepth = inside ? ball.getRadius() + minDist : ball.getRadius() - minDist;
         final Vector2D normal;
-       
+
         if (inside) {
             double sumX = 0;
             double sumY = 0;
@@ -222,7 +222,7 @@ public final class TriangleObstacle extends AbstractObstacle {
         final Vector2D ab = b.subtract(a);
         final Vector2D ap = p.subtract(a);
         final double abSq = ab.getNormSquared(); // Sostituito calcolo manuale
-        
+
         if (abSq == 0) {
             return a;
         }
@@ -233,7 +233,7 @@ public final class TriangleObstacle extends AbstractObstacle {
         } else if (t > 1) {
             t = 1;
         }
-        
+
         return new Vector2D(a.getX() + t * ab.getX(), a.getY() + t * ab.getY());
     }
 
