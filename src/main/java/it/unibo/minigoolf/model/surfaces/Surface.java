@@ -7,7 +7,7 @@ import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
  * Represents a surface in the game world that can affect physics and rendering.
- * Surfaces have friction properties that must be applied to the ball.
+ * Surfaces have friction and wind properties that must be applied to the ball.
  * 
  * @author jack
  */
@@ -32,7 +32,8 @@ public interface Surface {
     /**
      * Returns the z-index of this surface, used for layering in rendering.
      * Higher z-index values indicate surfaces that should be rendered on top.
-     * Friction is applied based on the surface with the highest z-index at the ball's position.
+     * Friction is applied based on the surface with the highest z-index at the
+     * ball's position.
      *
      * @return the z-index as an integer
      */

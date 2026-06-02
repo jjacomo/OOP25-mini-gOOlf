@@ -35,10 +35,13 @@
 *Pro e Contro*: 
 
 #### Giacomo Mengozzi
-**Topic**
+**Superfici**
 *Problema*: 
+Il gioco _mini-gOOlf_ richiede di avere superfici con diverse proprietà fisiche (attrito, boost, vento), che impattano il comportamento della pallina. Il gioco prevede 4 diverse superfici di base che differiscono solo per attrito: erba, sabbia, ghiaccio, terra.
+Si vogliono implementare superfici avanzate
 
 *Soluzione*:
+La progettazione e' basata su una interfaccia `Surface` che definisce le proprieta' comuni a tutte le superfici.
 
 *Pro e Contro*: 
 
