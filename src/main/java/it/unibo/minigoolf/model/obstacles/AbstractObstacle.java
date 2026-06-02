@@ -64,7 +64,8 @@ public abstract class AbstractObstacle implements Obstacle {
      * @param normal           the collision normal (unit vector pointing outward from the obstacle)
      * @param penetrationDepth the amount of overlap (positive value)
      */
-    protected void correctPosition(final Ball ball, final Vector2D ballPosition, final Vector2D normal, final double penetrationDepth) {
+    protected void correctPosition(final Ball ball, final Vector2D ballPosition,
+                                   final Vector2D normal, final double penetrationDepth) {
         final Vector2D newPosition = ballPosition.add(normal.scalarMultiply(penetrationDepth));
         ball.setPosition(newPosition);
     }
@@ -81,7 +82,7 @@ public abstract class AbstractObstacle implements Obstacle {
         final Vector2D velocity = ball.getVelocity();
         final double dot = velocity.dotProduct(normal);
         final double safeBounciness = Math.max(0.0, this.bounciness);
-        
+
         if (dot >= 0) {
             return;
         }

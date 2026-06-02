@@ -10,6 +10,7 @@ import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
@@ -182,6 +183,7 @@ public class TestMap implements GameMapFactory {
                 obstacles.add(new TriangleObstacle(O3_V1, O3_V2, O3_V3));
                 obstacles.add(new TriangleObstacle(new Vector2D(900,700), new Vector2D(900,750), new Vector2D(750, 700), 1.5));
                 obstacles.add(new TriangleObstacle(new Vector2D(600,700), new Vector2D(600,750), new Vector2D(450, 700), 0.5));
+                obstacles.addAll(PortalObstacle.createPair(new Vector2D(400, 400), new Vector2D(400, 600), 50));
                 return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
                                 new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
         }

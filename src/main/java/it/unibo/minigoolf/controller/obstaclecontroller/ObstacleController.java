@@ -1,14 +1,13 @@
 package it.unibo.minigoolf.controller.obstaclecontroller;
 
 import it.unibo.minigoolf.model.obstacles.Obstacle;
-import it.unibo.minigoolf.util.shapes.Shape;
+//import it.unibo.minigoolf.util.shapes.Shape;
 import java.util.List;
 
 /**
  * Controller for managing all obstacles in the minigolf map.
  */
 public interface ObstacleController {
-
     /**
      * Returns a list of shapes representing all obstacles for rendering.
      *

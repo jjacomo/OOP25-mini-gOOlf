@@ -42,6 +42,7 @@ public interface Obstacle {
 
     /**
      * Returns the bounciness of the obstacle.
+     * 
      * @return the bounciness
      */
     double getBounciness();

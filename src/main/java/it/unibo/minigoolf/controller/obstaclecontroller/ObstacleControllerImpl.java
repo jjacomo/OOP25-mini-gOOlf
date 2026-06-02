@@ -1,9 +1,9 @@
 package it.unibo.minigoolf.controller.obstaclecontroller;
 
 import it.unibo.minigoolf.model.obstacles.Obstacle;
-import it.unibo.minigoolf.util.shapes.Shape;
+//import it.unibo.minigoolf.util.shapes.Shape;
 import java.util.List;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 /**
  * Implementation of {@link ObstacleController}.
@@ -22,7 +22,7 @@ public final class ObstacleControllerImpl implements ObstacleController {
         this.obstacles = List.copyOf(obstacles);
     }
 
-    /** {@inheritDoc} */
+    ///** {@inheritDoc} */
     /*@Override
     public List<Shape> getObstacleShapes() {
         return this.obstacles.stream()

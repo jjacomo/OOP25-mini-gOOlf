@@ -121,7 +121,7 @@ Report 28/05 - 3 ore
 - Aggiunti alcuni metodi helper in WallObstacle per snellire i metodi necessari a fare i vari calcoli
   ed evitare inutili ripetizioni di codice
 
-Report 01/06 - 9 ore
+Report 01/06 - 8 ore
 - Sistemata la leggibilità di tutte le classi ostacoli
 - Migliorati i commenti JavaDoc di tutte le classi ostacoli
 - Sostitui i commenti JavaDoc con /** {@inheritDoc} */ in tutte le classi ostacoli
