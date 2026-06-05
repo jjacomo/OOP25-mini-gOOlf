@@ -42,6 +42,11 @@ public final class PausePanel extends JPanel {
         resumeButton.addActionListener(e -> navController.resumeGame());
         menuBox.add(resumeButton);
 
+        final JButton skipButton = UserInterfaceFactory.createButton("SKIP MAP");
+        skipButton.setAlignmentX(CENTER_ALIGNMENT);
+        skipButton.addActionListener(e -> navController.skipCurrentMap());
+        menuBox.add(skipButton);
+
         final JButton quitButton = UserInterfaceFactory.createButton("QUIT");
         quitButton.setAlignmentX(CENTER_ALIGNMENT);
         quitButton.addActionListener(e -> {

@@ -176,4 +176,12 @@ public final class NavigationController {
     public void goToLeaderBoard() {
         this.showLeaderboardCallback.run();
     }
+
+    /**
+     * Closes the pause menu and skips to the next map.
+     */
+    public void skipCurrentMap() {
+        this.resumeWindowCallback.run(); // Toglie lo schermo oscurato
+        this.mainController.skipMap();   // Manda il comando al gioco
+    }
 }

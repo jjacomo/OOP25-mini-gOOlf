@@ -25,6 +25,7 @@ import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
  * One of the possibile scenes, this is the menu where the user can choose the n° of
  * players, therefore it starts a singleplayer or a multiplayer match.
  * * @author dani
+ * TODO: Ricordati di usare la UI Factory!Questa classe è stata creata prima, da aggiustare!
  */
 public final class NewGamePanel extends JPanel {
     /**
@@ -44,17 +45,26 @@ public final class NewGamePanel extends JPanel {
         this.setBackground(Color.DARK_GRAY);
         this.setBorder(BorderFactory.createEmptyBorder(MARGINS, MARGINS, MARGINS, MARGINS));
 
-        // N° of players
-        final JPanel header = new JPanel();
+        final JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         header.setOpaque(false);
+
+        // Back to menu button
+        final JButton backButton = new JButton("BACK");
+        backButton.addActionListener(e -> navigationController.goToMainMenu());
+        header.add(backButton);
+        header.add(javax.swing.Box.createHorizontalStrut(50)); 
+
+        // Label "N° of players:"
         final JLabel instructionLabel = new JLabel("N° of players: ");
         instructionLabel.setForeground(Color.WHITE);
         header.add(instructionLabel);
-        // Here the user inputs the n° and confirms with the button "OK"
         this.numInput = new JTextField("1", 3);
-        final JButton confirmNumButton = new JButton("OK");
         header.add(numInput);
+        
+        //OK Button
+        final JButton confirmNumButton = new JButton("OK");
         header.add(confirmNumButton);
+
         this.add(header, BorderLayout.NORTH);
 
         // Using the GridBagLayout

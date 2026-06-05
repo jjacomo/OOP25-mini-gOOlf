@@ -4,6 +4,7 @@ import it.unibo.minigoolf.controller.game.MatchManager;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.map.factories.FirstMap;
 import it.unibo.minigoolf.model.map.factories.SecondMap;
+import it.unibo.minigoolf.model.map.factories.ThirdMap;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
 import it.unibo.minigoolf.model.map.factories.TestMap;
 import it.unibo.minigoolf.view.MainWindow;
@@ -50,7 +51,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
      */
     @Override
     public void startNewMatch(final List<String> playerNames) {
-        final MapSequence mapSequence = new MapSequence(List.of(new TestMap(), new FirstMap(), new SecondMap()));
+        final MapSequence mapSequence = new MapSequence(List.of(new ThirdMap(),new TestMap(), new FirstMap(), new SecondMap()));
         this.matchManager = new MatchManager(
             mapSequence,
             playerNames,
@@ -61,6 +62,14 @@ public final class MainControllerImpl implements MainController, ActionListener 
             navigationController,
             scores -> mainWindow.showMidLeaderBoard(scores, () -> this.matchManager.advanceToNextHole())
         );
+    }
+
+    @Override
+    public void skipMap() {
+        if (this.matchManager != null) {
+            // Usa lo stesso identico metodo che usiamo a fine buca!
+            this.matchManager.advanceToNextHole(); 
+        }
     }
 
     /** {@inheritDoc} */

@@ -25,4 +25,9 @@ public interface MainController {
      * @param playerNames
      */
     void startNewMatch(List<String> playerNames);
+
+    /**
+     * Skips the current map and advances to the next one.
+     */
+    void skipMap();
 }
