@@ -9,8 +9,11 @@ import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.GridBagConstraints;
+import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,13 +39,24 @@ public final class NewGamePanel extends JPanel {
     private static final int COLUMNS_COUNT = 2;
     private static final int MARGINS = 20;
 
+    private transient Image backgroundImage;
+
     private final List<JTextField> nameFields = new ArrayList<>();
     private final JPanel namesContainer;
     private final JTextField numInput;
 
     public NewGamePanel(final NavigationController navigationController) {
+
+        try {
+            
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/UI/newgame_bg.png"));
+            this.backgroundImage = bgIcon.getImage();
+        } catch (Exception e) {
+            System.err.println("Background image not found!");
+            this.setBackground(Color.DARK_GRAY);
+        }
+
         this.setLayout(new BorderLayout(MARGINS, MARGINS));
-        this.setBackground(Color.DARK_GRAY);
         this.setBorder(BorderFactory.createEmptyBorder(MARGINS, MARGINS, MARGINS, MARGINS));
 
         final JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -148,6 +162,14 @@ public final class NewGamePanel extends JPanel {
 
         namesContainer.revalidate();
         namesContainer.repaint();
+    }
+    @Override
+    protected void paintComponent(final Graphics g) {
+        super.paintComponent(g);
+        
+        if (this.backgroundImage != null) {
+            g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
     }
 }
 

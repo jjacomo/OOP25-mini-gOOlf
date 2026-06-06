@@ -5,11 +5,14 @@ import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -27,19 +30,23 @@ public final class LeaderBoardPanel extends JPanel {
      * Serial version UID.
      */
     private static final long serialVersionUID = 1L;
-
+    private transient Image backgroundImage;
     private final JPanel tableContainer;
-
+    
     public LeaderBoardPanel(final NavigationController navController) {
         this.setLayout(new GridBagLayout());
-        this.setBackground(Color.DARK_GRAY); 
-
+        // To import the background image
+        try {
+            
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/UI/leaderboard_bg.png"));
+            this.backgroundImage = bgIcon.getImage();
+        } catch (Exception e) {
+            System.err.println("Background image not found!");
+            this.setBackground(Color.DARK_GRAY);
+        }
         final JPanel menuBox = new JPanel();
         menuBox.setLayout(new BoxLayout(menuBox, BoxLayout.Y_AXIS));
         menuBox.setOpaque(false);
-        final JLabel title = UserInterfaceFactory.createTitle("LEADERBOARD");
-        title.setAlignmentX(CENTER_ALIGNMENT);
-        menuBox.add(title);
         menuBox.add(Box.createVerticalStrut(30));
 
         // Container which stores the scores
@@ -106,6 +113,16 @@ public final class LeaderBoardPanel extends JPanel {
         }
         this.revalidate();
         this.repaint();
+    }
+    // 4. METODO PER DISEGNARE LO SFONDO IN MODO DINAMICO
+    @Override
+    protected void paintComponent(final Graphics g) {
+        super.paintComponent(g);
+        
+        if (this.backgroundImage != null) {
+            // Spalma l'immagine per tutta la grandezza della finestra
+            g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
     }
 }
 

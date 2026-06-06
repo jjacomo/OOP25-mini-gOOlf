@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -29,11 +30,22 @@ public final class MenuPanel extends JPanel {
     private static final int START_WIDTH = 960;
     private static final int START_HEIGHT = 540;
     private static final int MARGINS = 10;
+    private transient Image backgroundImage;
 
     /**
      * @param navigationController the navigation controller
      */
     public MenuPanel(final NavigationController navigationController) {
+        
+        // Bckground image loading
+        try {
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/UI/menu_bg.png"));
+            this.backgroundImage = bgIcon.getImage();
+        } catch (Exception e) {
+            System.err.println("Background image not found!");
+            this.setBackground(Color.DARK_GRAY); // Colore di emergenza
+        }
+    
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setBackground(Color.DARK_GRAY);
         this.setLayout(new GridBagLayout());
@@ -83,5 +95,14 @@ public final class MenuPanel extends JPanel {
         final JPanel spacer = new JPanel();
         spacer.setOpaque(false);
         this.add(spacer, gbc);
+
+    }
+
+    @Override
+    protected void paintComponent(final Graphics g) {
+        super.paintComponent(g);
+        if (this.backgroundImage != null) {
+            g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
     }
 }
