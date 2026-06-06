@@ -60,7 +60,7 @@ public final class NewGamePanel extends JPanel {
         header.add(instructionLabel);
         this.numInput = new JTextField("1", 3);
         header.add(numInput);
-        
+
         //OK Button
         final JButton confirmNumButton = new JButton("OK");
         header.add(confirmNumButton);
@@ -100,7 +100,7 @@ public final class NewGamePanel extends JPanel {
             final List<String> playerNames = new ArrayList<>();
             for (int i = 0; i < nameFields.size(); i++) {
                 String name = nameFields.get(i).getText().trim();
-                
+
                 // Adds a default name if no name is provided
                 if (name.isEmpty()) {
                     name = "Player " + (i + 1);
@@ -114,7 +114,7 @@ public final class NewGamePanel extends JPanel {
 
     /**
      * This method initializes the number of text fields for the names of the players.
-     * 
+     *
      * @param n number of players.
      */
     private void generateFields(final int n) {

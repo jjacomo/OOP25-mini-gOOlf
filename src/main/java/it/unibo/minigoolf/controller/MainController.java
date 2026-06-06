@@ -21,7 +21,7 @@ public interface MainController {
     void stop();
 
     /**
-     * Starts a new match with given players names
+     * Starts a new match with given players names.
      * @param playerNames
      */
     void startNewMatch(List<String> playerNames);

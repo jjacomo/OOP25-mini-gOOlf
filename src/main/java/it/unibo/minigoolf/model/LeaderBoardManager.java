@@ -51,6 +51,7 @@ public final class LeaderBoardManager {
     /**
      * Updates the leaderboard file with new match scores.
      * Only saves the score if it's lower (better) than the previously saved one.
+     * 
      * @param matchScores the scores from the just finished match.
      */
     public void updateAndSaveScores(final Map<String, Integer> matchScores) {

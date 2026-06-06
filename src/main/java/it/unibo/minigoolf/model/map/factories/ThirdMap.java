@@ -26,6 +26,7 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * @see Surface
  * TODO: Da riscrivere i nomi degli ostacoli ecc..., implementare bouncy e portal
  */
+
 public class ThirdMap implements GameMapFactory {
 
         private static final double GRASS1_X = 0;
@@ -55,8 +56,6 @@ public class ThirdMap implements GameMapFactory {
         private static final double ICE2_HEIGHT = 250;
         private static final int ICE2_Z_INDEX = 4;
 
-
-        
         // WALLS
         private static final double W1_X = 0;
         private static final double W1_Y = 0;

@@ -32,7 +32,7 @@ public final class LeaderBoardPanel extends JPanel {
 
     public LeaderBoardPanel(final NavigationController navController) {
         this.setLayout(new GridBagLayout());
-        this.setBackground(Color.DARK_GRAY); // Colore neutro per ora, pronto per l'immagine
+        this.setBackground(Color.DARK_GRAY); 
 
         final JPanel menuBox = new JPanel();
         menuBox.setLayout(new BoxLayout(menuBox, BoxLayout.Y_AXIS));
@@ -81,7 +81,7 @@ public final class LeaderBoardPanel extends JPanel {
 
             table.add(UserInterfaceFactory.createTitle("PLAYER"));
             table.add(UserInterfaceFactory.createTitle("TOTAL SHOTS"));
-            
+
             // Cosmetic: adds the medal icons, for now those are just emojis, TODO: Try it in different PCs
             int rank = 0;
             for (final Map.Entry<String, Integer> entry : sortedScores) {

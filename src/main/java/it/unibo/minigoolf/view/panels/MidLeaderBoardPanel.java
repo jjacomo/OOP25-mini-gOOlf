@@ -57,7 +57,7 @@ public final class MidLeaderBoardPanel extends JPanel {
             final JLabel nameLabel = new JLabel(entry.getKey());
             nameLabel.setForeground(Color.WHITE);
             nameLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-            
+
             final JLabel scoreLabel = new JLabel(String.valueOf(entry.getValue()));
             scoreLabel.setForeground(Color.WHITE);
             scoreLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
@@ -75,7 +75,7 @@ public final class MidLeaderBoardPanel extends JPanel {
         menuBox.add(nextButton);
 
         this.add(menuBox, new GridBagConstraints());
-        
+
         // Blocks mouse events from reaching the game while in mid-leaderboardpanel.
         this.addMouseListener(new MouseAdapter() { });
     }
