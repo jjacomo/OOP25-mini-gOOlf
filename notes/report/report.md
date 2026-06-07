@@ -2,22 +2,48 @@
 
 ### 1.1 Descrizione e requisiti
 
+Il software è un gioco di mini-golf in 2D per uno o più giocatori in modalità a turni. Il giocatore controlla una pallina su una mappa con ostacoli e superfici di diverso tipo, con l'obiettivo di farla entrare nella buca nel minor numero di colpi possibile.
+Purchè esso sia minore o uguale a 7. Ogni colpo viene effettuato trascinando il mouse dalla pallina nella direzione desiderata, ma verso opposto, e più lungo è il trascinamento, più potente sarà il colpo.
+Il gioco è composto da più mappe in sequenza. Al termine di ogni mappa viene mostrata una classifica intermedia con i colpi effettuati da ciascun giocatore. Al termine di tutte le mappe i punteggi vengono salvati nella classifica finale.
 
 #### Requisiti funzionali
 * Gestione dell'input
 * Menu di gioco
 * Mappa e ostacoli
 * Movimento della pallina
+(Questi li scriverei sotto forma di frasi complete come nell'esempio slide 5) -fede
 
 #### Requisiti non funzionali
 * Leaderboard
 * Possibilità di salvare e caricare la partita
 * Terreni ed ostacoli di tipo avanzato 
+(Questi li scriverei sotto forma di frasi complete come nell'esempio slide 5) -fede
 
 ### 1.2 Modello del Dominio
 
+Un gioco di mini-golf è composto da una sequenza di mappe. Ogni mappa contiene una pallina, una buca, un insieme di superfici e un insieme di ostacoli. La pallina si muove sulla mappa seguendo le leggi della fisica: la superficie su cui si trova influenza il suo movimento tramite l'attrito e, in alcuni casi, il vento. Gli ostacoli bloccano il percorso della pallina facendola rimbalzare.
+Una partita coinvolge uno o più giocatori che si alternano a turni. Ad ogni turno il giocatore effettua un colpo, indicando direzione e potenza. Il punteggio di ciascun giocatore su una mappa corrisponde al numero di colpi effettuati. L'obiettivo è far entrare la pallina nella buca.
 
----
+UML: (da controllare e commentare quando ci saremo tutti, per ora è una base)
+```mermaid
+    classDiagram
+        class Partita
+        class Mappa
+        class Giocatore
+        class Pallina
+        class Buca
+        class Superficie
+        class Ostacolo
+        class Colpo
+
+        Partita --> "1..*" Giocatore
+        Partita --> "1..*" Mappa
+        Mappa --> "1" Pallina
+        Mappa --> "1" Buca
+        Mappa --> "1..*" Superficie
+        Mappa --> "0..*" Ostacolo
+        Giocatore --> "0..*" Colpo
+```
 
 ## Capitolo 2: Design
 
@@ -50,38 +76,63 @@ La progettazione e' basata su una interfaccia `Surface` che definisce le proprie
 **Input del colpo**
 
 *Problema*:
-Il gioco richiede che il giocatore indichi direzione e potenza del colpo tramite un gesto di drag del mouse sulla pallina. Il sistema deve: (1) riconoscere dove inizia il drag (solo se vicino alla pallina), (2) calcolare il vettore del colpo durante il drag, (3) mostrare visivamente l'indicatore con colore proporzionale alla potenza, (4) confermare il colpo solo al rilascio del mouse, senza che il game loop lo consumi prima.
+Il gioco richiede che il giocatore indichi direzione e potenza del colpo trascinando il mouse dalla pallina. Il sistema deve riconoscere dove inizia il trascinamento, calcolare la direzione e la potenza, mostrare un indicatore visivo, e confermare il colpo solo al rilascio del mouse.
 
 *Soluzione*:
 La logica è suddivisa in tre livelli distinti seguendo il pattern MVC:
-- Model (ShotState): tiene lo stato del colpo in corso (intent, shotReady, ballPosition). Il vettore viene limitato a una lunghezza massima di MAX_POWER =  150 pixel logici al momento del rilascio, garantendo che la fisica non riceva mai più potenza di quanto mostri l'indicatore visivo.
-- View (ShotViewPanel, ShotListener, ShotCoordinateConverter): ShotViewPanel disegna la linea tratteggiata con punta a freccia, scalando le coordinate fisiche del mouse in coordinate logiche 1920×1080. ShotListener traduce gli eventi mouse in chiamate su ShotState tramite le interfacce ShotVisualizer e ShotCoordinateConverter, senza dipendere dalla classe concreta ShotViewPanel.
-- Controller (ShotControllerImpl): ogni tick interroga ShotState.consume() e, se un colpo è pronto, lo inoltra alla logica di turno tramite callback funzionali (Consumer<Vector2D>, Supplier<Optional<Vector2D>>), senza memorizzare riferimenti a oggetti mutabili.
+- Model (ShotState): tiene traccia dello stato del colpo in corso. Espone lo stato tramite interfacce strette invece che come oggetto diretto, evitando dipendenze indesiderate.
+- View (ShotViewPanel, ShotListener): ShotListener riceve gli eventi del mouse e li traduce in aggiornamenti sul model, dipendendo solo da due interfacce strette (ShotVisualizer e ShotCoordinateConverter) invece che dalla classe concreta. Questo applica il pattern Strategy: il comportamento di disegno e conversione delle coordinate è intercambiabile senza modificare il listener.
+- Controller (ShotControllerImpl): ogni tick interroga il model e, se un colpo è pronto, lo passa alla logica di turno tramite callback, senza memorizzare riferimenti a oggetti mutabili.
 
-Il colpo viene considerato valido solo dopo mouseReleased, grazie al flag shotReady in ShotState: durante il drag shotReady è sempre false, impedendo al game loop di consumare il colpo prima che il giocatore abbia rilasciato il mouse.
+UML:
+```mermaid
+    classDiagram
+        class ShotListener
+        <<interface>> ShotVisualizer
+        <<interface>> ShotCoordinateConverter
+        class ShotViewPanel
+
+        ShotListener --> ShotVisualizer
+        ShotListener --> ShotCoordinateConverter
+        ShotViewPanel ..|> ShotVisualizer
+        ShotViewPanel ..|> ShotCoordinateConverter
+```
 
 *Pro e Contro*:
-Pro: separazione netta tra stato (model), rendering (view) e coordinamento (controller); nessun @SuppressWarnings necessario grazie all'uso di interfacce strette e callback funzionali; il click viene accettato solo entro un raggio configurabile dalla pallina, evitando colpi accidentali.
+Pro: separazione netta tra stato, rendering e coordinamento. Aggiungere un nuovo tipo di indicatore visivo richiede solo una nuova implementazione di ShotVisualizer, senza toccare il listener o il controller.
 
-Contro: la soglia CLICK_RADIUS = 40 pixel logici è una costante hardcoded. Su schermi molto grandi o piccoli potrebbe risultare poco precisa e richiederebbe un adattamento proporzionale alla dimensione della pallina.
-
+Contro: la soglia di click sulla pallina è una costante fissa in pixel logici, e non si adatta automaticamente se la pallina cambia dimensione.
 
 **Ciclo di vita del match e progressione delle mappe**
 
 *Problema*:
-Il gioco deve supportare una sequenza ordinata di mappe: quando la pallina entra in buca il match termina e si avanza alla mappa successiva; se non ce ne sono, si torna al menu principale. La logica di progressione non deve appesantire MainControllerImpl, che deve restare un semplice orchestratore del timer.
+Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva; se non ce ne sono, si torna al menu. Tutta questa logica non deve stare nel controller principale, che deve restare semplice.
 
 *Soluzione*:
-La progressione di gioco è gestita da tre componenti distinti:
--MapSequence (model): lista ordinata di GameMapFactory, con advance(), hasNext() e reset(). Incapsula completamente il concetto di "quale mappa è la corrente".
--MatchManager (controller): costruisce ogni match tramite GameFactory, passa il callback onHoleCompleted e gestisce la transizione. Non memorizza collaboratori mutabili: usa esclusivamente Runnable e Consumer<GameController> per interagire con navigation e view.
--HoleChecker (model): controlla ogni tick se il centro della pallina è dentro il raggio della buca. Il controllo avviene sia a palla ferma sia a palla in movimento, purché la velocità sia inferiore a un terzo di quella massima, replicando il comportamento realistico in cui una pallina lenta può cadere in buca.
-MainControllerImpl si riduce a creare MapSequence, MatchManager e il timer, delegando tutto il resto.
+La progressione di gioco è gestita da tre componenti distinte:
+-MapSequence (model): tiene la lista ordinata delle mappe e sa qual è la corrente. Applica il pattern Factory Method: ogni mappa è prodotta da una GameMapFactory, rendendo semplice aggiungerne di nuove.
+-Gamefactory: costruisce il match per la mappa corrente, collegando tutti i componenti necessari.
+-MatchManager (controller): usa GameFactory per costruire ogni match e gestisce le transizioni tra una mappa e l'altra. Comunica con il resto del sistema solo tramite callback, senza memorizzare oggetti mutabili.
+
+UML:
+```mermaid
+    classDiagram
+        class MatchManager
+        class MapSequence
+        <<interface>> GameMapFactory
+        class FirstMap
+        class SecondMap
+
+        MatchManager --> MapSequence
+        MapSequence --> GameMapFactory
+        GameMapFactory <|.. FirstMap
+        GameMapFactory <|.. SecondMap
+```
 
 *Pro e Contro*:
-Pro: aggiungere una nuova mappa richiede una sola riga (new MapSequence(List.of(new FirstMap(), new SecondMap()))). Il reset della sequenza al ritorno al menu è automatico. Nessun warning SpotBugs grazie all'uso esclusivo di callback.
+Pro: aggiungere una nuova mappa richiede solo di creare una nuova classe e aggiungerla alla sequenza. Il reset al ritorno al menu è automatico.
 
-Contro: MatchManager ricostruisce l'intero GameController (e quindi la GameMap) ad ogni cambio mappa, il che potrebbe essere costoso se le mappe fossero molto grandi. 
+Contro: ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe rallentare il gioco se le mappe fossero molto complesse.
 
 #### Mattia D'Ambrosio
 **Topic**
@@ -99,11 +150,12 @@ Contro: MatchManager ricostruisce l'intero GameController (e quindi la GameMap) 
 * **Daniel Patryk Bak:** 
 * **Giacomo Mengozzi:** 
 * **Federico Sparvoli:** 
-I componenti testati sono ShotState, GameState, ShotViewPanel e GameFactory.
-ShotStateTest: verifica le invarianti del model del colpo: stato iniziale vuoto, soglia minima di potenza, riduzione velocità a MAX_POWER, consumo singolo del colpo e reset completo dello stato.
-GameStateTest: verifica la logica di turno: costruttore, avanzamento e wrap-around dei turni, conteggio dei colpi, ignoramento di colpi sotto soglia o mentre la pallina è in movimento.
-ShotViewPanelTest: testa l'integrazione tra ShotViewPanel e ShotListener tramite eventi mouse, verificando che il ciclo press-drag-release produca un colpo valido, che click lontani dalla pallina non avviino il drag, e che drag troppo corti vengano ignorati.
-GameFactoryTest: verifica che il match costruito dalla factory sia in uno stato iniziale coerente: tutti i controller non nulli, primo giocatore corretto, updateTick null-safe prima di setShotView.
+I componenti testati sono ShotState, GameState e GameFactory.
+ShotStateTest: controlla che lo stato del tiro funzioni bene: all'inizio è vuoto, c'è una potenza minima, la potenza massima non si può superare, si può consumare un colpo e si può resettare tutto.
+
+GameStateTest: controlla la logica dei turni: come si crea, come si passa al turno successivo (e si ricomincia da capo dopo l'ultimo), quanti colpi sono stati fatti, e che i colpi troppo deboli o fatti mentre la pallina si muove vengano ignorati.
+
+GameFactoryTest: controlla che la partita creata dalla factory sia sempre uguale all'inizio su entrambe le mappe: tutti i controller devono essere presenti, il primo giocatore è quello giusto, e lo stato del tiro è vuoto.
 
 * **Mattia D'Ambrosio:** 
 
@@ -111,24 +163,21 @@ GameFactoryTest: verifica che il match costruito dalla factory sia in uno stato 
 * **Daniel Patryk Bak:** 
 * **Giacomo Mengozzi:** 
 * **Federico Sparvoli:** 
-- Interfacce funzionali e @FunctionalInterface: ShotView, ShotCoordinateConverter e ShotInput sono annotate @FunctionalInterface. Permalink: src/main/java/it/unibo/minigoolf/controller/shot/ShotView.java.
-           src/main/java/it/unibo/minigoolf/view/input/ShotCoordinateConverter.java.
-           src/main/java/it/unibo/minigoolf/view/input/ShotInput.java.
+-Lambda expressions e method reference: utilizzate per passare comportamenti e dipendenze in modo semplice e flessibile. GameControllerImpl non memorizza né GameState né PhysicsController direttamente, ma ne estrae i comportamenti come BooleanSupplier, Runnable, Consumer<Vector2D> e Supplier<Optional<Vector2D>>, eliminando i warning SpotBugs EI_EXPOSE_REP2 senza fare uso di alcun @SuppressWarnings.
+Permalink:  https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L104
+    https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/controller/game/MatchManager.java#L78
 
-- Lambda expressions e method reference per dependency injection funzionale: GameControllerImpl non memorizza GameState né PhysicsController direttamente, ma ne estrae i comportamenti come BooleanSupplier, Runnable, Consumer<Vector2D> e Supplier<Optional<Vector2D>>, usati pervasivamente per evitare di memorizzare oggetti mutabili e per eliminare warning SpotBugs EI_EXPOSE_REP2 senza @SuppressWarnings. 
-Permalink: src/main/java/it/unibo/minigoolf/controller/game/MatchManager.java.
-           src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java
+-Record Java: SaveData e PlayerSaveData sono record utilizzati per rappresentare dati in modo semplice e immutabile.
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/save/SaveData.java#L21
 
-- Record Java: SaveData e PlayerSaveData sono record, sfruttando la sintassi compatta per DTO immutabili. 
-Permalink: src/main/java/it/unibo/minigoolf/model/save/SaveData.java
+-Stream API: usata in GameState per costruire la lista dei giocatori nel costruttore, in GameControllerImpl per produrre gli snapshot dei giocatori in createSaveData, e in MatchManager per avanzare la sequenza di mappe al caricamento di un salvataggio.
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/logic/GameState.java#L43 //TODO
 
--Stream API: usata in SaveData.from() per costruire la lista di snapshot dei giocatori con stream().map(...).toList(). 
-Permalink: src/main/java/it/unibo/minigoolf/model/save/SaveData.java
+-Optional: usato in ShotState per indicare se c'è o meno un'intenzione di tiro, posizione della palla e colpo pronto, rendendo esplicito il ciclo di vita del colpo ed evitando controlli su null.
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/logic/ShotState.java#L68
 
--Libreria Gson (com.google.code.gson): usata in SaveManager per serializzare e deserializzare lo stato della partita in JSON. Permalink: src/main/java/it/unibo/minigoolf/model/save/SaveManager.java
-
--Test headless con JUnit 5: ShotViewPanelTest usa System.setProperty("java.awt.headless", "true") in un blocco static e Component.dispatchEvent per simulare eventi mouse senza display fisico.
-Permalink: src/test/java/it/unibo/minigoolf/view/input/ShotViewPanelTest.java
+-Libreria Gson (com.google.code.gson): usata in SaveManager per serializzare e deserializzare lo stato della partita in JSON con GsonBuilder.setPrettyPrinting().
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/save/SaveManager.java#L21
 
 * **Mattia D'Ambrosio:** 
 
@@ -140,10 +189,10 @@ Permalink: src/test/java/it/unibo/minigoolf/view/input/ShotViewPanelTest.java
 * **Daniel Patryk Bak:** 
 * **Giacomo Mengozzi:** 
 * **Federico Sparvoli:** 
-Il mio contributo principale riguarda il sistema di input del colpo e la gestione del ciclo di vita dei match. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a @SuppressWarnings, ottenuta tramite interfacce strette e callback funzionali.
-Un aspetto migliorabile è la soglia di click sulla pallina (CLICK_RADIUS), che al momento è fissa in pixel logici e non si adatta alla dimensione effettiva della pallina a runtime. In futuro sarebbe opportuno calcolarla dinamicamente dal raggio della pallina.
-Sul fronte della progressione delle mappe, la ricostruzione completa del GameController ad ogni cambio mappa potrebbe diventare un collo di bottiglia con mappe molto complesse: un sistema di pre-caricamento asincrono sarebbe il passo naturale successivo.
-Il sistema di salvataggio (SaveManager, SaveData) //TODO
+Il mio contributo principale riguarda il sistema di input del colpo, la gestione del ciclo di vita dei match e il sistema di salvataggio. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a @SuppressWarnings, ottenuta tramite interfacce strette e callback funzionali.
+Un aspetto migliorabile è la soglia di click sulla pallina (CLICK_RADIUS), che al momento è un numero fisso di pixel e non cambia se la pallina viene ingrandita o rimpicciolita. In futuro sarebbe meglio calcolarlo in base al raggio vero della pallina.
+Per quanto riguarda il cambio delle mappe, al momento ricostruiamo da capo tutto il controller del gioco ad ogni nuova mappa. Con mappe molto grandi questo potrebbe rallentare il gioco. Il prossimo passo sarebbe caricare le mappe in anticipo, senza bloccare il gioco.
+Il sistema di salvataggio (SaveManager, SaveData) memorizza la partita in formato JSON usando Gson. Salva solo il numero della mappa, non tutta la geometria. Così i file sono piccoli e il salvataggio non dipende da come sono fatte le mappe dentro. Un limite attuale è che il salvataggio viene cancellato appena lo si carica, quindi non si può riprendere la stessa partita due volte senza salvarla di nuovo.
 
 * **Mattia D'Ambrosio:** 
 

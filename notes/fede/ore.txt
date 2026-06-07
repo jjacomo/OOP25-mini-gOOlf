@@ -51,3 +51,5 @@
 4 ore: pulizia di tutte le classi, rese più efficienti e tolto/aggiunto commenti dove necessario
 
 3 ore: sistemato e aggiornato i test. Sistemato la mia mappa
+
+2 ore: aggiornato il report e iniziato a buttare giù un po' di basi per le parti in comune

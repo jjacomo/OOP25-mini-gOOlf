@@ -1,0 +1,3 @@
+- requisiti funzionali e non sul report
+
+- UML base sulle entità da controllare al punto 1.2 (non vorrei aver scordato qualcosa)
