@@ -25,7 +25,7 @@ import java.util.List;
  * @author fede
  */
 
-public final class SecondMap implements GameMapFactory {
+public final class SecondMap implements GameMapFactory { 
 
     // Grass start area
     private static final double GRASS_START_X = 0;
@@ -45,6 +45,10 @@ public final class SecondMap implements GameMapFactory {
     private static final Vector2D SAND_CIRCLE_POS = new Vector2D(960, 540);
     private static final double SAND_CIRCLE_R = 90;
     private static final int SAND_CIRCLE_Z = 2;
+
+    // Small solid obstacle concentric with the sand trap
+    private static final Vector2D CENTER_OBS_POS = new Vector2D(960, 540);
+    private static final double CENTER_OBS_R = 30;
 
     // Windy grass exit area
     private static final double WINDY_EXIT_X = 1520;
@@ -202,6 +206,7 @@ public final class SecondMap implements GameMapFactory {
         obstacles.add(new RoundObstacle(OBS2_POS, OBS2_R));
         obstacles.add(new RoundObstacle(OBS3_POS, OBS3_R));
         obstacles.add(new RoundObstacle(OBS4_POS, OBS4_R));
+        obstacles.add(new RoundObstacle(CENTER_OBS_POS, CENTER_OBS_R));
 
         // Triangle near exit
         obstacles.add(new TriangleObstacle(TRI_V1, TRI_V2, TRI_V3));

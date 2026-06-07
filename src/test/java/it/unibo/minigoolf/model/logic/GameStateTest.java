@@ -12,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameStateTest {
 
-    private static final String PLAYER_ALICE = "Alice";
-    private static final String PLAYER_BOB = "Bob";
-    private static final String PLAYER_CHARLIE = "Charlie";
+    private static final String PLAYER_1 = "Fede";
+    private static final String PLAYER_2 = "Mattia";
+    private static final String PLAYER_3 = "Giacomo";
     private static final int THREE_PLAYERS = 3;
     private static final int SHOT_BELOW_THRESHOLD = 5;
-    private static final Vector2D VALID_SHOT = new Vector2D(20, 0); // normSq = 400 >= 100
+    private static final Vector2D VALID_SHOT = new Vector2D(20, 0);
 
-    // --- Constructor ---
+    // Constructor
 
     @Test
     void testConstructorWithNullThrows() {
@@ -33,85 +33,85 @@ class GameStateTest {
 
     @Test
     void testConstructorCreatesCorrectNumberOfPlayers() {
-        final var gs = new GameState(List.of(PLAYER_ALICE, PLAYER_BOB, PLAYER_CHARLIE));
+        final var gs = new GameState(List.of(PLAYER_1, PLAYER_2, PLAYER_3));
         assertEquals(THREE_PLAYERS, gs.getPlayers().size());
     }
 
-    // --- Initial state ---
+    // Initial state
 
     @Test
     void testInitialCurrentPlayerIsFirst() {
-        final var gs = new GameState(List.of(PLAYER_ALICE, PLAYER_BOB));
-        assertEquals(PLAYER_ALICE, gs.getCurrentPlayer().getName());
+        final var gs = new GameState(List.of(PLAYER_1, PLAYER_2));
+        assertEquals(PLAYER_1, gs.getCurrentPlayer().getName());
     }
 
     @Test
     void testInitialPlayerIndexIsZero() {
-        final var gs = new GameState(List.of(PLAYER_ALICE, PLAYER_BOB));
+        final var gs = new GameState(List.of(PLAYER_1, PLAYER_2));
         assertEquals(0, gs.getCurrentPlayerIndex());
     }
 
     @Test
     void testInitialBallNotMoving() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
+        final var gs = new GameState(List.of(PLAYER_1));
         assertFalse(gs.isBallMoving());
     }
 
-    // --- getPlayers ---
+    // Players list
 
     @Test
     void testGetPlayersIsUnmodifiable() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
+        final var gs = new GameState(List.of(PLAYER_1));
         assertThrows(UnsupportedOperationException.class,
-                () -> gs.getPlayers().add(new Player(PLAYER_BOB)));
+                () -> gs.getPlayers().add(new Player(PLAYER_2)));
     }
 
-    // --- nextTurn ---
+    // Next turn
 
     @Test
     void testNextTurnAdvancesToNextPlayer() {
-        final var gs = new GameState(List.of(PLAYER_ALICE, PLAYER_BOB));
+        final var gs = new GameState(List.of(PLAYER_1, PLAYER_2));
         gs.nextTurn();
-        assertEquals(PLAYER_BOB, gs.getCurrentPlayer().getName());
+        assertEquals(PLAYER_2, gs.getCurrentPlayer().getName());
         assertEquals(1, gs.getCurrentPlayerIndex());
     }
 
     @Test
     void testNextTurnWrapsAround() {
-        final var gs = new GameState(List.of(PLAYER_ALICE, PLAYER_BOB));
+        final var gs = new GameState(List.of(PLAYER_1, PLAYER_2));
         gs.nextTurn();
         gs.nextTurn();
-        assertEquals(PLAYER_ALICE, gs.getCurrentPlayer().getName());
+        assertEquals(PLAYER_1, gs.getCurrentPlayer().getName());
         assertEquals(0, gs.getCurrentPlayerIndex());
     }
 
     @Test
     void testNextTurnClearsBallMoving() {
-        final var gs = new GameState(List.of(PLAYER_ALICE, PLAYER_BOB));
+        final var gs = new GameState(List.of(PLAYER_1, PLAYER_2));
         gs.setPendingShot(VALID_SHOT);
         gs.update();
         gs.nextTurn();
         assertFalse(gs.isBallMoving());
     }
 
-    // --- setPendingShot / update ---
+    // Shot
 
     @Test
     void testUpdateReturnsShotWhenPending() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
+        final var gs = new GameState(List.of(PLAYER_1));
         gs.setPendingShot(VALID_SHOT);
         assertTrue(gs.update().isPresent());
     }
 
     @Test
     void testUpdateReturnsEmptyWithNoPendingShot() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
+        final var gs = new GameState(List.of(PLAYER_1));
         assertTrue(gs.update().isEmpty());
     }
 
     @Test
     void testUpdateMarksBallMoving() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
+        final var gs = new GameState(List.of(PLAYER_1));
         gs.setPendingShot(VALID_SHOT);
         gs.update();
         assertTrue(gs.isBallMoving());
@@ -119,7 +119,7 @@ class GameStateTest {
 
     @Test
     void testUpdateIncrementsPlayerShotCount() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
+        final var gs = new GameState(List.of(PLAYER_1));
         gs.setPendingShot(VALID_SHOT);
         gs.update();
         assertEquals(1, gs.getCurrentPlayer().getShots());
@@ -127,7 +127,7 @@ class GameStateTest {
 
     @Test
     void testSetPendingShotIgnoredWhenBallMoving() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
+        final var gs = new GameState(List.of(PLAYER_1));
         gs.setPendingShot(VALID_SHOT);
         gs.update();
         gs.setPendingShot(VALID_SHOT);
@@ -136,27 +136,27 @@ class GameStateTest {
 
     @Test
     void testSetPendingShotIgnoredBelowThreshold() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
-        gs.setPendingShot(new Vector2D(SHOT_BELOW_THRESHOLD, 0)); // normSq = 25 < 100
+        final var gs = new GameState(List.of(PLAYER_1));
+        gs.setPendingShot(new Vector2D(SHOT_BELOW_THRESHOLD, 0));
         assertTrue(gs.update().isEmpty());
     }
 
-    // --- onBallStopped ---
+    // Ball stopped
 
     @Test
     void testOnBallStoppedClearsBallMoving() {
-        final var gs = new GameState(List.of(PLAYER_ALICE));
+        final var gs = new GameState(List.of(PLAYER_1));
         gs.setPendingShot(VALID_SHOT);
         gs.update();
         gs.onBallStopped();
         assertFalse(gs.isBallMoving());
     }
 
-    // --- resetAllShots ---
+    // Reset shots
 
     @Test
     void testResetAllShotsZerosAllCounters() {
-        final var gs = new GameState(List.of(PLAYER_ALICE, PLAYER_BOB));
+        final var gs = new GameState(List.of(PLAYER_1, PLAYER_2));
         gs.setPendingShot(VALID_SHOT);
         gs.update();
         gs.resetAllShots();

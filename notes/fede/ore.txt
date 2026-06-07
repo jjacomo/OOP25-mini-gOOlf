@@ -49,3 +49,5 @@
 5 ore: completato definitivamente il salvataggio dati partita, ora non ha più bug o problemi
 
 4 ore: pulizia di tutte le classi, rese più efficienti e tolto/aggiunto commenti dove necessario
+
+3 ore: sistemato e aggiornato i test. Sistemato la mia mappa
