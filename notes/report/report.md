@@ -135,13 +135,29 @@ Pro: aggiungere una nuova mappa richiede solo di creare una nuova classe e aggiu
 Contro: ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe rallentare il gioco se le mappe fossero molto complesse.
 
 #### Mattia D'Ambrosio
-**Topic**
+**Fisica, geometria degli ostacoli e gestione vettoriale**
+
 *Problema*: 
+Gestire le collisioni fisiche tra la pallina e gli ostacoli di varie forme (rettangoli, cerchi, triangoli) in modo realistico, anche in situazioni critiche come angoli interni tra ostacoli adiacenti o sotto l’effetto di forze esterne, evitando compenetrazioni, vibrazioni a riposo (jittering) della pallina e rimbalzi innaturali o con direzioni arbitrarie.
+Implementare il calcolo vettoriale senza importare librerie esterne pesanti.
 
 *Soluzione*:
+- Le normali di collisione sono precalcolate per ogni lato (rettangolo, triangolo) o derivabili geometricamente (cerchio).
+- AbstractObstacle (model): Centralizza la logica di calcolo del rimbalzo e del resting contact, evitando ripetizioni di codice nelle sottoclassi geometriche
+- Vector2D: classe personalizzata per creare e fare calcoli coi vettori, contenente solo i metodi strettamente necessari al gioco.
+- Viene sfruttata la profondità di penetrazione per riposizionare la pallina fuori dall'ostacolo, prima di calcolare il rimbalzo. Nelle collisioni multiple, tramite "deepest penetration first", si individua l'ostacolo con compenetrazione maggiore (quello effettivamente impattato per primo).
+- Negli angoli dei triangoli, le normali dei lati vengono sommate per ottenere la bisettrice perfetta, rendendo il rimbalzo deterministico ed eliminando scelte arbitrarie.
 
 *Pro e Contro*: 
+Pro:
+- Fisica altamente stabile e realistica 
+- Le normali precalcolate riducono drasticamente i calcoli ripetitivi nel game loop (specialmente nei rettangoli).
+- La classe personalizzata Vector2D evita di importare tutti i metodi e campi non necessari all'applicazione, alleggerendola
+- L'aggiunta di un nuovo ostacolo richiede solo di estendere AbstractObstacle ed implementare il calcolo di compenetrazione.
 
+Contro:
+- Se la velocità della pallina in un singolo frame supera lo spessore dell'ostacolo, rischia di attraversarlo (tunneling).
+- Il calcolo esatto delle distanze per i triangoli richiede l'estrazione di radici quadrate, operazione che appesantiscono il game loop.
 ---
 
 ## Capitolo 3: Sviluppo

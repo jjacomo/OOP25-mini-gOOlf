@@ -142,6 +142,14 @@ Report 02/09 - 1 ore
 - Implementata la classe PortalObstacle e fatti alcuni test elementari
 - Risolti alcuni problemi di CheckStyle
 
+Report 09/06 - 1 ore
+- Fatto il primo punto della relazione finale (Fisica, geometria degli ostacoli e gestione vettoriale). Manca ancora
+  il codice dell'UML
+
 TO DO:
 - Fare ulteriori test di PortalObstacle
 - Sistemare la parte visiva di tutti i miei codici (stessi nomi per le variabili; no righe superiori ai 90 caratteri, ecc...)
+- Vedere come mettere delle texture agli ostacoli
+- Creare le due mappe del gioco
+- Finire relazione
+- Alla fine di tutto, fare un controllo di CheckStyle
