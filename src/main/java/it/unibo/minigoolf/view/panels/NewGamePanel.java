@@ -58,25 +58,20 @@ public final class NewGamePanel extends JPanel {
 
         this.setLayout(new BorderLayout(MARGINS, MARGINS));
         this.setBorder(BorderFactory.createEmptyBorder(MARGINS, MARGINS, MARGINS, MARGINS));
-
+        
+        // Top panel
         final JPanel header = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         header.setOpaque(false);
 
-        // Back to menu button
-        final JButton backButton = new JButton("BACK");
-        backButton.addActionListener(e -> navigationController.goToMainMenu());
-        header.add(backButton);
-        header.add(javax.swing.Box.createHorizontalStrut(50)); 
-
         // Label "N° of players:"
-        final JLabel instructionLabel = new JLabel("N° of players: ");
+        final JLabel instructionLabel = UserInterfaceFactory.createTitle("Number of players: ");
         instructionLabel.setForeground(Color.WHITE);
         header.add(instructionLabel);
         this.numInput = new JTextField("1", 3);
         header.add(numInput);
 
-        //OK Button
-        final JButton confirmNumButton = new JButton("OK");
+        // OK Button
+        final JButton confirmNumButton = UserInterfaceFactory.createButton("OK");
         header.add(confirmNumButton);
 
         this.add(header, BorderLayout.NORTH);
@@ -106,16 +101,21 @@ public final class NewGamePanel extends JPanel {
             }
         });
 
-        // Start match button, it starts a new single/multiplayermatch
-        final JButton startButton = new JButton("START MATCH");
-        this.add(startButton, BorderLayout.SOUTH);
+        // Bottom panel
+        final JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
+        bottomPanel.setOpaque(false);
+
+        // Back to menu button
+        final JButton backButton = UserInterfaceFactory.createButton("BACK");
+        backButton.addActionListener(e -> navigationController.goToMainMenu());
+        bottomPanel.add(backButton);
+
+        // Start match button
+        final JButton startButton = UserInterfaceFactory.createButton("START MATCH");
         startButton.addActionListener(e -> {
-            // Creates the list of players with given names
             final List<String> playerNames = new ArrayList<>();
             for (int i = 0; i < nameFields.size(); i++) {
                 String name = nameFields.get(i).getText().trim();
-
-                // Adds a default name if no name is provided
                 if (name.isEmpty()) {
                     name = "Player " + (i + 1);
                 }
@@ -123,7 +123,9 @@ public final class NewGamePanel extends JPanel {
             }
             navigationController.setupMatchAndStart(playerNames);
         });
+        bottomPanel.add(startButton);
 
+        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     /**
@@ -146,10 +148,9 @@ public final class NewGamePanel extends JPanel {
             final JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
             p.setOpaque(false);
 
-            final JLabel label = new JLabel("Player " + (i + 1) + ": ");
-            label.setForeground(Color.WHITE);
+            final JLabel label = UserInterfaceFactory.createLabel("Player " + (i + 1) + ": ");
 
-            final JTextField field = new JTextField(12);
+            final JTextField field = UserInterfaceFactory.createTextField(12);
             nameFields.add(field);
 
             p.add(label);
