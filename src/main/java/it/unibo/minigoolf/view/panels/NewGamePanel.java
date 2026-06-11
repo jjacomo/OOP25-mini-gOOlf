@@ -49,7 +49,7 @@ public final class NewGamePanel extends JPanel {
 
         try {
             
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/UI/newgame_bg.png"));
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/newgame_bg.png"));
             this.backgroundImage = bgIcon.getImage();
         } catch (Exception e) {
             System.err.println("Background image not found!");
@@ -59,7 +59,7 @@ public final class NewGamePanel extends JPanel {
         this.setLayout(new BorderLayout(MARGINS, MARGINS));
         this.setBorder(BorderFactory.createEmptyBorder(MARGINS, MARGINS, MARGINS, MARGINS));
 
-        final JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        final JPanel header = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         header.setOpaque(false);
 
         // Back to menu button

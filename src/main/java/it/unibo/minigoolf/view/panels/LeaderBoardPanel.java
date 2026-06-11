@@ -10,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.GridBagConstraints;
@@ -38,7 +37,7 @@ public final class LeaderBoardPanel extends JPanel {
         // To import the background image
         try {
             
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/UI/leaderboard_bg.png"));
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/leaderboard_bg.png"));
             this.backgroundImage = bgIcon.getImage();
         } catch (Exception e) {
             System.err.println("Background image not found!");
@@ -74,9 +73,7 @@ public final class LeaderBoardPanel extends JPanel {
         this.tableContainer.removeAll();
 
         if (scores == null || scores.isEmpty()) {
-            final JLabel emptyLabel = new JLabel("EMPTY!");
-            emptyLabel.setForeground(Color.WHITE);
-            emptyLabel.setFont(new Font("Comic Sans MS", Font.ITALIC, 25));
+            final JLabel emptyLabel = UserInterfaceFactory.createLabel("EMPTY!");
             this.tableContainer.add(emptyLabel);
         } else {
             // To order the scores
@@ -89,38 +86,54 @@ public final class LeaderBoardPanel extends JPanel {
             table.add(UserInterfaceFactory.createTitle("PLAYER"));
             table.add(UserInterfaceFactory.createTitle("TOTAL SHOTS"));
 
-            // Cosmetic: adds the medal icons, for now those are just emojis, TODO: Try it in different PCs
             int rank = 0;
             for (final Map.Entry<String, Integer> entry : sortedScores) {
-                String nameText = entry.getKey();
-                if (rank == 0) nameText += " 🥇";
-                else if (rank == 1) nameText += " 🥈";
-                else if (rank == 2) nameText += " 🥉";
+                final JLabel nameLabel = UserInterfaceFactory.createLabel(entry.getKey());
+                
+                // Medals icons near 1,2,3 player
+                try {
+                    String imagePath = "";
+                    if (rank == 0) {
+                        imagePath = "/medals/gold.png";
+                    } else if (rank == 1) {
+                        imagePath = "/medals/silver.png";
+                    } else if (rank == 2) {
+                        imagePath = "/medals/bronze.png";
+                    }
 
-                final JLabel nameLabel = new JLabel(nameText);
-                nameLabel.setForeground(Color.WHITE);
-                nameLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+                    if (!imagePath.isEmpty()) {
+                        final ImageIcon originalIcon = new ImageIcon(getClass().getResource(imagePath));
+                        // This is used to scale the original image to a small icon
+                        final Image scaledImg = originalIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+                        nameLabel.setIcon(new ImageIcon(scaledImg));
+                        nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+                        nameLabel.setIconTextGap(15);
+                    } 
+                    
+                } catch (Exception e) {
+                    // Only if the icons are not loaded, just simple text
+                    if (rank == 0) nameLabel.setText(entry.getKey() + " (1st)");
+                    else if (rank == 1) nameLabel.setText(entry.getKey() + " (2nd)");
+                    else if (rank == 2) nameLabel.setText(entry.getKey() + " (3rd)");
+                }
 
-                final JLabel scoreLabel = new JLabel(String.valueOf(entry.getValue()));
-                scoreLabel.setForeground(Color.WHITE);
-                scoreLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-
+                final JLabel scoreLabel = UserInterfaceFactory.createLabel(String.valueOf(entry.getValue()));
                 table.add(nameLabel);
                 table.add(scoreLabel);
                 rank++;
             }
+            
             this.tableContainer.add(table);
         }
         this.revalidate();
         this.repaint();
     }
-    // 4. METODO PER DISEGNARE LO SFONDO IN MODO DINAMICO
+    
+    // To scale the background image properly
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
-        
         if (this.backgroundImage != null) {
-            // Spalma l'immagine per tutta la grandezza della finestra
             g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
         }
     }

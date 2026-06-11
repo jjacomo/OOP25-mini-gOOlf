@@ -1,0 +1,35 @@
+Report - 06/11 - xx ore
+
+FATTO:
+
+- Spotbugs
+
+- Eliminata la classe dei credits ed il relativo bottone, metterò i credits direttamente nello sfondo in basso a destra nella schermata principale.
+
+- Aggiunta la possibilità di caricare un font dalle risorse, ditemi come lo vedete, poi ne sceglieremo uno insieme magari.
+
+- 
+
+DA FARE:
+
+- Spotbugs!
+
+- Scrivere qualche classe di test! idee: testare il salvataggio nella leaderboard, testare gli shots durante la partita, testare l'interfaccia.
+
+- 1.5 mappe da fare!
+
+- Sistemata ai font e ai bottoni, unificare le classi grafiche ed utilizzare il più possibile UIFactory
+
+EXTRA:
+
+- Aggiungere la soundtrack al menu principale, suoni
+
+
+AGENDA:
+
+- mappe da un pool random, la prima come tutorial (decidiamoci su questa cosa, cambiamo anche i nomi delle mappe)
+
+- Per @fedesparvo1-a11y: mi ricordo della questione dei bottoni si no -> yes no, però ho visto nella UIFactory che per appunto ovviare a questa roba hai
+costruito tutto un metodo secondo me un po' articolato. Cioè secondo me è eccessivo, purtroppo non credo ci sia un altro modo se utilizzi gli elementi grafici
+default di swing, però stavo pensado che potrei creare dei bottoni personalizzati, magari in quel caso (ed altri) si potrebbe fare senza troppi problemi, ma devo
+valutare quanto tempo ci vuole: l'amico di Jack aveva fatto i bottoni con lo sfondo personalizzato ad esempio.

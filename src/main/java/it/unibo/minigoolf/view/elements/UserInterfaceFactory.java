@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.Font;
+import java.io.InputStream;
 import java.awt.Dimension;
 
 /**
@@ -17,16 +18,36 @@ import java.awt.Dimension;
 public final class UserInterfaceFactory {
 
     private static final Color ACCENT_COLOR = Color.WHITE;
-    private static final Font MAIN_FONT = new Font("Comic Sans MS", Font.PLAIN, 24);
-    private static final Font TITLE_FONT = new Font("Comic Sans MS", Font.BOLD, 22);
     private static final int WIDTH = 200;
     private static final int HEIGHT = 60;
+    private static Font mainFont;
+    private static Font titleFont;
+    private static Font labelFont;
+
+    static {
+        try (InputStream is = UserInterfaceFactory.class.getResourceAsStream("/font/upheavtt.ttf")) {
+            if (is == null) {
+                throw new java.io.FileNotFoundException("Font file not found in resources!");
+            }
+            
+            final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            mainFont = baseFont.deriveFont(Font.PLAIN, 24f);
+            titleFont = baseFont.deriveFont(Font.BOLD, 22f);
+            labelFont = baseFont.deriveFont(Font.PLAIN, 18f);
+            
+        } catch (final Exception e) {
+            System.err.println(e.getMessage());
+            mainFont = new Font("SansSerif", Font.PLAIN, 24);
+            titleFont = new Font("SansSerif", Font.BOLD, 22);
+            labelFont = new Font("SansSerif", Font.PLAIN, 18);
+        }
+    }
 
     private UserInterfaceFactory() { }
 
     public static JButton createButton(final String text) {
         final JButton button = new JButton(text);
-        button.setFont(MAIN_FONT);
+        button.setFont(mainFont);
         button.setBackground(ACCENT_COLOR);
         button.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         return button;
@@ -34,13 +55,26 @@ public final class UserInterfaceFactory {
 
     public static JLabel createTitle(final String text) {
         final JLabel label = new JLabel(text);
-        label.setFont(TITLE_FONT);
+        label.setFont(titleFont);
+        label.setForeground(ACCENT_COLOR);
+        return label;
+    }
+
+    /**
+     * Creates a standard label with the default factory font size.
+     * @param text the label text
+     * @return a formatted JLabel
+     */
+    public static JLabel createLabel(final String text) {
+        final JLabel label = new JLabel(text);
+        label.setFont(labelFont);
         label.setForeground(ACCENT_COLOR);
         return label;
     }
 
     public static JTextField createTextField(final int columns) {
         final JTextField field = new JTextField(columns);
+        field.setFont(labelFont);
         field.setBackground(Color.GRAY);
         field.setForeground(Color.WHITE);
         field.setBorder(BorderFactory.createLineBorder(Color.GRAY));

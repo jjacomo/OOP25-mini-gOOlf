@@ -37,13 +37,13 @@ public final class MenuPanel extends JPanel {
      */
     public MenuPanel(final NavigationController navigationController) {
         
-        // Bckground image loading
+        // Background image loading
         try {
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/UI/menu_bg.png"));
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/menu_bg.png"));
             this.backgroundImage = bgIcon.getImage();
         } catch (Exception e) {
             System.err.println("Background image not found!");
-            this.setBackground(Color.DARK_GRAY); // Colore di emergenza
+            this.setBackground(Color.DARK_GRAY); 
         }
     
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
@@ -85,10 +85,6 @@ public final class MenuPanel extends JPanel {
         gbc.gridy++;
         this.add(leaderboardButton, gbc);
         leaderboardButton.addActionListener(e -> navigationController.goToLeaderBoard());
-
-        final JButton creditsButton = UserInterfaceFactory.createButton("CREDITS");
-        gbc.gridy++;
-        this.add(creditsButton, gbc);
 
         gbc.gridy++;
         gbc.weighty = 1.0;
