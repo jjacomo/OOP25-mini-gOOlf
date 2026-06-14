@@ -12,19 +12,17 @@ import it.unibo.minigoolf.model.ball.Ball;
 import it.unibo.minigoolf.model.ball.BallImpl;
 
 class ObstacleTest {
-
     private static final double EPSILON = 0.0001;
     private static final double BALL_RADIUS = 10.0;
-    
     private static final double WALL_SIZE = 50.0;
     private static final double ROUND_RADIUS = 25.0;
-    
     private static final double STICKY_BOUNCINESS = 0.2;
     private static final double BOUNCY_BOUNCINESS = 1.8;
-    
     private static final Vector2D PORTAL_POS_A = new Vector2D(100.0, 100.0);
     private static final Vector2D PORTAL_POS_B = new Vector2D(500.0, 500.0);
     private static final double PORTAL_RADIUS = 30;
+    private static final double EXPECTED_PENETRATION_DEPHT = 5.0;
+    private static final int SLEEP_TIME_MS = 501;
 
     @Test
     void testWallObstacleCollision() {
@@ -35,7 +33,7 @@ class ObstacleTest {
         assertAll("WallObstacle collisions and penetration",
                 () -> assertTrue(wall.isColliding(collidingBall)),
                 () -> assertFalse(wall.isColliding(safeBall)),
-                () -> assertEquals(5.0, wall.getPenetrationDepth(collidingBall), EPSILON)
+                () -> assertEquals(EXPECTED_PENETRATION_DEPHT, wall.getPenetrationDepth(collidingBall), EPSILON)
         );
     }
 
@@ -48,7 +46,7 @@ class ObstacleTest {
         assertAll("RoundObstacle collisions and penetration",
                 () -> assertTrue(round.isColliding(collidingBall)),
                 () -> assertFalse(round.isColliding(safeBall)),
-                () -> assertEquals(5.0, round.getPenetrationDepth(collidingBall), EPSILON)
+                () -> assertEquals(EXPECTED_PENETRATION_DEPHT, round.getPenetrationDepth(collidingBall), EPSILON)
         );
     }
 
@@ -104,7 +102,7 @@ class ObstacleTest {
                 () -> assertFalse(portalB.isColliding(ball))
         );
 
-        Thread.sleep(501);
+        Thread.sleep(SLEEP_TIME_MS);
         assertTrue(portalB.isColliding(ball));
     }
 }

@@ -69,11 +69,7 @@ public final class TriangleObstacle extends AbstractObstacle {
     @Override
     public boolean isColliding(final Ball ball) {
         final Vector2D pos = ball.getPosition();
-        if (isInside(pos)) {
-            return true;
-        }
-
-        return getMinDistanceToPerimeter(pos) <= ball.getRadius();
+        return isInside(pos) || getMinDistanceToPerimeter(pos) <= ball.getRadius();
     }
 
     /** {@inheritDoc} */
@@ -226,7 +222,7 @@ public final class TriangleObstacle extends AbstractObstacle {
         if (abSq == 0) {
             return a;
         }
-        
+
         double t = ap.dotProduct(ab) / abSq; // Sostituito calcolo manuale
         if (t < 0) {
             t = 0;

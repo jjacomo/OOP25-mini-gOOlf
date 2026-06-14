@@ -146,14 +146,13 @@ Report 09/06 - 1 ore
 - Fatto il primo punto della relazione finale (Fisica, geometria degli ostacoli e gestione vettoriale). Manca ancora
   il codice dell'UML
 
-Report 14/06 - 3 ore
+Report 14/06 - 4 ore
 - Completata la relazione
+- Creati Vector2DTest e ObstacleTest
 
 TO DO:
 - Sistemare la parte visiva di tutti i miei codici (stessi nomi per le variabili; no righe superiori ai 90 caratteri, ecc...)
 - Vedere come mettere delle texture agli ostacoli
 - Creare le due mappe del gioco
-- Fare file di test
 - Fare file UML
-- Finire relazione
 - Alla fine di tutto, fare un controllo di CheckStyle

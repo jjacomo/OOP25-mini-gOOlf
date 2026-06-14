@@ -47,12 +47,8 @@ public abstract class AbstractObstacle implements Obstacle {
         this.bounciness = bounciness;
     }
 
-    /**
-     * Calculates the penetration depth of the ball into the obstacle.
-     *
-     * @param ball the ball to check
-     * @return the penetration depth (a value > 0 if colliding, 0 otherwise)
-     */
+    /** {@inheritDoc} */
+    @Override
     public abstract double getPenetrationDepth(Ball ball);
 
     /**

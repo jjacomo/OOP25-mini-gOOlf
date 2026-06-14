@@ -37,6 +37,7 @@ public final class PortalObstacle extends AbstractObstacle {
      *
      * @param posA the center position of the first portal
      * @param posB the center position of the second portal
+     * @param portalRadius the radius of the two portals
      * @return a List containing exactly the two linked PortalObstacle instances
      */
     public static List<PortalObstacle> createPair(final Vector2D posA, final Vector2D posB, final double portalRadius) {

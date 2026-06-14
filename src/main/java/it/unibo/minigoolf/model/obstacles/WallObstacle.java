@@ -171,15 +171,16 @@ public final class WallObstacle extends AbstractObstacle {
         final double distBottom = maxY - pos.getY();
         final double minDist = Math.min(Math.min(distLeft, distRight), Math.min(distTop, distBottom));
 
-        if (minDist == distLeft) {
+        if (Math.abs(minDist - distLeft) < EPSILON) {
             return normalLeft;
         }
-        if (minDist == distRight) {
+        if (Math.abs(minDist - distRight) < EPSILON) {
             return normalRight;
         }
-        if (minDist == distTop) {
+        if (Math.abs(minDist - distTop) < EPSILON) {
             return normalTop;
         }
+
         return normalBottom;
     }
 
