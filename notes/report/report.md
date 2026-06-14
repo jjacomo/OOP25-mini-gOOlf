@@ -148,12 +148,29 @@ Implementare il calcolo vettoriale senza importare librerie esterne pesanti.
 - Viene sfruttata la profondità di penetrazione per riposizionare la pallina fuori dall'ostacolo, prima di calcolare il rimbalzo. Nelle collisioni multiple, tramite "deepest penetration first", si individua l'ostacolo con compenetrazione maggiore (quello effettivamente impattato per primo).
 - Negli angoli dei triangoli, le normali dei lati vengono sommate per ottenere la bisettrice perfetta, rendendo il rimbalzo deterministico ed eliminando scelte arbitrarie.
 
+UML:
+```mermaid
+    classDiagram
+            <<interface>> Obstacle
+            class AbstractObstacle
+            class WallObstacle
+            class RoundObstacle
+            class TriangleObstacle
+            class Vector2D
+
+            Obstacle <|.. AbstractObstacle
+            AbstractObstacle <|-- WallObstacle
+            AbstractObstacle <|-- RoundObstacle
+            AbstractObstacle <|-- TriangleObstacle
+            AbstractObstacle --> Vector2D
+```
+
 *Pro e Contro*: 
 Pro:
 - Fisica altamente stabile e realistica 
 - Le normali precalcolate riducono drasticamente i calcoli ripetitivi nel game loop (specialmente nei rettangoli).
 - La classe personalizzata Vector2D evita di importare tutti i metodi e campi non necessari all'applicazione, alleggerendola
-- L'aggiunta di un nuovo ostacolo richiede solo di estendere AbstractObstacle ed implementare il calcolo di compenetrazione.
+- Architettura scalabile: l'aggiunta di un nuovo ostacolo richiede solo di estendere AbstractObstacle ed implementare il calcolo di compenetrazione.
 
 Contro:
 - Se la velocità della pallina in un singolo frame supera lo spessore dell'ostacolo, rischia di attraversarlo (tunneling).

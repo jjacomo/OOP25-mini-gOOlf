@@ -151,5 +151,7 @@ TO DO:
 - Sistemare la parte visiva di tutti i miei codici (stessi nomi per le variabili; no righe superiori ai 90 caratteri, ecc...)
 - Vedere come mettere delle texture agli ostacoli
 - Creare le due mappe del gioco
+- Fare file di test
+- Fare file UML
 - Finire relazione
 - Alla fine di tutto, fare un controllo di CheckStyle
