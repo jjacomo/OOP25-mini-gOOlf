@@ -16,7 +16,6 @@ public final class ObstacleControllerImpl implements ObstacleController {
      * @param obstacles the initial list of obstacles to manage
      */
     public ObstacleControllerImpl(final List<Obstacle> obstacles) {
-        // List.copyOf crea una copia immutabile, SpotBugs ringrazia!
         this.obstacles = List.copyOf(obstacles);
     }
 

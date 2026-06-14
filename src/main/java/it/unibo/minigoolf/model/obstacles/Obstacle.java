@@ -19,7 +19,7 @@ public interface Obstacle {
      * Checks if the ball is colliding with the obstacle's boundaries.
      *
      * @param ball the Ball object to check for collisions
-     * @return true if the ball's boundaries touch the obstacle, false otherwise
+     * @return     true if the ball's boundaries touch the obstacle, false otherwise
      */
     boolean isColliding(Ball ball);
 
@@ -36,7 +36,7 @@ public interface Obstacle {
      * Calculates the penetration depth of the ball into the obstacle.
      *
      * @param ball the ball to check
-     * @return the penetration depth (a value > 0 if colliding, 0 otherwise)
+     * @return     the penetration depth (a value > 0 if colliding, 0 otherwise)
      */
     double getPenetrationDepth(Ball ball);
 

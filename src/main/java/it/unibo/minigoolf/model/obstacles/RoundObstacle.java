@@ -35,7 +35,8 @@ public final class RoundObstacle extends AbstractObstacle {
      * @throws IllegalArgumentException if radius is not between [MIN_RADIUS,
      *                                  MAX_RADIUS]
      */
-    public RoundObstacle(final Vector2D position, final double radius, final double bounciness) {
+    public RoundObstacle(final Vector2D position, final double radius, 
+                         final double bounciness) {
         super(position, bounciness);
         if (radius < MIN_RADIUS || radius > MAX_RADIUS) {
             throw new IllegalArgumentException("The radius must be between "

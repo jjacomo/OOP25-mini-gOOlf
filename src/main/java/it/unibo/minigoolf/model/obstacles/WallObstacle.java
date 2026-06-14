@@ -34,7 +34,8 @@ public final class WallObstacle extends AbstractObstacle {
      *                                  MAX_WIDTH] or if the height is outside
      *                                  [MIN_HEIGHT, MAX_HEIGHT]
      */
-    public WallObstacle(final Vector2D position, final double width, final double height) {
+    public WallObstacle(final Vector2D position, final double width, 
+                        final double height) {
         this(position, width, height, DEFAULT_BOUNCINESS);
     }
 
@@ -49,13 +50,15 @@ public final class WallObstacle extends AbstractObstacle {
      *                                  MAX_WIDTH] or if the height is outside
      *                                  [MIN_HEIGHT, MAX_HEIGHT]
      */
-    public WallObstacle(final Vector2D position, final double width, final double height, final double bounciness) {
+    public WallObstacle(final Vector2D position, final double width, final double height, 
+                        final double bounciness) {
         super(position, bounciness);
-        if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
+        if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || 
+            height > MAX_HEIGHT) {
             throw new IllegalArgumentException("Invalid dimensions. Width: " + width
-                    + "; Height: " + height + ".\nWidth must be between [" + MIN_WIDTH + ", "
-                    + MAX_WIDTH + "].\n Height must be between [" + MIN_HEIGHT + ", "
-                    + MAX_HEIGHT + "].");
+                    + "; Height: " + height + ".\nWidth must be between [" + MIN_WIDTH
+                    + ", " + MAX_WIDTH + "].\n Height must be between [" + MIN_HEIGHT
+                    + ", " + MAX_HEIGHT + "].");
         }
         this.minX = position.getX();
         this.maxX = position.getX() + width;
@@ -169,7 +172,8 @@ public final class WallObstacle extends AbstractObstacle {
         final double distRight = maxX - pos.getX();
         final double distTop = pos.getY() - minY;
         final double distBottom = maxY - pos.getY();
-        final double minDist = Math.min(Math.min(distLeft, distRight), Math.min(distTop, distBottom));
+        final double minDist = Math.min(Math.min(distLeft, distRight),
+                               Math.min(distTop, distBottom));
 
         if (Math.abs(minDist - distLeft) < EPSILON) {
             return normalLeft;
@@ -217,7 +221,6 @@ public final class WallObstacle extends AbstractObstacle {
     public double getPenetrationDepth(final Ball ball) {
         final Vector2D pos = ball.getPosition();
         if (isInside(pos)) {
-            // MATEMATICA CORRETTA: Raggio + distanza dal centro al bordo per uscire del tutto
             return ball.getRadius() + getMinDistanceToEdge(pos);
         } else {
             final double distance = pos.distance(getClosestPoint(pos));

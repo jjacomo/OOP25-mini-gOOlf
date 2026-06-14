@@ -20,7 +20,8 @@ public abstract class AbstractObstacle implements Obstacle {
     protected static final double DEFAULT_BOUNCINESS = 1.0;
 
     /**
-     * Threshold for resting contact to prevent infinite bouncing against continuous forces.
+     * Threshold for resting contact to prevent infinite bouncing against 
+     *  continuous forces.
      */
     private static final double RESTING_THRESHOLD = 30.0;
 
@@ -57,22 +58,27 @@ public abstract class AbstractObstacle implements Obstacle {
      *
      * @param ball             the ball to reposition
      * @param ballPosition     the position of the ball
-     * @param normal           the collision normal (unit vector pointing outward from the obstacle)
+     * @param normal           the collision normal (unit vector pointing outward from
+     *                         the obstacle)
      * @param penetrationDepth the amount of overlap (positive value)
      */
     protected void correctPosition(final Ball ball, final Vector2D ballPosition,
-                                   final Vector2D normal, final double penetrationDepth) {
-        final Vector2D newPosition = ballPosition.add(normal.scalarMultiply(penetrationDepth));
+                                   final Vector2D normal, 
+                                   final double penetrationDepth) {
+        final Vector2D newPosition = ballPosition.add(normal.scalarMultiply(
+                                     penetrationDepth));
         ball.setPosition(newPosition);
     }
 
     /**
      * Reflects the ball's velocity according to the collision normal.
      * Uses the elastic reflection formula: v' = v - 2 (v·n) n.
-     * If the impact is very soft, it applies resting contact to let the ball slide instead of jittering.
+     * If the impact is very soft, it applies resting contact to let the ball slide
+     *  instead of jittering.
      *
      * @param ball   the ball whose velocity to modify
-     * @param normal the collision normal (unit vector pointing outward from the obstacle)
+     * @param normal the collision normal (unit vector pointing outward from the 
+     *               obstacle)
      */
     protected void reflectVelocity(final Ball ball, final Vector2D normal) {
         final Vector2D velocity = ball.getVelocity();
@@ -86,7 +92,8 @@ public abstract class AbstractObstacle implements Obstacle {
             final Vector2D projection = normal.scalarMultiply(dot);
             ball.setVelocity(velocity.subtract(projection));
         } else {
-            final Vector2D perfectBounce = velocity.subtract(normal.scalarMultiply(2 * dot));
+            final Vector2D perfectBounce = velocity.subtract(normal.scalarMultiply(
+                                           2 * dot));
             ball.setVelocity(perfectBounce.scalarMultiply(safeBounciness));
         }
     }

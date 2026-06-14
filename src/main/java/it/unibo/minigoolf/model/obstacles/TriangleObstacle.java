@@ -98,7 +98,8 @@ public final class TriangleObstacle extends AbstractObstacle {
         final double d3 = pos.distanceSquared(cp3);
         final double minDistSq = Math.min(d1, Math.min(d2, d3));
         final double minDist = Math.sqrt(minDistSq);
-        final double penetrationDepth = inside ? ball.getRadius() + minDist : ball.getRadius() - minDist;
+        final double penetrationDepth = inside ? ball.getRadius() + minDist : 
+                                        ball.getRadius() - minDist;
         final Vector2D normal;
 
         if (inside) {
@@ -160,8 +161,9 @@ public final class TriangleObstacle extends AbstractObstacle {
         final double distance = endpointA.distance(endpointB);
         if (distance < MIN_SIDE_LENGTH || distance > MAX_SIDE_LENGTH) {
             throw new IllegalArgumentException("Distance " + nameA + " - " + nameB
-                    + " = " + String.format("%.2f", distance) + ". It must be between ["
-                    + MIN_SIDE_LENGTH + " and " + MAX_SIDE_LENGTH + "].");
+                    + " = " + String.format("%.2f", distance) + 
+                    ". It must be between [" + MIN_SIDE_LENGTH + " and " + 
+                    MAX_SIDE_LENGTH + "].");
         }
     }
 
@@ -173,11 +175,13 @@ public final class TriangleObstacle extends AbstractObstacle {
      * @param vertexC third vertex
      * @return the absolute area of the triangle
      */
-    private double computeTriangleArea(final Vector2D vertexA, final Vector2D vertexB, final Vector2D vertexC) {
+    private double computeTriangleArea(final Vector2D vertexA, final Vector2D vertexB,
+                                       final Vector2D vertexC) {
         final Vector2D segmentAB = vertexB.subtract(vertexA);
         final Vector2D segmentAC = vertexC.subtract(vertexA);
 
-        return Math.abs(segmentAB.getX() * segmentAC.getY() - segmentAB.getY() * segmentAC.getX()) / 2.0;
+        return Math.abs(segmentAB.getX() * segmentAC.getY() - segmentAB.getY() * 
+                        segmentAC.getX()) / 2.0;
     }
 
     /**
@@ -214,16 +218,17 @@ public final class TriangleObstacle extends AbstractObstacle {
      * @param b segment end
      * @return the closest point on the segment
      */
-    private Vector2D getClosestPointOnSegment(final Vector2D p, final Vector2D a, final Vector2D b) {
+    private Vector2D getClosestPointOnSegment(final Vector2D p, final Vector2D a, 
+                                              final Vector2D b) {
         final Vector2D ab = b.subtract(a);
         final Vector2D ap = p.subtract(a);
-        final double abSq = ab.getNormSquared(); // Sostituito calcolo manuale
+        final double abSq = ab.getNormSquared();
 
         if (abSq == 0) {
             return a;
         }
 
-        double t = ap.dotProduct(ab) / abSq; // Sostituito calcolo manuale
+        double t = ap.dotProduct(ab) / abSq;
         if (t < 0) {
             t = 0;
         } else if (t > 1) {
@@ -240,7 +245,8 @@ public final class TriangleObstacle extends AbstractObstacle {
      * @param endpointB end point of the edge
      * @return the outward unit normal
      */
-    private Vector2D computeOutwardNormal(final Vector2D endpointA, final Vector2D endpointB) {
+    private Vector2D computeOutwardNormal(final Vector2D endpointA, 
+                                          final Vector2D endpointB) {
         final Vector2D edge = endpointB.subtract(endpointA);
         final Vector2D perpendicular1 = new Vector2D(edge.getY(), -edge.getX());
         final Vector2D perpendicular2 = new Vector2D(-edge.getY(), edge.getX());

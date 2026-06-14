@@ -40,7 +40,9 @@ public final class PortalObstacle extends AbstractObstacle {
      * @param portalRadius the radius of the two portals
      * @return a List containing exactly the two linked PortalObstacle instances
      */
-    public static List<PortalObstacle> createPair(final Vector2D posA, final Vector2D posB, final double portalRadius) {
+    public static List<PortalObstacle> createPair(final Vector2D posA, 
+                                                  final Vector2D posB, 
+                                                  final double portalRadius) {
         final PortalObstacle portalA = new PortalObstacle(posA, portalRadius);
         final PortalObstacle portalB = new PortalObstacle(posB, portalRadius);
         portalA.linkedPortal = portalB;
@@ -49,6 +51,10 @@ public final class PortalObstacle extends AbstractObstacle {
         return Arrays.asList(portalA, portalB);
     }
 
+    /**
+     * Updates the future timeStamp until witch the this portalObstacle will ignore 
+     *  collisions
+     */
     private void triggerCooldown() {
         this.cooldownUntil = System.currentTimeMillis() + COOLDOWN_MS;
     }
