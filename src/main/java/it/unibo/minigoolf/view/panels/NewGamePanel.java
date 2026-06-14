@@ -67,7 +67,7 @@ public final class NewGamePanel extends JPanel {
         final JLabel instructionLabel = UserInterfaceFactory.createTitle("Number of players: ");
         instructionLabel.setForeground(Color.WHITE);
         header.add(instructionLabel);
-        this.numInput = new JTextField("1", 3);
+        this.numInput = UserInterfaceFactory.createTextField(3);
         header.add(numInput);
 
         // OK Button

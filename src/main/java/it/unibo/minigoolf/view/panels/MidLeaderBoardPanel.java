@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -55,14 +54,8 @@ public final class MidLeaderBoardPanel extends JPanel {
         tablePanel.add(UserInterfaceFactory.createTitle("SHOTS"));
 
         for (final Map.Entry<String, Integer> entry : sortedScores) {
-            final JLabel nameLabel = new JLabel(entry.getKey()); //TODO: Da rifare con UI factory!
-            nameLabel.setForeground(Color.WHITE);
-            nameLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-
-            final JLabel scoreLabel = new JLabel(String.valueOf(entry.getValue()));
-            scoreLabel.setForeground(Color.WHITE);
-            scoreLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-            
+            final JLabel nameLabel = UserInterfaceFactory.createLabel(entry.getKey());
+            final JLabel scoreLabel = UserInterfaceFactory.createLabel(String.valueOf(entry.getValue()));
             tablePanel.add(nameLabel);
             tablePanel.add(scoreLabel);
         }

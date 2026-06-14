@@ -2,14 +2,13 @@ Report - 06/11 - 60 ore
 
 FATTO:
 
-- Spotbugs
+- Spotbugs!
 
-- Eliminata la classe dei credits ed il relativo bottone, metterò i credits direttamente nello sfondo in basso a destra nella schermata principale.
+- Verificare se tutte le classi/metodi utilizzano UserInterfaceFactory correttamente:
+ - textfield player dei nomi player diverse dal n* player DONE!
+ - label player name e player shots DONE!
+ - scritta nella midleaderboard dentro alla tabella comic sans DONE!
 
-- Aggiunta la possibilità di caricare un font dalle risorse, ditemi come lo vedete, poi ne sceglieremo uno insieme magari.
-
-- Ho sistemato i pannelli newgamepanel e leaderboardpanel affinchè utilizzassero corretamente la UserInterfaceFactory, già che c'ero
-ho riorganizzato un attimo i bottoni nella newgamepanel, così dovrebbe essere meglio sia a livello visivo che logico
 
 DA FARE:
 
@@ -19,8 +18,7 @@ DA FARE:
 
 - 1.5 mappe da fare!
 
-- Verificare se tutte le classi/metodi utilizzano UserInterfaceFactory correttamente, per ora sembra tutto OK (sicuro manca la label de
-nome del player corrente ed i shots ma vedo se modificarlo o meno)
+
 
 EXTRA:
 

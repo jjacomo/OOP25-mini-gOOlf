@@ -3,6 +3,7 @@ package it.unibo.minigoolf.view.panels;
 import it.unibo.minigoolf.controller.game.GameController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
+import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 
 import javax.swing.AbstractAction;
 import javax.swing.JLabel;
@@ -62,23 +63,16 @@ public final class GamePanel extends JPanel {
         // Extract only the needed behaviors from gameController — avoids EI2.
         this.playerNameSupplier = gameController::getCurrentPlayerName;
         this.playerShotsSupplier = gameController::getCurrentPlayerShots;
-
+        // Panel that displays player names and his number of shots
         final JPanel uiPanel = new JPanel();
         uiPanel.setBackground(Color.DARK_GRAY);
-
-        this.turnoLabel = new JLabel("Player: " + playerNameSupplier.get());
-        this.turnoLabel.setForeground(Color.WHITE);
-
-        this.shotsLabel = new JLabel(" | Shots: " + playerShotsSupplier.getAsInt());
-        this.shotsLabel.setForeground(Color.WHITE);
-
+        this.turnoLabel = UserInterfaceFactory.createLabel("Player: " + playerNameSupplier.get());
+        this.shotsLabel = UserInterfaceFactory.createLabel(" | Shots: " + playerShotsSupplier.getAsInt());
         uiPanel.add(turnoLabel);
         uiPanel.add(shotsLabel);
-
         this.add(uiPanel, BorderLayout.NORTH);
 
         this.mapPanel = new MapPanel(gameController.getGameMapController());
-
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
 

@@ -92,8 +92,8 @@ public final class UserInterfaceFactory {
     public static JTextField createTextField(final int columns) {
         final JTextField field = new JTextField(columns);
         field.setFont(labelFont);
-        field.setBackground(Color.BLACK);
-        field.setForeground(Color.WHITE);
+        field.setBackground(Color.WHITE);
+        field.setForeground(Color.BLACK);
         field.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         return field;
     }
