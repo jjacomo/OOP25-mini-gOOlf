@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  * Receives a pre-built {@link ShotViewPanel} from {@link it.unibo.minigoolf.view.MainWindow}
  * so it does not need to expose any internal reference via a getter.
  *
- * @author dani
+ * @author @dbakko
  */
 public final class GamePanel extends JPanel {
 

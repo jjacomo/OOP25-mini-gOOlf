@@ -24,7 +24,7 @@ import java.util.function.Function;
  * The {@link NavigationController} is passed once via {@link #initPanels}
  * and captured in a lambda factory — never stored as a field — avoiding EI2.
  *
- * @author dani and fede
+ * @author @dbakkodani and @fedesparvo1-a11y
  */
 public final class MainWindow extends JFrame {
 

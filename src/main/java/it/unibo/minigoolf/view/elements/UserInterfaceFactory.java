@@ -14,6 +14,7 @@ import java.awt.Dimension;
 
 /**
  * Factory to build any UI element such as buttons, labels and textfields.
+ *  @author @dbakko
  */
 public final class UserInterfaceFactory {
 
@@ -44,7 +45,12 @@ public final class UserInterfaceFactory {
     }
 
     private UserInterfaceFactory() { }
-
+    
+    /**
+     * Creates a standard button with the default factory font and size.
+     * * @param text the text to display on the button
+     * @return the formatted JButton
+     */
     public static JButton createButton(final String text) {
         final JButton button = new JButton(text);
         button.setFont(mainFont);
@@ -52,7 +58,12 @@ public final class UserInterfaceFactory {
         button.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         return button;
     }
-
+    
+    /**
+     * Creates a title label with a large bold font.
+     * * @param text the title text
+     * @return the formatted title JLabel
+     */
     public static JLabel createTitle(final String text) {
         final JLabel label = new JLabel(text);
         label.setFont(titleFont);
@@ -62,8 +73,8 @@ public final class UserInterfaceFactory {
 
     /**
      * Creates a standard label with the default factory font size.
-     * @param text the label text
-     * @return a formatted JLabel
+     * * @param text the label text
+     * @return the formatted JLabel
      */
     public static JLabel createLabel(final String text) {
         final JLabel label = new JLabel(text);
@@ -71,11 +82,17 @@ public final class UserInterfaceFactory {
         label.setForeground(ACCENT_COLOR);
         return label;
     }
-
+    
+    /**
+     * Creates a standard text field with a predefined font size and 
+     * a specific number of columns to determine its preferred width.
+     * * @param columns the number of columns to use to calculate the preferred width
+     * @return the formatted JTextField
+     */
     public static JTextField createTextField(final int columns) {
         final JTextField field = new JTextField(columns);
         field.setFont(labelFont);
-        field.setBackground(Color.WHITE);
+        field.setBackground(Color.BLACK);
         field.setForeground(Color.WHITE);
         field.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         return field;

@@ -18,7 +18,7 @@ import java.io.Serial;
  * The pause menu overlay.
  * It is NOT a panel within the CardLayout — it is a glass pane over GamePanel.
  *
- * @author dani
+ * @author @dbakko
  */
 public final class PausePanel extends JPanel {
 
@@ -59,12 +59,11 @@ public final class PausePanel extends JPanel {
             } else if (choice == JOptionPane.NO_OPTION) {
                 navController.quitToMenu();
             }
-            // CANCEL: do nothing, stay in pause
         });
         menuBox.add(quitButton);
 
         this.add(menuBox, new GridBagConstraints());
-        // Block mouse events from reaching the game while paused.
+        // Block mouse eclicks from reaching the game while paused.
         this.addMouseListener(new MouseAdapter() { });
     }
 

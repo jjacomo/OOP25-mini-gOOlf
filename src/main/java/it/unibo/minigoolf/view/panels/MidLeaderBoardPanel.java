@@ -22,6 +22,7 @@ import java.util.Map;
 /**
  * Overlay panel displayed at the end of a hole.
  * Shows a sorted leaderboard of the players' shots.
+ * @author @dbakko
  */
 public final class MidLeaderBoardPanel extends JPanel {
 
@@ -54,7 +55,7 @@ public final class MidLeaderBoardPanel extends JPanel {
         tablePanel.add(UserInterfaceFactory.createTitle("SHOTS"));
 
         for (final Map.Entry<String, Integer> entry : sortedScores) {
-            final JLabel nameLabel = new JLabel(entry.getKey());
+            final JLabel nameLabel = new JLabel(entry.getKey()); //TODO: Da rifare con UI factory!
             nameLabel.setForeground(Color.WHITE);
             nameLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 
@@ -69,14 +70,14 @@ public final class MidLeaderBoardPanel extends JPanel {
         menuBox.add(tablePanel);
         menuBox.add(Box.createVerticalStrut(40));
 
+        // Next button skips to the next map.
         final JButton nextButton = UserInterfaceFactory.createButton("NEXT HOLE");
         nextButton.setAlignmentX(CENTER_ALIGNMENT);
         nextButton.addActionListener(e -> onNextMap.run());
         menuBox.add(nextButton);
-
         this.add(menuBox, new GridBagConstraints());
 
-        // Blocks mouse events from reaching the game while in mid-leaderboardpanel.
+        // Blocks mouse clicks from reaching the game while in mid-leaderboardpanel.
         this.addMouseListener(new MouseAdapter() { });
     }
 

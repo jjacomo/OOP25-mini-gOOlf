@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * Handles saving and loading the global leaderboard to a text file.
+ * @author @dbakko
  */
 public final class LeaderBoardManager {
 

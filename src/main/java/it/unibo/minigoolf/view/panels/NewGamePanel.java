@@ -27,7 +27,7 @@ import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 /**
  * One of the possibile scenes, this is the menu where the user can choose the n° of
  * players, therefore it starts a singleplayer or a multiplayer match.
- * * @author dani
+ * * @author @dbakko
  * TODO: Ricordati di usare la UI Factory!Questa classe è stata creata prima, da aggiustare!
  */
 public final class NewGamePanel extends JPanel {
@@ -80,14 +80,14 @@ public final class NewGamePanel extends JPanel {
         this.namesContainer = new JPanel(new GridBagLayout());
         this.namesContainer.setOpaque(false);
 
-        // If someone increases the max n° of playes, to scroll the text fields (maybe not necessary)
+        // If someone increases the max n° of playes, to scroll the text fields (maybe not necessary) TODO: Vedere se serve effettivamente
         final JScrollPane scrollPane = new JScrollPane(namesContainer);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
         this.add(scrollPane, BorderLayout.CENTER);
 
-        // To limit the number of players, but could be redefined in the future
+        // To limit the number of players
         confirmNumButton.addActionListener(e -> {
             try {
                 final int n = Integer.parseInt(numInput.getText());
@@ -105,7 +105,7 @@ public final class NewGamePanel extends JPanel {
         final JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
         bottomPanel.setOpaque(false);
 
-        // Back to menu button
+        // Back to main menu button
         final JButton backButton = UserInterfaceFactory.createButton("BACK");
         backButton.addActionListener(e -> navigationController.goToMainMenu());
         bottomPanel.add(backButton);
@@ -147,15 +147,12 @@ public final class NewGamePanel extends JPanel {
 
             final JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
             p.setOpaque(false);
-
+            // If no name is chosen, default names "player + i" are created
             final JLabel label = UserInterfaceFactory.createLabel("Player " + (i + 1) + ": ");
-
             final JTextField field = UserInterfaceFactory.createTextField(12);
             nameFields.add(field);
-
             p.add(label);
             p.add(field);
-
             gbc.gridx = col;
             gbc.gridy = row;
             namesContainer.add(p, gbc);

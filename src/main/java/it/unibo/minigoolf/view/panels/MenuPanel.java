@@ -20,7 +20,7 @@ import java.io.Serial;
 /**
  * The main menu panel.
  *
- * @author dani
+ * @author @dbakko
  */
 public final class MenuPanel extends JPanel {
 
@@ -53,7 +53,8 @@ public final class MenuPanel extends JPanel {
         final GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(MARGINS, MARGINS, MARGINS, MARGINS);
         gbc.fill = GridBagConstraints.NONE;
-
+        
+        // Custom title "minigOOlf"
         final ImageIcon logoIcon = new ImageIcon(getClass().getResource("/title.png"));
         final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);
         final JLabel titleLabel = new JLabel(new ImageIcon(scaledImage));
@@ -63,6 +64,7 @@ public final class MenuPanel extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         this.add(titleLabel, gbc);
 
+        // Play button, to start a new match
         final JButton playButton = UserInterfaceFactory.createButton("PLAY");
         playButton.addActionListener(e -> {
             if (navigationController.hasSave()) {
@@ -73,21 +75,22 @@ public final class MenuPanel extends JPanel {
                 } else if (choice == JOptionPane.NO_OPTION) {
                     navigationController.goToNewGameMenu();
                 }
-                // CANCEL: do nothing
             } else {
                 navigationController.goToNewGameMenu();
             }
         });
         gbc.gridy++;
         this.add(playButton, gbc);
-
+        
+        // LeaderBoardbutton, changes panel to LeaderBoardPanel
         final JButton leaderboardButton = UserInterfaceFactory.createButton("LEADERBOARD");
         gbc.gridy++;
         this.add(leaderboardButton, gbc);
         leaderboardButton.addActionListener(e -> navigationController.goToLeaderBoard());
-
         gbc.gridy++;
         gbc.weighty = 1.0;
+        
+        // This is just so the button are evenly spaced
         final JPanel spacer = new JPanel();
         spacer.setOpaque(false);
         this.add(spacer, gbc);

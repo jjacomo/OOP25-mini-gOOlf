@@ -21,8 +21,8 @@ import java.util.Map;
 
 /**
  * One of the possibile scenes, this is the leaderboard, a table with
- * the scores of each player. 
- * * @author dani
+ * the scores for each player. 
+ * * @author @dbakko
  */ 
 public final class LeaderBoardPanel extends JPanel {
     /**
@@ -34,6 +34,7 @@ public final class LeaderBoardPanel extends JPanel {
     
     public LeaderBoardPanel(final NavigationController navController) {
         this.setLayout(new GridBagLayout());
+
         // To import the background image
         try {
             
@@ -43,6 +44,7 @@ public final class LeaderBoardPanel extends JPanel {
             System.err.println("Background image not found!");
             this.setBackground(Color.DARK_GRAY);
         }
+
         final JPanel menuBox = new JPanel();
         menuBox.setLayout(new BoxLayout(menuBox, BoxLayout.Y_AXIS));
         menuBox.setOpaque(false);
@@ -53,7 +55,6 @@ public final class LeaderBoardPanel extends JPanel {
         this.tableContainer.setOpaque(false);
         this.tableContainer.setLayout(new BoxLayout(tableContainer, BoxLayout.Y_AXIS));
         menuBox.add(this.tableContainer);
-
         menuBox.add(Box.createVerticalStrut(40));
 
         // Go back to menu button
@@ -61,7 +62,6 @@ public final class LeaderBoardPanel extends JPanel {
         backButton.setAlignmentX(CENTER_ALIGNMENT);
         backButton.addActionListener(e -> navController.goToMainMenu());
         menuBox.add(backButton);
-
         this.add(menuBox, new GridBagConstraints());
     }
 
