@@ -27,8 +27,8 @@ import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 /**
  * One of the possibile scenes, this is the menu where the user can choose the n° of
  * players, therefore it starts a singleplayer or a multiplayer match.
+ * 
  * * @author @dbakko
- * TODO: Ricordati di usare la UI Factory!Questa classe è stata creata prima, da aggiustare!
  */
 public final class NewGamePanel extends JPanel {
     /**
@@ -48,7 +48,6 @@ public final class NewGamePanel extends JPanel {
     public NewGamePanel(final NavigationController navigationController) {
 
         try {
-            
             final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/newgame_bg.png"));
             this.backgroundImage = bgIcon.getImage();
         } catch (Exception e) {
@@ -58,7 +57,7 @@ public final class NewGamePanel extends JPanel {
 
         this.setLayout(new BorderLayout(MARGINS, MARGINS));
         this.setBorder(BorderFactory.createEmptyBorder(MARGINS, MARGINS, MARGINS, MARGINS));
-        
+
         // Top panel
         final JPanel header = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         header.setOpaque(false);
@@ -80,7 +79,7 @@ public final class NewGamePanel extends JPanel {
         this.namesContainer = new JPanel(new GridBagLayout());
         this.namesContainer.setOpaque(false);
 
-        // If someone increases the max n° of playes, to scroll the text fields (maybe not necessary) TODO: Vedere se serve effettivamente
+        // If someone increases the max n° of playes, to scroll the text fields
         final JScrollPane scrollPane = new JScrollPane(namesContainer);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
@@ -161,10 +160,11 @@ public final class NewGamePanel extends JPanel {
         namesContainer.revalidate();
         namesContainer.repaint();
     }
+
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
-        
+
         if (this.backgroundImage != null) {
             g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
         }

@@ -14,6 +14,7 @@ import java.awt.Dimension;
 
 /**
  * Factory to build any UI element such as buttons, labels and textfields.
+ * 
  *  @author @dbakko
  */
 public final class UserInterfaceFactory {
@@ -21,6 +22,9 @@ public final class UserInterfaceFactory {
     private static final Color ACCENT_COLOR = Color.WHITE;
     private static final int WIDTH = 200;
     private static final int HEIGHT = 60;
+    private static final float MAINFONT = 24;
+    private static final float TITLEFONT =  22;
+    private static final float LABELFONT = 18;
     private static Font mainFont;
     private static Font titleFont;
     private static Font labelFont;
@@ -30,11 +34,11 @@ public final class UserInterfaceFactory {
             if (is == null) {
                 throw new java.io.FileNotFoundException("Font file not found in resources!");
             }
-            
+
             final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
-            mainFont = baseFont.deriveFont(Font.PLAIN, 24f);
-            titleFont = baseFont.deriveFont(Font.BOLD, 22f);
-            labelFont = baseFont.deriveFont(Font.PLAIN, 18f);
+            mainFont = baseFont.deriveFont(Font.PLAIN, MAINFONT);
+            titleFont = baseFont.deriveFont(Font.BOLD, TITLEFONT);
+            labelFont = baseFont.deriveFont(Font.PLAIN, LABELFONT);
             
         } catch (final Exception e) {
             System.err.println(e.getMessage());
@@ -45,10 +49,12 @@ public final class UserInterfaceFactory {
     }
 
     private UserInterfaceFactory() { }
-    
+
     /**
      * Creates a standard button with the default factory font and size.
-     * * @param text the text to display on the button
+     * 
+     * @param text the text to display on the button
+     * 
      * @return the formatted JButton
      */
     public static JButton createButton(final String text) {
@@ -58,10 +64,12 @@ public final class UserInterfaceFactory {
         button.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         return button;
     }
-    
+
     /**
      * Creates a title label with a large bold font.
-     * * @param text the title text
+     * 
+     * @param text the title text
+     * 
      * @return the formatted title JLabel
      */
     public static JLabel createTitle(final String text) {
@@ -73,7 +81,9 @@ public final class UserInterfaceFactory {
 
     /**
      * Creates a standard label with the default factory font size.
-     * * @param text the label text
+     * 
+     * @param text the label text
+     * 
      * @return the formatted JLabel
      */
     public static JLabel createLabel(final String text) {
@@ -86,7 +96,9 @@ public final class UserInterfaceFactory {
     /**
      * Creates a standard text field with a predefined font size and 
      * a specific number of columns to determine its preferred width.
-     * * @param columns the number of columns to use to calculate the preferred width
+     * 
+     * @param columns the number of columns to use to calculate the preferred width
+     * 
      * @return the formatted JTextField
      */
     public static JTextField createTextField(final int columns) {

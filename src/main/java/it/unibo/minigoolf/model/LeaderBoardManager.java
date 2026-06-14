@@ -1,16 +1,18 @@
 package it.unibo.minigoolf.model;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Handles saving and loading the global leaderboard to a text file.
+ * 
  * @author @dbakko
  */
 public final class LeaderBoardManager {
@@ -34,16 +36,17 @@ public final class LeaderBoardManager {
             return scores; 
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
+        try {
+            final List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+            for (final String line : lines) {
                 final String[] parts = line.split(":");
                 if (parts.length == 2) {
                     scores.put(parts[0], Integer.parseInt(parts[1]));
                 }
             }
+            
         } catch (IOException | NumberFormatException e) {
-            System.err.println("Error reading the leaderboard: " + e.getMessage());
+            System.err.println("Error reading the leaderboard: " + e.getMessage()); //TODO: Usare un logger? Spotbugs si lamenta con messaggi di errori scritti così
         }
 
         return scores;

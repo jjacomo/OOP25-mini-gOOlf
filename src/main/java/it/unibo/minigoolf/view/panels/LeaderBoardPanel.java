@@ -29,15 +29,16 @@ public final class LeaderBoardPanel extends JPanel {
      * Serial version UID.
      */
     private static final long serialVersionUID = 1L;
+    private static final int HEIGHT = 40;
     private transient Image backgroundImage;
     private final JPanel tableContainer;
-    
+
     public LeaderBoardPanel(final NavigationController navController) {
         this.setLayout(new GridBagLayout());
 
         // To import the background image
         try {
-            
+ 
             final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/leaderboard_bg.png"));
             this.backgroundImage = bgIcon.getImage();
         } catch (Exception e) {
@@ -48,14 +49,14 @@ public final class LeaderBoardPanel extends JPanel {
         final JPanel menuBox = new JPanel();
         menuBox.setLayout(new BoxLayout(menuBox, BoxLayout.Y_AXIS));
         menuBox.setOpaque(false);
-        menuBox.add(Box.createVerticalStrut(30));
+        menuBox.add(Box.createVerticalStrut(HEIGHT));
 
         // Container which stores the scores
         this.tableContainer = new JPanel();
         this.tableContainer.setOpaque(false);
         this.tableContainer.setLayout(new BoxLayout(tableContainer, BoxLayout.Y_AXIS));
         menuBox.add(this.tableContainer);
-        menuBox.add(Box.createVerticalStrut(40));
+        menuBox.add(Box.createVerticalStrut(HEIGHT));
 
         // Go back to menu button
         final JButton backButton = UserInterfaceFactory.createButton("BACK TO MENU");
@@ -67,6 +68,7 @@ public final class LeaderBoardPanel extends JPanel {
 
     /**
      * Updates the leaderboard with the latest scores.
+     * 
      * @param scores the cumulative scores from the last match
      */
     public void updateScores(final Map<String, Integer> scores) {
@@ -89,7 +91,7 @@ public final class LeaderBoardPanel extends JPanel {
             int rank = 0;
             for (final Map.Entry<String, Integer> entry : sortedScores) {
                 final JLabel nameLabel = UserInterfaceFactory.createLabel(entry.getKey());
-                
+
                 // Medals icons near 1,2,3 player
                 try {
                     String imagePath = "";
@@ -108,13 +110,17 @@ public final class LeaderBoardPanel extends JPanel {
                         nameLabel.setIcon(new ImageIcon(scaledImg));
                         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
                         nameLabel.setIconTextGap(15);
-                    } 
+                    }
                     
-                } catch (Exception e) {
+                } catch (NullPointerException | IllegalArgumentException e) {
                     // Only if the icons are not loaded, just simple text
-                    if (rank == 0) nameLabel.setText(entry.getKey() + " (1st)");
-                    else if (rank == 1) nameLabel.setText(entry.getKey() + " (2nd)");
-                    else if (rank == 2) nameLabel.setText(entry.getKey() + " (3rd)");
+                    if (rank == 0) {
+                        nameLabel.setText(entry.getKey() + " (1st)");
+                    } else if (rank == 1) {
+                        nameLabel.setText(entry.getKey() + " (2nd)");
+                    } else if (rank == 2) {
+                        nameLabel.setText(entry.getKey() + " (3rd)");
+                    }
                 }
 
                 final JLabel scoreLabel = UserInterfaceFactory.createLabel(String.valueOf(entry.getValue()));

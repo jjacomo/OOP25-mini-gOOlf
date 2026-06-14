@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Manages the game loop for the minigolf application.
  *
- * @author dani
+ * @author @dbakko, @fedesparvo1-a11y, @jjacomo
  */
 
 public interface MainController {
@@ -22,7 +22,8 @@ public interface MainController {
 
     /**
      * Starts a new match with given players names.
-     * @param playerNames
+     * 
+     * @param playerNames player names
      */
     void startNewMatch(List<String> playerNames);
 

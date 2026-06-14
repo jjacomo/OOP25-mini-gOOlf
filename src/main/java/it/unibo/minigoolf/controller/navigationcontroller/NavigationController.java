@@ -15,6 +15,8 @@ import java.util.function.Supplier;
  * Controller for navigation between panels.
  * Also owns the {@link SaveController} since it lives for the full
  * application lifetime, allowing save/load before any match is started.
+ * 
+ * @author @dbakko
  */
 public final class NavigationController {
 
@@ -25,6 +27,7 @@ public final class NavigationController {
     private final Runnable pauseWindowCallback;
     private final Runnable resumeWindowCallback;
     private final Runnable showLeaderboardCallback;
+    private javax.sound.sampled.Clip menuClip;
 
     private final MainController mainController;
     private final SaveController saveController;
@@ -54,6 +57,7 @@ public final class NavigationController {
             mainWindow.updateLeaderboard(bestScores);
             mainWindow.showScene("LEADERBOARD");
         };
+        this.playBackgroundMusic();
     }
 
     /**
@@ -83,8 +87,8 @@ public final class NavigationController {
      *
      * @param pauseChecker returns true if the ball is not moving
      */
-    public void setpauseChecker(final BooleanSupplier pauseChecker) {
-        this.pauseChecker = pauseChecker;
+    public void setpauseChecker(final BooleanSupplier checker) {
+        this.pauseChecker = checker;
     }
 
     /**
@@ -121,6 +125,7 @@ public final class NavigationController {
      * Handles the transition to the MenuPanel.
      */
     public void goToMainMenu() {
+        this.playBackgroundMusic();
         showMenuCallback.run();
     }
 
@@ -130,6 +135,7 @@ public final class NavigationController {
      * @param playerNames list of the players names
      */
     public void setupMatchAndStart(final List<String> playerNames) {
+        stopBackgroundMusic();
         this.mainController.startNewMatch(playerNames);
         this.showGameScene();
     }
@@ -183,5 +189,41 @@ public final class NavigationController {
     public void skipCurrentMap() {
         this.resumeWindowCallback.run(); // Toglie lo schermo oscurato
         this.mainController.skipMap();   // Manda il comando al gioco
+    }
+
+    /**
+     * Plays the main menu background music.
+     */
+    private void playBackgroundMusic() {
+        try {
+            final java.net.URL audioUrl = getClass().getResource("/soundtrack/gOOlf_menu.wav");
+            
+            if (audioUrl != null) {
+                final javax.sound.sampled.AudioInputStream audioIn = 
+                    javax.sound.sampled.AudioSystem.getAudioInputStream(audioUrl);
+                
+                this.menuClip = javax.sound.sampled.AudioSystem.getClip();
+                
+                this.menuClip.open(audioIn);
+                this.menuClip.start();
+            } else {
+                System.err.println("File not found in resources!");
+            }
+            
+        } catch (final javax.sound.sampled.UnsupportedAudioFileException e) {
+            System.err.println("File format not supported: " + e.getMessage());
+        } catch (final javax.sound.sampled.LineUnavailableException | java.io.IOException e) {
+            System.err.println("Error playing the audio file:: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Stops the menu background music and releases resources.
+     */
+    private void stopBackgroundMusic() {
+        if (this.menuClip != null && this.menuClip.isRunning()) {
+            this.menuClip.stop();
+            this.menuClip.close(); // Libera la linea audio
+        }
     }
 }

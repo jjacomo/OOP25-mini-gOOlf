@@ -18,8 +18,6 @@ DA FARE:
 
 - 1.5 mappe da fare!
 
-
-
 EXTRA:
 
 - Aggiungere la soundtrack al menu principale, suoni
@@ -29,7 +27,12 @@ AGENDA:
 
 - mappe da un pool random, la prima come tutorial (decidiamoci su questa cosa, cambiamo anche i nomi delle mappe)
 
+- piccola roba per @Damnbro: mi ricodo che me lo avevi spiegato nell'audio ma è meglio se lo vediamo insieme, gli ostacoli bouncy e portali
+
 - Per @fedesparvo1-a11y: mi ricordo della questione dei bottoni si no -> yes no, però ho visto nella UIFactory che per appunto ovviare a questa roba hai
 costruito tutto un metodo secondo me un po' articolato. Cioè secondo me è eccessivo, purtroppo non credo ci sia un altro modo se utilizzi gli elementi grafici
 default di swing, però stavo pensado che potrei creare dei bottoni personalizzati, magari in quel caso (ed altri) si potrebbe fare senza troppi problemi, ma devo
 valutare quanto tempo ci vuole: l'amico di Jack aveva fatto i bottoni con lo sfondo personalizzato ad esempio.
+
+- Sto pulendo con spotbugs, c'è qualche exception dove printo su sys.out.print.err, e ho visto che a spotbugs non piace. Un logger potrebbe essere una soluzione, anche perchè se avviamo
+il jar ed abbiamo qualche errore, in effetti non abbiamo il terminale a disposizione. Il logger sarebbe un txt dove vengono scritti tutti gli errori da consultare dopo.

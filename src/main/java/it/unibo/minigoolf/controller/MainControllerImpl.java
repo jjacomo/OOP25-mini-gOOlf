@@ -19,7 +19,7 @@ import java.util.List;
  * Manages the application lifecycle: timer and navigation.
  * All match logic is delegated to {@link MatchManager}.
  *
- * @author dani, giacomo and fede
+ * @author @dbakko, @jjacomo, @fedesparvo1-a11y
  */
 public final class MainControllerImpl implements MainController, ActionListener {
 
@@ -51,7 +51,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
      */
     @Override
     public void startNewMatch(final List<String> playerNames) {
-        final MapSequence mapSequence = new MapSequence(List.of(new ThirdMap(),new TestMap(), new FirstMap(), new SecondMap()));
+        final MapSequence mapSequence = new MapSequence(List.of(new ThirdMap(), new TestMap(), new FirstMap(), new SecondMap()));
         this.matchManager = new MatchManager(
             mapSequence,
             playerNames,

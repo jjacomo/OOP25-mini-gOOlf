@@ -15,7 +15,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+
 import java.io.Serial;
+
 
 /**
  * The main menu panel.
@@ -36,7 +38,7 @@ public final class MenuPanel extends JPanel {
      * @param navigationController the navigation controller
      */
     public MenuPanel(final NavigationController navigationController) {
-        
+
         // Background image loading
         try {
             final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/menu_bg.png"));
@@ -45,7 +47,7 @@ public final class MenuPanel extends JPanel {
             System.err.println("Background image not found!");
             this.setBackground(Color.DARK_GRAY); 
         }
-    
+
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setBackground(Color.DARK_GRAY);
         this.setLayout(new GridBagLayout());
@@ -53,7 +55,7 @@ public final class MenuPanel extends JPanel {
         final GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(MARGINS, MARGINS, MARGINS, MARGINS);
         gbc.fill = GridBagConstraints.NONE;
-        
+
         // Custom title "minigOOlf"
         final ImageIcon logoIcon = new ImageIcon(getClass().getResource("/title.png"));
         final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);
@@ -81,7 +83,7 @@ public final class MenuPanel extends JPanel {
         });
         gbc.gridy++;
         this.add(playButton, gbc);
-        
+
         // LeaderBoardbutton, changes panel to LeaderBoardPanel
         final JButton leaderboardButton = UserInterfaceFactory.createButton("LEADERBOARD");
         gbc.gridy++;
@@ -89,7 +91,7 @@ public final class MenuPanel extends JPanel {
         leaderboardButton.addActionListener(e -> navigationController.goToLeaderBoard());
         gbc.gridy++;
         gbc.weighty = 1.0;
-        
+
         // This is just so the button are evenly spaced
         final JPanel spacer = new JPanel();
         spacer.setOpaque(false);

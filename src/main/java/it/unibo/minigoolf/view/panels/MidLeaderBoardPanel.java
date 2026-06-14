@@ -21,6 +21,7 @@ import java.util.Map;
 /**
  * Overlay panel displayed at the end of a hole.
  * Shows a sorted leaderboard of the players' shots.
+ * 
  * @author @dbakko
  */
 public final class MidLeaderBoardPanel extends JPanel {
@@ -28,6 +29,7 @@ public final class MidLeaderBoardPanel extends JPanel {
     @Serial
     private static final long serialVersionUID = 1L;
     private static final int TINT = 150;
+    private static final int HEIGHT = 30;
 
     public MidLeaderBoardPanel(final Map<String, Integer> scores, final Runnable onNextMap) {
         this.setOpaque(false);
@@ -41,7 +43,7 @@ public final class MidLeaderBoardPanel extends JPanel {
         title.setAlignmentX(CENTER_ALIGNMENT);
         menuBox.add(title);
 
-        menuBox.add(Box.createVerticalStrut(30));
+        menuBox.add(Box.createVerticalStrut(HEIGHT));
 
         // To sort the scores
         final List<Map.Entry<String, Integer>> sortedScores = new ArrayList<>(scores.entrySet());
@@ -61,7 +63,7 @@ public final class MidLeaderBoardPanel extends JPanel {
         }
 
         menuBox.add(tablePanel);
-        menuBox.add(Box.createVerticalStrut(40));
+        menuBox.add(Box.createVerticalStrut(HEIGHT));
 
         // Next button skips to the next map.
         final JButton nextButton = UserInterfaceFactory.createButton("NEXT HOLE");
