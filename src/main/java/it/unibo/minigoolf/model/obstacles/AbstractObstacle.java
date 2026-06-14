@@ -90,9 +90,6 @@ public abstract class AbstractObstacle implements Obstacle {
             final Vector2D projection = normal.scalarMultiply(dot);
             ball.setVelocity(velocity.subtract(projection));
         } else {
-            //final double restitutionFactor = 1.0 + this.bounciness;
-            //final Vector2D reflection = normal.scalarMultiply(restitutionFactor * dot);
-            //ball.setVelocity(velocity.subtract(reflection));
             final Vector2D perfectBounce = velocity.subtract(normal.scalarMultiply(2 * dot));
             ball.setVelocity(perfectBounce.scalarMultiply(safeBounciness));
         }
