@@ -146,8 +146,10 @@ Report 09/06 - 1 ore
 - Fatto il primo punto della relazione finale (Fisica, geometria degli ostacoli e gestione vettoriale). Manca ancora
   il codice dell'UML
 
+Report 14/06 - 3 ore
+- Completata la relazione
+
 TO DO:
-- Fare ulteriori test di PortalObstacle
 - Sistemare la parte visiva di tutti i miei codici (stessi nomi per le variabili; no righe superiori ai 90 caratteri, ecc...)
 - Vedere come mettere delle texture agli ostacoli
 - Creare le due mappe del gioco

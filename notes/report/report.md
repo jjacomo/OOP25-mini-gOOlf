@@ -138,15 +138,15 @@ Contro: ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe
 **Fisica, geometria degli ostacoli e gestione vettoriale**
 
 *Problema*: 
-Gestire le collisioni fisiche tra la pallina e gli ostacoli di varie forme (rettangoli, cerchi, triangoli) in modo realistico, anche in situazioni critiche come angoli interni tra ostacoli adiacenti o sotto l’effetto di forze esterne, evitando compenetrazioni, vibrazioni a riposo (jittering) della pallina e rimbalzi innaturali o con direzioni arbitrarie.
-Implementare il calcolo vettoriale senza importare librerie esterne pesanti.
+Gestire le collisioni fisiche tra la pallina e gli ostacoli di forme diverse (rettangoli, cerchi, triangoli) in modo realistico, anche in situazioni critiche come angoli interni tra ostacoli adiacenti o sotto l’effetto di forze esterne, evitando compenetrazioni, vibrazioni della pallina a riposo (jittering) e rimbalzi innaturali o con direzioni arbitrarie.
+Inoltre era necessario implementare il calcolo vettoriale senza importare librerie esterne pesanti.
 
 *Soluzione*:
-- Le normali di collisione sono precalcolate per ogni lato (rettangolo, triangolo) o derivabili geometricamente (cerchio).
-- AbstractObstacle (model): Centralizza la logica di calcolo del rimbalzo e del resting contact, evitando ripetizioni di codice nelle sottoclassi geometriche
-- Vector2D: classe personalizzata per creare e fare calcoli coi vettori, contenente solo i metodi strettamente necessari al gioco.
-- Viene sfruttata la profondità di penetrazione per riposizionare la pallina fuori dall'ostacolo, prima di calcolare il rimbalzo. Nelle collisioni multiple, tramite "deepest penetration first", si individua l'ostacolo con compenetrazione maggiore (quello effettivamente impattato per primo).
+- Le normali di collisione sono pre calcolate per ogni lato (rettangolo, triangolo) o derivabili geometricamente (cerchio).
 - Negli angoli dei triangoli, le normali dei lati vengono sommate per ottenere la bisettrice perfetta, rendendo il rimbalzo deterministico ed eliminando scelte arbitrarie.
+- La profondità di penetrazione viene sfruttata per riposizionare la pallina fuori dall'ostacolo, prima di calcolare il rimbalzo. Nelle collisioni multiple, tramite "deepest penetration first", si individua l'ostacolo con compenetrazione maggiore (quello effettivamente impattato per primo).
+- 'AbstractObstacle' (model): Centralizza la logica di calcolo del rimbalzo e del resting contact, evitando ripetizioni di codice nelle sottoclassi.
+- 'Vector2D': classe personalizzata che fornisce solo i metodi necessari a creare e fare calcoli coi vettori, alleggerendo il gioco.
 
 UML:
 ```mermaid
@@ -169,12 +169,74 @@ UML:
 Pro:
 - Fisica altamente stabile e realistica 
 - Le normali precalcolate riducono drasticamente i calcoli ripetitivi nel game loop (specialmente nei rettangoli).
-- La classe personalizzata Vector2D evita di importare tutti i metodi e campi non necessari all'applicazione, alleggerendola
-- Architettura scalabile: l'aggiunta di un nuovo ostacolo richiede solo di estendere AbstractObstacle ed implementare il calcolo di compenetrazione.
+- La classe personalizzata 'Vector2D' evita di importare tutti i metodi e campi non necessari all'applicazione, alleggerendola
+- Architettura scalabile: l'aggiunta di un nuovo ostacolo richiede solo di estendere 'AbstractObstacle' ed implementare il calcolo di compenetrazione.
 
 Contro:
 - Se la velocità della pallina in un singolo frame supera lo spessore dell'ostacolo, rischia di attraversarlo (tunneling).
 - Il calcolo esatto delle distanze per i triangoli richiede l'estrazione di radici quadrate, operazione che appesantiscono il game loop.
+
+**Creazione degli ostacoli avanzati (Appiccicosi, Rimbalzanti e Portali)**
+
+*Problema*:
+Introdurre dinamiche di gioco avanzate tramite ostacoli che alterano la velocità della pallina (appiccicosi che rallentano, respingenti che accelerano) e portali di teletrasporto. Bisognava evitare di creare una nuova classe per ogni combinazione di forma ed effetto, garantire la creazione sicura dei portali solo in coppia e prevenire loop infiniti di teletrasporto nello stesso frame.
+
+*Soluzione*:
+- Constructor Chaining per l'elasticità: Aggiunto il parametro `bounciness` in `AbstractObstacle`, che scala la velocità al contatto con l'ostacolo senza alterare l'angolo di rimbalzo.
+- Aggiunto un secondo costruttore, in ogni classe degli ostacoli, che accetta come parametro 'bounciness' per creare l'ostacolo elastico. In caso di ostacoli con elasticità normale, si utilizza il costruttore base, che chiamerà quello completo impostando 'bounciness' al valore di default.
+- Il costruttore di `PortalObstacle` è privato e la creazione è delegata al metodo statico `createPair()`, che istanzia e collega tra loro due portali in memoria, impedendo la configurazione di elementi dispari o spaiati nella mappa.
+- Al momento del teletrasporto, il portale di destinazione attiva un 'timer di cooldown'; finché è attivo, la sua compenetrazione risulta nulla, nascondendolo temporaneamente al motore fisico per permettere alla pallina di uscire senza re-innescare il trasferimento.
+
+UML:
+```mermaid
+    classDiagram
+        class AbstractObstacle
+        class PortalObstacle
+
+        AbstractObstacle <|-- PortalObstacle
+        PortalObstacle --> PortalObstacle : linkedPortal
+```
+
+*Pro e Contro*:
+Pro:
+- Architettura estremamente flessibile: gli effetti di accelerazione e decelerazione possono essere applicati a qualsiasi forma geometrica tramite un semplice parametro.
+- Sicurezza strutturale nella creazione dei portali, che impedisce stati invalidi come la creazione di portali spaiati.
+
+Contro:
+- Il cooldown temporale fisso (es. 500ms) potrebbe scadere prima che la pallina sia uscita dal portale se questa viaggia a una velocità estremamente ridotta, generando un loop.
+
+**Architettura e separazione Vista‑Logica**
+
+*Problema*:
+La logica di gestione degli ostacoli (collisioni, calcoli fisici, accesso ai dati) deve essere separata dalla rappresentazione grafica e dal resto del gioco, per mantenere un’architettura MVC pulita ed evitare che la vista dipenda direttamente dalle classi del modello.
+
+*Soluzione*:
+- Introdotto `ObstacleController` che agisce da intermediario isolando i dati fisici da quelli visivi. Espone i metodi `getObstacles()` (per i modelli) e `getObstacleShapes()` (per il rendering).
+- Il motore fisico (`PhysicsEngine`) interroga il controller tramite `getObstacles()` per ottenere esclusivamente i modelli matematici necessari a risolvere le collisioni in ogni frame.
+- La vista (`MapPanel`) chiede le forme geometriche da disegnare senza conoscere i dettagli interni del modello. Leggendo le proprietà fisiche degli ostacoli (come la `bounciness` o il tipo `PortalObstacle`), la vista decide autonomamente il colore di rendering (verde, rosso, blu o grigio di default) prima di delegare il disegno della forma.
+
+UML:
+```mermaid
+    classDiagram
+        class MapPanel
+        <<interface>> ObstacleController
+        <<interface>> Obstacle
+        <<interface>> Shape
+
+        MapPanel --> ObstacleController
+        ObstacleController --> Obstacle
+        Obstacle --> Shape
+```
+
+*Pro e Contro*:
+Pro:
+- Separazione netta tra modello e vista, che garantisce un'ottima manutenibilità e facilità di test automatizzati.
+- Modificare l'aspetto estetico o i colori di un ostacolo richiede modifiche circoscritte alla sola vista, senza rischiare di alterare i calcoli fisici del modello.
+
+Contro:
+- L'aggiunta di un controllore dedicato aumenta il numero di interfacce e di file da gestire nel progetto, rendendo l'architettura iniziale più complessa da configurare.
+- La vista ('MapPanel') deve comunque guardare dentro le proprietà del modello (usando controlli come 'instanceof' o leggendo la 'bounciness') per decidere il colore da associare, creando un legame tra l'aspetto grafico e la logica interna degli ostacoli.
+
 ---
 
 ## Capitolo 3: Sviluppo
@@ -191,6 +253,13 @@ GameStateTest: controlla la logica dei turni: come si crea, come si passa al tur
 GameFactoryTest: controlla che la partita creata dalla factory sia sempre uguale all'inizio su entrambe le mappe: tutti i controller devono essere presenti, il primo giocatore è quello giusto, e lo stato del tiro è vuoto.
 
 * **Mattia D'Ambrosio:** 
+I componenti testati riguardano la geometria computazionale e la fisica delle collisioni: Vector2D, Obstacle (con le sue classi concrete) e ObstacleController.
+
+Vector2DTest: Controlla la correttezza di tutte le operazioni algebriche fondamentali sui vettori custom (somma, sottrazione, normalizzazione, prodotto scalare, distanza euclidea e gestione dei limiti della precisione floating-point tramite EPSILON).
+
+ObstacleCollisionTest: Verifica l'accuratezza del calcolo delle collisioni e della profondità di penetrazione per WallObstacle, RoundObstacle e TriangleObstacle. Testa i casi limite, come l'allineamento perfetto dei centri, l'impatto sugli spigoli vivi e l'espulsione fisica della pallina quando si trova sia all'esterno che completamente all'interno dei solidi.
+
+ObstacleControllerTest: Assicura il corretto funzionamento del controller come intermediario. Verifica che la lista dei modelli matematici (Obstacle) e delle forme grafiche (Shape) siano popolate coerentemente e che il motore fisico riceva i dati corretti per la risoluzione dei contatti in ogni frame.
 
 ### 3.2 Note di sviluppo
 * **Daniel Patryk Bak:** 
@@ -213,6 +282,13 @@ Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3dd
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/save/SaveManager.java#L21
 
 * **Mattia D'Ambrosio:** 
+Ereditarietà e Polymorphism (Pattern Template Method): Utilizzati nella gerarchia degli ostacoli per massimizzare il riutilizzo del codice (DRY). La classe astratta AbstractObstacle definisce lo scheletro dell'algoritmo di calcolo del rimbalzo e della correzione della posizione (metodo 'reflectVelocity'), lasciando alle classi concrete solo il compito di implementare le specificità geometriche di calcolo della penetrazione e delle normali.
+
+Constructor Chaining: Applicato in tutte le classi degli ostacoli per introdurre la 'bounciness', garantendo la compatibilità con il codice già esistente. I costruttori base delegano la creazione a costruttori più completi passando automaticamente il valore di default, evitando ridondanze o controlli duplicati.
+
+Pattern Static Factory Method: Utilizzato nella classe PortalObstacle. Avendo reso privato il costruttore, la creazione dei portali è vincolata al metodo statico 'createPair()'. Questo approccio impedisce la configurazione di stati invalidi nel sistema, come la presenza di portali dispari, spaiati o non collegati bidirezionalmente in memoria.
+
+System Timestamping: Sfruttato all'interno della gestione dei portali tramite 'System.currentTimeMillis()' per implementare un meccanismo di cooldown temporale deterministico. Questo permette di disattivare temporaneamente la fisica di un portale per una finestra temporale fissa, prevenendo loop infiniti di teletrasporto nello stesso frame.
 
 ---
 
@@ -228,6 +304,11 @@ Per quanto riguarda il cambio delle mappe, al momento ricostruiamo da capo tutto
 Il sistema di salvataggio (SaveManager, SaveData) memorizza la partita in formato JSON usando Gson. Salva solo il numero della mappa, non tutta la geometria. Così i file sono piccoli e il salvataggio non dipende da come sono fatte le mappe dentro. Un limite attuale è che il salvataggio viene cancellato appena lo si carica, quindi non si può riprendere la stessa partita due volte senza salvarla di nuovo.
 
 * **Mattia D'Ambrosio:** 
+Il mio contributo principale ha riguardato l'architettura geometrico-matematica degli ostacoli, lo sviluppo della classe vettoriale dedicata e l'implementazione della fisica delle collisioni e degli elementi avanzati (ostacoli elastici e portali). Sono pienamente soddisfatto della stabilità raggiunta nel calcolo delle penetrazioni e dell'algoritmo di Normal Blending per la risoluzione deterministica degli angoli interni, che ha rimosso qualsiasi arbitrarietà fisica. Dal punto di vista architetturale, l'introduzione di ObstacleController ha garantito un disaccoppiamento MVC pulito tra modelli fisici e rendering grafico.
+
+Un aspetto decisamente migliorabile riguarda il fenomeno del tunneling: se la pallina si muove a una velocità talmente elevata da superare lo spessore di un ostacolo sottile in un singolo frame, il motore manca la collisione attraversando l'oggetto. In futuro, per ovviare a questo problema, si potrebbe implementare un algoritmo di Continuous Collision Detection (CCD) basato sul raycasting o sul campionamento della traiettoria.
+
+Un altro limite risiede nel meccanismo di cooldown temporale dei portali; sebbene la soglia fissa a 500ms sia efficace nella maggior parte dei contesti, se la pallina entra in un portale a velocità quasi nulla rischia di rimanere ferma sulla destinazione oltre la scadenza del timer, riattivando un loop infinito. Un'evoluzione futura prevedrebbe un'immunità basata sulla geometria, disattivando il cooldown solo quando la pallina ha fisicamente interrotto la collisione con la bounding box del portale di arrivo.
 
 ---
 
