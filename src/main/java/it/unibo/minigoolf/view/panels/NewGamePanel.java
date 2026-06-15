@@ -48,7 +48,7 @@ public final class NewGamePanel extends JPanel {
     public NewGamePanel(final NavigationController navigationController) {
 
         try {
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/newgame_bg.png"));
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/newgame_bg1.png"));
             this.backgroundImage = bgIcon.getImage();
         } catch (Exception e) {
             System.err.println("Background image not found!");
