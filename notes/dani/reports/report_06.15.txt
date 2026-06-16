@@ -1,0 +1,24 @@
+Report - 06/15 - 65 ore
+
+FATTO:
+
+- Scrivere qualche classe di test! idee: 
+  - testare il salvataggio nella leaderboard DONE!
+  - testare l'interfaccia DONE!
+
+- Aggiunto i credits agli sfondi in basso a destra.
+
+DA FARE:
+
+- Spotbugs!
+
+- testare gli shots durante la partita
+
+- 1.5 mappe da fare!
+
+EXTRA:
+
+AGENDA:
+
+
+

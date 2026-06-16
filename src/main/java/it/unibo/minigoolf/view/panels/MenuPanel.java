@@ -41,7 +41,7 @@ public final class MenuPanel extends JPanel {
 
         // Background image loading
         try {
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/menu_bg.png"));
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/menu_bg1.png"));
             this.backgroundImage = bgIcon.getImage();
         } catch (Exception e) {
             System.err.println("Background image not found!");

@@ -1,27 +1,9 @@
-Report - 06/14 - 64 ore
+- requisiti funzionali e non sul report
 
-FATTO:
+- UML base sulle entità da controllare al punto 1.2 (non vorrei aver scordato qualcosa)
 
-- Spotbugs, un botto di spotbugs, mi manca qualche cosina qua e là e le exception che appunto vorrei vedere con voi se usare il logger.
 
-- Verificare se tutte le classi/metodi utilizzano UserInterfaceFactory correttamente:
- - textfield player dei nomi player diverse dal n* player DONE!
- - label player name e player shots DONE!
- - scritta nella midleaderboard dentro alla tabella comic sans DONE!
-
-- Aggiunta la soundtrack! Parte all'avvio dell'applicazione, si ferma quando comincia una nuova partia e gioco e riparte se si torna al menu.
-
-DA FARE:
-
-- Spotbugs!
-
-- Scrivere qualche classe di test! idee: testare il salvataggio nella leaderboard, testare gli shots durante la partita, testare l'interfaccia.
-
-- 1.5 mappe da fare!
-
-EXTRA:
-
-AGENDA:
+DANI: 
 
 - mappe da un pool random, la prima come tutorial (decidiamoci su questa cosa, cambiamo anche i nomi delle mappe)
 

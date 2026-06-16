@@ -39,7 +39,7 @@ public final class LeaderBoardPanel extends JPanel {
         // To import the background image
         try {
  
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/leaderboard_bg.png"));
+            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/leaderboard_bg1.png"));
             this.backgroundImage = bgIcon.getImage();
         } catch (Exception e) {
             System.err.println("Background image not found!");
