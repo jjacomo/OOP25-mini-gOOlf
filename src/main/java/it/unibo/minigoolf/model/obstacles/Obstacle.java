@@ -6,6 +6,8 @@ import it.unibo.minigoolf.model.ball.Ball;
 
 /**
  * Represents the generic obstacles.
+ * 
+ * @author Mattia
  */
 public interface Obstacle {
     /**

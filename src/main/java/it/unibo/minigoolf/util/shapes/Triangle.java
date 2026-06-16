@@ -8,6 +8,8 @@ import it.unibo.minigoolf.util.Vector2D;
  * @param vertex1 the first vertex of the triangle
  * @param vertex2 the second vertex of the triangle
  * @param vertex3 the third vertex of the triangle
+ * 
+ * @author Mattia
  */
 public record Triangle(Vector2D vertex1, Vector2D vertex2, Vector2D vertex3) implements Shape {
 

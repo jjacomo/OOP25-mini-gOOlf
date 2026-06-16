@@ -9,6 +9,8 @@ import java.util.Arrays;
 /**
  * Represents a pair of teleportation portals. When the ball enters a portal,
  * it is teleported to the other while maintaining its direction and speed unchanged.
+ * 
+ * @author Mattia
  */
 public final class PortalObstacle extends AbstractObstacle {
         private static final long COOLDOWN_MS = 500;

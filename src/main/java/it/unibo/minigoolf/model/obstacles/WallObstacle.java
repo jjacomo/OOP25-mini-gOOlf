@@ -7,6 +7,8 @@ import it.unibo.minigoolf.model.ball.Ball;
 /**
  * Represents a rectangular wall obstacle in the minigolf course.
  * This obstacle is defined by its top-left position, width, and height.
+ * 
+ * @author Mattia
  */
 public final class WallObstacle extends AbstractObstacle {
     private static final double MIN_WIDTH = 5.0;

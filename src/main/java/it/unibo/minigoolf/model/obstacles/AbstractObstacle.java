@@ -7,6 +7,8 @@ import it.unibo.minigoolf.util.Vector2D;
  * Represents a generic obstacle in the game world.
  * Obstacles can have different shapes and interact with the ball,
  * modifying its trajectory upon collision.
+ * 
+ * @author Mattia
  */
 public abstract class AbstractObstacle implements Obstacle {
     /**

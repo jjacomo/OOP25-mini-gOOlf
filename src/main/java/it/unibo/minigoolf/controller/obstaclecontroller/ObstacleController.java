@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Controller for managing all obstacles in the minigolf map.
+ * 
+ * @author Mattia
  */
 @FunctionalInterface
 public interface ObstacleController {

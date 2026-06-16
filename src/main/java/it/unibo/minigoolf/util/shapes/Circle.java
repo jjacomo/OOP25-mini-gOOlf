@@ -10,6 +10,8 @@ import it.unibo.minigoolf.util.Vector2D;
  *
  * @param position the center position of the circle as a Vector2D
  * @param radius   the radius of the circle
+ * 
+ * @author Mattia
  */
 public record Circle(Vector2D position, double radius) implements Shape {
 

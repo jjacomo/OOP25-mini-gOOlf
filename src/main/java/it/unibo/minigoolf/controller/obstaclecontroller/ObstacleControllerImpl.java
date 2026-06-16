@@ -14,6 +14,8 @@ public final class ObstacleControllerImpl implements ObstacleController {
      * Creates a new ObstacleController with an initial list of obstacles.
      *
      * @param obstacles the initial list of obstacles to manage
+     * 
+     * @author Mattia
      */
     public ObstacleControllerImpl(final List<Obstacle> obstacles) {
         this.obstacles = List.copyOf(obstacles);

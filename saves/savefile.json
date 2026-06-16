@@ -1,16 +1,12 @@
 {
-  "currentPlayerIndex": 1,
-  "mapId": "1",
+  "currentPlayerIndex": 0,
+  "mapId": "2",
   "players": [
     {
-      "name": "fede",
-      "shots": 4
-    },
-    {
-      "name": "rob",
+      "name": "d",
       "shots": 0
     }
   ],
-  "ballX": 150.0,
-  "ballY": 150.0
+  "ballX": 80.0,
+  "ballY": 80.0
 }

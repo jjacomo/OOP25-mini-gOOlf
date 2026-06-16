@@ -7,6 +7,8 @@ import it.unibo.minigoolf.model.ball.Ball;
 /**
  * Represents a circular obstacle in the minigolf course.
  * This obstacle is defined by its center position and radius.
+ * 
+ * @author Mattia
  */
 public final class RoundObstacle extends AbstractObstacle {
     private static final double MIN_RADIUS = 5.0;
