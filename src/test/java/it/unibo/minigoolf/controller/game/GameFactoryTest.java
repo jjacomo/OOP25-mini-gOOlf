@@ -1,8 +1,8 @@
 package it.unibo.minigoolf.controller.game;
 
-import it.unibo.minigoolf.model.map.factories.FirstMap;
+import it.unibo.minigoolf.model.map.factories.MapA;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
-import it.unibo.minigoolf.model.map.factories.SecondMap;
+import it.unibo.minigoolf.model.map.factories.MapB;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -30,12 +30,12 @@ class GameFactoryTest {
 
     // Single map sequence
     private static MapSequence singleMapSequence() {
-        return new MapSequence(List.of(new FirstMap()));
+        return new MapSequence(List.of(new MapA()));
     }
 
     // Two map sequence
     private static MapSequence twoMapSequence() {
-        return new MapSequence(List.of(new FirstMap(), new SecondMap()));
+        return new MapSequence(List.of(new MapA(), new MapB()));
     }
 
     @Test

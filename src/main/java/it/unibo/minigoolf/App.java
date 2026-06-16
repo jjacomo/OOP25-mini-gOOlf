@@ -9,6 +9,7 @@ public final class App {
 
     /**
      * Private constructor made to hide the implicit public one.
+     * 
      */
     private App() {
     }

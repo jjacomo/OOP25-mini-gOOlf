@@ -5,9 +5,9 @@
 
 DANI: 
 
-- mappe da un pool random, la prima come tutorial (decidiamoci su questa cosa, cambiamo anche i nomi delle mappe)
+- mappe da un pool random, la prima come tutorial (decidiamoci su questa cosa, cambiamo anche i nomi delle mappe) done!
 
-- piccola roba per @Damnbro: mi ricodo che me lo avevi spiegato nell'audio ma è meglio se lo vediamo insieme, gli ostacoli bouncy e portali
+- piccola roba per @Damnbro: mi ricodo che me lo avevi spiegato nell'audio ma è meglio se lo vediamo insieme, gli ostacoli bouncy e portali done!
 
 - Per @fedesparvo1-a11y: mi ricordo della questione dei bottoni si no -> yes no, però ho visto nella UIFactory che per appunto ovviare a questa roba hai
 costruito tutto un metodo secondo me un po' articolato. Cioè secondo me è eccessivo, purtroppo non credo ci sia un altro modo se utilizzi gli elementi grafici
@@ -16,3 +16,5 @@ valutare quanto tempo ci vuole: l'amico di Jack aveva fatto i bottoni con lo sfo
 
 - Sto pulendo con spotbugs, c'è qualche exception dove printo su sys.out.print.err, e ho visto che a spotbugs non piace. Un logger potrebbe essere una soluzione, anche perchè se avviamo
 il jar ed abbiamo qualche errore, in effetti non abbiamo il terminale a disposizione. Il logger sarebbe un txt dove vengono scritti tutti gli errori da consultare dopo.
+
+- Bug musica + abbassare volume

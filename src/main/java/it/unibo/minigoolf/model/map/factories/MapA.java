@@ -34,7 +34,7 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * @see RectangularSurface
  * @see Surface
  */
-public class FirstMap implements GameMapFactory {
+public class MapA implements GameMapFactory {
 
         private static final double GRASS1_X = 0;
         private static final double GRASS1_Y = 0;
@@ -161,7 +161,7 @@ public class FirstMap implements GameMapFactory {
         /**
          * Constructs a FirstMap using a default SurfaceFactory implementation.
          */
-        public FirstMap() {
+        public MapA() {
                 this(new SurfaceFactoryImpl());
         }
 
@@ -170,7 +170,7 @@ public class FirstMap implements GameMapFactory {
          * 
          * @param surfaceFactory the factory used to build surfaces
          */
-        public FirstMap(final SurfaceFactory surfaceFactory) {
+        public MapA(final SurfaceFactory surfaceFactory) {
                 this.surfaceFactory = surfaceFactory;
         }
 

@@ -25,7 +25,7 @@ import java.util.List;
  * @author fede
  */
 
-public final class SecondMap implements GameMapFactory { 
+public final class MapB implements GameMapFactory { 
 
     // Grass start area
     private static final double GRASS_START_X = 0;
@@ -144,7 +144,7 @@ public final class SecondMap implements GameMapFactory {
     /**
      * Constructs a SecondMap using a default SurfaceFactory implementation.
      */
-    public SecondMap() {
+    public MapB() {
         this(new SurfaceFactoryImpl());
     }
 
@@ -153,7 +153,7 @@ public final class SecondMap implements GameMapFactory {
      *
      * @param surfaceFactory the factory used to build surfaces
      */
-    public SecondMap(final SurfaceFactory surfaceFactory) {
+    public MapB(final SurfaceFactory surfaceFactory) {
         this.surfaceFactory = surfaceFactory;
     }
 
