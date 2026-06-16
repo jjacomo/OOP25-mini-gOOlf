@@ -1,48 +1,56 @@
+## Indice
+
 ## Capitolo 1:  Analisi
 
 ### 1.1 Descrizione e requisiti
 
-Il software è un gioco di mini-golf in 2D per uno o più giocatori in modalità a turni. Il giocatore controlla una pallina su una mappa con ostacoli e superfici di diverso tipo, con l'obiettivo di farla entrare nella buca nel minor numero di colpi possibile.
-Purchè esso sia minore o uguale a 7. Ogni colpo viene effettuato trascinando il mouse dalla pallina nella direzione desiderata, ma verso opposto, e più lungo è il trascinamento, più potente sarà il colpo.
-Il gioco è composto da più mappe in sequenza. Al termine di ogni mappa viene mostrata una classifica intermedia con i colpi effettuati da ciascun giocatore. Al termine di tutte le mappe i punteggi vengono salvati nella classifica finale.
+Il software è un gioco di mini-golf in due dimensioni per uno o più giocatori in modalità a turni. Il giocatore controlla una pallina su una mappa con ostacoli e superfici di diverso tipo, con l'obiettivo di farla entrare nella buca nel minor numero di colpi possibile. Ogni colpo viene effettuato trascinando il mouse dalla pallina nella direzione desiderata e verso opposto. Il gioco è composto da più mappe, una iniziale di tutorial, le altre in ordine casuale, al termine delle quali i punteggi vengono salvati nella classifica finale.
 
 #### Requisiti funzionali
-* Gestione dell'input
-* Menu di gioco
-* Mappa e ostacoli
-* Movimento della pallina
-(Questi li scriverei sotto forma di frasi complete come nell'esempio slide 5) -fede
+* Il giocatore effettua un colpo trascinando il mouse dalla pallina: la direzione e la potenza sono determinate dalla posizione del cursore rispetto alla pallina, un indicatore visivo mostra in tempo reale direzione e potenza del colpo durante il trascinamento.
+* Il gioco supporta più giocatori in modalità a turni.
+* La pallina interagisce con ostacoli di forme diverse e superfici con proprietà fisiche differenti, tra cui terreni che rallentano o modificano la traiettoria.
+* Al completamento di ogni mappa viene mostrata una classifica intermedia con i colpi effettuati da ciascun giocatore
 
 #### Requisiti non funzionali
-* Leaderboard
-* Possibilità di salvare e caricare la partita
-* Terreni ed ostacoli di tipo avanzato 
-(Questi li scriverei sotto forma di frasi complete come nell'esempio slide 5) -fede
+* Il gioco prevede superfici e ostacoli con proprietà fisiche avanzate.
+* È possibile salvare la partita in corso e riprenderla in un secondo momento.
+* La classifica finale è persistente tra sessioni diverse e si aggiorna al termine di ogni partita completata.
 
 ### 1.2 Modello del Dominio
 
-Un gioco di mini-golf è composto da una sequenza di mappe. Ogni mappa contiene una pallina, una buca, un insieme di superfici e un insieme di ostacoli. La pallina si muove sulla mappa seguendo le leggi della fisica: la superficie su cui si trova influenza il suo movimento tramite l'attrito e, in alcuni casi, il vento. Gli ostacoli bloccano il percorso della pallina facendola rimbalzare.
+Un gioco di mini-golf è composto da una sequenza di mappe. Ogni mappa contiene una pallina, una buca, un insieme di superfici e un insieme di ostacoli. La pallina si muove sulla mappa seguendo le leggi della fisica: la superficie su cui si trova influenza il suo movimento tramite l'attrito e, in alcuni casi, il vento. Gli ostacoli bloccano il percorso della pallina facendola rimbalzare e in alcuni casi ne alterano la velocità.
 Una partita coinvolge uno o più giocatori che si alternano a turni. Ad ogni turno il giocatore effettua un colpo, indicando direzione e potenza. Il punteggio di ciascun giocatore su una mappa corrisponde al numero di colpi effettuati. L'obiettivo è far entrare la pallina nella buca.
 
-UML: (da controllare e commentare quando ci saremo tutti, per ora è una base)
+UML:
 ```mermaid
-    classDiagram
-        class Partita
-        class Mappa
-        class Giocatore
-        class Pallina
-        class Buca
-        class Superficie
-        class Ostacolo
-        class Colpo
+classDiagram
+    class Partita
+    class Mappa
+    class Giocatore {
+        nome
+        punteggio
+    }
+    class Pallina {
+        posizione
+    }
+    class Buca
+    class Superficie {
+        attrito
+    }
+    class Ostacolo
+    class Colpo {
+        direzione
+        potenza
+    }
 
-        Partita --> "1..*" Giocatore
-        Partita --> "1..*" Mappa
-        Mappa --> "1" Pallina
-        Mappa --> "1" Buca
-        Mappa --> "1..*" Superficie
-        Mappa --> "0..*" Ostacolo
-        Giocatore --> "0..*" Colpo
+    Partita --> "1..*" Giocatore
+    Partita --> "1..*" Mappa
+    Mappa --> "1" Pallina
+    Mappa --> "1" Buca
+    Mappa --> "1..*" Superficie
+    Mappa --> "0..*" Ostacolo
+    Giocatore --> "0..*" Colpo
 ```
 
 ## Capitolo 2: Design
@@ -86,16 +94,24 @@ La logica è suddivisa in tre livelli distinti seguendo il pattern MVC:
 
 UML:
 ```mermaid
-    classDiagram
-        class ShotListener
-        <<interface>> ShotVisualizer
-        <<interface>> ShotCoordinateConverter
-        class ShotViewPanel
+classDiagram
+    class ShotVisualizer {
+        <<interface>>
+        +updateShotIntent(direction)
+        +shoot()
+    }
+    class ShotCoordinateConverter {
+        <<interface>>
+        +toLogical(point) Point
+        +isNearBall(point, radius) boolean
+    }
+    class ShotListener
+    class ShotViewPanel
 
-        ShotListener --> ShotVisualizer
-        ShotListener --> ShotCoordinateConverter
-        ShotViewPanel ..|> ShotVisualizer
-        ShotViewPanel ..|> ShotCoordinateConverter
+    ShotListener --> ShotVisualizer
+    ShotListener --> ShotCoordinateConverter
+    ShotViewPanel ..|> ShotVisualizer
+    ShotViewPanel ..|> ShotCoordinateConverter
 ```
 
 *Pro e Contro*:
@@ -116,20 +132,29 @@ La progressione di gioco è gestita da tre componenti distinte:
 
 UML:
 ```mermaid
-    classDiagram
-        class MatchManager
-        class MapSequence
-        <<interface>> GameMapFactory
-        class FirstMap
-        class SecondMap
+classDiagram
+    class GameMapFactory {
+        <<interface>>
+        +buildGameMap() GameMap
+    }
+    class MatchManager {
+        +advanceToNextHole()
+    }
+    class MapSequence {
+        +hasNext() boolean
+        +advance()
+    }
+    class FirstMap
+    class SecondMap
 
-        MatchManager --> MapSequence
-        MapSequence --> GameMapFactory
-        GameMapFactory <|.. FirstMap
-        GameMapFactory <|.. SecondMap
+    MatchManager --> MapSequence
+    MapSequence --> GameMapFactory
+    GameMapFactory <|.. FirstMap
+    GameMapFactory <|.. SecondMap
 ```
 
 *Pro e Contro*:
+
 Pro: aggiungere una nuova mappa richiede solo di creare una nuova classe e aggiungerla alla sequenza. Il reset al ritorno al menu è automatico.
 
 Contro: ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe rallentare il gioco se le mappe fossero molto complesse.
@@ -315,8 +340,28 @@ Un altro limite risiede nel meccanismo di cooldown temporale dei portali; sebben
 ## Appendice A: Guida Utente
 
 * **Menu Iniziale:** 
-* **Azioni di Gioco:** 
-* **Controlli In-Game:** 
-* **Fine Partita:**
+Avviando il gioco viene mostrato il menu principale. Da cui è possibile iniziare una nuova partita premendo il tasto PLAY, che chiederà di inserire i nomi dei giocatori. Se è presente una partita salvata, il gioco chiederà se si vuole caricarla o iniziarne una nuova. Dal menu è inoltre possibile consultare la classifica finale delle partite precedenti.
 
-(per me è abbastanza banale e si potrebbe anche omettere, al massimo spieghiamo le regole del gioco)
+* **Avvio della partita:** 
+Prima di iniziare è necessario inserire numero di giocatori e rispettivi nickname.
+
+* **Controlli In-Game:** 
+Per effettuare un colpo è necessario cliccare e tenere premuto il mouse vicino alla pallina, per poi trascinare nella direzione opposta a quella in cui si vuole colpire. Più lungo è il trascinamento, più potente sarà il colpo.
+Rilasciare il mouse per confermare il colpo.
+Un indicatore colorato mostra la direzione e la potenza: verde per colpi deboli, giallo per colpi medi, rosso per colpi forti.
+
+* **Regole:**
+Ogni giocatore ha a disposizione al massimo 7 colpi per buca. Se non si entra in buca entro il limite, il turno passa al giocatore successivo (o, in caso di singleplayer, si passa alla mappa successiva).
+Il punteggio di ogni giocatore corrisponde al numero di colpi effettuati su ciascuna mappa e meno colpi si fanno, meglio è.
+Al termine di ogni mappa viene mostrata una classifica intermedia. Premere il tasto per continuare e passare alla mappa successiva.
+Al termine di tutte le mappe il punteggio finale viene salvato nella classifica.
+
+* **Pausa:**
+Durante il gioco è possibile mettere in pausa premendo il tasto ESC, purché la pallina non sia in movimento. Dal menu di pausa è possibile riprendere la partita, salvarla, skippare la mappa attuale o tornare al menu principale.
+
+## Appendice B: Esercitazioni di laboratorio
+
+**B.0.1** federico.sparvoli@studio.unibo.it
+* Laboratorio 06: https://github.com/fedesparvo1-a11y/lab06
+* Laboratorio 07: https://github.com/fedesparvo1-a11y/lab07
+
