@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author fede
+ */
 class ShotStateTest {
 
     private static final double VALID_NORM = 20.0;
