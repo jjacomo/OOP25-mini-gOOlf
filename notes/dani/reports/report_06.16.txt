@@ -1,0 +1,27 @@
+Report - 06/16 - 66 ore
+
+FATTO:
+
+- mappe da un pool random, la prima (test per ora) è fissa, le altre vanno in ordine casuale.
+
+- modificato i credits.
+
+- spotbugs!
+
+DA FARE:
+
+- Spotbugs!
+
+- testare gli shots durante la partita
+
+- 1.5 mappe da fare!
+
+- logger per exceptions!
+
+EXTRA:
+
+AGENDA:
+
+
+
+
