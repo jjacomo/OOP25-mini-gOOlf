@@ -37,15 +37,11 @@ public final class LeaderBoardPanel extends JPanel {
         this.setLayout(new GridBagLayout());
 
         // To import the background image
-        try {
         final java.net.URL bgUrl = getClass().getResource("/background/leaderboard_bg1.png");
         if (bgUrl != null) {
-                final ImageIcon bgIcon = new ImageIcon(bgUrl);
-                this.backgroundImage = bgIcon.getImage();
-            } else {
-                this.setBackground(Color.DARK_GRAY);
-            }
-        } catch (final NullPointerException e) {
+            final ImageIcon bgIcon = new ImageIcon(bgUrl);
+            this.backgroundImage = bgIcon.getImage();
+        } else {
             this.setBackground(Color.DARK_GRAY);
         }
 
@@ -96,33 +92,32 @@ public final class LeaderBoardPanel extends JPanel {
                 final JLabel nameLabel = UserInterfaceFactory.createLabel(entry.getKey());
 
                 // Medals icons near 1,2,3 player
-                try {
-                    String imagePath = "";
-                    if (rank == 0) {
-                        imagePath = "/medals/gold.png";
-                    } else if (rank == 1) {
-                        imagePath = "/medals/silver.png";
-                    } else if (rank == 2) {
-                        imagePath = "/medals/bronze.png";
-                    }
+                String imagePath = "";
+                if (rank == 0) {
+                    imagePath = "/medals/gold.png";
+                } else if (rank == 1) {
+                    imagePath = "/medals/silver.png";
+                } else if (rank == 2) {
+                    imagePath = "/medals/bronze.png";
+                }
 
-                    if (!imagePath.isEmpty()) {
-                        final ImageIcon originalIcon = new ImageIcon(getClass().getResource(imagePath));
-                        // This is used to scale the original image to a small icon
+                if (!imagePath.isEmpty()) {
+                    final java.net.URL medalUrl = getClass().getResource(imagePath);
+                    if (medalUrl != null) {
+                        final ImageIcon originalIcon = new ImageIcon(medalUrl);
                         final Image scaledImg = originalIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
                         nameLabel.setIcon(new ImageIcon(scaledImg));
                         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
                         nameLabel.setIconTextGap(15);
-                    }
-                    
-                } catch (NullPointerException | IllegalArgumentException e) {
-                    // Only if the icons are not loaded, just simple text
-                    if (rank == 0) {
-                        nameLabel.setText(entry.getKey() + " (1st)");
-                    } else if (rank == 1) {
-                        nameLabel.setText(entry.getKey() + " (2nd)");
-                    } else if (rank == 2) {
-                        nameLabel.setText(entry.getKey() + " (3rd)");
+                    } else {
+                        // Selettore testo di riserva se non trova l'immagine
+                        if (rank == 0) {
+                            nameLabel.setText(entry.getKey() + " (1st)");
+                        } else if (rank == 1) {
+                            nameLabel.setText(entry.getKey() + " (2nd)");
+                        } else if (rank == 2) {
+                            nameLabel.setText(entry.getKey() + " (3rd)");
+                        }
                     }
                 }
 

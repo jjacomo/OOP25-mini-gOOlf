@@ -1,10 +1,14 @@
-Report - 06/17 - 6x ore
+Report - 06/17 - 68 ore
 
 FATTO:
 
-- spotbugs!
+- spotbugs: sistemato le exceptions, tolte, perchè tanto ci sono delle alternative se le risorse non vengono trovate!
 
 - test fatti anche sulle risorse (immagini di sfondo, icone medaglie, titolo menu, audio, font)
+
+- sistemato il bug audio
+
+- 
 
 DA FARE:
 
@@ -21,6 +25,8 @@ DA FARE:
 - Sitemare il nome dei background (c'è un 1 nel nome di ognuno per la versione vergine e con credits)
 
 - Serial version UID da mettere a posto che sia uguale dapertutto
+
+- Rivedere i package se vanno bene così
 
 EXTRA:
 

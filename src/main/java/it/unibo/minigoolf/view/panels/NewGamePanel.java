@@ -47,17 +47,15 @@ public final class NewGamePanel extends JPanel {
 
     public NewGamePanel(final NavigationController navigationController) {
 
-        try {
-            final java.net.URL bgUrl = getClass().getResource("/background/newgame_bg1.png");
-            if (bgUrl != null) {
-                final ImageIcon bgIcon = new ImageIcon(bgUrl);
-                this.backgroundImage = bgIcon.getImage();
-            } else {
-                this.setBackground(Color.DARK_GRAY);
-            }
-        } catch (final NullPointerException e) {
+        final java.net.URL bgUrl = getClass().getResource("/background/newgame_bg1.png");
+        if (bgUrl != null) {
+            final ImageIcon bgIcon = new ImageIcon(bgUrl);
+            this.backgroundImage = bgIcon.getImage();
+        } else {
             this.setBackground(Color.DARK_GRAY);
         }
+
+        this.setLayout(new BorderLayout(MARGINS, MARGINS));
 
         this.setLayout(new BorderLayout(MARGINS, MARGINS));
         this.setBorder(BorderFactory.createEmptyBorder(MARGINS, MARGINS, MARGINS, MARGINS));

@@ -40,15 +40,11 @@ public final class MenuPanel extends JPanel {
     public MenuPanel(final NavigationController navigationController) {
 
         // Background image loading
-        try {
-            final java.net.URL bgUrl = getClass().getResource("/background/menu_bg1.png");
-            if (bgUrl != null) {
-                final ImageIcon bgIcon = new ImageIcon(bgUrl);
-                this.backgroundImage = bgIcon.getImage();
-            } else {
-                this.setBackground(Color.DARK_GRAY);
-            }
-        } catch (final NullPointerException e) {
+        final java.net.URL bgUrl = getClass().getResource("/background/menu_bg1.png");
+        if (bgUrl != null) {
+            final ImageIcon bgIcon = new ImageIcon(bgUrl);
+            this.backgroundImage = bgIcon.getImage();
+        } else {
             this.setBackground(Color.DARK_GRAY);
         }
 
@@ -60,18 +56,14 @@ public final class MenuPanel extends JPanel {
         gbc.insets = new Insets(MARGINS, MARGINS, MARGINS, MARGINS);
         gbc.fill = GridBagConstraints.NONE;
 
-        // Custom title "minigOOlf"
+        // Custom title
         JLabel titleLabel;
-        try {
-            final java.net.URL logoUrl = getClass().getResource("/title.png");
-            if (logoUrl != null) {
-                final ImageIcon logoIcon = new ImageIcon(logoUrl);
-                final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);
-                titleLabel = new JLabel(new ImageIcon(scaledImage));
-            } else {
-                titleLabel = UserInterfaceFactory.createTitle("MINIGOOLF");
-            }
-        } catch (final NullPointerException e) {
+        final java.net.URL logoUrl = getClass().getResource("/title.png");
+        if (logoUrl != null) {
+            final ImageIcon logoIcon = new ImageIcon(logoUrl);
+            final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);
+            titleLabel = new JLabel(new ImageIcon(scaledImage));
+        } else {
             titleLabel = UserInterfaceFactory.createTitle("MINIGOOLF");
         }
 
