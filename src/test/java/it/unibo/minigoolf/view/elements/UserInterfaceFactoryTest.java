@@ -21,13 +21,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Verifies that all UI components are built with the correct properties,
  * fonts, and colors as defined by the factory constants.
  * 
- * @author @dbakko
+ * @author dbakko
  */
 class UserInterfaceFactoryTest {
 
     private static final Color ACCENT_COLOR = Color.WHITE;
     private static final int BUTTON_WIDTH = 200;
     private static final int BUTTON_HEIGHT = 60;
+    private static final float MAINFONT = 24;
+    private static final float TITLEFONT = 22;
+    private static final float LABELFONT = 18;
 
     @Test
     void testCreateButton() {
@@ -37,7 +40,7 @@ class UserInterfaceFactoryTest {
         assertNotNull(button, "The button should not be null");
         assertEquals(text, button.getText(), "The button text should match the input");
         assertEquals(ACCENT_COLOR, button.getBackground(), "The background color should be the ACCENT_COLOR");
-        
+
         // Check the dimensions
         final Dimension expectedSize = new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT);
         assertEquals(expectedSize, button.getPreferredSize(), "The button should have the correct preferred size");
@@ -46,7 +49,7 @@ class UserInterfaceFactoryTest {
         final Font font = button.getFont();
         assertNotNull(font, "The font should be initialized");
         assertEquals(Font.PLAIN, font.getStyle(), "Button font should be PLAIN");
-        assertEquals(24, font.getSize(), "Button font size should be 24");
+        assertEquals(MAINFONT, font.getSize(), "Button font size should be 24");
     }
 
     @Test
@@ -62,7 +65,7 @@ class UserInterfaceFactoryTest {
         final Font font = title.getFont();
         assertNotNull(font, "The font should be initialized");
         assertEquals(Font.BOLD, font.getStyle(), "Title font should be BOLD");
-        assertEquals(22, font.getSize(), "Title font size should be 22");
+        assertEquals(TITLEFONT, font.getSize(), "Title font size should be 22");
     }
 
     @Test
@@ -78,7 +81,7 @@ class UserInterfaceFactoryTest {
         final Font font = label.getFont();
         assertNotNull(font, "The font should be initialized");
         assertEquals(Font.PLAIN, font.getStyle(), "Label font should be PLAIN");
-        assertEquals(18, font.getSize(), "Label font size should be 18");
+        assertEquals(LABELFONT, font.getSize(), "Label font size should be 18");
     }
 
     @Test
@@ -88,7 +91,7 @@ class UserInterfaceFactoryTest {
 
         assertNotNull(textField, "The text field should not be null");
         assertEquals(columns, textField.getColumns(), "The number of columns should match the input");
-        
+
         // Check colors (white background and black text for readability)
         assertEquals(Color.WHITE, textField.getBackground(), "TextField background should be WHITE");
         assertEquals(Color.BLACK, textField.getForeground(), "TextField foreground should be BLACK");
@@ -97,13 +100,13 @@ class UserInterfaceFactoryTest {
         final Font font = textField.getFont();
         assertNotNull(font, "The font should be initialized");
         assertEquals(Font.PLAIN, font.getStyle(), "TextField font should be PLAIN");
-        assertEquals(18, font.getSize(), "TextField font size should be 18");
+        assertEquals(LABELFONT, font.getSize(), "TextField font size should be 18");
 
         // Check if a line border was applied correctly
         final Border border = textField.getBorder();
         assertNotNull(border, "TextField should have a border");
         assertTrue(border instanceof LineBorder, "TextField border should be a LineBorder");
-        
+
         final LineBorder lineBorder = (LineBorder) border;
         assertEquals(Color.GRAY, lineBorder.getLineColor(), "The border color should be GRAY");
     }

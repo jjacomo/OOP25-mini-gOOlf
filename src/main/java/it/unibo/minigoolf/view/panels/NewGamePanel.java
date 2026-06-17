@@ -28,7 +28,7 @@ import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
  * One of the possibile scenes, this is the menu where the user can choose the n° of
  * players, therefore it starts a singleplayer or a multiplayer match.
  * 
- * * @author dbakko
+ * @author dbakko
  */
 public final class NewGamePanel extends JPanel {
     /**

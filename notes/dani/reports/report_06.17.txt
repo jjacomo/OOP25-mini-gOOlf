@@ -28,6 +28,10 @@ DA FARE:
 
 - Rivedere i package se vanno bene così
 
+- mettere i percorsi delle risorse come costani in cima!
+
+- primo test della leaderboard fallisce!
+
 EXTRA:
 
 AGENDA:

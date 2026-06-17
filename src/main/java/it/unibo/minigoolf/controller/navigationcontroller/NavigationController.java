@@ -207,11 +207,11 @@ public final class NavigationController {
             }
             final javax.sound.sampled.AudioInputStream audioIn = 
                 javax.sound.sampled.AudioSystem.getAudioInputStream(audioUrl);
-            
+
             this.menuClip = javax.sound.sampled.AudioSystem.getClip();
             this.menuClip.open(audioIn);
             this.menuClip.start();
-            
+
         } catch (final javax.sound.sampled.UnsupportedAudioFileException e) {
             throw new IllegalStateException("Audio file format not supported", e);
         } catch (final javax.sound.sampled.LineUnavailableException | java.io.IOException e) {

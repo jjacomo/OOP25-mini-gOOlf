@@ -108,7 +108,6 @@ public final class LeaderBoardPanel extends JPanel {
                         final Image scaledImg = originalIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
                         nameLabel.setIcon(new ImageIcon(scaledImg));
                         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-                        nameLabel.setIconTextGap(15);
                     } else {
                         // Selettore testo di riserva se non trova l'immagine
                         if (rank == 0) {
@@ -126,13 +125,13 @@ public final class LeaderBoardPanel extends JPanel {
                 table.add(scoreLabel);
                 rank++;
             }
-            
+
             this.tableContainer.add(table);
         }
         this.revalidate();
         this.repaint();
     }
-    
+
     // To scale the background image properly
     @Override
     protected void paintComponent(final Graphics g) {

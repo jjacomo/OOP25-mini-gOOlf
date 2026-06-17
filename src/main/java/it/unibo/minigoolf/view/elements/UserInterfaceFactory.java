@@ -29,16 +29,18 @@ public final class UserInterfaceFactory {
     private static final int WIDTH = 200;
     private static final int HEIGHT = 60;
     private static final float MAINFONT = 24;
-    private static final float TITLEFONT =  22;
+    private static final float TITLEFONT = 22;
     private static final float LABELFONT = 18;
+    private static final String MAINFONT_PATH = "/font/upheavtt.ttf";
+    private static final String ALTFONT = "SansSerif";
     private static Font mainFont;
     private static Font titleFont;
     private static Font labelFont;
 
     static {
         boolean isFontLoaded = false;
-        
-        try (InputStream is = UserInterfaceFactory.class.getResourceAsStream("/font/upheavtt.ttf")) {
+
+        try (InputStream is = UserInterfaceFactory.class.getResourceAsStream(MAINFONT_PATH)) {
             if (is != null) {
             final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
             mainFont = baseFont.deriveFont(Font.PLAIN, MAINFONT);
@@ -51,10 +53,10 @@ public final class UserInterfaceFactory {
         } catch (final FontFormatException | IOException e) {
             LOGGER.log(Level.WARNING, "Error loading the custom font. Using fallback fonts.", e);
         }
-        if (!isFontLoaded){
-            mainFont = new Font("SansSerif", Font.PLAIN, 24);
-            titleFont = new Font("SansSerif", Font.BOLD, 22);
-            labelFont = new Font("SansSerif", Font.PLAIN, 18);
+        if (!isFontLoaded) {
+            mainFont = new Font(ALTFONT, Font.PLAIN, (int) MAINFONT);
+            titleFont = new Font(ALTFONT, Font.BOLD, (int) TITLEFONT);
+            labelFont = new Font(ALTFONT, Font.PLAIN, (int) LABELFONT);
         }
     }
 
@@ -102,7 +104,7 @@ public final class UserInterfaceFactory {
         label.setForeground(ACCENT_COLOR);
         return label;
     }
-    
+
     /**
      * Creates a standard text field with a predefined font size and 
      * a specific number of columns to determine its preferred width.

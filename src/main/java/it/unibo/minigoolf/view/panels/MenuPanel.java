@@ -18,7 +18,6 @@ import java.awt.Insets;
 
 import java.io.Serial;
 
-
 /**
  * The main menu panel.
  *
@@ -57,7 +56,7 @@ public final class MenuPanel extends JPanel {
         gbc.fill = GridBagConstraints.NONE;
 
         // Custom title
-        JLabel titleLabel;
+        final JLabel titleLabel;
         final java.net.URL logoUrl = getClass().getResource("/title.png");
         if (logoUrl != null) {
             final ImageIcon logoIcon = new ImageIcon(logoUrl);

@@ -44,7 +44,7 @@ public final class LeaderBoardManager {
                     scores.put(parts[0], Integer.parseInt(parts[1]));
                 }
             }
-            
+
         } catch (IOException | NumberFormatException e) {
             throw new IllegalStateException("Error reading the leaderboard", e); 
         }
