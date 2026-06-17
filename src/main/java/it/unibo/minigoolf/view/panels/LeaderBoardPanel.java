@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * One of the possibile scenes, this is the leaderboard, a table with
  * the scores for each player. 
- * * @author @dbakko
+ * * @author dbakko
  */ 
 public final class LeaderBoardPanel extends JPanel {
     /**
@@ -38,11 +38,14 @@ public final class LeaderBoardPanel extends JPanel {
 
         // To import the background image
         try {
- 
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/leaderboard_bg1.png"));
-            this.backgroundImage = bgIcon.getImage();
-        } catch (Exception e) {
-            System.err.println("Background image not found!");
+        final java.net.URL bgUrl = getClass().getResource("/background/leaderboard_bg1.png");
+        if (bgUrl != null) {
+                final ImageIcon bgIcon = new ImageIcon(bgUrl);
+                this.backgroundImage = bgIcon.getImage();
+            } else {
+                this.setBackground(Color.DARK_GRAY);
+            }
+        } catch (final NullPointerException e) {
             this.setBackground(Color.DARK_GRAY);
         }
 

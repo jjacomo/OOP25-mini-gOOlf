@@ -9,15 +9,21 @@ import javax.swing.JOptionPane;
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.awt.Dimension;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Factory to build any UI element such as buttons, labels and textfields.
  * 
- *  @author @dbakko
+ *  @author dbakko
  */
 public final class UserInterfaceFactory {
+
+    private static final Logger LOGGER = Logger.getLogger(UserInterfaceFactory.class.getName());
 
     private static final Color ACCENT_COLOR = Color.WHITE;
     private static final int WIDTH = 200;
@@ -30,18 +36,22 @@ public final class UserInterfaceFactory {
     private static Font labelFont;
 
     static {
+        boolean isFontLoaded = false;
+        
         try (InputStream is = UserInterfaceFactory.class.getResourceAsStream("/font/upheavtt.ttf")) {
-            if (is == null) {
-                throw new java.io.FileNotFoundException("Font file not found in resources!");
-            }
-
+            if (is != null) {
             final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
             mainFont = baseFont.deriveFont(Font.PLAIN, MAINFONT);
             titleFont = baseFont.deriveFont(Font.BOLD, TITLEFONT);
             labelFont = baseFont.deriveFont(Font.PLAIN, LABELFONT);
-            
-        } catch (final Exception e) {
-            System.err.println(e.getMessage());
+            isFontLoaded = true;
+        } else {
+                LOGGER.log(Level.WARNING, "Font file not found in resources! Using fallback fonts.");
+            }
+        } catch (final FontFormatException | IOException e) {
+            LOGGER.log(Level.WARNING, "Error loading the custom font. Using fallback fonts.", e);
+        }
+        if (!isFontLoaded){
             mainFont = new Font("SansSerif", Font.PLAIN, 24);
             titleFont = new Font("SansSerif", Font.BOLD, 22);
             labelFont = new Font("SansSerif", Font.PLAIN, 18);

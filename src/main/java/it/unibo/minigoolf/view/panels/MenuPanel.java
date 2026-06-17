@@ -22,7 +22,7 @@ import java.io.Serial;
 /**
  * The main menu panel.
  *
- * @author @dbakko
+ * @author dbakko
  */
 public final class MenuPanel extends JPanel {
 
@@ -41,11 +41,15 @@ public final class MenuPanel extends JPanel {
 
         // Background image loading
         try {
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/menu_bg1.png"));
-            this.backgroundImage = bgIcon.getImage();
-        } catch (Exception e) {
-            System.err.println("Background image not found!");
-            this.setBackground(Color.DARK_GRAY); 
+            final java.net.URL bgUrl = getClass().getResource("/background/menu_bg1.png");
+            if (bgUrl != null) {
+                final ImageIcon bgIcon = new ImageIcon(bgUrl);
+                this.backgroundImage = bgIcon.getImage();
+            } else {
+                this.setBackground(Color.DARK_GRAY);
+            }
+        } catch (final NullPointerException e) {
+            this.setBackground(Color.DARK_GRAY);
         }
 
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
@@ -57,9 +61,19 @@ public final class MenuPanel extends JPanel {
         gbc.fill = GridBagConstraints.NONE;
 
         // Custom title "minigOOlf"
-        final ImageIcon logoIcon = new ImageIcon(getClass().getResource("/title.png"));
-        final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);
-        final JLabel titleLabel = new JLabel(new ImageIcon(scaledImage));
+        JLabel titleLabel;
+        try {
+            final java.net.URL logoUrl = getClass().getResource("/title.png");
+            if (logoUrl != null) {
+                final ImageIcon logoIcon = new ImageIcon(logoUrl);
+                final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);
+                titleLabel = new JLabel(new ImageIcon(scaledImage));
+            } else {
+                titleLabel = UserInterfaceFactory.createTitle("MINIGOOLF");
+            }
+        } catch (final NullPointerException e) {
+            titleLabel = UserInterfaceFactory.createTitle("MINIGOOLF");
+        }
 
         gbc.gridx = 0;
         gbc.gridy = 0;

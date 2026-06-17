@@ -28,7 +28,7 @@ import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
  * One of the possibile scenes, this is the menu where the user can choose the n° of
  * players, therefore it starts a singleplayer or a multiplayer match.
  * 
- * * @author @dbakko
+ * * @author dbakko
  */
 public final class NewGamePanel extends JPanel {
     /**
@@ -48,10 +48,14 @@ public final class NewGamePanel extends JPanel {
     public NewGamePanel(final NavigationController navigationController) {
 
         try {
-            final ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background/newgame_bg1.png"));
-            this.backgroundImage = bgIcon.getImage();
-        } catch (Exception e) {
-            System.err.println("Background image not found!");
+            final java.net.URL bgUrl = getClass().getResource("/background/newgame_bg1.png");
+            if (bgUrl != null) {
+                final ImageIcon bgIcon = new ImageIcon(bgUrl);
+                this.backgroundImage = bgIcon.getImage();
+            } else {
+                this.setBackground(Color.DARK_GRAY);
+            }
+        } catch (final NullPointerException e) {
             this.setBackground(Color.DARK_GRAY);
         }
 

@@ -2,10 +2,10 @@ package it.unibo.minigoolf.model;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Handles saving and loading the global leaderboard to a text file.
  * 
- * @author @dbakko
+ * @author dbakko
  */
 public final class LeaderBoardManager {
 
@@ -46,7 +46,7 @@ public final class LeaderBoardManager {
             }
             
         } catch (IOException | NumberFormatException e) {
-            System.err.println("Error reading the leaderboard: " + e.getMessage()); //TODO: Usare un logger? Spotbugs si lamenta con messaggi di errori scritti così
+            throw new IllegalStateException("Error reading the leaderboard", e); 
         }
 
         return scores;
@@ -73,14 +73,21 @@ public final class LeaderBoardManager {
             }
         }
 
-        // Writing on the txt file.
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+        // Creates the folder "save" if not present
+        final File file = new File(FILE_PATH);
+        if (file.getParentFile() != null && !file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+
+        // Writing on the txt file
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(FILE_PATH), StandardCharsets.UTF_8)) {
             for (final Map.Entry<String, Integer> entry : historicalScores.entrySet()) {
                 writer.write(entry.getKey() + ":" + entry.getValue());
                 writer.newLine();
             }
         } catch (final IOException e) {
-            System.err.println("Error saving leadearboard data: " + e.getMessage());
+            throw new IllegalStateException("Error saving leaderboard data", e);
         }
     }
 }
+

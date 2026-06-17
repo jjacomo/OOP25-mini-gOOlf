@@ -1,0 +1,31 @@
+Report - 06/17 - 6x ore
+
+FATTO:
+
+- spotbugs!
+
+- test fatti anche sulle risorse (immagini di sfondo, icone medaglie, titolo menu, audio, font)
+
+DA FARE:
+
+- Spotbugs!
+
+- testare gli shots durante la partita
+
+- 1.5 mappe da fare!
+
+- logger per exceptions!
+
+- Togliere la @ in dbakko dapertutto
+
+- Sitemare il nome dei background (c'è un 1 nel nome di ognuno per la versione vergine e con credits)
+
+- Serial version UID da mettere a posto che sia uguale dapertutto
+
+EXTRA:
+
+AGENDA:
+
+
+
+

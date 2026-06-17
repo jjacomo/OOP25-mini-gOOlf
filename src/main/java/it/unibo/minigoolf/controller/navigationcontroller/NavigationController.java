@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  * Also owns the {@link SaveController} since it lives for the full
  * application lifetime, allowing save/load before any match is started.
  * 
- * @author @dbakko
+ * @author dbakko
  */
 public final class NavigationController {
 
@@ -85,7 +85,7 @@ public final class NavigationController {
      * Called by {@link it.unibo.minigoolf.controller.game.MatchManager}
      * when a match is active.
      *
-     * @param pauseChecker returns true if the ball is not moving
+     * @param checker returns true if the ball is not moving
      */
     public void setpauseChecker(final BooleanSupplier checker) {
         this.pauseChecker = checker;
@@ -195,25 +195,27 @@ public final class NavigationController {
      * Plays the main menu background music.
      */
     private void playBackgroundMusic() {
+        // This is needed so the audio doesn't start again when changing panels
+        if (this.menuClip != null && this.menuClip.isRunning()) {
+            return;
+        }
+
         try {
             final java.net.URL audioUrl = getClass().getResource("/soundtrack/gOOlf_menu.wav");
-            
-            if (audioUrl != null) {
-                final javax.sound.sampled.AudioInputStream audioIn = 
-                    javax.sound.sampled.AudioSystem.getAudioInputStream(audioUrl);
-                
-                this.menuClip = javax.sound.sampled.AudioSystem.getClip();
-                
-                this.menuClip.open(audioIn);
-                this.menuClip.start();
-            } else {
-                System.err.println("File not found in resources!");
+            if (audioUrl == null) {
+                throw new IllegalStateException("Audio file not found in resources!");
             }
+            final javax.sound.sampled.AudioInputStream audioIn = 
+                javax.sound.sampled.AudioSystem.getAudioInputStream(audioUrl);
+            
+            this.menuClip = javax.sound.sampled.AudioSystem.getClip();
+            this.menuClip.open(audioIn);
+            this.menuClip.start();
             
         } catch (final javax.sound.sampled.UnsupportedAudioFileException e) {
-            System.err.println("File format not supported: " + e.getMessage());
+            throw new IllegalStateException("Audio file format not supported", e);
         } catch (final javax.sound.sampled.LineUnavailableException | java.io.IOException e) {
-            System.err.println("Error playing the audio file:: " + e.getMessage());
+            throw new IllegalStateException("Error playing the audio file", e);
         }
     }
 
