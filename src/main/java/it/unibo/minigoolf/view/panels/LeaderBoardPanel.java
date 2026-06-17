@@ -33,6 +33,11 @@ public final class LeaderBoardPanel extends JPanel {
     private transient Image backgroundImage;
     private final JPanel tableContainer;
 
+    /**
+     * Constructs the leaderboard panel, initializing the UI components and the background.
+     *
+     * @param navController the navigation controller used to return to the main menu
+     */
     public LeaderBoardPanel(final NavigationController navController) {
         this.setLayout(new GridBagLayout());
 

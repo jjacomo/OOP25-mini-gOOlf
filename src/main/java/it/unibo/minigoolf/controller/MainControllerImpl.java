@@ -16,7 +16,7 @@ import java.util.List;
  * Manages the application lifecycle: timer and navigation.
  * All match logic is delegated to {@link MatchManager}.
  *
- * @author @dbakko, @jjacomo, @fedesparvo1-a11y
+ * @author dbakko, jjacomo, fedesparvo1-a11y
  */
 public final class MainControllerImpl implements MainController, ActionListener {
 
@@ -57,7 +57,7 @@ public final class MainControllerImpl implements MainController, ActionListener 
             navigationController::goToMainMenu,
             mainWindow::rebuildGamePanel,
             navigationController,
-            scores -> mainWindow.showMidLeaderBoard(scores, () -> this.matchManager.advanceToNextHole())
+            scores -> mainWindow.showMidLeaderBoard(scores, this.matchManager::advanceToNextHole)
         );
     }
 

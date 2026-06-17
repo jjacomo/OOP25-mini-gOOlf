@@ -8,11 +8,9 @@ FATTO:
 
 - sistemato il bug audio
 
-- 
+- FINITO UFFICIALMENTE SPOTBUGS! HO RISOLTO TUTTO!
 
 DA FARE:
-
-- Spotbugs!
 
 - testare gli shots durante la partita
 
@@ -29,8 +27,6 @@ DA FARE:
 - Rivedere i package se vanno bene così
 
 - mettere i percorsi delle risorse come costani in cima!
-
-- primo test della leaderboard fallisce!
 
 EXTRA:
 

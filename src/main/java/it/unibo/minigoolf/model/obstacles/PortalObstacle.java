@@ -54,8 +54,7 @@ public final class PortalObstacle extends AbstractObstacle {
     }
 
     /**
-     * Updates the future timeStamp until witch the this portalObstacle will ignore 
-     *  collisions
+     * Updates the future timeStamp until witch the this portalObstacle will ignore collisions.
      */
     private void triggerCooldown() {
         this.cooldownUntil = System.currentTimeMillis() + COOLDOWN_MS;

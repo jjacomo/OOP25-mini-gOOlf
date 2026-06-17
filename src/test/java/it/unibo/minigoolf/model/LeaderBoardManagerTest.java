@@ -31,8 +31,8 @@ class LeaderBoardManagerTest {
     @AfterEach
     void cleanUp() {
         final File file = new File("saves/leaderboard.txt");
-        if (file.exists()) {
-            file.delete();
+        if (file.exists() && !file.delete()) {
+            throw new IllegalStateException("Failed to delete the test leaderboard file!");
         }
     }
 

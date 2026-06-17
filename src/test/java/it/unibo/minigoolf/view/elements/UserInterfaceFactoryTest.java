@@ -31,6 +31,7 @@ class UserInterfaceFactoryTest {
     private static final float MAINFONT = 24;
     private static final float TITLEFONT = 22;
     private static final float LABELFONT = 18;
+    private static final String TEXTFONTASSERT = "The font should be initialized";
 
     @Test
     void testCreateButton() {
@@ -47,7 +48,7 @@ class UserInterfaceFactoryTest {
 
         // Check the font properties
         final Font font = button.getFont();
-        assertNotNull(font, "The font should be initialized");
+        assertNotNull(font, TEXTFONTASSERT);
         assertEquals(Font.PLAIN, font.getStyle(), "Button font should be PLAIN");
         assertEquals(MAINFONT, font.getSize(), "Button font size should be 24");
     }
@@ -63,7 +64,7 @@ class UserInterfaceFactoryTest {
 
         // Check the font (title must be BOLD and size 22)
         final Font font = title.getFont();
-        assertNotNull(font, "The font should be initialized");
+        assertNotNull(font, TEXTFONTASSERT);
         assertEquals(Font.BOLD, font.getStyle(), "Title font should be BOLD");
         assertEquals(TITLEFONT, font.getSize(), "Title font size should be 22");
     }
@@ -79,7 +80,7 @@ class UserInterfaceFactoryTest {
 
         // Check the font (normal label must be PLAIN and size 18)
         final Font font = label.getFont();
-        assertNotNull(font, "The font should be initialized");
+        assertNotNull(font, TEXTFONTASSERT);
         assertEquals(Font.PLAIN, font.getStyle(), "Label font should be PLAIN");
         assertEquals(LABELFONT, font.getSize(), "Label font size should be 18");
     }
@@ -98,7 +99,7 @@ class UserInterfaceFactoryTest {
 
         // Check the font (it uses the same font as the labels)
         final Font font = textField.getFont();
-        assertNotNull(font, "The font should be initialized");
+        assertNotNull(font, TEXTFONTASSERT);
         assertEquals(Font.PLAIN, font.getStyle(), "TextField font should be PLAIN");
         assertEquals(LABELFONT, font.getSize(), "TextField font size should be 18");
 

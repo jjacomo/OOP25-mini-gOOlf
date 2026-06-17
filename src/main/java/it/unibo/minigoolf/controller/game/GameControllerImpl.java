@@ -135,7 +135,7 @@ public final class GameControllerImpl implements GameController {
             //Scores supplier to get the scores of each player from a particular map
             this.allScoresSupplier = () -> {
             final Map<String, Integer> scores = new LinkedHashMap<>();
-            for (var p : gameState.getPlayers()) {
+            for (final var p : gameState.getPlayers()) {
                 scores.put(p.getName(), p.getShots());
             }
             return scores;

@@ -22,7 +22,7 @@ import java.util.Map;
  * Overlay panel displayed at the end of a hole.
  * Shows a sorted leaderboard of the players' shots.
  * 
- * @author @dbakko
+ * @author dbakko
  */
 public final class MidLeaderBoardPanel extends JPanel {
 
@@ -31,6 +31,13 @@ public final class MidLeaderBoardPanel extends JPanel {
     private static final int TINT = 150;
     private static final int HEIGHT = 30;
 
+    /**
+     * Constructs a new overlay panel displaying the current scores after a hole is completed.
+     * 
+     * @param scores    a map containing the players' names and their accumulated shots
+     * @param onNextMap the callback to execute when the "Next Hole" button is pressed
+     * 
+     */
     public MidLeaderBoardPanel(final Map<String, Integer> scores, final Runnable onNextMap) {
         this.setOpaque(false);
         this.setLayout(new GridBagLayout());

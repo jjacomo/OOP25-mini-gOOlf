@@ -27,6 +27,7 @@ public final class NavigationController {
     private final Runnable pauseWindowCallback;
     private final Runnable resumeWindowCallback;
     private final Runnable showLeaderboardCallback;
+    private final Consumer<java.util.Map<String, Integer>> updateLeaderboardCallback;
     private javax.sound.sampled.Clip menuClip;
 
     private final MainController mainController;
@@ -49,14 +50,8 @@ public final class NavigationController {
         this.showNewGameCallback = () -> mainWindow.showScene("NEW_GAME");
         this.pauseWindowCallback = () -> mainWindow.getGlassPane().setVisible(true);
         this.resumeWindowCallback = () -> mainWindow.getGlassPane().setVisible(false);
-        // TODO: Maybe I can move it somewhere else, it's getting crouded here
-        this.showLeaderboardCallback = () -> {
-            final it.unibo.minigoolf.model.LeaderBoardManager leaderManager = 
-            new it.unibo.minigoolf.model.LeaderBoardManager();
-            final java.util.Map<String, Integer> bestScores = leaderManager.loadBestScores();
-            mainWindow.updateLeaderboard(bestScores);
-            mainWindow.showScene("LEADERBOARD");
-        };
+        this.showLeaderboardCallback = () -> mainWindow.showScene("LEADERBOARD");
+        this.updateLeaderboardCallback = mainWindow::updateLeaderboard;
         this.playBackgroundMusic();
     }
 
@@ -180,6 +175,10 @@ public final class NavigationController {
      * Handles the transition from the pause menu to the leaderboard.
      */
     public void goToLeaderBoard() {
+        final it.unibo.minigoolf.model.LeaderBoardManager leaderManager = 
+                new it.unibo.minigoolf.model.LeaderBoardManager();
+        final java.util.Map<String, Integer> bestScores = leaderManager.loadBestScores();
+        this.updateLeaderboardCallback.accept(bestScores);
         this.showLeaderboardCallback.run();
     }
 

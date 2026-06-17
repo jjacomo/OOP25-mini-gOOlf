@@ -19,6 +19,10 @@ public final class LeaderBoardManager {
 
     private static final String FILE_PATH = "saves/leaderboard.txt";
 
+    /**
+     * Constructs a new LeaderBoardManager.
+     * This manager can be instantiated by controllers to load and save leaderboard data.
+     */
     public LeaderBoardManager() {
         // Utility behavior, but can be instantiated if needed by controllers
     }
@@ -75,8 +79,9 @@ public final class LeaderBoardManager {
 
         // Creates the folder "save" if not present
         final File file = new File(FILE_PATH);
-        if (file.getParentFile() != null && !file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
+        final File parentDir = file.getParentFile();
+            if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
+            throw new IllegalStateException("Failed to create the save directory!");
         }
 
         // Writing on the txt file

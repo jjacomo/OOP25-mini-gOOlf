@@ -45,6 +45,11 @@ public final class NewGamePanel extends JPanel {
     private final JPanel namesContainer;
     private final JTextField numInput;
 
+    /**
+     * Constructs the panel for setting up a new game.
+     * 
+     * @param navigationController the controller used to handle scene transitions
+     */
     public NewGamePanel(final NavigationController navigationController) {
 
         final java.net.URL bgUrl = getClass().getResource("/background/newgame_bg1.png");
@@ -54,8 +59,6 @@ public final class NewGamePanel extends JPanel {
         } else {
             this.setBackground(Color.DARK_GRAY);
         }
-
-        this.setLayout(new BorderLayout(MARGINS, MARGINS));
 
         this.setLayout(new BorderLayout(MARGINS, MARGINS));
         this.setBorder(BorderFactory.createEmptyBorder(MARGINS, MARGINS, MARGINS, MARGINS));

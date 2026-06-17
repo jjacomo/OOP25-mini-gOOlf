@@ -10,7 +10,6 @@ import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
-import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
@@ -91,6 +90,7 @@ public class TestMap implements GameMapFactory {
 
         private static final Vector2D HOLE_POSITION = new Vector2D(1500, 800);
         private static final double HOLE_RADIUS = 40;
+        /* 
         private static final double BOOST_SURFACE_X = 600;
         private static final double BOOST_SURFACE_Y = 500;
         private static final double BOOST_SURFACE_WIDTH = 500;
@@ -102,6 +102,7 @@ public class TestMap implements GameMapFactory {
         private static final double WINDYGRASS2_RADIUS1 = 150;
         private static final double WINDYGRASS2_RADIUS2 = 200;
         private static final int WINDYGRASS2_Z_INDEX = 3;
+        */
 
         private final SurfaceFactory surfaceFactory;
 
@@ -181,9 +182,6 @@ public class TestMap implements GameMapFactory {
                 obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT));
                 obstacles.add(new RoundObstacle(new Vector2D(O2_X, O2_Y), O2_RADIUS));
                 obstacles.add(new TriangleObstacle(O3_V1, O3_V2, O3_V3));
-                obstacles.add(new TriangleObstacle(new Vector2D(900,700), new Vector2D(900,750), new Vector2D(750, 700), 1.5));
-                obstacles.add(new TriangleObstacle(new Vector2D(600,700), new Vector2D(600,750), new Vector2D(450, 700), 0.5));
-                obstacles.addAll(PortalObstacle.createPair(new Vector2D(400, 400), new Vector2D(400, 600), 50));
                 return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
                                 new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
         }

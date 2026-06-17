@@ -24,9 +24,8 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * @see GameMap
  * @see RectangularSurface
  * @see Surface
- * TODO: Da riscrivere i nomi degli ostacoli ecc..., implementare bouncy e portal
+ * 
  */
-
 public class MapC implements GameMapFactory {
 
         private static final double GRASS1_X = 0;
@@ -74,7 +73,6 @@ public class MapC implements GameMapFactory {
         private static final double W4_WIDTH = 1920;
         private static final double W4_HEIGHT = 31;
 
-
         private static final double O1_X = 380;
         private static final double O1_Y = 300;
         private static final double O1_WIDTH = 50;
@@ -84,8 +82,7 @@ public class MapC implements GameMapFactory {
         private static final double O2_Y = 700;
         private static final double O2_WIDTH = 50;
         private static final double O2_HEIGHT = 200;
-        
-        
+
         //sotto
         private static final double O3_X = 400;
         private static final double O3_Y = 850;
@@ -98,33 +95,27 @@ public class MapC implements GameMapFactory {
         private static final double O31_WIDTH = 1550;
         private static final double O31_HEIGHT = 50;
 
-
-        
         //VERTICALE SX
         private static final double O4_X = 1400;
         private static final double O4_Y = 600;
         private static final double O4_WIDTH = 50;
         private static final double O4_HEIGHT = 300;
-        
+
         //VERTICALE DX
         private static final double O5_X = 1625;
         private static final double O5_Y = 300;
         private static final double O5_WIDTH = 50;
         private static final double O5_HEIGHT = 550;
 
-        
         private static final double O6_X = 400;
         private static final double O6_Y = 450;
         private static final double O6_WIDTH = 1000;
         private static final double O6_HEIGHT = 50;
 
-
         private static final double O7_X = 400;
         private static final double O7_Y = 700;
         private static final double O7_WIDTH = 1000;
         private static final double O7_HEIGHT = 50;
-
-
 
         private static final double O8_X = 200;
         private static final double O8_Y = 600;
@@ -209,7 +200,6 @@ public class MapC implements GameMapFactory {
                 obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT));
                 obstacles.add(new RoundObstacle(new Vector2D(O8_X, O8_Y), O8_RADIUS));
-                
                 obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS));
                 obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS));
                 return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),

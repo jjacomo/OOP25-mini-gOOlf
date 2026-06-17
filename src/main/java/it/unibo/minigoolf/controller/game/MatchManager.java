@@ -4,6 +4,7 @@ import it.unibo.minigoolf.controller.MainControllerImpl;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
 import it.unibo.minigoolf.model.save.SaveData;
+import it.unibo.minigoolf.model.LeaderBoardManager;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -35,10 +36,10 @@ public final class MatchManager {
     /** Rebuilds the game panel for a new match. */
     private final Consumer<GameController> rebuildPanel;
 
-    /** Stores the scores, used in the leaderboard */
+    /** Stores the scores, used in the leaderboard. */
     private final Map<String, Integer> globalScores = new LinkedHashMap<>();
 
-    /** Callback to show the summary-leaderboard after a map is completed */
+    /** Callback to show the summary-leaderboard after a map is completed. */
     private final Consumer<Map<String, Integer>> showSummaryPanel;
 
     private GameController activeMatch;
@@ -51,6 +52,7 @@ public final class MatchManager {
      * @param goToMenu       callback to return to the main menu
      * @param rebuildPanel   callback to rebuild the game panel with a new match
      * @param navController  navigation controller that owns the SaveController
+     * @param showSummaryPanel callback to display the scores after a hole is completed
      */
     public MatchManager(
             final MapSequence mapSequence,
@@ -71,7 +73,7 @@ public final class MatchManager {
         this.rebuildPanel = rebuildPanel;
         rebuildPanel.accept(activeMatch);
         this.showSummaryPanel = showSummaryPanel;
-        for (String name : this.playerNames) {
+        for (final String name : this.playerNames) {
             this.globalScores.put(name, 0);
         }
         // Register save/restore data on SaveController via NavigationController.
@@ -139,7 +141,7 @@ public final class MatchManager {
         stopGame.run();
 
         final Map<String, Integer> holeScores = activeMatch.getHoleScores();
-        for (Map.Entry<String, Integer> entry : holeScores.entrySet()) {
+        for (final Map.Entry<String, Integer> entry : holeScores.entrySet()) {
             globalScores.put(entry.getKey(), globalScores.get(entry.getKey()) + entry.getValue());
         }
         showSummaryPanel.accept(holeScores);
@@ -156,7 +158,7 @@ public final class MatchManager {
             rebuildPanel.accept(activeMatch);
             startGame.run();
         } else {
-            final it.unibo.minigoolf.model.LeaderBoardManager leaderManager = new it.unibo.minigoolf.model.LeaderBoardManager();
+            final LeaderBoardManager leaderManager = new LeaderBoardManager();
             leaderManager.updateAndSaveScores(this.globalScores);
             goToMenu.run();
         }
