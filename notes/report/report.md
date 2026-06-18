@@ -202,6 +202,55 @@ classDiagram
 * **Aumento delle classi**: Aggiunge un ulteriore livello intermedio con una classe ponte dedicata, aumentando leggermente la complessità strutturale del progetto per scopi puramente architetturali.
 
 #### Rappresentazione geometrica degli oggetti della mappa
+##### Problema
+Il gioco richiede di gestire e verificare la presenza della pallina in diversi elementi posizionati sulla mappa (superfici di varie forme, la buca). Sorge quindi la necessità di modellare la geometria degli oggetti di gioco in modo che:
+* **Il modello rimanga disaccoppiato dalla rappresentazione grafica**: Gli oggetti geometrici devono contenere solo logica matematica e fisica (come test di contenimento di un punto), senza dipendere da classi della GUI (`Graphics2D`, `Color`, ecc.), in accordo con il pattern MVC.
+* **Si eviti la duplicazione della logica geometrica**: Più componenti del modello (come superfici e buca) devono poter condividere o delegare la propria logica spaziale a componenti riutilizzabili.
+* **L'aggiunta di nuove geometrie sia semplice e modulare**.
+##### Soluzione
+È stata definita l'interfaccia funzionale `Shape` (contrassegnata con `@FunctionalInterface`), che espone un unico metodo `contains(Vector2D)`. Questa scelta di design offre diversi vantaggi:
+1. **Astrazione e composizione**: Elementi del modello come `ShapedSurface` delegano i controlli di contenimento a un'istanza interna di `Shape` (seguendo il principio *Composition over Inheritance*).
+2. **Java Records Value Objects**: Le forme concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono modellate come `record` Java. Essendo immutabili per definizione, rappresentano i perfetti "Value Objects" per la geometria del gioco, garantendo l'assenza di effetti collaterali e autogenerando codice boilerplate (`equals`, `hashCode`, `toString`). Inoltre, tramite costruttori compatti, viene eseguita la validazione dei dati all'atto dell'istanziazione (es. controllo su raggio o dimensioni positive).
+3. **MVC e Pattern Matching**: Le forme geometriche risiedono nel package `util.shapes` e non contengono dettagli di rendering. La classe di vista `MapPanel` interroga il controller per ottenere le `Shape` e, tramite la feature moderna di **Pattern Matching per `instanceof`** (introdotta nelle versioni recenti di Java), determina la tipologia concreta di forma (`rect`, `circ`, `tria`, `oval`) ed esegue il disegno specifico su schermo.
+UML:
+```mermaid
+classDiagram
+    class Shape {
+        <<interface>>
+        +contains(Vector2D) boolean
+    }
+    class Circle {
+        <<record>>
+        -Vector2D position
+        -double radius
+        +contains(Vector2D) boolean
+    }
+    class Rectangle {
+        <<record>>
+        -Vector2D position
+        -double width
+        -double height
+        +contains(Vector2D) boolean
+    }
+    class Triangle {
+        <<record>>
+        -Vector2D vertex1
+        -Vector2D vertex2
+        -Vector2D vertex3
+        +contains(Vector2D) boolean
+    }
+    class Oval {
+        <<record>>
+        -Vector2D position
+        -double radiusX
+        -double radiusY
+        +contains(Vector2D) boolean
+    }
+    Shape <|.. Circle
+    Shape <|.. Rectangle
+    Shape <|.. Triangle
+    Shape <|.. Oval
+```
 
 ### 2.2.3 Federico Sparvoli
 #### Input del colpo
