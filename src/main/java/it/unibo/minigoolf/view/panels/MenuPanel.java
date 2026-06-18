@@ -31,6 +31,8 @@ public final class MenuPanel extends JPanel {
     private static final int START_WIDTH = 960;
     private static final int START_HEIGHT = 540;
     private static final int MARGINS = 10;
+    private static final String PATH_BG = "/background/menu_bg.png";
+    private static final String PATH_TT = "/title.png";
     private transient Image backgroundImage;
 
     /**
@@ -39,7 +41,7 @@ public final class MenuPanel extends JPanel {
     public MenuPanel(final NavigationController navigationController) {
 
         // Background image loading
-        final java.net.URL bgUrl = getClass().getResource("/background/menu_bg1.png");
+        final java.net.URL bgUrl = getClass().getResource(PATH_BG);
         if (bgUrl != null) {
             final ImageIcon bgIcon = new ImageIcon(bgUrl);
             this.backgroundImage = bgIcon.getImage();
@@ -57,7 +59,7 @@ public final class MenuPanel extends JPanel {
 
         // Custom title
         final JLabel titleLabel;
-        final java.net.URL logoUrl = getClass().getResource("/title.png");
+        final java.net.URL logoUrl = getClass().getResource(PATH_TT);
         if (logoUrl != null) {
             final ImageIcon logoIcon = new ImageIcon(logoUrl);
             final Image scaledImage = logoIcon.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH);

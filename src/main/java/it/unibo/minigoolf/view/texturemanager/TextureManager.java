@@ -1,4 +1,4 @@
-package it.unibo.minigoolf.view;
+package it.unibo.minigoolf.view.texturemanager;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

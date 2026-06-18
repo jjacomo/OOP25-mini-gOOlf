@@ -24,10 +24,10 @@ import java.util.function.Supplier;
 
 /**
  * The game scene panel.
- * Receives a pre-built {@link ShotViewPanel} from {@link it.unibo.minigoolf.view.MainWindow}
+ * Receives a pre-built {@link ShotViewPanel} from {@link it.unibo.minigoolf.view.mainwindow.MainWindow}
  * so it does not need to expose any internal reference via a getter.
  *
- * @author @dbakko
+ * @author dbakko
  */
 public final class GamePanel extends JPanel {
 

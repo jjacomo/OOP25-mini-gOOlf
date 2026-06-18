@@ -1,6 +1,6 @@
 package it.unibo.minigoolf;
 
-import it.unibo.minigoolf.controller.MainControllerImpl;
+import it.unibo.minigoolf.controller.maincontroller.MainControllerImpl;
 
 /**
  * Game engine.

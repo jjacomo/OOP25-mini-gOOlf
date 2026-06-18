@@ -1,7 +1,7 @@
-package it.unibo.minigoolf.view;
+package it.unibo.minigoolf.view.mainwindow;
 
-import it.unibo.minigoolf.controller.MainController;
 import it.unibo.minigoolf.controller.game.GameController;
+import it.unibo.minigoolf.controller.maincontroller.MainController;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.view.input.ShotViewPanel;
 import it.unibo.minigoolf.view.panels.GamePanel;
@@ -24,7 +24,7 @@ import java.util.function.Function;
  * The {@link NavigationController} is passed once via {@link #initPanels}
  * and captured in a lambda factory — never stored as a field — avoiding EI2.
  *
- * @author @dbakkodani and @fedesparvo1-a11y
+ * @author dbakko and fedesparvo1-a11y
  */
 public final class MainWindow extends JFrame {
 

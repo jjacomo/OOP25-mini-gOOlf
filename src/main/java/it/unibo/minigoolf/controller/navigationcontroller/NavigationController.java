@@ -1,10 +1,10 @@
 package it.unibo.minigoolf.controller.navigationcontroller;
 
-import it.unibo.minigoolf.controller.MainController;
+import it.unibo.minigoolf.controller.maincontroller.MainController;
 import it.unibo.minigoolf.controller.save.SaveController;
 import it.unibo.minigoolf.model.save.SaveData;
 import it.unibo.minigoolf.model.save.SaveManager;
-import it.unibo.minigoolf.view.MainWindow;
+import it.unibo.minigoolf.view.mainwindow.MainWindow;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -20,6 +20,7 @@ import java.util.function.Supplier;
  */
 public final class NavigationController {
 
+    private static final String PATH_ST = "/soundtrack/gOOlf_menu.wav";
     /** Stored as a callback to avoid EI2. */
     private final Runnable showMenuCallback;
     private final Runnable showGameCallback;
@@ -200,7 +201,7 @@ public final class NavigationController {
         }
 
         try {
-            final java.net.URL audioUrl = getClass().getResource("/soundtrack/gOOlf_menu.wav");
+            final java.net.URL audioUrl = getClass().getResource(PATH_ST);
             if (audioUrl == null) {
                 throw new IllegalStateException("Audio file not found in resources!");
             }
@@ -224,7 +225,7 @@ public final class NavigationController {
     private void stopBackgroundMusic() {
         if (this.menuClip != null && this.menuClip.isRunning()) {
             this.menuClip.stop();
-            this.menuClip.close(); // Libera la linea audio
+            this.menuClip.close();
         }
     }
 }

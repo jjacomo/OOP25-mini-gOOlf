@@ -29,7 +29,7 @@ public interface GameController {
 
     /**
      * Sets the shot view that will be notified when the ball stops.
-     * Called by {@link it.unibo.minigoolf.view.MainWindow} after
+     * Called by {@link it.unibo.minigoolf.view.mainwindow.MainWindow} after
      * constructing the {@link it.unibo.minigoolf.view.input.ShotViewPanel}.
      *
      * @param shotView the shot view interface
@@ -52,7 +52,7 @@ public interface GameController {
 
     /**
      * Returns the shot state for this match.
-     * Used by {@link it.unibo.minigoolf.view.MainWindow} to build the
+     * Used by {@link it.unibo.minigoolf.view.mainwindow.MainWindow} to build the
      * {@link it.unibo.minigoolf.view.input.ShotViewPanel}.
      *
      * @return the shot state

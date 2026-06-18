@@ -1,6 +1,6 @@
 package it.unibo.minigoolf.controller.game;
 
-import it.unibo.minigoolf.controller.MainControllerImpl;
+import it.unibo.minigoolf.controller.maincontroller.MainControllerImpl;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
 import it.unibo.minigoolf.model.save.SaveData;

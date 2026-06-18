@@ -1,11 +1,11 @@
-package it.unibo.minigoolf.controller;
+package it.unibo.minigoolf.controller.maincontroller;
 
 import java.util.List;
 
 /**
  * Manages the game loop for the minigolf application.
  *
- * @author @dbakko, @fedesparvo1-a11y, @jjacomo
+ * @author dbakko, fedesparvo1-a11y, jjacomo
  */
 
 public interface MainController {

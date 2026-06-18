@@ -18,6 +18,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.io.Serial;
 
 /**
  * One of the possibile scenes, this is the leaderboard, a table with
@@ -25,11 +26,14 @@ import java.util.Map;
  * * @author dbakko
  */ 
 public final class LeaderBoardPanel extends JPanel {
-    /**
-     * Serial version UID.
-     */
+
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final int HEIGHT = 40;
+    private static final String PATH_BG = "/background/leaderboard_bg.png";
+    private static final String PATH_MEDALG = "/medals/gold.png";
+    private static final String PATH_MEDALS = "/medals/silver.png";
+    private static final String PATH_MEDALB = "/medals/bronze.png";
     private transient Image backgroundImage;
     private final JPanel tableContainer;
 
@@ -42,7 +46,7 @@ public final class LeaderBoardPanel extends JPanel {
         this.setLayout(new GridBagLayout());
 
         // To import the background image
-        final java.net.URL bgUrl = getClass().getResource("/background/leaderboard_bg1.png");
+        final java.net.URL bgUrl = getClass().getResource(PATH_BG);
         if (bgUrl != null) {
             final ImageIcon bgIcon = new ImageIcon(bgUrl);
             this.backgroundImage = bgIcon.getImage();
@@ -99,11 +103,11 @@ public final class LeaderBoardPanel extends JPanel {
                 // Medals icons near 1,2,3 player
                 String imagePath = "";
                 if (rank == 0) {
-                    imagePath = "/medals/gold.png";
+                    imagePath = PATH_MEDALG;
                 } else if (rank == 1) {
-                    imagePath = "/medals/silver.png";
+                    imagePath = PATH_MEDALS;
                 } else if (rank == 2) {
-                    imagePath = "/medals/bronze.png";
+                    imagePath = PATH_MEDALB;
                 }
 
                 if (!imagePath.isEmpty()) {

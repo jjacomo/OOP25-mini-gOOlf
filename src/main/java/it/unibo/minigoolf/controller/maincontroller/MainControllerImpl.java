@@ -1,10 +1,10 @@
-package it.unibo.minigoolf.controller;
+package it.unibo.minigoolf.controller.maincontroller;
 
 import it.unibo.minigoolf.controller.game.MatchManager;
 import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.model.map.factories.MapSequence;
+import it.unibo.minigoolf.view.mainwindow.MainWindow;
 import it.unibo.minigoolf.model.map.factories.GameMapSequenceFactory;
-import it.unibo.minigoolf.view.MainWindow;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;

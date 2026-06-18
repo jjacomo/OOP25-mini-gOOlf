@@ -1,0 +1,25 @@
+Report - 06/18 - 6x ore
+
+FATTO:
+
+- spotbugs: sistemato le exceptions, tolte, perchè tanto ci sono delle alternative se le risorse non vengono trovate!
+
+- test fatti anche sulle risorse (immagini di sfondo, icone medaglie, titolo menu, audio, font)
+
+- sistemato il bug audio
+
+- FINITO UFFICIALMENTE SPOTBUGS! HO RISOLTO TUTTO!
+
+- Dato una sistemata al codice tra nomi variabili, costanti, pulizia dei nomi dei package, ecc...
+
+DA FARE:
+
+- 1.5 mappe da fare!
+
+EXTRA:
+
+AGENDA:
+
+
+
+

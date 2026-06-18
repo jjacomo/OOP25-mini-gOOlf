@@ -6,11 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
 import java.util.Objects;
 
 import javax.swing.JPanel;
 
-import it.unibo.minigoolf.view.TextureManager;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.PortalObstacle;
@@ -20,6 +20,7 @@ import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
 import it.unibo.minigoolf.util.shapes.Triangle;
+import it.unibo.minigoolf.view.texturemanager.TextureManager;
 
 /**
  * Panel responsible for rendering the game map, including surfaces, obstacles,
@@ -31,6 +32,8 @@ import it.unibo.minigoolf.util.shapes.Triangle;
  * @author jack
  */
 public class MapPanel extends JPanel {
+
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;

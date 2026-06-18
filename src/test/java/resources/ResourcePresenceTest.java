@@ -36,12 +36,12 @@ class ResourcePresenceTest {
 
     @Test
     void testBackgroundImagesArePresent() {
-        final URL bgldUrl = getClass().getResource("/background/leaderboard_bg1.png");
-        assertNotNull(bgldUrl, "The background image '/background/leaderboard_bg1.png' is missing!");
-        final URL bgmnUrl = getClass().getResource("/background/menu_bg1.png");
-        assertNotNull(bgmnUrl, "The background image '/background/menu_bg1.png' is missing!");
-        final URL bgngUrl = getClass().getResource("/background/newgame_bg1.png");
-        assertNotNull(bgngUrl, "The background image '/background/newgame_bg1.png' is missing!");
+        final URL bgldUrl = getClass().getResource("/background/leaderboard_bg.png");
+        assertNotNull(bgldUrl, "The background image '/background/leaderboard_bg.png' is missing!");
+        final URL bgmnUrl = getClass().getResource("/background/menu_bg.png");
+        assertNotNull(bgmnUrl, "The background image '/background/menu_bg.png' is missing!");
+        final URL bgngUrl = getClass().getResource("/background/newgame_bg.png");
+        assertNotNull(bgngUrl, "The background image '/background/newgame_bg.png' is missing!");
     }
 
     @Test

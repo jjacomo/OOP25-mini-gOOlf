@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.Serial;
 import java.awt.GridBagConstraints;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -31,13 +32,13 @@ import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
  * @author dbakko
  */
 public final class NewGamePanel extends JPanel {
-    /**
-     * Serial version UID.
-     */
+
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final int MAX_PLAYERS = 10;
     private static final int COLUMNS_COUNT = 2;
     private static final int MARGINS = 20;
+    private static final String PATH = "/background/newgame_bg.png";
 
     private transient Image backgroundImage;
 
@@ -52,7 +53,7 @@ public final class NewGamePanel extends JPanel {
      */
     public NewGamePanel(final NavigationController navigationController) {
 
-        final java.net.URL bgUrl = getClass().getResource("/background/newgame_bg1.png");
+        final java.net.URL bgUrl = getClass().getResource(PATH);
         if (bgUrl != null) {
             final ImageIcon bgIcon = new ImageIcon(bgUrl);
             this.backgroundImage = bgIcon.getImage();

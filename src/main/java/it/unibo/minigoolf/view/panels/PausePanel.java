@@ -18,7 +18,7 @@ import java.io.Serial;
  * The pause menu overlay.
  * It is NOT a panel within the CardLayout — it is a glass pane over GamePanel.
  *
- * @author @dbakko
+ * @author dbakko
  */
 public final class PausePanel extends JPanel {
 
