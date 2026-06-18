@@ -55,4 +55,23 @@ class ResourcePresenceTest {
         final URL bronzeUrl = getClass().getResource("/medals/bronze.png");
         assertNotNull(bronzeUrl, "The bronze medal icon '/medals/bronze.png' is missing!");
     }
+
+    @Test
+    void testSurfaceTexturesArePresent() {
+        final String[] textures = {
+            "surfaces/grass.png",
+            "surfaces/sand.png",
+            "surfaces/dirt.png",
+            "surfaces/ice.png",
+            "surfaces/boost/boost.png",
+            "surfaces/wind/right_arrow.png",
+            "surfaces/wind/left_arrow.png",
+            "surfaces/wind/down_arrow.png",
+            "surfaces/wind/up_arrow2.png",
+        };
+        for (final String path : textures) {
+            assertNotNull(it.unibo.minigoolf.view.texturemanager.TextureManager.loadTexture(path),
+                    "TextureManager failed to load surface texture: " + path);
+        }
+    }
 }

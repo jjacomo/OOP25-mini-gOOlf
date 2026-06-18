@@ -1,8 +1,8 @@
 package it.unibo.minigoolf.view.texturemanager;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,9 +35,13 @@ public final class TextureManager {
         if (TEXTURE_CACHE.containsKey(texturePath)) {
             return TEXTURE_CACHE.get(texturePath);
         }
+        final URL url = TextureManager.class.getResource("/" + texturePath);
+        if (url == null) {
+            LOGGER.error("Failed to load texture: Resource not found: {}", texturePath);
+            return null;
+        }
         try {
-            final File file = new File("src/main/resources/" + texturePath);
-            final BufferedImage image = ImageIO.read(file);
+            final BufferedImage image = ImageIO.read(url);
             TEXTURE_CACHE.put(texturePath, image);
             return image;
         } catch (final IOException e) {
