@@ -16,7 +16,7 @@ import java.net.URL;
 public final class AudioManager {
 
     private static final String PATH_MENU = "/sounds/soundtrack/gOOlf_menu.wav";
-    private static final String PATH_GAME = "/sounds/ambient/gOOlf_menu.wav";
+    private static final String PATH_GAME = "/sounds/ambient/gOOlf_ambient.wav";
 
     private Clip currentClip;
     private String currentPath;
