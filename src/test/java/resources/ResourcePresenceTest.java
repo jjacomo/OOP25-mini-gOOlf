@@ -24,8 +24,8 @@ class ResourcePresenceTest {
 
     @Test
     void testMenuSoundtrackIsPresent() {
-        final URL audioUrl = getClass().getResource("/soundtrack/gOOlf_menu.wav");
-        assertNotNull(audioUrl, "The menu soundtrack '/soundtrack/gOOlf_menu.wav' is missing!");
+        final URL audioUrl = getClass().getResource("/sounds/soundtrack/gOOlf_menu.wav");
+        assertNotNull(audioUrl, "The menu soundtrack '/sounds/soundtrack/gOOlf_menu.wav' is missing!");
     }
 
     @Test

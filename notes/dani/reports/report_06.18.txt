@@ -20,6 +20,8 @@ DA FARE:
 
 - ricontrollare codice e javadoc!
 
+- mettere nei test la musica ambient
+
 EXTRA:
 
 AGENDA:

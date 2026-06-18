@@ -483,4 +483,3 @@ Durante il gioco è possibile mettere in pausa premendo il tasto ESC, purché la
 **B.0.1** federico.sparvoli@studio.unibo.it
 * Laboratorio 06: https://github.com/fedesparvo1-a11y/lab06
 * Laboratorio 07: https://github.com/fedesparvo1-a11y/lab07
-

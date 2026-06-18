@@ -4,6 +4,7 @@ import it.unibo.minigoolf.controller.maincontroller.MainController;
 import it.unibo.minigoolf.controller.save.SaveController;
 import it.unibo.minigoolf.model.save.SaveData;
 import it.unibo.minigoolf.model.save.SaveManager;
+import it.unibo.minigoolf.util.AudioManager;
 import it.unibo.minigoolf.view.mainwindow.MainWindow;
 
 import java.util.List;
@@ -20,7 +21,6 @@ import java.util.function.Supplier;
  */
 public final class NavigationController {
 
-    private static final String PATH_ST = "/sounds/soundtrack/gOOlf_menu.wav";
     /** Stored as a callback to avoid EI2. */
     private final Runnable showMenuCallback;
     private final Runnable showGameCallback;
@@ -29,10 +29,11 @@ public final class NavigationController {
     private final Runnable resumeWindowCallback;
     private final Runnable showLeaderboardCallback;
     private final Consumer<java.util.Map<String, Integer>> updateLeaderboardCallback;
-    private javax.sound.sampled.Clip menuClip;
 
     private final MainController mainController;
     private final SaveController saveController;
+
+    private final AudioManager audioManager;
 
     /** Returns true if the ball is not moving and the game can be paused. */
     private BooleanSupplier pauseChecker = () -> true;
@@ -45,6 +46,7 @@ public final class NavigationController {
             final MainWindow mainWindow) {
         this.mainController = mainController;
         this.saveController = new SaveController(new SaveManager());
+        this.audioManager = new AudioManager();
         // Extract only the needed behaviors from mainWindow
         this.showMenuCallback = () -> mainWindow.showScene("MENU");
         this.showGameCallback = () -> mainWindow.showScene("GAME");
@@ -53,7 +55,7 @@ public final class NavigationController {
         this.resumeWindowCallback = () -> mainWindow.getGlassPane().setVisible(false);
         this.showLeaderboardCallback = () -> mainWindow.showScene("LEADERBOARD");
         this.updateLeaderboardCallback = mainWindow::updateLeaderboard;
-        this.playBackgroundMusic();
+        this.audioManager.playMenuMusic();
     }
 
     /**
@@ -121,7 +123,7 @@ public final class NavigationController {
      * Handles the transition to the MenuPanel.
      */
     public void goToMainMenu() {
-        this.playBackgroundMusic();
+        this.audioManager.playMenuMusic();
         showMenuCallback.run();
     }
 
@@ -131,7 +133,6 @@ public final class NavigationController {
      * @param playerNames list of the players names
      */
     public void setupMatchAndStart(final List<String> playerNames) {
-        stopBackgroundMusic();
         this.mainController.startNewMatch(playerNames);
         this.showGameScene();
     }
@@ -140,6 +141,7 @@ public final class NavigationController {
      * Shows the game scene and starts the game loop.
      */
     public void showGameScene() {
+        this.audioManager.playGameMusic();
         showGameCallback.run();
         this.mainController.start();
     }
@@ -189,43 +191,5 @@ public final class NavigationController {
     public void skipCurrentMap() {
         this.resumeWindowCallback.run(); // Toglie lo schermo oscurato
         this.mainController.skipMap();   // Manda il comando al gioco
-    }
-
-    /**
-     * Plays the main menu background music.
-     */
-    private void playBackgroundMusic() {
-        // This is needed so the audio doesn't start again when changing panels
-        if (this.menuClip != null && this.menuClip.isRunning()) {
-            return;
-        }
-
-        try {
-            final java.net.URL audioUrl = getClass().getResource(PATH_ST);
-            if (audioUrl == null) {
-                throw new IllegalStateException("Audio file not found in resources!");
-            }
-            final javax.sound.sampled.AudioInputStream audioIn = 
-                javax.sound.sampled.AudioSystem.getAudioInputStream(audioUrl);
-
-            this.menuClip = javax.sound.sampled.AudioSystem.getClip();
-            this.menuClip.open(audioIn);
-            this.menuClip.start();
-
-        } catch (final javax.sound.sampled.UnsupportedAudioFileException e) {
-            throw new IllegalStateException("Audio file format not supported", e);
-        } catch (final javax.sound.sampled.LineUnavailableException | java.io.IOException e) {
-            throw new IllegalStateException("Error playing the audio file", e);
-        }
-    }
-
-    /**
-     * Stops the menu background music and releases resources.
-     */
-    private void stopBackgroundMusic() {
-        if (this.menuClip != null && this.menuClip.isRunning()) {
-            this.menuClip.stop();
-            this.menuClip.close();
-        }
     }
 }
