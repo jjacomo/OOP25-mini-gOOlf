@@ -79,7 +79,7 @@ In aggiunta a queste superfici considerate di base si vogliono implementare supe
 ##### Soluzione
 La progettazione e' basata su una interfaccia `Surface` che definisce le proprieta' comuni a tutte le superfici.
 La soluzione proposta adotta il **Decorator Pattern** che permette di aggiungere alle superfici ulteriori responsabilita' in modo piu' flessibile rispetto all'ereditarieta'.
-Questa scelta ha permesso una semplice implementazione di `WindySurface` e `BoostSurface` che decorano la superficie di base modificando i valori di ritorno dei metodi `getWind` e `getFriction`.
+Questa scelta ha permesso una semplice implementazione di `WindySurface` e `BoostSurface` che "decorano" la superficie di base modificando i valori di ritorno dei metodi `getWind` e `getFriction`.
 
 UML:
 ```mermaid
@@ -134,7 +134,7 @@ Contro:
 #### Fisica della pallina
 
 ##### Problema
-Nel motore fisico `PhysicsEngine`, che risiede nel livello Model, le collisioni e i movimenti della pallina vengono calcolati facendo riferimento all'interfaccia `Ball`. Tuttavia, lo stato e le logiche di controllo della pallina sono gestiti nel livello Controller tramite l'interfaccia `BallController`.
+Nel motore fisico `PhysicsEngine`, che risiede nel livello Model, le collisioni e i movimenti della pallina vengono calcolati facendo riferimento all'interfaccia `Ball`. Tuttavia, lo stato autorevole e le logiche di controllo della pallina (come il tracciamento dello stato di movimento e la rappresentazione grafica per la vista) sono gestiti nel livello Controller tramite l'interfaccia `BallController`.
 
 Sorge quindi la necessità di far comunicare e cooperare questi due livelli senza violare i principi dell'architettura MVC:
 * **Evitare la duplicazione dello stato**: Mantenere un'istanza separata del modello della pallina e sincronizzarne continuamente le proprietà con il controller introdurrebbe ridondanza e potenziali bug di sincronizzazione.
@@ -146,6 +146,8 @@ Questa classe:
 1. Implementa l'interfaccia target `Ball` (richiesta dal motore fisico).
 2. Incapsula un riferimento all'interfaccia adaptee `BallController`.
 3. Adatta le chiamate dei metodi delegandole direttamente al controller (ad esempio, traducendo `setPosition(position)` in `controller.updatePosition(position)` e inoltrando le letture come `getPosition()`).
+
+L'adattatore risiede all'interno del package del controller (`it.unibo.minigoolf.controller.physics`), poiché è responsabilità del livello controller fare da tramite (ponte) tra le proprie astrazioni e quelle del Model, preservando l'indipendenza di quest'ultimo.
 
 UML:
 ```mermaid
@@ -460,13 +462,10 @@ Un altro limite risiede nel meccanismo di cooldown temporale dei portali; sebben
 ## Appendice A: Guida Utente
 
 * **Menu Iniziale:** 
-Avviando il gioco viene mostrato il menu principale. Da cui è possibile iniziare una nuova partita premendo il tasto PLAY, che chiederà di inserire i nomi dei giocatori. Se è presente una partita salvata, il gioco chiederà se si vuole caricarla o iniziarne una nuova. Dal menu è inoltre possibile consultare la classifica finale delle partite precedenti.
-
-* **Avvio della partita:** 
-Prima di iniziare è necessario inserire numero di giocatori e rispettivi nickname.
+Avviando il gioco viene mostrato il menu principale dal quale è possibile iniziare una nuova partita premendo il tasto [PLAY]; quindi bisognerà scegliere il numero di giocatori, premere il tasto [OK] ed inserirne i nomi. Infine, premere [START MATCH]. Se è presente una partita salvata, il gioco chiederà se la si vuole caricare o iniziarne una nuova. Dal menu è inoltre possibile consultare la classifica finale delle partite precedenti tramite il tasto [LEADERBOARD].
 
 * **Controlli In-Game:** 
-Per effettuare un colpo è necessario cliccare e tenere premuto il mouse vicino alla pallina, per poi trascinare nella direzione opposta a quella in cui si vuole colpire. Più lungo è il trascinamento, più potente sarà il colpo.
+Per effettuare un colpo è necessario cliccare e tenere premuto il mouse sulla pallina, per poi trascinare nella direzione opposta a quella in cui si vuole colpire. Più lungo è il trascinamento, più potente sarà il colpo.
 Rilasciare il mouse per confermare il colpo.
 Un indicatore colorato mostra la direzione e la potenza: verde per colpi deboli, giallo per colpi medi, rosso per colpi forti.
 

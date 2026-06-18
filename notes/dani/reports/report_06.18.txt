@@ -1,4 +1,4 @@
-Report - 06/18 - 6x ore
+Report - 06/18 - 70 ore
 
 FATTO:
 
@@ -15,6 +15,10 @@ FATTO:
 DA FARE:
 
 - 1.5 mappe da fare!
+
+- scrivere il Report
+
+- ricontrollare codice e javadoc!
 
 EXTRA:
 

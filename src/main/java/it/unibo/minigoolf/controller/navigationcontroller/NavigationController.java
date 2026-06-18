@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  */
 public final class NavigationController {
 
-    private static final String PATH_ST = "/soundtrack/gOOlf_menu.wav";
+    private static final String PATH_ST = "/sounds/soundtrack/gOOlf_menu.wav";
     /** Stored as a callback to avoid EI2. */
     private final Runnable showMenuCallback;
     private final Runnable showGameCallback;
