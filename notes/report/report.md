@@ -144,7 +144,7 @@ Sorge quindi la necessità di far comunicare e cooperare questi due livelli senz
 È stato applicato il design pattern **Adapter**, implementato tramite la classe `BallControllerAdapter`. 
 Questa classe:
 1. Implementa l'interfaccia target `Ball` (richiesta dal motore fisico).
-2. Incapsula un riferimento all'interfaccia adaptee `BallController`.
+2. Incapsula un riferimento all'interfaccia `BallController`.
 3. Adatta le chiamate dei metodi delegandole direttamente al controller (ad esempio, traducendo `setPosition(position)` in `controller.updatePosition(position)` e inoltrando le letture come `getPosition()`).
 
 L'adattatore risiede all'interno del package del controller (`it.unibo.minigoolf.controller.physics`), poiché è responsabilità del livello controller fare da tramite (ponte) tra le proprie astrazioni e quelle del Model, preservando l'indipendenza di quest'ultimo.
@@ -194,13 +194,14 @@ classDiagram
 
 ##### Pro e Contro
 **Pro**:
-* **Single Source of Truth**: Esiste un unico stato autorevole per la pallina gestito dal controller. Tutte le modifiche apportate dal motore fisico si riflettono istantaneamente e direttamente sullo stato reale, eliminando qualsiasi necessità di codice di sincronizzazione.
-* **Disaccoppiamento e Rispetto dell'MVC**: Il motore fisico `PhysicsEngine` e le altre strategie dipendono solo dall'interfaccia `Ball`, rimanendo completamente isolati dal controller. A sua volta, `BallController` rimane focalizzato sulle proprie responsabilità senza essere inquinato da interfacce del modello.
+* **Rappresentazione unica della pallina**: Esiste un'unica istanza della pallina, quella gestita (Incapsulata) dal controller. Tutte le modifiche apportate dal motore fisico si riflettono istantaneamente e direttamente sull'istanza della pallina del controller, eliminando qualsiasi necessità di codice di sincronizzazione.
+* **Disaccoppiamento e Rispetto dell'MVC**: Il motore fisico `PhysicsEngine` e le altre strategie dipendono solo dall'interfaccia `Ball`, rimanendo completamente isolati dal controller. A sua volta, `BallController` rimane focalizzato sulle proprie responsabilità senza essere influenzato da interfacce del modello.
 * **Flessibilità**: Se l'interfaccia `Ball` o `BallController` dovesse cambiare, la modifica rimarrebbe localizzata all'interno della classe `BallControllerAdapter`, senza impattare la logica del motore fisico o degli altri componenti.
 
 **Contro**:
-* **Sovraccarico di allocazione (overhead)**: Viene istanziato un nuovo oggetto `BallControllerAdapter` a ogni ciclo di aggiornamento della fisica `PhysicsControllerImpl.update`. Sebbene la JVM moderna sia estremamente efficiente nel gestire ed eliminare oggetti a vita breve (grazie alla Garbage Collection generazionale e all'escape analysis), ciò introduce una minima indirection ed allocazione temporanea in memoria durante il game loop.
-* **Aumento delle classi**: Aggiunge un ulteriore livello di indirezione con una classe ponte dedicata, aumentando leggermente la complessità strutturale del progetto per scopi puramente architetturali.
+* **Aumento delle classi**: Aggiunge un ulteriore livello intermedio con una classe ponte dedicata, aumentando leggermente la complessità strutturale del progetto per scopi puramente architetturali.
+
+#### Rappresentazione geometrica degli oggetti della mappa
 
 ### 2.2.3 Federico Sparvoli
 #### Input del colpo
