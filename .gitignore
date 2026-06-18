@@ -19,3 +19,6 @@ bin/
 # Ignore Mac OS specific folder navigation info
 .DS_Store
 **/.DS_Store
+
+# Ignore save files
+saves/
