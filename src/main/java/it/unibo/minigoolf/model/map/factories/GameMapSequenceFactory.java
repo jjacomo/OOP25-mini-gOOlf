@@ -30,7 +30,8 @@ public final class GameMapSequenceFactory {
                 new MapC(), 
                 new MapA(), 
                 new MapB(),
-                new MapD()
+                new MapD(),
+                new MapE()
         ));
 
         // This method shuffles the list
