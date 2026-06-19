@@ -74,7 +74,7 @@ classDiagram
 
 Il gioco _mini-gOOlf_ richiede di avere superfici con diverse proprietà fisiche (attrito, boost, vento), che impattano il comportamento della pallina. Il gioco prevede 4 diverse superfici di base che differiscono solo per costante di attrito: erba, sabbia, ghiaccio, terra. 
 
-In aggiunta a queste superfici considerate di base si vogliono implementare superfici avanzate con proprieta' aggiuntive in grado di modificare la velocita' della pallina in altri modi.
+In aggiunta a queste superfici considerate di base si vogliono implementare superfici avanzate con proprieta' in grado di modificare la velocita' della pallina in altri modi.
 
 ##### Soluzione
 La progettazione e' basata su una interfaccia `Surface` che definisce le proprieta' comuni a tutte le superfici.
@@ -134,10 +134,10 @@ Contro:
 #### Fisica della pallina
 
 ##### Problema
-Nel motore fisico `PhysicsEngine`, che risiede nel livello Model, le collisioni e i movimenti della pallina vengono calcolati facendo riferimento all'interfaccia `Ball`. Tuttavia, lo stato autorevole e le logiche di controllo della pallina (come il tracciamento dello stato di movimento e la rappresentazione grafica per la vista) sono gestiti nel livello Controller tramite l'interfaccia `BallController`.
+Nel motore fisico `PhysicsEngine`, che risiede nel livello Model, le collisioni e i movimenti della pallina vengono calcolati facendo riferimento all'interfaccia `Ball`. Tuttavia, lo stato e le logiche di controllo della pallina sono gestiti nel livello Controller tramite l'interfaccia `BallController`.
 
 Sorge quindi la necessità di far comunicare e cooperare questi due livelli senza violare i principi dell'architettura MVC:
-* **Evitare la duplicazione dello stato**: Mantenere un'istanza separata del modello della pallina e sincronizzarne continuamente le proprietà con il controller introdurrebbe ridondanza e potenziali bug di sincronizzazione.
+* **Evitare la duplicazione dello stato**: Mantenere un'istanza separata della pallina nel model e sincronizzarne continuamente le proprietà con il controller introdurrebbe ridondanza e potenziali bug di sincronizzazione.
 * **Mantenere il disaccoppiamento**: Il modulo `PhysicsEngine` e le altre classi del Model non devono conoscere o dipendere dalle astrazioni del Controller `BallController`. Viceversa, l'interfaccia del controller non dovrebbe essere forzata a implementare direttamente quella del modello per non contaminare le proprie responsabilità.
 
 ##### Soluzione
@@ -145,9 +145,7 @@ Sorge quindi la necessità di far comunicare e cooperare questi due livelli senz
 Questa classe:
 1. Implementa l'interfaccia target `Ball` (richiesta dal motore fisico).
 2. Incapsula un riferimento all'interfaccia `BallController`.
-3. Adatta le chiamate dei metodi delegandole direttamente al controller (ad esempio, traducendo `setPosition(position)` in `controller.updatePosition(position)` e inoltrando le letture come `getPosition()`).
-
-L'adattatore risiede all'interno del package del controller (`it.unibo.minigoolf.controller.physics`), poiché è responsabilità del livello controller fare da tramite (ponte) tra le proprie astrazioni e quelle del Model, preservando l'indipendenza di quest'ultimo.
+3. Adatta le chiamate dei metodi delegandole direttamente al controller (ad esempio, traducendo `ball.setPosition(position)` in `controller.updatePosition(position)` e inoltrando le letture come `getPosition()`).
 
 UML:
 ```mermaid
@@ -199,18 +197,17 @@ classDiagram
 * **Flessibilità**: Se l'interfaccia `Ball` o `BallController` dovesse cambiare, la modifica rimarrebbe localizzata all'interno della classe `BallControllerAdapter`, senza impattare la logica del motore fisico o degli altri componenti.
 
 **Contro**:
-* **Aumento delle classi**: Aggiunge un ulteriore livello intermedio con una classe ponte dedicata, aumentando leggermente la complessità strutturale del progetto per scopi puramente architetturali.
+* Aggiunge un ulteriore livello intermedio con una classe ponte dedicata, aumentando leggermente la complessità strutturale del progetto per scopi puramente architetturali.
 
 #### Rappresentazione geometrica degli oggetti della mappa
 ##### Problema
-Il gioco richiede di gestire e verificare la presenza della pallina in diversi elementi posizionati sulla mappa (superfici di varie forme, la buca). Sorge quindi la necessità di modellare la geometria degli oggetti di gioco in modo che:
+Il gioco richiede di gestire e verificare la presenza della pallina in diversi elementi posizionati sulla mappa (superfici di varie forme e la buca). Sorge quindi la necessità di modellare la geometria degli oggetti di gioco in modo che:
 * **Il modello rimanga disaccoppiato dalla rappresentazione grafica**: Gli oggetti geometrici devono contenere solo logica matematica e fisica (come test di contenimento di un punto), senza dipendere da classi della GUI (`Graphics2D`, `Color`, ecc.), in accordo con il pattern MVC.
 * **Si eviti la duplicazione della logica geometrica**: Più componenti del modello (come superfici e buca) devono poter condividere o delegare la propria logica spaziale a componenti riutilizzabili.
 * **L'aggiunta di nuove geometrie sia semplice e modulare**.
 ##### Soluzione
 È stata definita l'interfaccia funzionale `Shape` (contrassegnata con `@FunctionalInterface`), che espone un unico metodo `contains(Vector2D)`. Questa scelta di design offre diversi vantaggi:
-1. **Astrazione e composizione**: Elementi del modello come `ShapedSurface` delegano i controlli di contenimento a un'istanza interna di `Shape` (seguendo il principio *Composition over Inheritance*).
-2. **Java Records Value Objects**: Le forme concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono modellate come `record` Java. Essendo immutabili per definizione, rappresentano i perfetti "Value Objects" per la geometria del gioco, garantendo l'assenza di effetti collaterali e autogenerando codice boilerplate (`equals`, `hashCode`, `toString`). Inoltre, tramite costruttori compatti, viene eseguita la validazione dei dati all'atto dell'istanziazione (es. controllo su raggio o dimensioni positive).
+1. **Astrazione e composizione**: Elementi del modello come `ShapedSurface` delegano i controlli di contenimento a un'istanza interna di `Shape`.
 3. **MVC e Pattern Matching**: Le forme geometriche risiedono nel package `util.shapes` e non contengono dettagli di rendering. La classe di vista `MapPanel` interroga il controller per ottenere le `Shape` e, tramite la feature moderna di **Pattern Matching per `instanceof`** (introdotta nelle versioni recenti di Java), determina la tipologia concreta di forma (`rect`, `circ`, `tria`, `oval`) ed esegue il disegno specifico su schermo.
 UML:
 ```mermaid
@@ -251,6 +248,8 @@ classDiagram
     Shape <|.. Triangle
     Shape <|.. Oval
 ```
+
+##### Pro e contro
 
 ### 2.2.3 Federico Sparvoli
 #### Input del colpo
