@@ -20,6 +20,12 @@ import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Triangle;
 
+/**
+ * Map F.
+ * 
+ * @author jack
+ * 
+ */
 public class MapF implements GameMapFactory {
 
     private static final double GRASS_X = 0;
@@ -98,7 +104,6 @@ public class MapF implements GameMapFactory {
     private static final Vector2D HOLE_POSITION = new Vector2D(1800, 940);
     private static final double HOLE_RADIUS = 33;
 
-
     private final SurfaceFactory surfaceFactory;
 
     /**
@@ -116,6 +121,12 @@ public class MapF implements GameMapFactory {
     public MapF(final SurfaceFactory surfaceFactory) {
         this.surfaceFactory = surfaceFactory;
     }
+
+    /**
+     * Builds the F game map.
+     *
+     * @return the constructed game map
+     */
     @Override
     public GameMap buildGameMap() {
         final List<Surface> surfaces = new ArrayList<>();
@@ -138,7 +149,7 @@ public class MapF implements GameMapFactory {
         );
         surfaces.add(surfaceFactory.createBoost(surfaceFactory.createSand(
                 new Oval(new Vector2D(BOOST_SAND_X, BOOST_SAND_Y), BOOST_SAND_WIDTH, BOOST_SAND_HEIGHT),
-                BOOST_SAND_Z_INDEX+2), BOOST_INTENSITY)
+                BOOST_SAND_Z_INDEX + 2), BOOST_INTENSITY)
         );
         // surfaces.add(surfaceFactory.createSand(
         //         new Oval(new Vector2D(BOOST_SAND_X, BOOST_SAND_Y), BOOST_SAND_WIDTH, BOOST_SAND_HEIGHT),

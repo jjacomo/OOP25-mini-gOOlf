@@ -130,6 +130,7 @@ public final class MapE implements GameMapFactory {
     private static final double HOLE_R = 40;
 
     private final SurfaceFactory surfaceFactory;
+
     /**
      * Constructs a FirstMap using a default SurfaceFactory implementation.
      */

@@ -20,14 +20,10 @@ import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
- * Map A
+ * Map A.
  * 
  * @author jack
  * 
- * @see GameMapFactory
- * @see GameMap
- * @see RectangularSurface
- * @see Surface
  */
 public class MapA implements GameMapFactory {
 
