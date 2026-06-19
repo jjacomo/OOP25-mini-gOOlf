@@ -130,26 +130,24 @@ public final class MapE implements GameMapFactory {
     private static final double HOLE_R = 40;
 
     private final SurfaceFactory surfaceFactory;
-
     /**
-     * Constructs the map using a default SurfaceFactory implementation.
+     * Constructs a FirstMap using a default SurfaceFactory implementation.
      */
     public MapE() {
-        this(new SurfaceFactoryImpl());
+            this(new SurfaceFactoryImpl());
     }
 
     /**
-     * Constructs the map using the provided SurfaceFactory.
-     *
+     * Constructs a FirstMap using the provided SurfaceFactory.
+     * 
      * @param surfaceFactory the factory used to build surfaces
      */
     public MapE(final SurfaceFactory surfaceFactory) {
-        this.surfaceFactory = surfaceFactory;
+            this.surfaceFactory = surfaceFactory;
     }
 
     @Override
     public GameMap buildGameMap() {
-
         final List<Surface> surfaces = new ArrayList<>();
         final List<Obstacle> obstacles = new ArrayList<>();
 
