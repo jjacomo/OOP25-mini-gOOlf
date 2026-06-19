@@ -29,7 +29,8 @@ public final class GameMapSequenceFactory {
         final List<GameMapFactory> remainingMaps = new ArrayList<>(List.of(
                 new MapC(), 
                 new MapA(), 
-                new MapB()
+                new MapB(),
+                new MapD()
         ));
 
         // This method shuffles the list
