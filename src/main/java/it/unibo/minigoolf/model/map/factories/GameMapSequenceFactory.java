@@ -24,7 +24,7 @@ public final class GameMapSequenceFactory {
     public static MapSequence createRandomizedSequence() {
         // The tutorial map is always first
         final GameMapFactory firstMap = new TestMap();
-        // final GameMapFactory firstMap = new MapE();
+        // final GameMapFactory firstMap = new MapF();
 
         // List of the remaing maps
         final List<GameMapFactory> remainingMaps = new ArrayList<>(List.of(
@@ -32,7 +32,8 @@ public final class GameMapSequenceFactory {
                 new MapA(), 
                 new MapB(),
                 new MapD(),
-                new MapE()
+                new MapE(),
+                new MapF()
         ));
 
         // This method shuffles the list

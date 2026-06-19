@@ -1,105 +1,135 @@
 package it.unibo.minigoolf.model.map.factories;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
-import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactory;
 import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactoryImpl;
 import it.unibo.minigoolf.model.surfaces.wind.WindDirection;
 import it.unibo.minigoolf.util.Vector2D;
-import it.unibo.minigoolf.util.shapes.Oval;
+import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Rectangle;
-import it.unibo.minigoolf.util.shapes.Triangle;
 
-public class MapE implements GameMapFactory {
+import java.util.ArrayList;
+import java.util.List;
 
-    private static final double GRASS_X = 0;
-    private static final double GRASS_Y = 0;
-    private static final double GRASS_WIDTH = 1920;
-    private static final double GRASS_HEIGHT = 1080;
-    private static final int GRASS_Z_INDEX = 0;
-    private static final Vector2D DIRT_V1 = new Vector2D(800, 830);
-    private static final Vector2D DIRT_V2 = new Vector2D(300, 300);
-    private static final Vector2D DIRT_V3 = new Vector2D(300, 830);
-    private static final int DIRT_Z_INDEX = 2;
-    private static final double WINDY_GRASS_X = 0;
-    private static final double WINDY_GRASS_Y = 300;
-    private static final double WINDY_GRASS_WIDTH = 300;
-    private static final double WINDY_GRASS_HEIGHT = 780;
-    private static final int WINDY_GRASS_Z_INDEX = 1;
-    private static final double WIND_STRENGTH = 12.5;
-    private static final double DIRT_X = 300;
-    private static final double DIRT_Y = 830;
-    private static final double DIRT_WIDTH = 600;
-    private static final double DIRT_HEIGHT = 250;
+/**
+ * My second map.
+ *
+ * @author fede
+ */
+public final class MapE implements GameMapFactory {
 
-    private static final double DIRT_OVAL_X = 900;
-    private static final double DIRT_OVAL_Y = 1000;
-    private static final double DIRT_OVAL_WIDTH = 200;
-    private static final double DIRT_OVAL_HEIGHT = 200;
+    // Surfaces
+    private static final double GRASS_START_X = 0;
+    private static final double GRASS_START_Y = 540;
+    private static final double GRASS_START_W = 500;
+    private static final double GRASS_START_H = 540;
+    private static final int GRASS_START_Z = 0;
 
-    private static final double BOOST_SAND_X = 900;
-    private static final double BOOST_SAND_Y = 400;
-    private static final double BOOST_SAND_WIDTH = 300;
-    private static final double BOOST_SAND_HEIGHT = 200;
-    private static final int BOOST_SAND_Z_INDEX = 3;
-    private static final double BOOST_INTENSITY = 2;
+    private static final double ICE_X = 500;
+    private static final double ICE_Y = 540;
+    private static final double ICE_W = 800;
+    private static final double ICE_H = 540;
+    private static final int ICE_Z = 1;
 
-    // EXTERNAL WALLS
-    private static final double W1_X = 0;
-    private static final double W1_Y = 0;
-    private static final double W1_WIDTH = 31;
-    private static final double W1_HEIGHT = 1080;
-    private static final double W2_X = 0;
-    private static final double W2_Y = 0;
-    private static final double W2_WIDTH = 1920;
-    private static final double W2_HEIGHT = 31;
-    private static final double W3_X = 1889;
-    private static final double W3_Y = 0;
-    private static final double W3_WIDTH = 31;
-    private static final double W3_HEIGHT = 1080;
-    private static final double W4_X = 0;
-    private static final double W4_Y = 1049;
-    private static final double W4_WIDTH = 1920;
-    private static final double W4_HEIGHT = 31;
+    private static final Vector2D SAND_CIRCLE_POS = new Vector2D(1000, 800);
+    private static final double SAND_CIRCLE_R = 110;
+    private static final int SAND_CIRCLE_Z = 2;
 
-    private static final double O1_X = 800;
-    private static final double O1_Y = 800;
-    private static final double O1_WIDTH = 1120;
-    private static final double O1_HEIGHT = 31;
-    private static final Vector2D O2_V1 = new Vector2D(800, 800);
-    private static final Vector2D O2_V2 = new Vector2D(800, 830);
-    private static final Vector2D O2_V3 = new Vector2D(300, 300);
-    private static final Vector2D O3_V1 = new Vector2D(800, 830);
-    private static final Vector2D O3_V2 = new Vector2D(300, 300);
-    private static final Vector2D O3_V3 = new Vector2D(300, 330);
-    private static final Vector2D O4_V1 = new Vector2D(550, 0);
-    private static final Vector2D O4_V2 = new Vector2D(1050, 0);
-    private static final Vector2D O4_V3 = new Vector2D(800, 300);
+    private static final double WINDY_EXIT_X = 1400;
+    private static final double WINDY_EXIT_Y = 0;
+    private static final double WINDY_EXIT_W = 520;
+    private static final double WINDY_EXIT_H = 540;
+    private static final int WINDY_EXIT_Z = 0;
 
-    private static final Vector2D BOUNCY1_OBS_POS = new Vector2D(1500, 300);
-    private static final double BOUNCY1_OBS_RADIUS = 40;
-    private static final double BOUNCINESS1 = 1.5;
-    private static final Vector2D BOUNCY2_OBS_POS = new Vector2D(0, 0);
-    private static final double BOUNCY2_OBS_RADIUS = 150;
-    private static final double BOUNCINESS2 = 1.5;
+    private static final double WIND_STRENGTH = 10.0;
 
-    private static final Vector2D BALL_POSITION = new Vector2D(1800, 700);
-    private static final double BALL_RADIUS = 30;
-    private static final Vector2D HOLE_POSITION = new Vector2D(1800, 940);
-    private static final double HOLE_RADIUS = 33;
+    // Border walls
+    private static final double W_TOP_X = 0;
+    private static final double W_TOP_Y = 0;
+    private static final double W_TOP_W = 1920;
+    private static final double W_TOP_H = 31;
+
+    private static final double W_BOT_X = 0;
+    private static final double W_BOT_Y = 1049;
+    private static final double W_BOT_W = 1920;
+    private static final double W_BOT_H = 31;
+
+    private static final double W_LEFT_X = 0;
+    private static final double W_LEFT_Y = 0;
+    private static final double W_LEFT_W = 31;
+    private static final double W_LEFT_H = 1080;
+
+    private static final double W_RIGHT_X = 1889;
+    private static final double W_RIGHT_Y = 0;
+    private static final double W_RIGHT_W = 31;
+    private static final double W_RIGHT_H = 1080;
+
+    //Extra walls
+    private static final double START_TOP_WALL_X = 0;
+    private static final double START_TOP_WALL_Y = 509;
+    private static final double START_TOP_WALL_W = 1300;
+    private static final double START_TOP_WALL_H = 31;
+
+    private static final double ICE_RIGHT_WALL_X = 1270;
+    private static final double ICE_RIGHT_WALL_Y = 540;
+    private static final double ICE_RIGHT_WALL_W = 31;
+    private static final double ICE_RIGHT_WALL_H = 540;
+
+    private static final double WIND_LEFT_WALL_X = 1370;
+    private static final double WIND_LEFT_WALL_Y = 0;
+    private static final double WIND_LEFT_WALL_W = 31;
+    private static final double WIND_LEFT_WALL_H = 540;
+
+    private static final double WIND_BOTTOM_WALL_X = 1370;
+    private static final double WIND_BOTTOM_WALL_Y = 540;
+    private static final double WIND_BOTTOM_WALL_W = 550;
+    private static final double WIND_BOTTOM_WALL_H = 31;
+
+    // Walls near the hole
+    private static final double HOLE_GUARD_WALL_X = 1710;
+    private static final double HOLE_GUARD_WALL_Y = 80;
+    private static final double HOLE_GUARD_WALL_W = 31;
+    private static final double HOLE_GUARD_WALL_H = 250;
+
+    // Round obstacles
+
+    private static final Vector2D OBS1_POS = new Vector2D(650, 700);
+    private static final double OBS1_R = 40;
+
+    private static final Vector2D OBS2_POS = new Vector2D(850, 920);
+    private static final double OBS2_R = 40;
+
+    private static final Vector2D OBS3_POS = new Vector2D(1080, 620);
+    private static final double OBS3_R = 45;
+
+    private static final Vector2D OBS4_POS = new Vector2D(1200, 880);
+    private static final double OBS4_R = 35;
+
+    private static final Vector2D OBS5_POS = new Vector2D(1650, 300);
+    private static final double OBS5_R = 50;
+
+    // Portals
+    private static final Vector2D PORTAL_A_POS = new Vector2D(1180, 980);
+    private static final Vector2D PORTAL_B_POS = new Vector2D(1500, 350);
+
+    private static final double PORTAL_R = 55;
+
+    // Ball and holes
+    private static final Vector2D BALL_POS = new Vector2D(120, 800);
+    private static final double BALL_R = 30;
+
+    private static final Vector2D HOLE_POS = new Vector2D(1800, 150);
+    private static final double HOLE_R = 40;
 
     private final SurfaceFactory surfaceFactory;
-
     /**
      * Constructs a FirstMap using a default SurfaceFactory implementation.
      */
@@ -121,41 +151,101 @@ public class MapE implements GameMapFactory {
         final List<Surface> surfaces = new ArrayList<>();
         final List<Obstacle> obstacles = new ArrayList<>();
 
-        surfaces.add(surfaceFactory
-                .createGrass(new Rectangle(new Vector2D(GRASS_X, GRASS_Y), GRASS_WIDTH, GRASS_HEIGHT), GRASS_Z_INDEX));
-        surfaces.add(surfaceFactory
-                .createDirt(new Triangle(DIRT_V1, DIRT_V2, DIRT_V3), DIRT_Z_INDEX));
-        surfaces.add(surfaceFactory
-                .createWindy(
-                        surfaceFactory.createGrass(new Rectangle(new Vector2D(WINDY_GRASS_X, WINDY_GRASS_Y),
-                                WINDY_GRASS_WIDTH, WINDY_GRASS_HEIGHT), WINDY_GRASS_Z_INDEX),
-                        WindDirection.UP, WIND_STRENGTH));
-        surfaces.add(surfaceFactory
-            .createDirt(new Rectangle(new Vector2D(DIRT_X, DIRT_Y), DIRT_WIDTH, DIRT_HEIGHT), DIRT_Z_INDEX)
-        );
-        surfaces.add(surfaceFactory
-            .createDirt(new Oval(new Vector2D(DIRT_OVAL_X, DIRT_OVAL_Y), DIRT_OVAL_WIDTH, DIRT_OVAL_HEIGHT), DIRT_Z_INDEX)
-        );
-        surfaces.add(surfaceFactory.createBoost(surfaceFactory.createSand(
-                new Oval(new Vector2D(BOOST_SAND_X, BOOST_SAND_Y), BOOST_SAND_WIDTH, BOOST_SAND_HEIGHT),
-                BOOST_SAND_Z_INDEX+2), BOOST_INTENSITY)
-        );
-        // surfaces.add(surfaceFactory.createSand(
-        //         new Oval(new Vector2D(BOOST_SAND_X, BOOST_SAND_Y), BOOST_SAND_WIDTH, BOOST_SAND_HEIGHT),
-        //         BOOST_SAND_Z_INDEX+1)
-        // );
+        surfaces.add(surfaceFactory.createGrass(
+                new Rectangle(
+                        new Vector2D(GRASS_START_X, GRASS_START_Y),
+                        GRASS_START_W,
+                        GRASS_START_H),
+                GRASS_START_Z));
 
-        obstacles.add(new RoundObstacle(BOUNCY2_OBS_POS, BOUNCY2_OBS_RADIUS, BOUNCINESS2));
-        obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
-        obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
-        obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
-        obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT));
-        obstacles.add(new WallObstacle(new Vector2D(O1_X, O1_Y), O1_WIDTH, O1_HEIGHT));
-        obstacles.add(new TriangleObstacle(O2_V1, O2_V2, O2_V3));
-        obstacles.add(new TriangleObstacle(O3_V1, O3_V2, O3_V3));
-        obstacles.add(new RoundObstacle(BOUNCY1_OBS_POS, BOUNCY1_OBS_RADIUS, BOUNCINESS1));
-        obstacles.add(new TriangleObstacle(O4_V1, O4_V2, O4_V3));
-        return new GameMapImpl(surfaces, new BallImpl(BALL_POSITION, BALL_RADIUS),
-                new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
+        surfaces.add(surfaceFactory.createIce(
+                new Rectangle(
+                        new Vector2D(ICE_X, ICE_Y),
+                        ICE_W,
+                        ICE_H),
+                ICE_Z));
+
+        surfaces.add(surfaceFactory.createSand(
+                new Circle(
+                        SAND_CIRCLE_POS,
+                        SAND_CIRCLE_R),
+                SAND_CIRCLE_Z));
+
+        surfaces.add(surfaceFactory.createWindy(
+                surfaceFactory.createGrass(
+                        new Rectangle(
+                                new Vector2D(WINDY_EXIT_X, WINDY_EXIT_Y),
+                                WINDY_EXIT_W,
+                                WINDY_EXIT_H),
+                        WINDY_EXIT_Z),
+                WindDirection.UP,
+                WIND_STRENGTH));
+
+        // Border map
+        obstacles.add(new WallObstacle(
+                new Vector2D(W_TOP_X, W_TOP_Y),
+                W_TOP_W,
+                W_TOP_H));
+
+        obstacles.add(new WallObstacle(
+                new Vector2D(W_BOT_X, W_BOT_Y),
+                W_BOT_W,
+                W_BOT_H));
+
+        obstacles.add(new WallObstacle(
+                new Vector2D(W_LEFT_X, W_LEFT_Y),
+                W_LEFT_W,
+                W_LEFT_H));
+
+        obstacles.add(new WallObstacle(
+                new Vector2D(W_RIGHT_X, W_RIGHT_Y),
+                W_RIGHT_W,
+                W_RIGHT_H));
+
+        // Border pieces of map
+        obstacles.add(new WallObstacle(
+                new Vector2D(START_TOP_WALL_X, START_TOP_WALL_Y),
+                START_TOP_WALL_W,
+                START_TOP_WALL_H));
+
+        obstacles.add(new WallObstacle(
+                new Vector2D(ICE_RIGHT_WALL_X, ICE_RIGHT_WALL_Y),
+                ICE_RIGHT_WALL_W,
+                ICE_RIGHT_WALL_H));
+
+        obstacles.add(new WallObstacle(
+                new Vector2D(WIND_LEFT_WALL_X, WIND_LEFT_WALL_Y),
+                WIND_LEFT_WALL_W,
+                WIND_LEFT_WALL_H));
+
+        obstacles.add(new WallObstacle(
+                new Vector2D(WIND_BOTTOM_WALL_X, WIND_BOTTOM_WALL_Y),
+                WIND_BOTTOM_WALL_W,
+                WIND_BOTTOM_WALL_H));
+
+        obstacles.add(new WallObstacle(
+                new Vector2D(HOLE_GUARD_WALL_X, HOLE_GUARD_WALL_Y),
+                HOLE_GUARD_WALL_W,
+                HOLE_GUARD_WALL_H));
+
+        // Obstacles
+        obstacles.add(new RoundObstacle(OBS1_POS, OBS1_R));
+        obstacles.add(new RoundObstacle(OBS2_POS, OBS2_R));
+        obstacles.add(new RoundObstacle(OBS3_POS, OBS3_R));
+        obstacles.add(new RoundObstacle(OBS4_POS, OBS4_R));
+        obstacles.add(new RoundObstacle(OBS5_POS, OBS5_R));
+
+        // Portal
+        obstacles.addAll(
+                PortalObstacle.createPair(
+                        PORTAL_A_POS,
+                        PORTAL_B_POS,
+                        PORTAL_R));
+
+        return new GameMapImpl(
+                surfaces,
+                new BallImpl(BALL_POS, BALL_R),
+                new HoleImpl(HOLE_POS, HOLE_R),
+                obstacles);
     }
 }

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Second map.
+ * My first map.
  *
  * @author fede
  */
@@ -87,9 +87,9 @@ public final class MapB implements GameMapFactory {
 
     // Corridor lower wall
     private static final double COR_BOT_X = 400;
-    private static final double COR_BOT_Y = 690;
+    private static final double COR_BOT_Y = 685;
     private static final double COR_BOT_W = 1120;
-    private static final double COR_BOT_H = 31;
+    private static final double COR_BOT_H = 40;
 
     // Round obstacles inside the ice corridor
     private static final Vector2D OBS1_POS = new Vector2D(600, 450);
@@ -142,14 +142,14 @@ public final class MapB implements GameMapFactory {
     private final SurfaceFactory surfaceFactory;
 
     /**
-     * Constructs a SecondMap using a default SurfaceFactory implementation.
+     * Constructs the map using a default SurfaceFactory implementation.
      */
     public MapB() {
         this(new SurfaceFactoryImpl());
     }
 
     /**
-     * Constructs a SecondMap using the provided SurfaceFactory.
+     * Constructs the map using the provided SurfaceFactory.
      *
      * @param surfaceFactory the factory used to build surfaces
      */
