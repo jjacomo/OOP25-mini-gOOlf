@@ -60,13 +60,13 @@ Contro:
 #### Superfici avanzate
 ##### Problema
 
-Il gioco _mini-gOOlf_ richiede di avere superfici con diverse proprietà fisiche (attrito, boost, vento), che impattano il comportamento della pallina. Il gioco prevede 4 diverse superfici di base che differiscono solo per costante di attrito: erba, sabbia, ghiaccio, terra. 
+Il gioco _mini-gOOlf_ richiede superfici con diverse proprietà fisiche (attrito, boost accelerante, vento) che influenzano il movimento della pallina. Sono previste 4 diverse superfici di base che differiscono solo per costante di attrito: erba, sabbia, ghiaccio, terra. 
 
-In aggiunta a queste superfici considerate di base si vogliono implementare superfici avanzate con proprieta' in grado di modificare la velocita' della pallina in altri modi.
+In aggiunta a queste superfici di base, si vogliono implementare superfici avanzate con proprietà in grado di modificare la velocità della pallina in altri modi.
 
 ##### Soluzione
-La progettazione e' basata su una interfaccia `Surface` che definisce le proprieta' comuni a tutte le superfici.
-La soluzione proposta adotta il **Decorator Pattern** che permette di aggiungere alle superfici ulteriori responsabilita' in modo piu' flessibile rispetto all'ereditarieta'.
+La progettazione è basata su una interfaccia `Surface` che definisce le proprietà comuni a tutte le superfici.
+La soluzione proposta adotta il **Decorator Pattern** che permette di aggiungere alle superfici ulteriori responsabilità in modo più flessibile rispetto all'ereditarietà.
 Questa scelta ha permesso una semplice implementazione di `WindySurface` e `BoostSurface` che "decorano" la superficie di base modificando i valori di ritorno dei metodi `getWind` e `getFriction`.
 
 UML:
@@ -97,7 +97,6 @@ classDiagram
     class BoostSurface {
         -double boostIntensity
         +getFriction() double
-        +getTypeId() String
     }
     class WindySurface {
         -Vector2D wind
@@ -113,7 +112,7 @@ classDiagram
 
 ##### Pro e Contro
 Pro: 
-* **Componibilità dinamica**: Possibilità di combinare più effetti fisici decorando ricorsivamente la superficie base (es. una superficie può essere contemporaneamente `BoostSurface` e `WindySurface`).
+* **Componibilità dinamica**: Possibilità di combinare più effetti fisici decorando ricorsivamente la superficie base (ad esempio una superficie può essere contemporaneamente `BoostSurface` e `WindySurface`).
 * **Riutilizzo del codice e DRY**: I decoratori riutilizzano l'implementazione geometrica e di contenimento della superficie base, occupandosi unicamente di alterare i parametri fisici (attrito o vento).
 
 Contro:
@@ -126,7 +125,7 @@ Nel motore fisico `PhysicsEngine`, che risiede nel livello Model, le collisioni 
 
 Sorge quindi la necessità di far comunicare e cooperare questi due livelli senza violare i principi dell'architettura MVC:
 * **Evitare la duplicazione dello stato**: Mantenere un'istanza separata della pallina nel model e sincronizzarne continuamente le proprietà con il controller introdurrebbe ridondanza e potenziali bug di sincronizzazione.
-* **Mantenere il disaccoppiamento**: Il modulo `PhysicsEngine` e le altre classi del Model non devono conoscere o dipendere dalle astrazioni del Controller `BallController`. Viceversa, l'interfaccia del controller non dovrebbe essere forzata a implementare direttamente quella del modello per non contaminare le proprie responsabilità.
+* **Mantenere separati Model e Controller**: Il modulo `PhysicsEngine` e le altre classi del Model non devono conoscere o dipendere dalle astrazioni del Controller `BallController`. Viceversa, l'interfaccia del controller non dovrebbe essere forzata a implementare direttamente quella del Model per non contaminare le proprie responsabilità.
 
 ##### Soluzione
 È stato applicato il design pattern **Adapter**, implementato tramite la classe `BallControllerAdapter`. 
@@ -180,8 +179,8 @@ classDiagram
 
 ##### Pro e Contro
 **Pro**:
-* **Rappresentazione unica della pallina**: Esiste un'unica istanza della pallina, quella gestita (Incapsulata) dal controller. Tutte le modifiche apportate dal motore fisico si riflettono istantaneamente e direttamente sull'istanza della pallina del controller, eliminando qualsiasi necessità di codice di sincronizzazione.
-* **Disaccoppiamento e Rispetto dell'MVC**: Il motore fisico `PhysicsEngine` e le altre strategie dipendono solo dall'interfaccia `Ball`, rimanendo completamente isolati dal controller. A sua volta, `BallController` rimane focalizzato sulle proprie responsabilità senza essere influenzato da interfacce del modello.
+* **Rappresentazione unica della pallina**: Esiste un'unica istanza della pallina, quella gestita (incapsulata) dal controller. Tutte le modifiche apportate dal motore fisico si riflettono istantaneamente e direttamente sull'istanza della pallina del controller, eliminando qualsiasi necessità di codice di sincronizzazione.
+* **Disaccoppiamento e rispetto dell'MVC**: Il motore fisico `PhysicsEngine` e le altre strategie dipendono solo dall'interfaccia `Ball`, rimanendo completamente isolati dal controller. A sua volta, `BallController` rimane focalizzato sulle proprie responsabilità senza essere influenzato da interfacce del modello.
 * **Flessibilità**: Se l'interfaccia `Ball` o `BallController` dovesse cambiare, la modifica rimarrebbe localizzata all'interno della classe `BallControllerAdapter`, senza impattare la logica del motore fisico o degli altri componenti.
 
 **Contro**:
@@ -194,9 +193,9 @@ Il gioco richiede di gestire e verificare la presenza della pallina in diversi e
 * **Si eviti la duplicazione della logica geometrica**: Più componenti del modello (come superfici e buca) devono poter condividere o delegare la propria logica spaziale a componenti riutilizzabili.
 * **L'aggiunta di nuove geometrie sia semplice e modulare**.
 ##### Soluzione
-È stata definita l'interfaccia funzionale `Shape` (contrassegnata con `@FunctionalInterface`), che espone un unico metodo `contains(Vector2D)`. Questa scelta di design offre diversi vantaggi:
+È stata definita l'interfaccia `Shape`, che espone un unico metodo `contains(Vector2D)`. Questa scelta di design offre diversi vantaggi:
 1. **Astrazione e composizione**: Elementi del modello come `ShapedSurface` delegano i controlli di contenimento a un'istanza interna di `Shape`.
-3. **MVC e Pattern Matching**: Le forme geometriche risiedono nel package `util.shapes` e non contengono dettagli di rendering. La classe di vista `MapPanel` interroga il controller per ottenere le `Shape` e, tramite la feature moderna di **Pattern Matching per `instanceof`** (introdotta nelle versioni recenti di Java), determina la tipologia concreta di forma (`rect`, `circ`, `tria`, `oval`) ed esegue il disegno specifico su schermo.
+2. **MVC e Pattern Matching**: Le forme geometriche risiedono nel package `util.shapes` e non contengono dettagli di rendering. La classe di vista `MapPanel` interroga il controller per ottenere le `Shape` e, tramite la feature di java della reflection API `instanceof`, determina la tipologia concreta di forma (`Rectangle`, `Circle`, `Triangle`, `Oval`) ed esegue il disegno specifico su schermo.
 UML:
 ```mermaid
 classDiagram
@@ -237,7 +236,13 @@ classDiagram
     Shape <|.. Oval
 ```
 
-##### Pro e contro
+##### Pro e Contro
+Pro:
+* **Disaccoppiamento MVC**: Il modello definisce solo la logica geometrica di collisione e contenimento (`contains`), rimanendo completamente indipendente dalla libreria grafica Swing.
+* **Incapsulamento e Immutabilità**: L'uso dei record Java (`Circle`, `Rectangle`, etc.) garantisce che le geometrie siano immutabili e thread-safe.
+
+Contro:
+* **Violazione dell'Open-Closed Principle (OCP)**: L'aggiunta di una nuova forma geometrica richiede la modifica manuale del metodo di disegno (`drawShape` in `MapPanel`) per inserire un nuovo ramo `instanceof`.
 
 ### 2.2.3 Federico Sparvoli
 #### Input del colpo
@@ -434,6 +439,10 @@ I componenti testati riguardano:
 - test sulla leaderboard (corretto aggiornamento/salvataggio dei dati)
 
 ### 3.1.2 Giacomo Mengozzi
+I componenti testati riguardano le superfici speciali e la rappresentazione fisica della pallina:
+* **BallImplTest**: Verifica l'inizializzazione dello stato (posizione, raggio, velocità) della pallina, l'effetto dei setter e la corretta gestione dei limiti della mappa lanciando `IllegalStateException`.
+* **BoostSurfaceTest**: Controlla l'inizializzazione e il calcolo del coefficiente di attrito negativo di `BoostSurface`, la sua integrazione con `BasicFrictionStrategy` e `PhysicsEngine` (sia per pallina ferma che in movimento) e l'applicazione dello speed cap (limite massimo di velocità).
+
 ### 3.1.3 Federico Sparvoli
 I componenti testati sono ShotState, GameState e GameFactory.
 ShotStateTest: controlla che lo stato del tiro funzioni bene: all'inizio è vuoto, c'è una potenza minima, la potenza massima non si può superare, si può consumare un colpo e si può resettare tutto.
@@ -457,6 +466,10 @@ ObstacleControllerTest: Assicura il corretto funzionamento del controller come i
 - lambda expression
 ...
 ### 3.2.2 Giacomo Mengozzi
+- **Java Records e Pattern Matching per `instanceof`**: I record Java descrivono le forme geometriche immutabili (`Circle`, `Rectangle`, etc.), mentre la vista `MapPanel` le decostruisce in modo pulito e sicuro per effettuarne il rendering grafico.
+  Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/util/shapes/Shape.java#L11
+  https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/view/panels/MapPanel.java#L147
+
 ### 3.2.3 Federico Sparvoli
 -Lambda expressions e method reference: utilizzate per passare comportamenti e dipendenze in modo semplice e flessibile. GameControllerImpl non memorizza né GameState né PhysicsController direttamente, ma ne estrae i comportamenti come BooleanSupplier, Runnable, Consumer<Vector2D> e Supplier<Optional<Vector2D>>, eliminando i warning SpotBugs EI_EXPOSE_REP2 senza fare uso di alcun @SuppressWarnings.
 Permalink:  https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L104
@@ -490,6 +503,12 @@ System Timestamping: Sfruttato all'interno della gestione dei portali tramite 'S
 ## 4.1 Autovalutazione e lavori futuri
 ### 4.1.1 Daniel Patryk Bak
 ### 4.1.2 Giacomo Mengozzi
+Il mio contributo principale si è concentrato sulla progettazione del sistema delle superfici (adottando il Decorator Pattern per le varianti avanzate come `BoostSurface` e `WindySurface`), sulla modellazione geometrica polimorfica (`Shape`) con annesso rendering nella vista tramite Pattern Matching, e sull'integrazione a basso accoppiamento del motore fisico tramite `BallControllerAdapter`.
+
+Sono ampiamente soddisfatto del livello di modularità raggiunto grazie al Decorator Pattern, che permette di estendere e combinare diversi effetti fisici su un'unica superficie. Anche il disaccoppiamento tra model e controller è ben definito dall'uso dell'Adapter, evitando duplicazioni dello stato della pallina.
+
+Come sviluppi futuri, la gestione dell'effetto vento potrebbe essere potenziata supportando direzioni angolari arbitrarie oltre ai punti cardinali fissi. Inoltre, per quanto riguarda le forme geometriche, l'uso di `instanceof` in `MapPanel` costringe a modificare la vista per ogni nuova forma introdotta; un approccio alternativo per rispettare pienamente l'Open-Closed Principle consisterebbe nell'introdurre un renderer o un adapter grafico delegato per disaccoppiare ulteriormente il rendering senza inquinare il modello geometrico.
+
 ### 4.1.3 Federico Sparvoli
 Il mio contributo principale riguarda il sistema di input del colpo, la gestione del ciclo di vita dei match e il sistema di salvataggio. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a @SuppressWarnings, ottenuta tramite interfacce strette e callback funzionali.
 Un aspetto migliorabile è la soglia di click sulla pallina (CLICK_RADIUS), che al momento è un numero fisso di pixel e non cambia se la pallina viene ingrandita o rimpicciolita. In futuro sarebbe meglio calcolarlo in base al raggio vero della pallina.
