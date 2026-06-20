@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * Minimal interface exposing only the turn-management operations needed
  * by the shot and game controllers.
- * Create this interface instead of the full {@link GameState} to avoid
+ * Created this interface instead of the full {@link GameState} to avoid
  * EI2 warnings and to keep the controllers decoupled from the
  * full game-state object.
  *

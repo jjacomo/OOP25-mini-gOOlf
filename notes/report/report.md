@@ -9,49 +9,16 @@ Il software è un gioco di mini-golf in due dimensioni per uno o più giocatori 
 ### 1.1.1 Requisiti funzionali
 * Il giocatore effettua un colpo trascinando il mouse dalla pallina: la direzione e la potenza sono determinate dalla posizione del cursore rispetto alla pallina, un indicatore visivo mostra in tempo reale direzione e potenza del colpo durante il trascinamento.
 * Il gioco supporta più giocatori in modalità a turni.
-* La pallina interagisce con ostacoli di forme diverse e superfici con proprietà fisiche differenti, tra cui terreni che rallentano o modificano la traiettoria.
+* La pallina interagisce con ostacoli di forme diverse e superfici con proprietà fisiche differenti.
 * Al completamento di ogni mappa viene mostrata una classifica intermedia con i colpi effettuati da ciascun giocatore
 
 ### 1.1.2 Requisiti non funzionali
-* Il gioco prevede superfici e ostacoli con proprietà fisiche avanzate.
+* Il gioco prevede superfici e ostacoli con proprietà fisiche avanzate, tra cui terreni e ostacoli che rallentano, velocizzano o modificano la traiettoria.
 * È possibile salvare la partita in corso e riprenderla in un secondo momento.
 * La classifica finale è persistente tra sessioni diverse e si aggiorna al termine di ogni partita completata.
 
 ## 1.2 Modello del Dominio
 
-Un gioco di mini-golf è composto da una sequenza di mappe. Ogni mappa contiene una pallina, una buca, un insieme di superfici e un insieme di ostacoli. La pallina si muove sulla mappa seguendo le leggi della fisica: la superficie su cui si trova influenza il suo movimento tramite l'attrito e, in alcuni casi, il vento. Gli ostacoli bloccano il percorso della pallina facendola rimbalzare e in alcuni casi ne alterano la velocità.
-Una partita coinvolge uno o più giocatori che si alternano a turni. Ad ogni turno il giocatore effettua un colpo, indicando direzione e potenza. Il punteggio di ciascun giocatore su una mappa corrisponde al numero di colpi effettuati. L'obiettivo è far entrare la pallina nella buca.
-
-UML:
-```mermaid
-classDiagram
-    class Partita
-    class Mappa
-    class Giocatore {
-        nome
-        punteggio
-    }
-    class Pallina {
-        posizione
-    }
-    class Buca
-    class Superficie {
-        attrito
-    }
-    class Ostacolo
-    class Colpo {
-        direzione
-        potenza
-    }
-
-    Partita --> "1..*" Giocatore
-    Partita --> "1..*" Mappa
-    Mappa --> "1" Pallina
-    Mappa --> "1" Buca
-    Mappa --> "1..*" Superficie
-    Mappa --> "0..*" Ostacolo
-    Giocatore --> "0..*" Colpo
-```
 
 # Capitolo 2: Design
 
@@ -95,7 +62,7 @@ Contro:
 
 Il gioco _mini-gOOlf_ richiede di avere superfici con diverse proprietà fisiche (attrito, boost, vento), che impattano il comportamento della pallina. Il gioco prevede 4 diverse superfici di base che differiscono solo per costante di attrito: erba, sabbia, ghiaccio, terra. 
 
-In aggiunta a queste superfici considerate di base si vogliono implementare superfici avanzate con proprieta' aggiuntive in grado di modificare la velocita' della pallina in altri modi.
+In aggiunta a queste superfici considerate di base si vogliono implementare superfici avanzate con proprieta' in grado di modificare la velocita' della pallina in altri modi.
 
 ##### Soluzione
 La progettazione e' basata su una interfaccia `Surface` che definisce le proprieta' comuni a tutte le superfici.
@@ -155,10 +122,10 @@ Contro:
 #### Fisica della pallina
 
 ##### Problema
-Nel motore fisico `PhysicsEngine`, che risiede nel livello Model, le collisioni e i movimenti della pallina vengono calcolati facendo riferimento all'interfaccia `Ball`. Tuttavia, lo stato autorevole e le logiche di controllo della pallina (come il tracciamento dello stato di movimento e la rappresentazione grafica per la vista) sono gestiti nel livello Controller tramite l'interfaccia `BallController`.
+Nel motore fisico `PhysicsEngine`, che risiede nel livello Model, le collisioni e i movimenti della pallina vengono calcolati facendo riferimento all'interfaccia `Ball`. Tuttavia, lo stato e le logiche di controllo della pallina sono gestiti nel livello Controller tramite l'interfaccia `BallController`.
 
 Sorge quindi la necessità di far comunicare e cooperare questi due livelli senza violare i principi dell'architettura MVC:
-* **Evitare la duplicazione dello stato**: Mantenere un'istanza separata del modello della pallina e sincronizzarne continuamente le proprietà con il controller introdurrebbe ridondanza e potenziali bug di sincronizzazione.
+* **Evitare la duplicazione dello stato**: Mantenere un'istanza separata della pallina nel model e sincronizzarne continuamente le proprietà con il controller introdurrebbe ridondanza e potenziali bug di sincronizzazione.
 * **Mantenere il disaccoppiamento**: Il modulo `PhysicsEngine` e le altre classi del Model non devono conoscere o dipendere dalle astrazioni del Controller `BallController`. Viceversa, l'interfaccia del controller non dovrebbe essere forzata a implementare direttamente quella del modello per non contaminare le proprie responsabilità.
 
 ##### Soluzione
@@ -166,9 +133,7 @@ Sorge quindi la necessità di far comunicare e cooperare questi due livelli senz
 Questa classe:
 1. Implementa l'interfaccia target `Ball` (richiesta dal motore fisico).
 2. Incapsula un riferimento all'interfaccia `BallController`.
-3. Adatta le chiamate dei metodi delegandole direttamente al controller (ad esempio, traducendo `setPosition(position)` in `controller.updatePosition(position)` e inoltrando le letture come `getPosition()`).
-
-L'adattatore risiede all'interno del package del controller (`it.unibo.minigoolf.controller.physics`), poiché è responsabilità del livello controller fare da tramite (ponte) tra le proprie astrazioni e quelle del Model, preservando l'indipendenza di quest'ultimo.
+3. Adatta le chiamate dei metodi delegandole direttamente al controller (ad esempio, traducendo `ball.setPosition(position)` in `controller.updatePosition(position)` e inoltrando le letture come `getPosition()`).
 
 UML:
 ```mermaid
@@ -220,9 +185,59 @@ classDiagram
 * **Flessibilità**: Se l'interfaccia `Ball` o `BallController` dovesse cambiare, la modifica rimarrebbe localizzata all'interno della classe `BallControllerAdapter`, senza impattare la logica del motore fisico o degli altri componenti.
 
 **Contro**:
-* **Aumento delle classi**: Aggiunge un ulteriore livello intermedio con una classe ponte dedicata, aumentando leggermente la complessità strutturale del progetto per scopi puramente architetturali.
+* Aggiunge un ulteriore livello intermedio con una classe ponte dedicata, aumentando leggermente la complessità strutturale del progetto per scopi puramente architetturali.
 
 #### Rappresentazione geometrica degli oggetti della mappa
+##### Problema
+Il gioco richiede di gestire e verificare la presenza della pallina in diversi elementi posizionati sulla mappa (superfici di varie forme e la buca). Sorge quindi la necessità di modellare la geometria degli oggetti di gioco in modo che:
+* **Il modello rimanga disaccoppiato dalla rappresentazione grafica**: Gli oggetti geometrici devono contenere solo logica matematica e fisica (come test di contenimento di un punto), senza dipendere da classi della GUI (`Graphics2D`, `Color`, ecc.), in accordo con il pattern MVC.
+* **Si eviti la duplicazione della logica geometrica**: Più componenti del modello (come superfici e buca) devono poter condividere o delegare la propria logica spaziale a componenti riutilizzabili.
+* **L'aggiunta di nuove geometrie sia semplice e modulare**.
+##### Soluzione
+È stata definita l'interfaccia funzionale `Shape` (contrassegnata con `@FunctionalInterface`), che espone un unico metodo `contains(Vector2D)`. Questa scelta di design offre diversi vantaggi:
+1. **Astrazione e composizione**: Elementi del modello come `ShapedSurface` delegano i controlli di contenimento a un'istanza interna di `Shape`.
+3. **MVC e Pattern Matching**: Le forme geometriche risiedono nel package `util.shapes` e non contengono dettagli di rendering. La classe di vista `MapPanel` interroga il controller per ottenere le `Shape` e, tramite la feature moderna di **Pattern Matching per `instanceof`** (introdotta nelle versioni recenti di Java), determina la tipologia concreta di forma (`rect`, `circ`, `tria`, `oval`) ed esegue il disegno specifico su schermo.
+UML:
+```mermaid
+classDiagram
+    class Shape {
+        <<interface>>
+        +contains(Vector2D) boolean
+    }
+    class Circle {
+        <<record>>
+        -Vector2D position
+        -double radius
+        +contains(Vector2D) boolean
+    }
+    class Rectangle {
+        <<record>>
+        -Vector2D position
+        -double width
+        -double height
+        +contains(Vector2D) boolean
+    }
+    class Triangle {
+        <<record>>
+        -Vector2D vertex1
+        -Vector2D vertex2
+        -Vector2D vertex3
+        +contains(Vector2D) boolean
+    }
+    class Oval {
+        <<record>>
+        -Vector2D position
+        -double radiusX
+        -double radiusY
+        +contains(Vector2D) boolean
+    }
+    Shape <|.. Circle
+    Shape <|.. Rectangle
+    Shape <|.. Triangle
+    Shape <|.. Oval
+```
+
+##### Pro e contro
 
 ### 2.2.3 Federico Sparvoli
 #### Input del colpo

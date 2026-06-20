@@ -20,19 +20,10 @@ import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
- * Test implementation of the GameMapFactory interface.
- * 
- * <p>
- * This factory creates a simple, flat test game map suitable for development,
- * debugging, and basic testing purposes.
- * </p>
+ * Map A.
  * 
  * @author jack
  * 
- * @see GameMapFactory
- * @see GameMap
- * @see RectangularSurface
- * @see Surface
  */
 public class MapA implements GameMapFactory {
 
@@ -153,7 +144,7 @@ public class MapA implements GameMapFactory {
 
         private static final double BALL_RADIUS = 30;
         private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(80, 80);
-        private static final double HOLE_RADIUS = 30;
+        private static final double HOLE_RADIUS = 33;
         private static final Vector2D HOLE_POSITION = new Vector2D(1780, 520);
 
         private final SurfaceFactory surfaceFactory;

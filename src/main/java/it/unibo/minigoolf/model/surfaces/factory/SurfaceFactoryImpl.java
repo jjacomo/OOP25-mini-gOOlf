@@ -14,7 +14,7 @@ import it.unibo.minigoolf.util.shapes.Shape;
 public final class SurfaceFactoryImpl implements SurfaceFactory {
 
     private static final double GRASS_FRICTION = 3.50;
-    private static final double SAND_FRICTION = 11.50;
+    private static final double SAND_FRICTION = 12.50;
     private static final double DIRT_FRICTION = 7.75;
     private static final double ICE_FRICTION = 0.25;
 

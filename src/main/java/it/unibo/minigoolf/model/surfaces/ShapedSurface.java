@@ -1,5 +1,7 @@
 package it.unibo.minigoolf.model.surfaces;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,8 +72,8 @@ public final class ShapedSurface implements Surface {
      * @return the type identifier of the surface.
      */
     @Override
-    public String getTypeId() {
-        return typeId;
+    public List<String> getTypeIds() {
+        return List.of(typeId);
     }
 
     /**

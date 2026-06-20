@@ -53,3 +53,9 @@
 3 ore: sistemato e aggiornato i test. Sistemato la mia mappa
 
 2 ore: aggiornato il report e iniziato a buttare giù un po' di basi per le parti in comune
+
+4 ore: creato la mia seconda mappa
+
+COSE DA FARE ENTRO SABATO SERA:
+        riguardare tutti i commenti javadoc
+        fare la mia idea delle parte in comune del report

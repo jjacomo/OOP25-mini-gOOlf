@@ -20,6 +20,7 @@ import it.unibo.minigoolf.util.shapes.Oval;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 import it.unibo.minigoolf.util.shapes.Shape;
 import it.unibo.minigoolf.util.shapes.Triangle;
+import it.unibo.minigoolf.view.texturemanager.SurfaceTextureMapper;
 import it.unibo.minigoolf.view.texturemanager.TextureManager;
 
 /**
@@ -70,18 +71,21 @@ public class MapPanel extends JPanel {
         mapController.getSurfaceControllers().stream()
                 .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
                 .forEach(surfaceController -> {
-                    final BufferedImage texture = TextureManager
-                            .loadTexture(surfaceController.getTexturePath());
-                    if (texture != null) {
-                        drawShape(surfaceController.getShape(), g2d, texture);
-                        final String windOverlay = surfaceController.getWindOverlayTexturePath();
-                        if (windOverlay != null) {
-                            final BufferedImage windTexture = TextureManager.loadTexture(windOverlay);
-                            drawShape(surfaceController.getShape(), g2d, windTexture);
+                    for (final String typeId : surfaceController.getTypeIds()) {
+                        final String texturePath = SurfaceTextureMapper.getTexturePath(typeId);
+                        final BufferedImage texture = TextureManager.loadTexture(texturePath);
+                        if (texture != null) {
+                            drawShape(surfaceController.getShape(), g2d, texture);
+                        } else {
+                            throw new IllegalStateException(
+                                    "Texture not found for surface type: " + typeId);
                         }
-                    } else {
-                        throw new IllegalStateException(
-                                "Texture not found for surface type: " + surfaceController.getTypeId());
+                    }
+                    final String windOverlay = SurfaceTextureMapper
+                            .getWindOverlayTexturePath(surfaceController.getWind());
+                    if (windOverlay != null) {
+                        final BufferedImage windTexture = TextureManager.loadTexture(windOverlay);
+                        drawShape(surfaceController.getShape(), g2d, windTexture);
                     }
                 });
 
@@ -90,9 +94,6 @@ public class MapPanel extends JPanel {
         g2d.setColor(Color.WHITE);
         drawShape(mapController.getBallController().getBallShape(), g2d, null);
         g2d.setColor(Color.DARK_GRAY);
-        //for (final Shape obstacleShape : mapController.getObstacleController().getObstacleShapes()) {
-        //    drawShape(obstacleShape, g2d, null);
-        //}
         for (final Obstacle obstacle : mapController.getObstacleController().getObstacles()) {
             final Color obstacleColor;
 

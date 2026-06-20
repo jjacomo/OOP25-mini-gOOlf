@@ -52,7 +52,7 @@ class BoostSurfaceTest {
 
         assertAll("boost surface state",
                 () -> assertEquals(-BOOST_INTENSITY_VALID, boostSurface.getFriction()),
-                () -> assertEquals("boost", boostSurface.getTypeId()),
+                () -> assertEquals(List.of("grass", "boost"), boostSurface.getTypeIds()),
                 () -> assertEquals(BASE_Z_INDEX, boostSurface.getZIndex()),
                 () -> assertEquals(shape, boostSurface.getShape()),
                 () -> assertTrue(boostSurface.contains(new Vector2D(TEST_POINT_X, TEST_POINT_Y)))

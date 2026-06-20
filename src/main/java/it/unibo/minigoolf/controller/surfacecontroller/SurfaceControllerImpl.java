@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.controller.surfacecontroller;
 
+import java.util.List;
 import java.util.Optional;
 
 import it.unibo.minigoolf.model.surfaces.Surface;
@@ -34,41 +35,8 @@ public final class SurfaceControllerImpl implements SurfaceController {
     }
 
     @Override
-    public String getTexturePath() {
-        return switch (surface.getTypeId()) {
-            case "grass" -> "surfaces/grass.png";
-            case "sand" -> "surfaces/sand.png";
-            case "dirt" -> "surfaces/dirt.png";
-            case "ice" -> "surfaces/ice.png";
-            case "boost" -> "surfaces/boost/boost.png";
-            default -> "surfaces/default.png";
-        };
-    }
-
-    @Override
-    public String getWindOverlayTexturePath() {
-        final Optional<Vector2D> windOpt = surface.getWind();
-        if (windOpt.isEmpty()) {
-            return null;
-        }
-        final Vector2D wind = windOpt.get();
-        if (wind.getNorm() == 0) {
-            return null;
-        }
-        if (Math.abs(wind.getX()) >= Math.abs(wind.getY())) {
-            return wind.getX() > 0
-                    ? "surfaces/wind/right_arrow.png"
-                    : "surfaces/wind/left_arrow.png";
-        } else {
-            return wind.getY() > 0
-                    ? "surfaces/wind/down_arrow.png"
-                    : "surfaces/wind/up_arrow2.png";
-        }
-    }
-
-    @Override
-    public String getTypeId() {
-        return surface.getTypeId();
+    public List<String> getTypeIds() {
+        return surface.getTypeIds();
     }
 
     @Override

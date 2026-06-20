@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.controller.surfacecontroller;
 
+import java.util.List;
 import java.util.Optional;
 
 import it.unibo.minigoolf.util.Vector2D;
@@ -26,25 +27,11 @@ public interface SurfaceController {
     int getZIndex();
 
     /**
-     * Returns the relative path to the texture of the surface.
+     * Returns the list of type IDs for this surface, ordered from base to outermost decorator.
      *
-     * @return the texture path
+     * @return the list of type IDs
      */
-    String getTexturePath();
-
-    /**
-     * Returns the relative path to the wind overlay texture of the surface.
-     *
-     * @return the wind overlay texture path
-     */
-    String getWindOverlayTexturePath();
-
-    /**
-     * Returns the type identifier of the surface.
-     * 
-     * @return the type ID as a String
-     */
-    String getTypeId();
+    List<String> getTypeIds();
 
     /**
      * Returns the wind of the surface, if any.
