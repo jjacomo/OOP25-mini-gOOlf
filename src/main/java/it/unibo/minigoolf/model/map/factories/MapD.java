@@ -38,15 +38,15 @@ public class MapD implements GameMapFactory {
     // SAND 
     private static final double SAND_X = 400;
     private static final double SAND_Y = 30;
-    private static final double SAND_WIDTH = 1200;
-    private static final double SAND_HEIGHT = 300;
+    private static final double SAND_WIDTH = 1100;
+    private static final double SAND_HEIGHT = 495;
     private static final int SAND_Z_INDEX = 2;
 
     // ICE
     private static final double ICE_X = 400;
-    private static final double ICE_Y = 750;
-    private static final double ICE_WIDTH = 1200;
-    private static final double ICE_HEIGHT = 200;
+    private static final double ICE_Y = 555;
+    private static final double ICE_WIDTH = 1100;
+    private static final double ICE_HEIGHT = 495;
     private static final int ICE_Z_INDEX = 4;
 
     // OBSTACLES BOUNCYNESS
@@ -75,9 +75,9 @@ public class MapD implements GameMapFactory {
     private static final double W4_HEIGHT = 31;
 
     // ROUND OBSTACLES
-    private static final double O1_X = 500;
-    private static final double O1_Y = 185;
-    private static final double O1_RADIUS = 40;
+    private static final double O1_X = 600;
+    private static final double O1_Y = 292;
+    private static final double O1_RADIUS = 60;
     private static final double O1_BOUNCINESS = STICKY_BOUNCINESS;
 
     private static final double O2_X = 600;
@@ -90,13 +90,27 @@ public class MapD implements GameMapFactory {
     private static final double O3_RADIUS = 40;
     private static final double O3_BOUNCINESS = BOUNCY_BOUNCINESS;
 
-    private static final double O4_X = 700;
-    private static final double O4_Y = 185;
-    private static final double O4_RADIUS = 40;
+    private static final double O4_X = 1300;
+    private static final double O4_Y = 292;
+    private static final double O4_RADIUS = 60;
     private static final double O4_BOUNCINESS = STICKY_BOUNCINESS;
 
+    //WALL OBSTACLES
+    private static final double O5_X = 400;
+    private static final double O5_Y = 525;
+    private static final double O5_WIDTH = 1100;
+    private static final double O5_HEIGHT = 30;
+
+    private static final double O6_X = 470;
+    private static final double O6_Y = 425;
+    private static final double O6_WIDTH = 1030;
+    private static final double O6_HEIGHT = 30;
+
+    //BALL
     private static final double BALL_RADIUS = 30;
-    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(1800, 80);
+    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(100, 80);
+
+    //HOLE
     private static final double HOLE_RADIUS = 30;
     private static final Vector2D HOLE_POSITION = new Vector2D(1780, 980);
 
@@ -157,6 +171,8 @@ public class MapD implements GameMapFactory {
             obstacles.add(new RoundObstacle(new Vector2D(O2_X, O2_Y), O2_RADIUS, O2_BOUNCINESS));
             obstacles.add(new RoundObstacle(new Vector2D(O3_X, O3_Y), O3_RADIUS, O3_BOUNCINESS));
             obstacles.add(new RoundObstacle(new Vector2D(O4_X, O4_Y), O4_RADIUS, O4_BOUNCINESS));
+            obstacles.add(new WallObstacle(new Vector2D(O5_X, O5_Y), O5_WIDTH, O5_HEIGHT));
+            //obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT));
             return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
                             new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
     }
