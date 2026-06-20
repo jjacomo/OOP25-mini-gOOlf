@@ -9,49 +9,16 @@ Il software è un gioco di mini-golf in due dimensioni per uno o più giocatori 
 ### 1.1.1 Requisiti funzionali
 * Il giocatore effettua un colpo trascinando il mouse dalla pallina: la direzione e la potenza sono determinate dalla posizione del cursore rispetto alla pallina, un indicatore visivo mostra in tempo reale direzione e potenza del colpo durante il trascinamento.
 * Il gioco supporta più giocatori in modalità a turni.
-* La pallina interagisce con ostacoli di forme diverse e superfici con proprietà fisiche differenti, tra cui terreni che rallentano o modificano la traiettoria.
+* La pallina interagisce con ostacoli di forme diverse e superfici con proprietà fisiche differenti.
 * Al completamento di ogni mappa viene mostrata una classifica intermedia con i colpi effettuati da ciascun giocatore
 
 ### 1.1.2 Requisiti non funzionali
-* Il gioco prevede superfici e ostacoli con proprietà fisiche avanzate.
+* Il gioco prevede superfici e ostacoli con proprietà fisiche avanzate, tra cui terreni e ostacoli che rallentano, velocizzano o modificano la traiettoria.
 * È possibile salvare la partita in corso e riprenderla in un secondo momento.
 * La classifica finale è persistente tra sessioni diverse e si aggiorna al termine di ogni partita completata.
 
 ## 1.2 Modello del Dominio
 
-Un gioco di mini-golf è composto da una sequenza di mappe. Ogni mappa contiene una pallina, una buca, un insieme di superfici e un insieme di ostacoli. La pallina si muove sulla mappa seguendo le leggi della fisica: la superficie su cui si trova influenza il suo movimento tramite l'attrito e, in alcuni casi, il vento. Gli ostacoli bloccano il percorso della pallina facendola rimbalzare e in alcuni casi ne alterano la velocità.
-Una partita coinvolge uno o più giocatori che si alternano a turni. Ad ogni turno il giocatore effettua un colpo, indicando direzione e potenza. Il punteggio di ciascun giocatore su una mappa corrisponde al numero di colpi effettuati. L'obiettivo è far entrare la pallina nella buca.
-
-UML:
-```mermaid
-classDiagram
-    class Partita
-    class Mappa
-    class Giocatore {
-        nome
-        punteggio
-    }
-    class Pallina {
-        posizione
-    }
-    class Buca
-    class Superficie {
-        attrito
-    }
-    class Ostacolo
-    class Colpo {
-        direzione
-        potenza
-    }
-
-    Partita --> "1..*" Giocatore
-    Partita --> "1..*" Mappa
-    Mappa --> "1" Pallina
-    Mappa --> "1" Buca
-    Mappa --> "1..*" Superficie
-    Mappa --> "0..*" Ostacolo
-    Giocatore --> "0..*" Colpo
-```
 
 # Capitolo 2: Design
 
