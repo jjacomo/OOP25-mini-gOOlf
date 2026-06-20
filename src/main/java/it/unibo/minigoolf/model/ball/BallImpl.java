@@ -7,7 +7,7 @@ import it.unibo.minigoolf.util.shapes.Circle;
  * Implementation of the Ball interface representing a golf ball with position,
  * velocity, and radius.
  */
-public class BallImpl implements Ball {
+public final class BallImpl implements Ball {
     private Vector2D velocity;
     private Circle body;
 
