@@ -3,9 +3,9 @@ package it.unibo.minigoolf.controller.physics;
 import it.unibo.minigoolf.model.physics.velocity.BallVelocityStrategy;
 
 /**
- * Controller for managing the physics of the mini golf game, including updating
+ * Controller for managing the physics of the mini-gOOlf game, including updating
  * the ball's velocity and position based on the surfaces it interacts with.
- * Delegates the actual physics calculations to {@link PhysicsEngine}.
+ * Delegates the actual physics calculations to {@link it.unibo.minigoolf.model.physics.PhysicsEngine}.
  * 
  * @author jack
  */
@@ -19,8 +19,7 @@ public interface PhysicsController {
     void update(double deltaTime);
 
     /**
-     * Sets the strategy used to update the ball's velocity based on the surface
-     * it is currently on.
+     * Sets the strategy used to update the ball's velocity.
      *
      * @param strategy the BallVelocityStrategy to use for velocity updates
      */

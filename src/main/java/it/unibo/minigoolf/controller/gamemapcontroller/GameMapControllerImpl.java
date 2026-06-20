@@ -16,7 +16,8 @@ import it.unibo.minigoolf.util.Vector2D;
 
 /**
  * Implementation of {@link GameMapController}.
- * Manages the game map and provides access to surfaces and ball controller.
+ * Manages the game map and provides access to surfaces, obstacles, hole and
+ * ball controllers.
  *
  * @author jack
  */
@@ -44,52 +45,26 @@ public final class GameMapControllerImpl implements GameMapController {
                 .toList();
     }
 
-    /**
-     * Returns a list of all surface controllers in the game map.
-     *
-     * @return a list of surface controllers
-     */
     @Override
     public List<SurfaceController> getSurfaceControllers() {
         return List.copyOf(surfaceControllers);
     }
 
-    /**
-     * Returns the surface at the given position.
-     *
-     * @param position the position to query
-     * @return the surface under the given position
-     */
     @Override
     public Surface getSurfaceAt(final Vector2D position) {
         return map.getSurfaceAt(position);
     }
 
-    /**
-     * Returns the ball controller for managing ball interactions.
-     *
-     * @return the ball controller
-     */
     @Override
     public BallController getBallController() {
         return ballController;
     }
 
-    /**
-     * Returns the obstacle controller for managing obstacle interactions.
-     *
-     * @return the obstacle controller
-     */
     @Override
     public ObstacleController getObstacleController() {
         return obstacleController;
     }
 
-    /**
-     * Returns the hole controller for managing hole interactions.
-     *
-     * @return the hole controller
-     */
     @Override
     public HoleController getHoleController() {
         return holeController;

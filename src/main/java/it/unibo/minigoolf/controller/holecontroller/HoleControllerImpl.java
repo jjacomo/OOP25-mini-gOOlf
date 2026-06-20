@@ -7,7 +7,7 @@ import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
  * Implementation of the HoleController interface that manages the hole in the
- * mini golf game.
+ * mini-gOOlf game.
  * It provides methods to retrieve the hole's shape, position, and radius.
  * 
  * @author jack
@@ -24,19 +24,16 @@ public final class HoleControllerImpl implements HoleController {
         this.hole = hole;
     }
 
-    /** {@inheritDoc} */
     @Override
     public Shape getShape() {
         return new Circle(hole.getPosition(), hole.getRadius());
     }
 
-    /** {@inheritDoc} */
     @Override
     public Vector2D getPosition() {
         return hole.getPosition();
     }
 
-    /** {@inheritDoc} */
     @Override
     public double getRadius() {
         return hole.getRadius();

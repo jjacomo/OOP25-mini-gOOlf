@@ -20,8 +20,7 @@ public interface BallVelocityStrategy {
      * 
      * @param ball      the ball whose velocity is to be updated
      * @param surface   the surface on which the ball is currently located, which
-     *                  may affect its velocity (e.g., different friction or bounce
-     *                  properties)
+     *                  may affect its velocity.
      * @param deltaTime the time elapsed since the last update, used to calculate
      *                  the change in velocity based on acceleration and other
      *                  factors

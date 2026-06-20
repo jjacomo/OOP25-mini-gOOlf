@@ -4,7 +4,7 @@ import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
- * Interface representing the controller for the hole in the mini golf game.
+ * Interface representing the controller for the hole in the mini-gOOlf game.
  * It provides methods to retrieve the hole's shape, position, and radius.
  * 
  * @author jack

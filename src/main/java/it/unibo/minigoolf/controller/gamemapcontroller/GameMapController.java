@@ -12,21 +12,24 @@ import it.unibo.minigoolf.util.Vector2D;
 /**
  * Controller for managing the game map and its interactions.
  * Delegates ball-related operations to {@link BallController}.
+ * Delegates hole-related operations to {@link HoleController}.
+ * Delegates obstacle-related operations to {@link ObstacleController}.
+ * Delegates surface-related operations to {@link SurfaceController}.
  * 
  * @author jack
  */
 public interface GameMapController {
     /**
-     * Returns all surfaces on the game map.
+     * Returns all surfaceControllers for surfaces on the game map.
      *
-     * @return a list of all surfaces
+     * @return a list of all surfaceControllers
      */
     List<SurfaceController> getSurfaceControllers();
 
     /**
-     * Returns all obstacles on the game map.
+     * Returns the obstacle controller for managing obstacles on the game map.
      *
-     * @return a list of all obstacles
+     * @return the obstacle controller
      */
     ObstacleController getObstacleController();
 
@@ -46,9 +49,9 @@ public interface GameMapController {
     BallController getBallController();
 
     /**
-     * Returns the hole on the game map.
+     * Returns the controller for managing the hole.
      *
-     * @return the hole
+     * @return the hole controller
      */
     HoleController getHoleController();
 }

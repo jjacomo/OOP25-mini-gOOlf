@@ -23,51 +23,26 @@ public class BallImpl implements Ball {
 
     }
 
-    /**
-     * Returns the current position of the ball.
-     *
-     * @return the position as a Vector2D
-     */
     @Override
     public Vector2D getPosition() {
         return this.body.position();
     }
 
-    /**
-     * Returns the current velocity of the ball.
-     *
-     * @return the velocity as a Vector2D
-     */
     @Override
     public Vector2D getVelocity() {
         return this.velocity;
     }
 
-    /**
-     * Returns the radius of the ball.
-     *
-     * @return the radius as a double
-     */
     @Override
     public double getRadius() {
         return this.body.radius();
     }
 
-    /**
-     * Sets the position of the ball.
-     *
-     * @param position the new position as a Vector2D
-     */
     @Override
     public void setPosition(final Vector2D position) {
         this.body = new Circle(position, this.body.radius());
     }
 
-    /**
-     * Sets the velocity of the ball.
-     *
-     * @param velocity the new velocity as a Vector2D
-     */
     @Override
     public void setVelocity(final Vector2D velocity) {
         this.velocity = velocity;

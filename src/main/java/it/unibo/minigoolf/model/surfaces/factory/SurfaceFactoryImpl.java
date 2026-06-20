@@ -9,7 +9,7 @@ import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
  * Concrete implementation of the {@link SurfaceFactory} interface.
- * Centralizes the default physical parameters for surfaces.
+ * Defines the default physical parameters for surfaces.
  */
 public final class SurfaceFactoryImpl implements SurfaceFactory {
 
@@ -46,10 +46,5 @@ public final class SurfaceFactoryImpl implements SurfaceFactory {
     @Override
     public Surface createBoost(final Surface baseSurface, final double intensity) {
         return new BoostSurface(baseSurface, intensity);
-    }
-
-    @Override
-    public Surface createCustom(final Shape shape, final double friction, final int zIndex, final String typeId) {
-        return new ShapedSurface(shape, friction, zIndex, typeId);
     }
 }

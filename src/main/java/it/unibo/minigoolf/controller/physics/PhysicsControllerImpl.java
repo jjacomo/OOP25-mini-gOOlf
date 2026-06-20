@@ -6,10 +6,8 @@ import it.unibo.minigoolf.model.physics.velocity.BallVelocityStrategy;
 
 /**
  * Implementation of the {@link PhysicsController} interface that manages the
- * physics of the mini golf game, including updating the ball's velocity and
- * position based on the surfaces it interacts with. Delegates the actual
- * physics calculations to {@link PhysicsEngine}.
- * 
+ * physics of the mini-gOOlf game.
+ *
  * @author jack
  */
 public final class PhysicsControllerImpl implements PhysicsController {
@@ -26,7 +24,6 @@ public final class PhysicsControllerImpl implements PhysicsController {
         this.gameMapController = gameMapController;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void update(final double deltaTime) {
         final BallControllerAdapter ballAdapter = new BallControllerAdapter(gameMapController.getBallController());
@@ -37,7 +34,6 @@ public final class PhysicsControllerImpl implements PhysicsController {
                 deltaTime);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void setVelocityStrategy(final BallVelocityStrategy strategy) {
         PhysicsEngine.setVelocityStrategy(strategy);

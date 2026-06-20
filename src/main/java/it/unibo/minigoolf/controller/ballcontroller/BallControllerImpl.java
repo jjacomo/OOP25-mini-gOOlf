@@ -39,37 +39,31 @@ public final class BallControllerImpl implements BallController {
         this.radiusSupplier = ball::getRadius;
     }
 
-    /** {@inheritDoc} */
     @Override
     public Shape getBallShape() {
         return new Circle(positionSupplier.get(), radiusSupplier.get());
     }
 
-    /** {@inheritDoc} */
     @Override
     public Vector2D getPosition() {
         return positionSupplier.get();
     }
 
-    /** {@inheritDoc} */
     @Override
     public Vector2D getVelocity() {
         return velocitySupplier.get();
     }
 
-    /** {@inheritDoc} */
     @Override
     public double getRadius() {
         return radiusSupplier.get();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void updatePosition(final Vector2D position) {
         positionConsumer.accept(position);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void updateVelocity(final Vector2D velocity) {
         velocityConsumer.accept(velocity);

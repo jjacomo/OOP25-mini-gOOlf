@@ -3,7 +3,7 @@ package it.unibo.minigoolf.model.ball;
 import it.unibo.minigoolf.util.Vector2D;
 
 /**
- * Interface representing the ball in the mini-golf game.
+ * Interface representing the ball in the mini-gOOlf game.
  * 
  * <p>A Ball is the main entity controlled by the player and interacts with
  * map surfaces and obstacles. It possesses physical properties such as

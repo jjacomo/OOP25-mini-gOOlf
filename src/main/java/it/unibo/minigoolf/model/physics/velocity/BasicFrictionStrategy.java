@@ -33,8 +33,7 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
      * the time elapsed since the last update.
      * This method applies a friction force to the ball's velocity, which is
      * calculated based on the surface's friction coefficient and the ball's current
-     * speed. The friction force is stronger at higher speeds to prevent the ball
-     * from becoming uncontrollable, and it becomes weaker as the ball slows down.
+     * speed.
      *
      * @param ball      the ball whose velocity is to be updated
      * @param surface   the surface on which the ball is currently located, which
