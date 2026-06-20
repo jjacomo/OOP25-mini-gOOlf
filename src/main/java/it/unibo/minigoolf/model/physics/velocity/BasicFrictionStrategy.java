@@ -21,7 +21,7 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
 
     private static final int HIGH_SPEED_THRESHOLD = 1_000;
     private static final int MEDIUM_SPEED_THRESHOLD = 200;
-    private static final int LOW_SPEED_THRESHOLD = 5;
+    private static final double LOW_SPEED_THRESHOLD = 0.5;
     private static final int HIGH_FRICTION_MULTIPLIER = 15_000;
     private static final int MEDIUM_FRICTION_MULTIPLIER = 10_000;
     private static final int LOW_FRICTION_MULTIPLIER = 500;
