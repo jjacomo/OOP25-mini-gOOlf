@@ -26,20 +26,6 @@ public interface SurfaceController {
     int getZIndex();
 
     /**
-     * Returns the relative path to the texture of the surface.
-     *
-     * @return the texture path
-     */
-    String getTexturePath();
-
-    /**
-     * Returns the relative path to the wind overlay texture of the surface.
-     *
-     * @return the wind overlay texture path
-     */
-    String getWindOverlayTexturePath();
-
-    /**
      * Returns the type identifier of the surface.
      * 
      * @return the type ID as a String
