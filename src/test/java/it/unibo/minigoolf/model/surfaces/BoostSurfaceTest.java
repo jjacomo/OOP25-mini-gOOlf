@@ -37,11 +37,12 @@ class BoostSurfaceTest {
     private static final double SHAPE_LARGE_SIZE = 1000.0;
     private static final double SHAPE_LARGE_OFFSET = -500.0;
     private static final double BOOST_INTENSITY = 2.0;
+    private static final String GRASS_TYPE_ID = "grass";
 
     @Test
     void testBoostSurfaceConstructorAndGetters() {
         final var shape = new Rectangle(new Vector2D(0, 0), SHAPE_WIDTH, SHAPE_HEIGHT);
-        final var baseSurface = new ShapedSurface(shape, BASE_FRICTION, BASE_Z_INDEX, "grass");
+        final var baseSurface = new ShapedSurface(shape, BASE_FRICTION, BASE_Z_INDEX, GRASS_TYPE_ID);
 
         // Invalid intensity
         assertThrows(IllegalArgumentException.class, () -> new BoostSurface(baseSurface, BOOST_INTENSITY_INVALID_NEG));
@@ -52,7 +53,7 @@ class BoostSurfaceTest {
 
         assertAll("boost surface state",
                 () -> assertEquals(-BOOST_INTENSITY_VALID, boostSurface.getFriction()),
-                () -> assertEquals(List.of("grass", "boost"), boostSurface.getTypeIds()),
+                () -> assertEquals(List.of(GRASS_TYPE_ID, "boost"), boostSurface.getTypeIds()),
                 () -> assertEquals(BASE_Z_INDEX, boostSurface.getZIndex()),
                 () -> assertEquals(shape, boostSurface.getShape()),
                 () -> assertTrue(boostSurface.contains(new Vector2D(TEST_POINT_X, TEST_POINT_Y)))
@@ -62,7 +63,7 @@ class BoostSurfaceTest {
     @Test
     void testBasicFrictionStrategyWithBoost() {
         final var shape = new Rectangle(new Vector2D(SHAPE_LARGE_OFFSET, SHAPE_LARGE_OFFSET), SHAPE_LARGE_SIZE, SHAPE_LARGE_SIZE);
-        final var baseSurface = new ShapedSurface(shape, BASE_FRICTION, BASE_Z_INDEX, "grass");
+        final var baseSurface = new ShapedSurface(shape, BASE_FRICTION, BASE_Z_INDEX, GRASS_TYPE_ID);
         final var boostSurface = new BoostSurface(baseSurface, BOOST_INTENSITY);
 
         final var ball = new BallImpl(new Vector2D(0.0, 0.0), BALL_RADIUS);

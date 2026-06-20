@@ -112,7 +112,7 @@ public class MapF implements GameMapFactory {
     private static final Vector2D O4_V1 = new Vector2D(520, 0);
     private static final Vector2D O4_V2 = new Vector2D(1080, 0);
     private static final Vector2D O4_V3 = new Vector2D(800, 300);
-    
+
     private static final double O7_X = 1100;
     private static final double O7_Y = 500;
     private static final double O7_WIDTH = 1120;

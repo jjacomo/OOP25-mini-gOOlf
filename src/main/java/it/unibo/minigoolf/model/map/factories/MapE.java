@@ -49,7 +49,7 @@ public final class MapE implements GameMapFactory {
     private static final double WINDY_EXIT_H = 540;
     private static final int WINDY_EXIT_Z = 0;
 
-    private static final double WIND_STRENGTH = 10.0;
+    private static final double WIND_STRENGTH = 12.0;
 
     // Border walls
     private static final double W_TOP_X = 0;

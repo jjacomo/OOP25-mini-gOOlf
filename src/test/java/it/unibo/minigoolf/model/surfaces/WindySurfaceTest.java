@@ -30,6 +30,7 @@ class WindySurfaceTest {
         private static final double WIND_INTENSITY = 5.0;
         private static final double DELTA_TIME = 0.5;
         private static final double COMPARISON_DELTA = 1e-9;
+        private static final double BIG_X = 10_000.0;
 
         private ShapedSurface baseSurface;
 
@@ -78,7 +79,7 @@ class WindySurfaceTest {
                                 () -> assertEquals(BASE_Z_INDEX, surface.getZIndex()),
                                 () -> assertEquals(baseSurface.getShape(), surface.getShape()),
                                 () -> assertTrue(surface.contains(new Vector2D(0.0, 0.0))),
-                                () -> assertFalse(surface.contains(new Vector2D(10_000.0, 0.0))),
+                                () -> assertFalse(surface.contains(new Vector2D(BIG_X, 0.0))),
                                 () -> assertEquals(List.of("grass"), surface.getTypeIds()));
         }
 
