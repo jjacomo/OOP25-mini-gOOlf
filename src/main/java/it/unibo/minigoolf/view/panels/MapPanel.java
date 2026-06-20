@@ -89,10 +89,6 @@ public class MapPanel extends JPanel {
                     }
                 });
 
-        g2d.setColor(Color.BLACK);
-        drawShape(mapController.getHoleController().getShape(), g2d, null);
-        g2d.setColor(Color.WHITE);
-        drawShape(mapController.getBallController().getBallShape(), g2d, null);
         g2d.setColor(Color.DARK_GRAY);
         for (final Obstacle obstacle : mapController.getObstacleController().getObstacles()) {
             final Color obstacleColor;
@@ -110,6 +106,11 @@ public class MapPanel extends JPanel {
             g2d.setColor(obstacleColor);
             drawShape(obstacle.getShape(), g2d, null);
         }
+
+        g2d.setColor(Color.BLACK);
+        drawShape(mapController.getHoleController().getShape(), g2d, null);
+        g2d.setColor(Color.WHITE);
+        drawShape(mapController.getBallController().getBallShape(), g2d, null);
 
         drawFlag(g2d,
                 new Vector2D(
