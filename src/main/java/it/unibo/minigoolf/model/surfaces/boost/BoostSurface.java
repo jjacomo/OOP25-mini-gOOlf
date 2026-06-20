@@ -1,5 +1,8 @@
 package it.unibo.minigoolf.model.surfaces.boost;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.unibo.minigoolf.model.surfaces.AbstractSurfaceDecorator;
 import it.unibo.minigoolf.model.surfaces.Surface;
 
@@ -43,7 +46,9 @@ public final class BoostSurface extends AbstractSurfaceDecorator {
      * <p>Returns the "boost" type identifier.
      */
     @Override
-    public String getTypeId() {
-        return "boost";
+    public List<String> getTypeIds() {
+        final List<String> ids = new ArrayList<>(super.getTypeIds());
+        ids.add("boost");
+        return ids;
     }
 }

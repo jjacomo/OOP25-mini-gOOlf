@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.controller.surfacecontroller;
 
+import java.util.List;
 import java.util.Optional;
 
 import it.unibo.minigoolf.model.surfaces.Surface;
@@ -34,8 +35,8 @@ public final class SurfaceControllerImpl implements SurfaceController {
     }
 
     @Override
-    public String getTypeId() {
-        return surface.getTypeId();
+    public List<String> getTypeIds() {
+        return surface.getTypeIds();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.model.surfaces;
 
+import java.util.List;
 import java.util.Optional;
 
 import it.unibo.minigoolf.util.Vector2D;
@@ -59,8 +60,8 @@ public abstract class AbstractSurfaceDecorator implements Surface {
      * <p>This implementation delegates to the decorated base surface.
      */
     @Override
-    public String getTypeId() {
-        return baseSurface.getTypeId();
+    public List<String> getTypeIds() {
+        return baseSurface.getTypeIds();
     }
 
     /**

@@ -1,5 +1,6 @@
 package it.unibo.minigoolf.model.surfaces;
 
+import java.util.List;
 import java.util.Optional;
 
 import it.unibo.minigoolf.util.Vector2D;
@@ -40,11 +41,12 @@ public interface Surface {
     int getZIndex();
 
     /**
-     * Returns the type identifier of this surface.
+     * Returns the list of all type identifiers for this surface, including any decorators.
+     * Ordered from the innermost base surface to the outermost decorator.
      *
-     * @return the type ID as a String
+     * @return a list of type IDs
      */
-    String getTypeId();
+    List<String> getTypeIds();
 
     /**
      * Returns the shape representing the boundaries of this surface.
