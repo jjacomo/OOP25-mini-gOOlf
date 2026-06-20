@@ -132,14 +132,14 @@ public final class MapE implements GameMapFactory {
     private final SurfaceFactory surfaceFactory;
 
     /**
-     * Constructs a FirstMap using a default SurfaceFactory implementation.
+     * Constructs a map using a default SurfaceFactory implementation.
      */
     public MapE() {
             this(new SurfaceFactoryImpl());
     }
 
     /**
-     * Constructs a FirstMap using the provided SurfaceFactory.
+     * Constructs a map using the provided SurfaceFactory.
      * 
      * @param surfaceFactory the factory used to build surfaces
      */
