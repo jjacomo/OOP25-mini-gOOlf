@@ -49,14 +49,28 @@ Una partita coinvolge uno o più giocatori che si alternano a turni per colpire 
 -- fede --
 Il software segue il pattern architetturale MVC (Model-View-Controller).
 
-Model: contiene lo stato del gioco e le regole, senza alcuna dipendenza dalla view o dal controller. Le entità principali sono GameMap (la mappa corrente con pallina, buca, superfici e ostacoli), GameState (lo stato del turno: giocatore attivo, contatore colpi, movimento della pallina) e ShotState (lo stato del colpo in corso: direzione, potenza, posizione della pallina)
+**Model:** contiene lo stato del gioco e le regole, senza alcuna dipendenza dalla view o dal controller. Le entità principali sono `GameMap` (la mappa corrente, con pallina, buca, superfici e ostacoli), `GameState` (lo stato del turno: giocatore attivo, contatore colpi, movimento della pallina) e `ShotState` (lo stato del colpo in corso: direzione, potenza, posizione della pallina).
 
-Controller: coordina model e view senza che i due si conoscano direttamente. GameController gestisce il ciclo di vita di un singolo match: riceve i tick del game loop, aggiorna la fisica, rileva l'ingresso in buca e gestisce i turni. MatchManager gestisce la progressione tra le mappe. NavigationController gestisce le transizioni tra i pannelli dell'interfaccia e il salvataggio della partita
+**Controller:** coordina model e view senza che i due si conoscano direttamente. `GameController` gestisce il ciclo di vita di un singolo match: ad ogni tick del game loop aggiorna la fisica, rileva l'ingresso in buca e gestisce i turni. `MatchManager` gestisce la progressione tra le mappe della sequenza. `NavigationController` gestisce le transizioni tra i pannelli dell'interfaccia e il salvataggio della partita.
 
 View: MainWindow ospita i pannelli tramite un CardLayout, mentre GamePanel mostra la mappa e le informazioni di gioco. La view non contiene logica: legge lo stato tramite callback forniti dal controller.
 Il controller non dipende mai dalla view concreta: comunica con essa solo tramite interfacce strette e callback funzionali. 
 
+---
+(Jack (Ho riscritto il punto view cosi'))
+
+**View:** `MainWindow` ospita i pannelli tramite un `CardLayout`; `GamePanel` compone la mappa di gioco (`MapPanel`) e l'overlay di input (`ShotViewPanel`). La view non contiene logica di dominio: legge lo stato esclusivamente tramite callback e supplier funzionali forniti dal controller (ad esempio `Supplier<String>` per il nome del giocatore corrente, `IntSupplier` per i colpi effettuati).
+
+---
+
 Sostituire Swing con un'altra libreria grafica (ad esempio JavaFX) non richiederebbe alcuna modifica al controller né al model
+
+---
+(Jack (Ho riscritto la parte finale cosi'))
+
+Il controller non dipende mai dalla view concreta: comunica con essa unicamente tramite interfacce strette e callback funzionali (`Runnable`, `Consumer`, `Supplier`). Ciò implica che sostituire Swing con un'altra libreria grafica (ad esempio JavaFX) non richiederebbe alcuna modifica al controller né al model: sarebbe sufficiente riscrivere i pannelli della view e ricablare i callback al momento della costruzione.
+
+---
 
 UML:
 ```mermaid
@@ -79,4 +93,66 @@ classDiagram
     MainWindow --> GamePanel
     GamePanel --> GameController
     NavigationController --> MainWindow
+```
+
+-- jack --
+(Diagramma un po' piu' dettagliato)
+
+```mermaid
+classDiagram
+    direction TB
+
+    class GameController {
+        <<interface>>
+        +updateTick(deltaTime)
+        +getCurrentPlayerName() String
+        +getCurrentPlayerShots() int
+        +getGameMapController() GameMapController
+        +getShotState() ShotState
+        +isBallMoving() boolean
+    }
+
+    class MatchManager {
+        +tickActiveMatch(deltaTime)
+        +advanceToNextHole()
+        +reset()
+    }
+
+    class NavigationController {
+        +setupMatchAndStart(playerNames)
+        +pauseGame()
+        +resumeGame()
+        +saveGame()
+        +loadGame()
+    }
+
+    class GameState {
+        <<Model>>
+    }
+
+    class ShotState {
+        <<Model>>
+    }
+
+    class GameMap {
+        <<Model>>
+    }
+
+    class MainWindow {
+        <<View>>
+        +showScene(name)
+    }
+
+    class GamePanel {
+        <<View>>
+    }
+
+    MatchManager --> GameController : builds / ticks
+    GameController --> GameState : reads / updates
+    GameController --> ShotState : reads / updates
+    GameController --> GameMap : reads
+    NavigationController --> MatchManager : delegates
+    NavigationController --> MainWindow : callbacks only
+    MainWindow --> GamePanel : hosts
+    GamePanel ..> GameController : Supplier / IntSupplier callbacks
 ```

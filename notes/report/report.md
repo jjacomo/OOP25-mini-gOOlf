@@ -183,7 +183,7 @@ classDiagram
 Superfici e buca devono poter verificare se la pallina è al loro interno. La logica geometrica di contenimento deve risiedere nel Model, senza dipendere da classi grafiche Swing; allo stesso tempo la vista deve poter disegnare ciascuna forma nel modo corretto.
 
 ##### Soluzione
-L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite compact constructor), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` recupera le `Shape` tramite il controller e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
+L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite costruttori che eseguono un check sulle dimensioni in ingresso), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` recupera le `Shape` tramite il controller e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
 
 ```mermaid
 classDiagram
@@ -414,9 +414,11 @@ I componenti testati riguardano:
 - test sulla leaderboard (corretto aggiornamento/salvataggio dei dati)
 
 ### 3.1.2 Giacomo Mengozzi
-I componenti testati riguardano le superfici speciali e la rappresentazione fisica della pallina:
-* **BallImplTest**: Verifica l'inizializzazione dello stato (posizione, raggio, velocità) della pallina, l'effetto dei setter e la corretta gestione dei limiti della mappa lanciando `IllegalStateException`.
-* **BoostSurfaceTest**: Controlla l'inizializzazione e il calcolo del coefficiente di attrito negativo di `BoostSurface`, la sua integrazione con `BasicFrictionStrategy` e `PhysicsEngine` (sia per pallina ferma che in movimento) e l'applicazione dello speed cap (limite massimo di velocità).
+I componenti testati riguardano la pallina, la mappa e le superfici speciali:
+* **BallImplTest**: Inizializzazione dello stato (posizione, raggio, velocità), correttezza dei setter e integrazione con `PhysicsEngine`/`BasicFrictionStrategy` per verificare che l'attrito azzeri la velocità; testa inoltre il lancio di `IllegalStateException` per posizioni fuori mappa.
+* **GameMapImplTest**: Rifiuto di argomenti `null` nel costruttore e comportamento di `getSurfaceAt` (restituzione della superficie corretta, priorità per z-index più alto, eccezione per punto fuori dai limiti).
+* **BoostSurfaceTest**: Validazione del costruttore, calcolo dell'attrito negativo, delega delle proprietà alla superficie base e integrazione con `PhysicsEngine` (accelerazione della pallina in moto, speed cap).
+* **WindySurfaceTest**: Validazione del costruttore, correttezza del vettore di vento per direzione, delega delle proprietà e composizione con `BoostSurface` (decorator su decorator).
 
 ### 3.1.3 Federico Sparvoli
 I componenti testati sono ShotState, GameState e GameFactory.
@@ -441,15 +443,17 @@ ObstacleControllerTest: Assicura il corretto funzionamento del controller come i
 - lambda expression
 ...
 ### 3.2.2 Giacomo Mengozzi
-- **Java Records**: Le forme geometriche (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono implementate come record Java immutabili, con costruttore per la validazione dei parametri.
+#### Java Records
   Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/util/shapes/Circle.java#L17
-- **Java reflection con `instanceof`**: La vista `MapPanel` identifica la tipologia concreta di forma geometrica (`Circle`, `Rectangle`, `Triangle`, `Oval`) tramite pattern matching con binding variable (es. `shape instanceof Circle circ`) per eseguire il rendering specifico senza cast espliciti.
+#### Java Reflection API
   Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/view/panels/MapPanel.java#L150
-- **Stream API e lambda expressions**: In `GameMapImpl.getSurfaceAt()` viene usata una pipeline Stream con lambda (`filter`, `max`, `orElseThrow`) per individuare la superficie di massimo z-index contenente una data posizione.
+#### Stream API e lambda expressions
   Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/map/GameMapImpl.java#L63
-- **`Optional`**: L'interfaccia `Surface` restituisce `Optional<Vector2D>` nel metodo `getWind()` per modellare l'assenza di vento senza ricorrere a `null`; in `BasicFrictionStrategy` l'Optional viene consumato tramite i metodi funzionali `map`, `filter`, `orElse` e `ifPresent`.
+#### Optional
   Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/surfaces/Surface.java#L60
   https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/physics/velocity/BasicFrictionStrategy.java#L67
+#### Utilizzo della libreria SLF4J
+  Ad esempio in https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/physics/PhysicsEngine.java#L71
 
 ### 3.2.3 Federico Sparvoli
 -Lambda expressions e method reference: utilizzate per passare comportamenti e dipendenze in modo semplice e flessibile. GameControllerImpl non memorizza né GameState né PhysicsController direttamente, ma ne estrae i comportamenti come BooleanSupplier, Runnable, Consumer<Vector2D> e Supplier<Optional<Vector2D>>, eliminando i warning SpotBugs EI_EXPOSE_REP2 senza fare uso di alcun @SuppressWarnings.
@@ -484,11 +488,10 @@ System Timestamping: Sfruttato all'interno della gestione dei portali tramite 'S
 ## 4.1 Autovalutazione e lavori futuri
 ### 4.1.1 Daniel Patryk Bak
 ### 4.1.2 Giacomo Mengozzi
-Il mio contributo principale si è concentrato sulla progettazione del sistema delle superfici (adottando il Decorator Pattern per le varianti avanzate come `BoostSurface` e `WindySurface`), sulla modellazione geometrica polimorfica (`Shape`) con annesso rendering nella vista tramite Pattern Matching, e sull'integrazione a basso accoppiamento del motore fisico tramite `BallControllerAdapter`.
-
-Sono ampiamente soddisfatto del livello di modularità raggiunto grazie al Decorator Pattern, che permette di estendere e combinare diversi effetti fisici su un'unica superficie. Anche il disaccoppiamento tra model e controller è ben definito dall'uso dell'Adapter, evitando duplicazioni dello stato della pallina.
-
-Come sviluppi futuri, la gestione dell'effetto vento potrebbe essere potenziata supportando direzioni angolari arbitrarie oltre ai punti cardinali fissi. Inoltre, per quanto riguarda le forme geometriche, l'uso di `instanceof` in `MapPanel` costringe a modificare la vista per ogni nuova forma introdotta; un approccio alternativo per rispettare pienamente l'Open-Closed Principle consisterebbe nell'introdurre un renderer o un adapter grafico delegato per disaccoppiare ulteriormente il rendering senza inquinare il modello geometrico.
+Sono molto soddisfatto del contributo fornito al progetto, non soltanto per il lavoro realizzato, ma soprattutto per l'esperienza maturata durante l'intero percorso di sviluppo. Il tempo e le energie investite sono stati considerevolmente superiori alle aspettative iniziali, ma ritengo che siano stati impiegati in modo proficuo.
+Dal punto di vista tecnico, mi sono occupato dell'implementazione delle superfici, della mappa e della buca, nonché della loro integrazione nelle mappe di gioco, coordinando l'interazione tra questi elementi secondo le leggi della fisica.
+Le difficoltà maggiori hanno riguardato la comprensione e l'applicazione del pattern architetturale MVC nei suoi tre livelli, in particolare per quanto concerne la comunicazione tra le rispettive classi. A queste si è aggiunta la sfida di approcciare il progetto partendo da un'esperienza di programmazione quasi nulla, il che ha reso la fase iniziale particolarmente impegnativa.
+Con il progredire del lavoro, tuttavia, la padronanza degli strumenti e delle pratiche di sviluppo è cresciuta progressivamente, consentendo di scrivere codice con maggiore consapevolezza. Il risultato finale e le soluzioni adottate riflettono l'impegno costante nel rispettare i principi della buona programmazione orientata agli oggetti.
 
 ### 4.1.3 Federico Sparvoli
 Il mio contributo principale riguarda il sistema di input del colpo, la gestione del ciclo di vita dei match e il sistema di salvataggio. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a @SuppressWarnings, ottenuta tramite interfacce strette e callback funzionali.
