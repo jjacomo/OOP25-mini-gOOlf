@@ -29,6 +29,12 @@ class ResourcePresenceTest {
     }
 
     @Test
+    void testAmbientNewGameIsPresent() {
+        final URL audioUrl = getClass().getResource("/sounds/ambient/gOOlf_ambient.wav");
+        assertNotNull(audioUrl, "The ambient sound '/sounds/ambient/gOOlf_ambient.wav' is missing!");
+    }
+
+    @Test
     void testTitleIsPresent() {
         final URL titleUrl = getClass().getResource("/title.png");
         assertNotNull(titleUrl, "The title image '/title.png' is missing!");

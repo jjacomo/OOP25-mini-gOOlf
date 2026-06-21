@@ -4,7 +4,9 @@ import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -26,6 +28,9 @@ public final class PausePanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private static final int TINT = 150;
 
+    // Tutorial image
+    private static final String TUTORIAL_IMG_PATH = "/background/leaderboard_bg.png";
+
     /**
      * @param navController the navigation controller
      */
@@ -41,6 +46,11 @@ public final class PausePanel extends JPanel {
         resumeButton.setAlignmentX(CENTER_ALIGNMENT);
         resumeButton.addActionListener(e -> navController.resumeGame());
         menuBox.add(resumeButton);
+
+        final JButton tutorialButton = UserInterfaceFactory.createButton("TUTORIAL");
+        tutorialButton.setAlignmentX(CENTER_ALIGNMENT);
+        tutorialButton.addActionListener(e -> showTutorialPopup());
+        menuBox.add(tutorialButton);
 
         final JButton skipButton = UserInterfaceFactory.createButton("SKIP MAP");
         skipButton.setAlignmentX(CENTER_ALIGNMENT);
@@ -65,6 +75,30 @@ public final class PausePanel extends JPanel {
         this.add(menuBox, new GridBagConstraints());
         // Block mouse eclicks from reaching the game while paused.
         this.addMouseListener(new MouseAdapter() { });
+    }
+
+    /**
+     * Displays a popup dialog containing the tutorial image.
+     */
+    private void showTutorialPopup() {
+        final java.net.URL imgUrl = getClass().getResource(TUTORIAL_IMG_PATH);
+        if (imgUrl != null) {
+            final ImageIcon icon = new ImageIcon(imgUrl);
+            JOptionPane.showMessageDialog(
+                this, 
+                new JLabel(icon), 
+                "How to Play", 
+                JOptionPane.PLAIN_MESSAGE
+            );
+        } else {
+            // Fallback se l'immagine non è ancora presente
+            JOptionPane.showMessageDialog(
+                this, 
+                "Tutorial image not found!\nPlease add it to: " + TUTORIAL_IMG_PATH, 
+                "Missing Resource", 
+                JOptionPane.WARNING_MESSAGE
+            );
+        }
     }
 
     /** {@inheritDoc} */
