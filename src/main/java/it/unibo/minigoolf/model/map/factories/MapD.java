@@ -156,33 +156,34 @@ public class MapD implements GameMapFactory {
      */
     @Override
     public GameMap buildGameMap() {
-            final List<Surface> surfaces = new ArrayList<>();
-            final List<Obstacle> obstacles = new ArrayList<>();
-            surfaces.add(surfaceFactory.createGrass(
-                            new Rectangle(new Vector2D(GRASS_X, GRASS_Y), GRASS_WIDTH,
-                            GRASS_HEIGHT), GRASS_Z_INDEX));
+        final List<Surface> surfaces = new ArrayList<>();
+        final List<Obstacle> obstacles = new ArrayList<>();
+        surfaces.add(surfaceFactory.createGrass(
+                        new Rectangle(new Vector2D(GRASS_X, GRASS_Y), GRASS_WIDTH,
+                        GRASS_HEIGHT), GRASS_Z_INDEX));
+        surfaces.add(surfaceFactory.createSand(
+                        new Rectangle(new Vector2D(SAND_X, SAND_Y), SAND_WIDTH,
+                                        SAND_HEIGHT), SAND_Z_INDEX));
+        surfaces.add(surfaceFactory.createIce(
+                        new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_WIDTH,
+                                        ICE_HEIGHT), ICE_Z_INDEX));
 
-            surfaces.add(surfaceFactory.createSand(
-                            new Rectangle(new Vector2D(SAND_X, SAND_Y), SAND_WIDTH,
-                                            SAND_HEIGHT), SAND_Z_INDEX));
-            surfaces.add(surfaceFactory.createIce(
-                            new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_WIDTH,
-                                            ICE_HEIGHT), ICE_Z_INDEX));
-            obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
-            obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
-            obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
-            obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT));
-            obstacles.add(new RoundObstacle(new Vector2D(O1_X, O1_Y), O1_RADIUS, O1_BOUNCINESS));
-            obstacles.add(new RoundObstacle(new Vector2D(O2_X, O2_Y), O2_RADIUS, O2_BOUNCINESS));
-            obstacles.add(new RoundObstacle(new Vector2D(O3_X, O3_Y), O3_RADIUS, O3_BOUNCINESS));
-            obstacles.add(new RoundObstacle(new Vector2D(O4_X, O4_Y), O4_RADIUS, O4_BOUNCINESS));
-            obstacles.add(new WallObstacle(new Vector2D(O5_X, O5_Y), O5_WIDTH, O5_HEIGHT));
-            obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT));
-            obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT));
-            obstacles.add(new WallObstacle(new Vector2D(O8_X, O8_Y), O8_WIDTH, O8_HEIGHT));
-            obstacles.add(new WallObstacle(new Vector2D(O9_X, O9_Y), O9_WIDTH, O9_HEIGHT));
-            return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
-                            new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
+        obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT));
+        obstacles.add(new RoundObstacle(new Vector2D(O1_X, O1_Y), O1_RADIUS, O1_BOUNCINESS));
+        obstacles.add(new RoundObstacle(new Vector2D(O2_X, O2_Y), O2_RADIUS, O2_BOUNCINESS));
+        obstacles.add(new RoundObstacle(new Vector2D(O3_X, O3_Y), O3_RADIUS, O3_BOUNCINESS));
+        obstacles.add(new RoundObstacle(new Vector2D(O4_X, O4_Y), O4_RADIUS, O4_BOUNCINESS));
+        obstacles.add(new WallObstacle(new Vector2D(O5_X, O5_Y), O5_WIDTH, O5_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(O8_X, O8_Y), O8_WIDTH, O8_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(O9_X, O9_Y), O9_WIDTH, O9_HEIGHT));
+
+        return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
+                new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
     }
 }
 
