@@ -11,15 +11,6 @@ import it.unibo.minigoolf.util.Vector2D;
  * @author Mattia
  */
 public abstract class AbstractObstacle implements Obstacle {
-    /**
-     * Tolerance threshold for floating-point comparisons in collision detection.
-     */
-    protected static final double EPSILON = 1e-10;
-
-    /**
-     * Default bounciness value used to create the normal obstacles.
-     */
-    protected static final double DEFAULT_BOUNCINESS = 1.0;
 
     /**
      * Bounciness value used to create the sticky obstacles.
@@ -30,6 +21,16 @@ public abstract class AbstractObstacle implements Obstacle {
      * Bounciness value used to create the bouncy obstacles.
      */
     public static final double BOUNCY_BOUNCINESS = 1.5;
+
+    /**
+     * Tolerance threshold for floating-point comparisons in collision detection.
+     */
+    protected static final double EPSILON = 1e-10;
+
+    /**
+     * Default bounciness value used to create the normal obstacles.
+     */
+    protected static final double DEFAULT_BOUNCINESS = 1.0;
 
     /**
      * Threshold for resting contact to prevent infinite bouncing against 

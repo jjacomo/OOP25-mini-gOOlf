@@ -93,29 +93,29 @@ public class MapG implements GameMapFactory {
     private static final double O4_HEIGHT = 868;
 
     // TRIANGLE OBSTACLES
-    private static final Vector2D O5_VERTEX_A = new Vector2D(499,31);
-    private static final Vector2D O5_VERTEX_B = new Vector2D(649,31);
-    private static final Vector2D O5_VERTEX_C = new Vector2D(499,181);
+    private static final Vector2D O5_VERTEX_A = new Vector2D(499, 31);
+    private static final Vector2D O5_VERTEX_B = new Vector2D(649, 31);
+    private static final Vector2D O5_VERTEX_C = new Vector2D(499, 181);
     private static final double O5_BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
 
-    private static final Vector2D O6_VERTEX_A = new Vector2D(950,31);
-    private static final Vector2D O6_VERTEX_B = new Vector2D(1100,31);
-    private static final Vector2D O6_VERTEX_C = new Vector2D(1100,181);
+    private static final Vector2D O6_VERTEX_A = new Vector2D(950, 31);
+    private static final Vector2D O6_VERTEX_B = new Vector2D(1100, 31);
+    private static final Vector2D O6_VERTEX_C = new Vector2D(1100, 181);
     private static final double O6_BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
 
-    private static final Vector2D O7_VERTEX_A = new Vector2D(849,899);
-    private static final Vector2D O7_VERTEX_B = new Vector2D(849,1048);
-    private static final Vector2D O7_VERTEX_C = new Vector2D(999,1048);
+    private static final Vector2D O7_VERTEX_A = new Vector2D(849, 899);
+    private static final Vector2D O7_VERTEX_B = new Vector2D(849, 1048);
+    private static final Vector2D O7_VERTEX_C = new Vector2D(999, 1048);
     private static final double O7_BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
 
-    private static final Vector2D O8_VERTEX_A = new Vector2D(1449,899);
-    private static final Vector2D O8_VERTEX_B = new Vector2D(1299,1048);
-    private static final Vector2D O8_VERTEX_C = new Vector2D(1449,1048);
+    private static final Vector2D O8_VERTEX_A = new Vector2D(1449, 899);
+    private static final Vector2D O8_VERTEX_B = new Vector2D(1299, 1048);
+    private static final Vector2D O8_VERTEX_C = new Vector2D(1449, 1048);
     private static final double O8_BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
 
-    private static final Vector2D O9_VERTEX_A = new Vector2D(1199,31);
-    private static final Vector2D O9_VERTEX_B = new Vector2D(1349,31);
-    private static final Vector2D O9_VERTEX_C = new Vector2D(1199,181);
+    private static final Vector2D O9_VERTEX_A = new Vector2D(1199, 31);
+    private static final Vector2D O9_VERTEX_B = new Vector2D(1349, 31);
+    private static final Vector2D O9_VERTEX_C = new Vector2D(1199, 181);
     private static final double O9_BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
 
     // PORTAL OBSTACLES
@@ -134,14 +134,14 @@ public class MapG implements GameMapFactory {
     private final SurfaceFactory surfaceFactory;
 
     /**
-     * Constructs a FirstMap using a default SurfaceFactory implementation.
+     * Constructs the map using a default SurfaceFactory implementation.
      */
     public MapG() {
             this(new SurfaceFactoryImpl());
     }
 
     /**
-     * Constructs a FirstMap using the provided SurfaceFactory.
+     * Constructs the map using the provided SurfaceFactory.
      * 
      * @param surfaceFactory the factory used to build surfaces
      */
@@ -150,16 +150,7 @@ public class MapG implements GameMapFactory {
     }
 
     /**
-     * Builds a simple test game map.
-     * 
-     * <p>
-     * The flat surface allows for straightforward physics simulation and visual
-     * testing of the ball mechanics and user interactions.
-     * </p>
-     * 
-     * @return a GameMap instance containing two rectangular surfaces with different
-     *         properties: a large green surface (500×800) and a smaller blue
-     *         surface (100×200)
+     * Builds the seventh game map.
      */
     @Override
     public GameMap buildGameMap() {
@@ -185,15 +176,20 @@ public class MapG implements GameMapFactory {
         obstacles.add(new WallObstacle(new Vector2D(O2_X, O2_Y), O2_WIDTH, O2_HEIGHT));
         obstacles.add(new WallObstacle(new Vector2D(O3_X, O3_Y), O3_WIDTH, O3_HEIGHT));
         obstacles.add(new WallObstacle(new Vector2D(O4_X, O4_Y), O4_WIDTH, O4_HEIGHT));
-        obstacles.add(new TriangleObstacle(O5_VERTEX_A, O5_VERTEX_B, O5_VERTEX_C, O5_BOUNCINESS));
-        obstacles.add(new TriangleObstacle(O6_VERTEX_A, O6_VERTEX_B, O6_VERTEX_C, O6_BOUNCINESS));
-        obstacles.add(new TriangleObstacle(O7_VERTEX_A, O7_VERTEX_B, O7_VERTEX_C, O7_BOUNCINESS));
-        obstacles.add(new TriangleObstacle(O8_VERTEX_A, O8_VERTEX_B, O8_VERTEX_C, O8_BOUNCINESS));
-        obstacles.add(new TriangleObstacle(O9_VERTEX_A, O9_VERTEX_B, O9_VERTEX_C, O9_BOUNCINESS));
-        obstacles.addAll(PortalObstacle.createPair(O10_PORTAL_A, O11_PORTAL_B, PORTAL_RADIUS));
+        obstacles.add(new TriangleObstacle(O5_VERTEX_A, O5_VERTEX_B, O5_VERTEX_C, 
+                                                O5_BOUNCINESS));
+        obstacles.add(new TriangleObstacle(O6_VERTEX_A, O6_VERTEX_B, O6_VERTEX_C, 
+                                                O6_BOUNCINESS));
+        obstacles.add(new TriangleObstacle(O7_VERTEX_A, O7_VERTEX_B, O7_VERTEX_C, 
+                                                O7_BOUNCINESS));
+        obstacles.add(new TriangleObstacle(O8_VERTEX_A, O8_VERTEX_B, O8_VERTEX_C, 
+                                                O8_BOUNCINESS));
+        obstacles.add(new TriangleObstacle(O9_VERTEX_A, O9_VERTEX_B, O9_VERTEX_C, 
+                                                O9_BOUNCINESS));
+        obstacles.addAll(PortalObstacle.createPair(O10_PORTAL_A, O11_PORTAL_B, 
+                                                        PORTAL_RADIUS));
 
         return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
                 new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
     }
 }
-

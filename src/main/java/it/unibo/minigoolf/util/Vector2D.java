@@ -8,6 +8,10 @@ import java.awt.Point;
  * @author Mattia
  */
 public class Vector2D {
+
+    /**
+     * The representation of a zero vector with coordinates (0.0, 0.0).
+     */
     public static final Vector2D ZERO = new Vector2D(0.0, 0.0);
 
     private final double x;
