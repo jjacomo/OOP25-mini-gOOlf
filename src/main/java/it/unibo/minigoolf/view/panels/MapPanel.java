@@ -25,10 +25,11 @@ import it.unibo.minigoolf.view.texturemanager.TextureManager;
 
 /**
  * Panel responsible for rendering the game map, including surfaces, obstacles,
+ * hole
  * and the ball.
  * This panel uses a logical coordinate system (1920×1080) that scales to the
- * actual panel size
- * for consistent on-screen positioning across different resolutions.
+ * actual panel size for consistent on-screen positioning across different
+ * resolutions.
  *
  * @author jack
  */
@@ -43,8 +44,6 @@ public class MapPanel extends JPanel {
 
     /**
      * Constructs a MapPanel with the specified game map controller.
-     * Initializes the panel with default start dimensions (960×540) and sets up
-     * the internal state for rendering the game map.
      *
      * @param mapController the controller managing the game map data
      */
@@ -89,10 +88,6 @@ public class MapPanel extends JPanel {
                     }
                 });
 
-        g2d.setColor(Color.BLACK);
-        drawShape(mapController.getHoleController().getShape(), g2d, null);
-        g2d.setColor(Color.WHITE);
-        drawShape(mapController.getBallController().getBallShape(), g2d, null);
         g2d.setColor(Color.DARK_GRAY);
         for (final Obstacle obstacle : mapController.getObstacleController().getObstacles()) {
             final Color obstacleColor;
@@ -110,6 +105,11 @@ public class MapPanel extends JPanel {
             g2d.setColor(obstacleColor);
             drawShape(obstacle.getShape(), g2d, null);
         }
+
+        g2d.setColor(Color.BLACK);
+        drawShape(mapController.getHoleController().getShape(), g2d, null);
+        g2d.setColor(Color.WHITE);
+        drawShape(mapController.getBallController().getBallShape(), g2d, null);
 
         drawFlag(g2d,
                 new Vector2D(
@@ -136,8 +136,8 @@ public class MapPanel extends JPanel {
 
     /**
      * Draws a shape with the given texture. This method handles different shape
-     * types
-     * by checking their concrete type and applying the appropriate drawing logic.
+     * types by checking their concrete type and applying the appropriate drawing
+     * logic.
      *
      * @param shape   the shape to draw
      * @param g2d     the graphics context

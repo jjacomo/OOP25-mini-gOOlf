@@ -3,9 +3,9 @@ package it.unibo.minigoolf.util.shapes;
 import it.unibo.minigoolf.util.Vector2D;
 
 /**
+ * Represents a rectangular area in 2D space.
+ * 
  * @author jack
- *
- *         Represents a rectangular area in 2D space.
  *
  * @param position the top-left corner of the rectangle
  * @param width    the width of the rectangle
@@ -25,13 +25,6 @@ public record Rectangle(Vector2D position, double width, double height) implemen
         }
     }
 
-    /**
-     * Checks if the given position is contained within this rectangle.
-     * 
-     * @param position the position to check
-     * 
-     * @return true if the position is inside the rectangle, false otherwise
-     */
     @Override
     public boolean contains(final Vector2D position2d) {
         return position2d.getX() >= this.position.getX()

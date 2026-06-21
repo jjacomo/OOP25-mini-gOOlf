@@ -35,6 +35,11 @@ classDiagram
     Giocatore --> "0..*" Colpo
 ```
 
+-- jack -- (Quella di fede per me va bene, forse riassumerei ancora un po'...)
+
+Un gioco di mini-golf è composto da una sequenza di mappe. Ogni mappa contiene una pallina, una buca, un insieme di superfici e un insieme di ostacoli. La pallina si muove sulla mappa interagendo con superfici e ostacoli che ne modificano velocita' e direzione.
+Una partita coinvolge uno o più giocatori che si alternano a turni. Ad ogni turno il giocatore effettua un colpo, indicando direzione e potenza. Il punteggio di ciascun giocatore su una mappa corrisponde al numero di colpi effettuati. L'obiettivo è far entrare la pallina nella buca.
+
 ## 2.1 Architettura
 
 -- fede --

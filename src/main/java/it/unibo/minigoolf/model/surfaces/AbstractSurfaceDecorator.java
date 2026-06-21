@@ -8,8 +8,6 @@ import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
  * An abstract decorator for surfaces that delegates all methods to a base surface.
- * Subclasses can override specific methods to modify behavior while preserving the
- * contract of the {@link Surface} interface.
  * 
  * @author jack
  */
@@ -34,8 +32,6 @@ public abstract class AbstractSurfaceDecorator implements Surface {
      * {@inheritDoc}
      * 
      * <p>This implementation delegates to the decorated base surface.
-     * Subclasses may override this method only if they preserve the {@link Surface}
-     * contract for friction.
      */
     @Override
     public double getFriction() {
@@ -46,8 +42,6 @@ public abstract class AbstractSurfaceDecorator implements Surface {
      * {@inheritDoc}
      * 
      * <p>This implementation delegates to the decorated base surface.
-     * Subclasses may override this method only if they preserve the {@link Surface}
-     * containment semantics.
      */
     @Override
     public boolean contains(final Vector2D position) {
@@ -88,7 +82,6 @@ public abstract class AbstractSurfaceDecorator implements Surface {
      * {@inheritDoc}
      * 
      * <p>This implementation delegates to the decorated base surface.
-     * Subclasses may override this method to augment the wind effect.
      */
     @Override
     public Optional<Vector2D> getWind() {

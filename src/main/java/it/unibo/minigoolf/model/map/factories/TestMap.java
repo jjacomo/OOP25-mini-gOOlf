@@ -32,8 +32,6 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * 
  * @see GameMapFactory
  * @see GameMap
- * @see RectangularSurface
- * @see Surface
  */
 public class TestMap implements GameMapFactory {
 
@@ -134,11 +132,6 @@ public class TestMap implements GameMapFactory {
          * @return a GameMap instance containing two rectangular surfaces with different
          *         properties: a large green surface (500×800) and a smaller blue
          *         surface (100×200)
-         * 
-         * @implNote The surface is created with hardcoded dimensions and friction
-         *           values.
-         *           A future implementation should externalize these values to
-         *           configuration.
          */
         @Override
         public GameMap buildGameMap() {

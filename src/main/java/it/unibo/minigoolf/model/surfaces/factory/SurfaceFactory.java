@@ -65,16 +65,4 @@ public interface SurfaceFactory {
      * @return a new decorated boost surface
      */
     Surface createBoost(Surface baseSurface, double intensity);
-
-    /**
-     * Creates a custom surface with specific properties.
-     * 
-     * @param shape    the geometric shape defining the surface boundaries
-     * @param friction the friction coefficient of the surface
-     * @param zIndex   the z-index of the surface for rendering and layering
-     * @param typeId   the unique identifier for the surface type (used for
-     *                 rendering/styling)
-     * @return a new custom surface
-     */
-    Surface createCustom(Shape shape, double friction, int zIndex, String typeId);
 }

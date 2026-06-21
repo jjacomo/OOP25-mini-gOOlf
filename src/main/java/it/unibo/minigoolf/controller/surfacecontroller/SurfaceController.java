@@ -9,6 +9,8 @@ import it.unibo.minigoolf.util.shapes.Shape;
 /**
  * Controller interface for managing a surface and providing its view
  * representation.
+ * 
+ * @author jack
  */
 public interface SurfaceController {
 

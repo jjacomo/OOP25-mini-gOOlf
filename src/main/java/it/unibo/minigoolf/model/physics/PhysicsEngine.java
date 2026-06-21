@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Physics engine for the mini-golf domain.
+ * Physics engine for the mini-gOOlf domain.
  *
  * <p>
  * It contains the physics update logic for the ball and the interactions with
@@ -47,16 +47,7 @@ public final class PhysicsEngine {
     }
 
     /**
-     * Updates the ball state using pre-resolved model objects.
-     *
-     * <p>
-     * This overload is intended for use by the controller layer: the caller
-     * extracts the current surface and obstacle list from its own controllers
-     * and passes them in, keeping {@code PhysicsEngine} free of any controller
-     * dependency. The {@code ball} parameter may be any implementation of
-     * {@link Ball}, including an adapter that delegates writes back to a
-     * {@code BallController}.
-     * </p>
+     * Updates the ball state.
      *
      * @param ball      the ball whose state will be updated
      * @param surface   the surface currently under the ball

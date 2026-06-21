@@ -7,8 +7,7 @@ import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
- * Represents a surface in the game world that can affect physics and rendering.
- * Surfaces have friction and wind properties that must be applied to the ball.
+ * Represents a surface in the game map that can affect physics and rendering.
  * 
  * @author jack
  */
@@ -16,7 +15,6 @@ public interface Surface {
 
     /**
      * Returns the friction coefficient of this surface.
-     * Friction affects the movement of objects interacting with this surface.
      *
      * @return the friction value as a double
      */
@@ -31,10 +29,9 @@ public interface Surface {
     boolean contains(Vector2D position);
 
     /**
-     * Returns the z-index of this surface, used for layering in rendering.
+     * Returns the z-index of this surface, used for layering in rendering and
+     * applying physics.
      * Higher z-index values indicate surfaces that should be rendered on top.
-     * Friction is applied based on the surface with the highest z-index at the
-     * ball's position.
      *
      * @return the z-index as an integer
      */
@@ -42,7 +39,6 @@ public interface Surface {
 
     /**
      * Returns the list of all type identifiers for this surface, including any decorators.
-     * Ordered from the innermost base surface to the outermost decorator.
      *
      * @return a list of type IDs
      */

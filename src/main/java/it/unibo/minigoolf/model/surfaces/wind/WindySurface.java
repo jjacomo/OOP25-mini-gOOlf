@@ -7,9 +7,8 @@ import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
 
 /**
- * A decorator that adds a wind effect to a base surface.
- * The wind from this decorator is added to any wind already present in the base
- * surface.
+ * A decorator that adds a wind effect to a base surface by returning a not
+ * empty wind optional.
  */
 public final class WindySurface extends AbstractSurfaceDecorator {
 

@@ -10,6 +10,8 @@ import it.unibo.minigoolf.util.shapes.Shape;
 
 /**
  * Implementation of the SurfaceController.
+ *
+ * @author jack
  */
 public final class SurfaceControllerImpl implements SurfaceController {
 

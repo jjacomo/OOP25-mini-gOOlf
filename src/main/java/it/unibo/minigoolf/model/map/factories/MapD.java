@@ -7,6 +7,7 @@ import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
+import it.unibo.minigoolf.model.obstacles.AbstractObstacle;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
@@ -22,8 +23,6 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * 
  * @see GameMapFactory
  * @see GameMap
- * @see RectangularSurface
- * @see Surface
  * 
  */
 public class MapD implements GameMapFactory {
@@ -37,21 +36,17 @@ public class MapD implements GameMapFactory {
 
     // SAND 
     private static final double SAND_X = 400;
-    private static final double SAND_Y = 30;
-    private static final double SAND_WIDTH = 1200;
-    private static final double SAND_HEIGHT = 300;
+    private static final double SAND_Y = 31;
+    private static final double SAND_WIDTH = 1100;
+    private static final double SAND_HEIGHT = 494;
     private static final int SAND_Z_INDEX = 2;
 
     // ICE
     private static final double ICE_X = 400;
-    private static final double ICE_Y = 750;
-    private static final double ICE_WIDTH = 1200;
-    private static final double ICE_HEIGHT = 200;
+    private static final double ICE_Y = 555;
+    private static final double ICE_WIDTH = 1100;
+    private static final double ICE_HEIGHT = 494;
     private static final int ICE_Z_INDEX = 4;
-
-    // OBSTACLES BOUNCYNESS
-    private static final double STICKY_BOUNCINESS = 0.5;
-    private static final double BOUNCY_BOUNCINESS = 1.5;
 
     // EXTERNAL WALLS
     private static final double W1_X = 0;
@@ -75,30 +70,59 @@ public class MapD implements GameMapFactory {
     private static final double W4_HEIGHT = 31;
 
     // ROUND OBSTACLES
-    private static final double O1_X = 500;
-    private static final double O1_Y = 185;
-    private static final double O1_RADIUS = 40;
-    private static final double O1_BOUNCINESS = STICKY_BOUNCINESS;
+    private static final double O1_X = 600;
+    private static final double O1_Y = 292;
+    private static final double O1_RADIUS = 60;
+    private static final double O1_BOUNCINESS = AbstractObstacle.STICKY_BOUNCINESS;
 
-    private static final double O2_X = 600;
-    private static final double O2_Y = 75;
-    private static final double O2_RADIUS = 40;
-    private static final double O2_BOUNCINESS = BOUNCY_BOUNCINESS;
+    private static final double O2_X = 950;
+    private static final double O2_Y = 140;
+    private static final double O2_RADIUS = 50;
+    private static final double O2_BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
 
-    private static final double O3_X = 600;
-    private static final double O3_Y = 205;
-    private static final double O3_RADIUS = 40;
-    private static final double O3_BOUNCINESS = BOUNCY_BOUNCINESS;
+    private static final double O3_X = 950;
+    private static final double O3_Y = 415;
+    private static final double O3_RADIUS = 50;
+    private static final double O3_BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
 
-    private static final double O4_X = 700;
-    private static final double O4_Y = 185;
-    private static final double O4_RADIUS = 40;
-    private static final double O4_BOUNCINESS = STICKY_BOUNCINESS;
+    private static final double O4_X = 1300;
+    private static final double O4_Y = 292;
+    private static final double O4_RADIUS = 60;
+    private static final double O4_BOUNCINESS = AbstractObstacle.STICKY_BOUNCINESS;
 
+    //WALL OBSTACLES
+    private static final double O5_X = 400;
+    private static final double O5_Y = 525;
+    private static final double O5_WIDTH = 1100;
+    private static final double O5_HEIGHT = 31;
+
+    private static final double O6_X = 400;
+    private static final double O6_Y = 555;
+    private static final double O6_WIDTH = 31;
+    private static final double O6_HEIGHT = 350;
+
+    private static final double O7_X = 530;
+    private static final double O7_Y = 700;
+    private static final double O7_WIDTH = 970;
+    private static final double O7_HEIGHT = 31;
+
+    private static final double O8_X = 430;
+    private static final double O8_Y = 875;
+    private static final double O8_WIDTH = 940;
+    private static final double O8_HEIGHT = 31;
+
+    private static final double O9_X = 1470;
+    private static final double O9_Y = 700;
+    private static final double O9_WIDTH = 31;
+    private static final double O9_HEIGHT = 350;
+
+    //BALL
     private static final double BALL_RADIUS = 30;
-    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(1800, 80);
+    private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(100, 540);
+
+    //HOLE
     private static final double HOLE_RADIUS = 30;
-    private static final Vector2D HOLE_POSITION = new Vector2D(1780, 980);
+    private static final Vector2D HOLE_POSITION = new Vector2D(1780, 540);
 
     private final SurfaceFactory surfaceFactory;
 
@@ -129,11 +153,6 @@ public class MapD implements GameMapFactory {
      * @return a GameMap instance containing two rectangular surfaces with different
      *         properties: a large green surface (500×800) and a smaller blue
      *         surface (100×200)
-     * 
-     * @implNote The surface is created with hardcoded dimensions and friction
-     *           values.
-     *           A future implementation should externalize these values to
-     *           configuration.
      */
     @Override
     public GameMap buildGameMap() {
@@ -157,6 +176,11 @@ public class MapD implements GameMapFactory {
             obstacles.add(new RoundObstacle(new Vector2D(O2_X, O2_Y), O2_RADIUS, O2_BOUNCINESS));
             obstacles.add(new RoundObstacle(new Vector2D(O3_X, O3_Y), O3_RADIUS, O3_BOUNCINESS));
             obstacles.add(new RoundObstacle(new Vector2D(O4_X, O4_Y), O4_RADIUS, O4_BOUNCINESS));
+            obstacles.add(new WallObstacle(new Vector2D(O5_X, O5_Y), O5_WIDTH, O5_HEIGHT));
+            obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT));
+            obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT));
+            obstacles.add(new WallObstacle(new Vector2D(O8_X, O8_Y), O8_WIDTH, O8_HEIGHT));
+            obstacles.add(new WallObstacle(new Vector2D(O9_X, O9_Y), O9_WIDTH, O9_HEIGHT));
             return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
                             new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
     }

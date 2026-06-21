@@ -8,7 +8,7 @@ import it.unibo.minigoolf.util.Vector2D;
  * Implements the Shape interface to check if a point is contained within the
  * circle.
  *
- * @author Mattia
+ * @author Jack and Mattia
  * 
  * @param position the center position of the circle as a Vector2D
  * @param radius   the radius of the circle

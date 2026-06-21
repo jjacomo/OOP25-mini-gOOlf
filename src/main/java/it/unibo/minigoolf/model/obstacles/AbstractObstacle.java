@@ -22,6 +22,16 @@ public abstract class AbstractObstacle implements Obstacle {
     protected static final double DEFAULT_BOUNCINESS = 1.0;
 
     /**
+     * Bounciness value used to create the sticky obstacles.
+     */
+    public static final double STICKY_BOUNCINESS = 0.5;
+
+    /**
+     * Bounciness value used to create the bouncy obstacles.
+     */
+    public static final double BOUNCY_BOUNCINESS = 1.5;
+
+    /**
      * Threshold for resting contact to prevent infinite bouncing against 
      *  continuous forces.
      */

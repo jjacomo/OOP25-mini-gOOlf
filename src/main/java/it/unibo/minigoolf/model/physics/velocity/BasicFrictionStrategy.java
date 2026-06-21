@@ -21,7 +21,7 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
 
     private static final int HIGH_SPEED_THRESHOLD = 1_000;
     private static final int MEDIUM_SPEED_THRESHOLD = 200;
-    private static final int LOW_SPEED_THRESHOLD = 5;
+    private static final double LOW_SPEED_THRESHOLD = 0.5;
     private static final int HIGH_FRICTION_MULTIPLIER = 15_000;
     private static final int MEDIUM_FRICTION_MULTIPLIER = 10_000;
     private static final int LOW_FRICTION_MULTIPLIER = 500;
@@ -33,8 +33,7 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
      * the time elapsed since the last update.
      * This method applies a friction force to the ball's velocity, which is
      * calculated based on the surface's friction coefficient and the ball's current
-     * speed. The friction force is stronger at higher speeds to prevent the ball
-     * from becoming uncontrollable, and it becomes weaker as the ball slows down.
+     * speed.
      *
      * @param ball      the ball whose velocity is to be updated
      * @param surface   the surface on which the ball is currently located, which

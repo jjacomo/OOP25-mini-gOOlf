@@ -10,7 +10,8 @@ import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 
 /**
- * Represents a game map in the mini-golf game, providing access to surfaces at specific positions.
+ * Represents a game map in the mini-gOOlf game, providing access to surfaces,
+ * obstacles, ball and hole.
  * 
  * @author jack
  */

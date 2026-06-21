@@ -4,7 +4,7 @@ import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 
 /**
- * Implementation of the Hole interface representing the hole in the mini golf
+ * Implementation of the Hole interface representing the hole in the mini-gOOlf
  * game.
  * 
  * @author jack
@@ -16,8 +16,8 @@ public final class HoleImpl implements Hole {
     /**
      * Constructs a new HoleImpl with the specified position and radius.
      * 
-     * @param position the position of the hole in the game coordinate system
-     * @param radius   the radius of the hole in game units
+     * @param position the position of the hole
+     * @param radius   the radius of the hole
      */
     public HoleImpl(final Vector2D position, final double radius) {
         this.position = position;

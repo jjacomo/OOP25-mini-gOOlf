@@ -14,22 +14,18 @@ import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.util.Vector2D;
 
 /**
- * Implementation of the GameMap interface.
- * Manages a collection of surfaces and provides methods to query surfaces at
- * specific positions.
+ * Manages a collection of surfaces, obstacles, a ball and a hole, and provides
+ * methods to query them.
  * 
  * @author jack
  */
 public final class GameMapImpl implements GameMap {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameMapImpl.class);
 
-    /** The list of surfaces in the game map. */
     private final List<Surface> surfaces;
 
-    /** The list of obstacles in the game map. */
     private final List<Obstacle> obstacles;
 
-    /** The ball in the game map. */
     private final Ball ball;
 
     private final Hole hole;
@@ -54,11 +50,6 @@ public final class GameMapImpl implements GameMap {
         this.hole = hole;
     }
 
-    /**
-     * {@inheritDoc}
-     * This implementation finds the surface with the highest z-index that contains
-     * the position.
-     */
     @Override
     public Surface getSurfaceAt(final Vector2D position) {
         final Surface highestSurface;

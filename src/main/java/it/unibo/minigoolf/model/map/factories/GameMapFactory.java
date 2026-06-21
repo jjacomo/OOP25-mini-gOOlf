@@ -7,40 +7,21 @@ import it.unibo.minigoolf.model.map.GameMap;
  * 
  * <p>
  * This interface encapsulates the creation of diverse game maps with different
- * configurations, surfaces, and obstacles. Implementations of this interface
- * provide
- * concrete strategies for building game maps tailored to specific game
- * scenarios,
- * difficulty levels, or test requirements.
- * </p>
- * 
- * <p>
- * Implementations should follow the Factory Pattern to enable flexible map
- * creation
- * without tightly coupling map construction logic to client code.
+ * configurations, surfaces, and obstacles.
  * </p>
  * 
  * @author jack
  * 
  * @see GameMap
- * @see RectangularSurface
- * @see Surface
  */
 @FunctionalInterface
 public interface GameMapFactory {
 
     /**
-     * Builds and returns a new game map instance.
+     * Builds and returns a new game map instance containing a set of surfaces, a
+     * set of obstacles, a ball and a hole.
      * 
-     * <p>
-     * The returned GameMap contains a collection of surfaces with various
-     * properties
-     * such as friction coefficients and z-indices. The exact configuration depends
-     * on
-     * the specific implementation.
-     * </p>
-     * 
-     * @return a newly constructed GameMap instance with configured surfaces
+     * @return a newly constructed GameMap instance
      */
     GameMap buildGameMap();
 }

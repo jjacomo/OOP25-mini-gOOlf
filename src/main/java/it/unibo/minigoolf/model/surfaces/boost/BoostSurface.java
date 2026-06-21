@@ -19,7 +19,7 @@ public final class BoostSurface extends AbstractSurfaceDecorator {
      * Constructs a BoostSurface.
      * 
      * @param baseSurface    the base surface to decorate
-     * @param boostIntensity the intensity of the boost (will result in negative friction)
+     * @param boostIntensity the intensity of the boost
      * @throws IllegalArgumentException if boostIntensity is not positive
      */
     public BoostSurface(final Surface baseSurface, final double boostIntensity) {
