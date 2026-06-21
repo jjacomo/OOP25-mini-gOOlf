@@ -8,6 +8,7 @@ import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
@@ -27,12 +28,20 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * 
  */
 public class MapC implements GameMapFactory {
+        
+        // DA MODIFICARE QUANDO DAMBRO LO METTE NEL COSTRUTTORE
+        private static final double BOUNCINESS = 1.5;
 
         private static final double GRASS1_X = 0;
         private static final double GRASS1_Y = 0;
         private static final double GRASS1_WIDTH = 1920;
         private static final double GRASS1_HEIGHT = 1080;
         private static final int GRASS1_Z_INDEX = 0;
+
+        // PORTAL
+        private static final Vector2D PORTAL_A_POS = new Vector2D(550,375);
+        private static final Vector2D PORTAL_B_POS = new Vector2D(1800,375);
+        private static final double PORTAL_R = 55;
 
         // SAND 
         private static final double SAND_X = 0;
@@ -200,8 +209,15 @@ public class MapC implements GameMapFactory {
                 obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT));
                 obstacles.add(new RoundObstacle(new Vector2D(O8_X, O8_Y), O8_RADIUS));
-                obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS));
-                obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS));
+                obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS, BOUNCINESS));
+                obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS, BOUNCINESS));
+                
+                obstacles.addAll(
+                PortalObstacle.createPair(
+                        PORTAL_A_POS,
+                        PORTAL_B_POS,
+                        PORTAL_R));
+
                 return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
                                 new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
         }

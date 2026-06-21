@@ -1,0 +1,21 @@
+Report - 06/18 - 71 ore
+
+FATTO:
+
+- mettere nei test la musica ambient DONE!
+
+- Mappa C DONE!
+
+DA FARE:
+
+-  mappa tutorial da fare!
+
+- scrivere il Report
+
+- ricontrollare codice e javadoc!
+
+
+
+EXTRA:
+
+AGENDA:
