@@ -26,9 +26,7 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  */
 public class MapC implements GameMapFactory {
         
-        // DA MODIFICARE QUANDO DAMBRO LO METTE NEL COSTRUTTORE
-        private static final double BOUNCINESS = 1.5;
-
+        // GRASS (FILLS THE WHOLE MAP)
         private static final double GRASS1_X = 0;
         private static final double GRASS1_Y = 0;
         private static final double GRASS1_WIDTH = 1920;
@@ -47,14 +45,14 @@ public class MapC implements GameMapFactory {
         private static final double SAND_HEIGHT = 900;
         private static final int SAND_Z_INDEX = 2;
 
-        // ICE down
+        // ICE BOTTOM
         private static final double ICE_X = 400;
         private static final double ICE_Y = 850;
         private static final double ICE_WIDTH = 1270;
         private static final double ICE_HEIGHT = 200;
         private static final int ICE_Z_INDEX = 4;
 
-        // ICE up
+        // ICE TOP
         private static final double ICE2_X = 0;
         private static final double ICE2_Y = 0;
         private static final double ICE2_WIDTH = 1920;
@@ -89,25 +87,23 @@ public class MapC implements GameMapFactory {
         private static final double O2_WIDTH = 50;
         private static final double O2_HEIGHT = 200;
 
-        //sotto
+        // BOTTOM
         private static final double O3_X = 400;
         private static final double O3_Y = 850;
         private static final double O3_WIDTH = 1275;
         private static final double O3_HEIGHT = 50;
 
-        //sopra
+        // TOP
         private static final double O31_X = 380;
         private static final double O31_Y = 250;
         private static final double O31_WIDTH = 1550;
         private static final double O31_HEIGHT = 50;
 
-        //VERTICALE SX
         private static final double O4_X = 1400;
-        private static final double O4_Y = 600;
+        private static final double O4_Y = 700;
         private static final double O4_WIDTH = 50;
-        private static final double O4_HEIGHT = 300;
+        private static final double O4_HEIGHT = 200;
 
-        //VERTICALE DX
         private static final double O5_X = 1625;
         private static final double O5_Y = 300;
         private static final double O5_WIDTH = 50;
@@ -137,6 +133,9 @@ public class MapC implements GameMapFactory {
         private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(1800, 80);
         private static final double HOLE_RADIUS = 30;
         private static final Vector2D HOLE_POSITION = new Vector2D(1780, 980);
+
+        // Bounciness constat
+        private static final double BOUNCINESS = 1.5;
 
         private final SurfaceFactory surfaceFactory;
 
