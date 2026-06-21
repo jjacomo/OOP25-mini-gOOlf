@@ -40,6 +40,10 @@ classDiagram
 Un gioco di mini-golf è composto da una sequenza di mappe. Ogni mappa contiene una pallina, una buca, un insieme di superfici e un insieme di ostacoli. La pallina si muove sulla mappa interagendo con superfici e ostacoli che ne modificano velocita' e direzione.
 Una partita coinvolge uno o più giocatori che si alternano a turni. Ad ogni turno il giocatore effettua un colpo, indicando direzione e potenza. Il punteggio di ciascun giocatore su una mappa corrisponde al numero di colpi effettuati. L'obiettivo è far entrare la pallina nella buca.
 
+-- matti -- (Mix tra quello di jack e fede)
+Un gioco di mini-golf è composto da una sequenza di mappe, ognuna costituita da una pallina, una buca, una o più superfici ed alcuni ostacoli. La pallina si muove sulle superfici seguendo le leggi della fisica, variando la sua velocità a seconda dell'attrito con la superficie o della presenza del vento e rimbalzando sugli ostacoli normali o avanzati. (oppure, rimanendo vicino alla versione di jack: La pallina si muove nella mappa interagendo con superfici e ostacoli che ne modificano velocita' e direzione secondo leggi fisiche).
+Una partita coinvolge uno o più giocatori che si alternano a turni per colpire la pallina, indicandone direzione e potenza, e mandandola in buca. Il punteggio di ciascun partecipante su una mappa corrisponde al numero di colpi effettuati.
+
 ## 2.1 Architettura
 
 -- fede --
