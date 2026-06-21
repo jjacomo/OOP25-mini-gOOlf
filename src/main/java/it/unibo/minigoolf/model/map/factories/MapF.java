@@ -7,6 +7,7 @@ import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactory;
 import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactoryImpl;
+import it.unibo.minigoolf.model.obstacles.AbstractObstacle;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
@@ -134,16 +135,16 @@ public class MapF implements GameMapFactory {
     // special obstacles
     private static final Vector2D BOUNCY1_OBS_POS = new Vector2D(500, 250);
     private static final double BOUNCY1_OBS_RADIUS = 40;
-    private static final double BOUNCINESS1 = 0.5;
+    private static final double BOUNCINESS1 = AbstractObstacle.STICKY_BOUNCINESS;
     private static final Vector2D BOUNCY2_OBS_POS = new Vector2D(0, 0);
     private static final double BOUNCY2_OBS_RADIUS = 150;
-    private static final double BOUNCINESS2 = 1.5;
+    private static final double BOUNCINESS2 = AbstractObstacle.BOUNCY_BOUNCINESS;
     private static final Vector2D BOUNCY3_OBS_POS = new Vector2D(1300, 250);
     private static final double BOUNCY3_OBS_RADIUS = 100;
-    private static final double BOUNCINESS3 = 0.5;
+    private static final double BOUNCINESS3 = AbstractObstacle.STICKY_BOUNCINESS;
     private static final Vector2D BOUNCY4_OBS_POS = new Vector2D(1920, 660);
     private static final double BOUNCY4_OBS_RADIUS = 150;
-    private static final double BOUNCINESS4 = 0.5;
+    private static final double BOUNCINESS4 = AbstractObstacle.STICKY_BOUNCINESS;
     private static final Vector2D PORTAL1_POS = new Vector2D(1000, 730);
     private static final Vector2D PORTAL2_POS = new Vector2D(1800, 110);
     private static final double PORTAL_RADIUS = 30;
