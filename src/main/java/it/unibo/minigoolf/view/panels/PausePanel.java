@@ -4,9 +4,7 @@ import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -17,8 +15,8 @@ import java.awt.event.MouseAdapter;
 import java.io.Serial;
 
 /**
- * The pause menu overlay.
- * It is NOT a panel within the CardLayout — it is a glass pane over GamePanel.
+ * Overlay panel for the pause menu. 
+ * Rendered as a glass pane over the active game session rather than a CardLayout scene.
  *
  * @author dbakko
  */
@@ -27,6 +25,8 @@ public final class PausePanel extends JPanel {
     @Serial
     private static final long serialVersionUID = 1L;
     private static final int TINT = 150;
+    private static final int TUTORIAL_WIDTH = 800;
+    private static final int TUTORIAL_HEIGHT = 450;
 
     // Tutorial image
     private static final String TUTORIAL_IMG_PATH = "/tutorial/tutorial_img.jpeg";
@@ -73,30 +73,37 @@ public final class PausePanel extends JPanel {
         menuBox.add(quitButton);
 
         this.add(menuBox, new GridBagConstraints());
-        // Block mouse eclicks from reaching the game while paused.
+        // Block mouse clicks from reaching the game while paused.
         this.addMouseListener(new MouseAdapter() { });
     }
 
     /**
-     * Displays a popup dialog containing the tutorial image.
+     * Displays a popup dialog containing the tutorial image, scaled to fit the screen.
      */
     private void showTutorialPopup() {
         final java.net.URL imgUrl = getClass().getResource(TUTORIAL_IMG_PATH);
         if (imgUrl != null) {
-            final ImageIcon icon = new ImageIcon(imgUrl);
-            JOptionPane.showMessageDialog(
+            
+            final javax.swing.ImageIcon originalIcon = new javax.swing.ImageIcon(imgUrl);
+            
+            final java.awt.Image scaledImg = originalIcon.getImage().getScaledInstance(
+                TUTORIAL_WIDTH, TUTORIAL_HEIGHT, java.awt.Image.SCALE_SMOOTH);
+            
+            final javax.swing.ImageIcon scaledIcon = new javax.swing.ImageIcon(scaledImg);
+            
+            javax.swing.JOptionPane.showMessageDialog(
                 this, 
-                new JLabel(icon), 
+                new javax.swing.JLabel(scaledIcon), 
                 "How to Play", 
-                JOptionPane.PLAIN_MESSAGE
+                javax.swing.JOptionPane.PLAIN_MESSAGE
             );
         } else {
-            // Fallback se l'immagine non è ancora presente
-            JOptionPane.showMessageDialog(
+            
+            javax.swing.JOptionPane.showMessageDialog(
                 this, 
                 "Tutorial image not found!\nPlease add it to: " + TUTORIAL_IMG_PATH, 
                 "Missing Resource", 
-                JOptionPane.WARNING_MESSAGE
+                javax.swing.JOptionPane.WARNING_MESSAGE
             );
         }
     }
