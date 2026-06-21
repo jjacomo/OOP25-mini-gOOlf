@@ -29,7 +29,7 @@ public final class PausePanel extends JPanel {
     private static final int TINT = 150;
 
     // Tutorial image
-    private static final String TUTORIAL_IMG_PATH = "/background/leaderboard_bg.png";
+    private static final String TUTORIAL_IMG_PATH = "/tutorial/tutorial_img.jpeg";
 
     /**
      * @param navController the navigation controller

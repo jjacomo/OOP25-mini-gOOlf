@@ -10,173 +10,150 @@ import it.unibo.minigoolf.model.map.GameMapImpl;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
+import it.unibo.minigoolf.model.obstacles.TriangleObstacle;
 import it.unibo.minigoolf.model.obstacles.WallObstacle;
 import it.unibo.minigoolf.model.surfaces.Surface;
 import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactory;
 import it.unibo.minigoolf.model.surfaces.factory.SurfaceFactoryImpl;
+import it.unibo.minigoolf.model.surfaces.wind.WindDirection;
 import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
- * Tutorial Map.
- * 
+ * Tutorial map.
  * @author dbakko
  * @see GameMapFactory
  * @see GameMap
  */
 public class MapT implements GameMapFactory {
 
-        // BACKGROUND GRASS
-        private static final double GRASS_X = 0;
-        private static final double GRASS_Y = 0;
-        private static final double GRASS_WIDTH = 1920;
-        private static final double GRASS_HEIGHT = 1080;
-        private static final int GRASS_Z_INDEX = 0;
+    // --- BASE BACKGROUND ---
+    private static final double GRASS_X = 0;
+    private static final double GRASS_Y = 0;
+    private static final double LOGICAL_WIDTH = 1920;
+    private static final double LOGICAL_HEIGHT = 1080;
+    private static final int GRASS_Z_INDEX = 0;
 
-        // SURFACE PATCHES 
-        private static final double ICE_X = 550;
-        private static final double ICE_Y = 200;
-        private static final double ICE_WIDTH = 250;
-        private static final double ICE_HEIGHT = 680;
+    // --- ROW 1: SURFACES (Squares 200x200 positioned at Y=150) ---
+    private static final double SURF_Y = 150;
+    private static final double SURF_SIZE = 200;
+    private static final int SURF_Z = 1;
+    
+    // Calculated X positions for 5 perfect columns
+    private static final double DIRT_X = 60;
+    private static final double SAND_X = 460;
+    private static final double ICE_X = 860;
+    private static final double WINDY_X = 1260;
+    private static final double BOOST_X = 1660;
+
+    private static final double WIND_STR = 10.0;
+    private static final double BOOST_INT = 1.5;
+
+    // --- ROW 2: OBSTACLES (Centered at Y=600) ---
+    
+    // Column 1: Wall
+    private static final double WALL_X = 60;
+    private static final double WALL_Y = 550;
+    private static final double WALL_W = 200;
+    private static final double WALL_H = 100;
+
+    // Column 2: Triangle (Points upwards)
+    private static final Vector2D TRI_V1 = new Vector2D(460, 650);
+    private static final Vector2D TRI_V2 = new Vector2D(660, 650);
+    private static final Vector2D TRI_V3 = new Vector2D(560, 500);
+
+    // Column 3: Normal Round Obstacle
+    private static final double ROUND_NORM_X = 960;
+    private static final double ROUND_NORM_Y = 600;
+    private static final double ROUND_R = 80;
+
+    // Column 4: Bouncy Round Obstacle
+    private static final double ROUND_BOUNCY_X = 1360;
+    private static final double ROUND_BOUNCY_Y = 600;
+    private static final double BOUNCINESS = 1.5;
+
+    // Column 5: Portal Pair (Stacked vertically in the column)
+    private static final Vector2D PORTAL_A = new Vector2D(1760, 520);
+    private static final Vector2D PORTAL_B = new Vector2D(1760, 680);
+    private static final double PORTAL_R = 50;
+
+    // --- ROW 3: BALL AND HOLE (Centered at Y=900) ---
+    
+    // Aligned under Column 2
+    private static final Vector2D BALL_POS = new Vector2D(560, 900);
+    private static final double BALL_R = 30;
+
+    // Aligned under Column 4
+    private static final Vector2D HOLE_POS = new Vector2D(1360, 900);
+    private static final double HOLE_R = 40;
+
+    // --- BORDER WALLS ---
+    private static final double BORDER_THICKNESS = 31;
+
+    private final SurfaceFactory surfaceFactory;
+
+    /**
+     * Constructs the Showroom Map using a default SurfaceFactory implementation.
+     */
+    public MapT() {
+        this(new SurfaceFactoryImpl());
+    }
+
+    /**
+     * Constructs the Showroom Map using the provided SurfaceFactory.
+     * * @param surfaceFactory the factory used to build surfaces
+     */
+    public MapT(final SurfaceFactory surfaceFactory) {
+        this.surfaceFactory = surfaceFactory;
+    }
+
+    @Override
+    public GameMap buildGameMap() {
+        final List<Surface> surfaces = new ArrayList<>();
+        final List<Obstacle> obstacles = new ArrayList<>();
+
+        // 1. BASE BACKGROUND
+        surfaces.add(surfaceFactory.createGrass(
+                new Rectangle(new Vector2D(GRASS_X, GRASS_Y), LOGICAL_WIDTH, LOGICAL_HEIGHT), 
+                GRASS_Z_INDEX));
+
+        // 2. SURFACES SHOWCASE (Row 1)
+        surfaces.add(surfaceFactory.createDirt(
+                new Rectangle(new Vector2D(DIRT_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z));
         
-        private static final double SAND_X = 1100;
-        private static final double SAND_Y = 200;
-        private static final double SAND_WIDTH = 250;
-        private static final double SAND_HEIGHT = 680;
-        private static final int PATCH_Z_INDEX = 1;
-
-        // ARROWS
-        private static final int ARROW_Z_INDEX = 1;
-
-        // ARROW 1
-        private static final double A1_S_X = 300; private static final double A1_S_Y = 525;
-        private static final double A1_S_W = 100; private static final double A1_S_H = 30;
-        private static final double A1_H1_X = 400; private static final double A1_H1_Y = 490;
-        private static final double A1_H1_W = 40; private static final double A1_H1_H = 100;
-        private static final double A1_H2_X = 440; private static final double A1_H2_Y = 510;
-        private static final double A1_H2_W = 30; private static final double A1_H2_H = 60;
-        private static final double A1_H3_X = 470; private static final double A1_H3_Y = 525;
-        private static final double A1_H3_W = 30; private static final double A1_H3_H = 30;
-
-        // ARROW 2
-        private static final double A2_S_X = 850; private static final double A2_S_Y = 525;
-        private static final double A2_S_W = 100; private static final double A2_S_H = 30;
-        private static final double A2_H1_X = 950; private static final double A2_H1_Y = 490;
-        private static final double A2_H1_W = 40; private static final double A2_H1_H = 100;
-        private static final double A2_H2_X = 990; private static final double A2_H2_Y = 510;
-        private static final double A2_H2_W = 30; private static final double A2_H2_H = 60;
-        private static final double A2_H3_X = 1020; private static final double A2_H3_Y = 525;
-        private static final double A2_H3_W = 30; private static final double A2_H3_H = 30;
-
-        // ARROW 3
-        private static final double A3_S_X = 1420; private static final double A3_S_Y = 525;
-        private static final double A3_S_W = 150; private static final double A3_S_H = 30;
-        private static final double A3_H1_X = 1570; private static final double A3_H1_Y = 490;
-        private static final double A3_H1_W = 40; private static final double A3_H1_H = 100;
-        private static final double A3_H2_X = 1610; private static final double A3_H2_Y = 510;
-        private static final double A3_H2_W = 30; private static final double A3_H2_H = 60;
-        private static final double A3_H3_X = 1640; private static final double A3_H3_Y = 525;
-        private static final double A3_H3_W = 30; private static final double A3_H3_H = 30;
-
-        // BORDER WALLS
-        private static final double W1_X = 0; private static final double W1_Y = 0;
-        private static final double W1_WIDTH = 31; private static final double W1_HEIGHT = 1080;
-        private static final double W2_X = 0; private static final double W2_Y = 0;
-        private static final double W2_WIDTH = 1920; private static final double W2_HEIGHT = 31;
-        private static final double W3_X = 1889; private static final double W3_Y = 0;
-        private static final double W3_WIDTH = 31; private static final double W3_HEIGHT = 1080;
-        private static final double W4_X = 0; private static final double W4_Y = 1049;
-        private static final double W4_WIDTH = 1920; private static final double W4_HEIGHT = 31;
-
-        // PERIPHERAL OBSTACLES 
-        private static final Vector2D PORTAL_A_POS = new Vector2D(150, 150);
-        private static final Vector2D PORTAL_B_POS = new Vector2D(150, 930);
-        private static final double PORTAL_R = 60;
-
-        private static final double ROUND_NORM_X = 1750;
-        private static final double ROUND_NORM_Y = 150;
-        private static final double ROUND_NORM_RADIUS = 60;
-
-        private static final double ROUND_BOUNCY_X = 1750;
-        private static final double ROUND_BOUNCY_Y = 930;
-        private static final double ROUND_BOUNCY_RADIUS = 60;
+        surfaces.add(surfaceFactory.createSand(
+                new Rectangle(new Vector2D(SAND_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z));
         
-        // Bounciness constant
-        private static final double BOUNCINESS = 1.5;
+        surfaces.add(surfaceFactory.createIce(
+                new Rectangle(new Vector2D(ICE_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z));
+        
+        surfaces.add(surfaceFactory.createWindy(
+                surfaceFactory.createGrass(
+                    new Rectangle(new Vector2D(WINDY_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z), 
+                WindDirection.UP, WIND_STR));
+        
+        surfaces.add(surfaceFactory.createBoost(
+                surfaceFactory.createSand(
+                    new Rectangle(new Vector2D(BOOST_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z), 
+                BOOST_INT));
 
-        // BALL AND HOLE
-        private static final Vector2D BALL_INITIAL_POSITION = new Vector2D(150, 540);
-        private static final double BALL_RADIUS = 30;
-        private static final Vector2D HOLE_POSITION = new Vector2D(1720, 540);
-        private static final double HOLE_RADIUS = 30;
+        // 3. OBSTACLES SHOWCASE (Row 2)
+        obstacles.add(new WallObstacle(new Vector2D(WALL_X, WALL_Y), WALL_W, WALL_H));
+        obstacles.add(new TriangleObstacle(TRI_V1, TRI_V2, TRI_V3));
+        obstacles.add(new RoundObstacle(new Vector2D(ROUND_NORM_X, ROUND_NORM_Y), ROUND_R));
+        obstacles.add(new RoundObstacle(new Vector2D(ROUND_BOUNCY_X, ROUND_BOUNCY_Y), ROUND_R, BOUNCINESS));
+        obstacles.addAll(PortalObstacle.createPair(PORTAL_A, PORTAL_B, PORTAL_R));
 
-        private final SurfaceFactory surfaceFactory;
+        // 4. BORDERS (To prevent the ball from escaping during testing)
+        obstacles.add(new WallObstacle(new Vector2D(0, 0), BORDER_THICKNESS, LOGICAL_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(0, 0), LOGICAL_WIDTH, BORDER_THICKNESS));
+        obstacles.add(new WallObstacle(new Vector2D(LOGICAL_WIDTH - BORDER_THICKNESS, 0), BORDER_THICKNESS, LOGICAL_HEIGHT));
+        obstacles.add(new WallObstacle(new Vector2D(0, LOGICAL_HEIGHT - BORDER_THICKNESS), LOGICAL_WIDTH, BORDER_THICKNESS));
 
-        /**
-         * Constructs a TutorialMap using a default SurfaceFactory implementation.
-         */
-        public MapT() {
-                this(new SurfaceFactoryImpl());
-        }
-
-        /**
-         * Constructs a TutorialMap using the provided SurfaceFactory.
-         * * @param surfaceFactory the factory used to build surfaces
-         */
-        public MapT(final SurfaceFactory surfaceFactory) {
-                this.surfaceFactory = surfaceFactory;
-        }
-
-        /**
-         * Builds the tutorial game map.
-         * * @return a GameMap instance containing the tutorial layout
-         */
-        @Override
-        public GameMap buildGameMap() {
-                final List<Surface> surfaces = new ArrayList<>();
-                final List<Obstacle> obstacles = new ArrayList<>();
-
-                // BACKGROUND
-                surfaces.add(surfaceFactory.createGrass(
-                                new Rectangle(new Vector2D(GRASS_X, GRASS_Y), GRASS_WIDTH, GRASS_HEIGHT),
-                                GRASS_Z_INDEX));
-
-                // SURFACE PATCHES
-                surfaces.add(surfaceFactory.createIce(
-                                new Rectangle(new Vector2D(ICE_X, ICE_Y), ICE_WIDTH, ICE_HEIGHT),
-                                PATCH_Z_INDEX));
-                surfaces.add(surfaceFactory.createSand(
-                                new Rectangle(new Vector2D(SAND_X, SAND_Y), SAND_WIDTH, SAND_HEIGHT),
-                                PATCH_Z_INDEX));
-
-                // ARROW 1
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A1_S_X, A1_S_Y), A1_S_W, A1_S_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A1_H1_X, A1_H1_Y), A1_H1_W, A1_H1_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A1_H2_X, A1_H2_Y), A1_H2_W, A1_H2_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A1_H3_X, A1_H3_Y), A1_H3_W, A1_H3_H), ARROW_Z_INDEX));
-
-                // ARROW 2
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A2_S_X, A2_S_Y), A2_S_W, A2_S_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A2_H1_X, A2_H1_Y), A2_H1_W, A2_H1_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A2_H2_X, A2_H2_Y), A2_H2_W, A2_H2_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A2_H3_X, A2_H3_Y), A2_H3_W, A2_H3_H), ARROW_Z_INDEX));
-
-                // ARROW 3
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A3_S_X, A3_S_Y), A3_S_W, A3_S_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A3_H1_X, A3_H1_Y), A3_H1_W, A3_H1_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A3_H2_X, A3_H2_Y), A3_H2_W, A3_H2_H), ARROW_Z_INDEX));
-                surfaces.add(surfaceFactory.createDirt(new Rectangle(new Vector2D(A3_H3_X, A3_H3_Y), A3_H3_W, A3_H3_H), ARROW_Z_INDEX));
-
-                // BORDER WALLS
-                obstacles.add(new WallObstacle(new Vector2D(W1_X, W1_Y), W1_WIDTH, W1_HEIGHT));
-                obstacles.add(new WallObstacle(new Vector2D(W2_X, W2_Y), W2_WIDTH, W2_HEIGHT));
-                obstacles.add(new WallObstacle(new Vector2D(W3_X, W3_Y), W3_WIDTH, W3_HEIGHT));
-                obstacles.add(new WallObstacle(new Vector2D(W4_X, W4_Y), W4_WIDTH, W4_HEIGHT));
-
-                obstacles.add(new RoundObstacle(new Vector2D(ROUND_NORM_X, ROUND_NORM_Y), ROUND_NORM_RADIUS));
-                obstacles.add(new RoundObstacle(new Vector2D(ROUND_BOUNCY_X, ROUND_BOUNCY_Y), ROUND_BOUNCY_RADIUS, BOUNCINESS));
-                obstacles.addAll(PortalObstacle.createPair(PORTAL_A_POS, PORTAL_B_POS, PORTAL_R));
-
-                return new GameMapImpl(surfaces, new BallImpl(BALL_INITIAL_POSITION, BALL_RADIUS),
-                                new HoleImpl(HOLE_POSITION, HOLE_RADIUS), obstacles);
-        }
+        // 5. CORE ENTITIES (Row 3)
+        return new GameMapImpl(
+                surfaces, 
+                new BallImpl(BALL_POS, BALL_R),
+                new HoleImpl(HOLE_POS, HOLE_R), 
+                obstacles);
+    }
 }
