@@ -7,6 +7,7 @@ import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
+import it.unibo.minigoolf.model.obstacles.AbstractObstacle;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
@@ -134,9 +135,6 @@ public class MapC implements GameMapFactory {
         private static final double HOLE_RADIUS = 30;
         private static final Vector2D HOLE_POSITION = new Vector2D(1780, 980);
 
-        // Bounciness constat
-        private static final double BOUNCINESS = 1.5;
-
         private final SurfaceFactory surfaceFactory;
 
         /**
@@ -200,8 +198,8 @@ public class MapC implements GameMapFactory {
                 obstacles.add(new WallObstacle(new Vector2D(O6_X, O6_Y), O6_WIDTH, O6_HEIGHT));
                 obstacles.add(new WallObstacle(new Vector2D(O7_X, O7_Y), O7_WIDTH, O7_HEIGHT));
                 obstacles.add(new RoundObstacle(new Vector2D(O8_X, O8_Y), O8_RADIUS));
-                obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS, BOUNCINESS));
-                obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS, BOUNCINESS));
+                obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS, AbstractObstacle.BOUNCY_BOUNCINESS));
+                obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS, AbstractObstacle.BOUNCY_BOUNCINESS));
                 
                 obstacles.addAll(
                 PortalObstacle.createPair(

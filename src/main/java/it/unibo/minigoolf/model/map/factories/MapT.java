@@ -7,6 +7,7 @@ import it.unibo.minigoolf.model.ball.BallImpl;
 import it.unibo.minigoolf.model.hole.HoleImpl;
 import it.unibo.minigoolf.model.map.GameMap;
 import it.unibo.minigoolf.model.map.GameMapImpl;
+import it.unibo.minigoolf.model.obstacles.AbstractObstacle;
 import it.unibo.minigoolf.model.obstacles.Obstacle;
 import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.model.obstacles.RoundObstacle;
@@ -69,7 +70,7 @@ public class MapT implements GameMapFactory {
     // Column 4: Bouncy Round Obstacle
     private static final double ROUND_BOUNCY_X = 1360;
     private static final double ROUND_BOUNCY_Y = 600;
-    private static final double BOUNCINESS = 1.5;
+    private static final double BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
 
     // Column 5: Portal Pair (Stacked vertically in the column)
     private static final Vector2D PORTAL_A = new Vector2D(1760, 520);
