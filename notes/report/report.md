@@ -768,9 +768,16 @@ Ne ho già parlato con i miei colleghi e spero che in futuro aggiorneremo il gio
 
 ### 4.1.2 Giacomo Mengozzi
 Sono molto soddisfatto del contributo fornito al progetto, non soltanto per il lavoro realizzato, ma soprattutto per l'esperienza maturata durante l'intero percorso di sviluppo. Il tempo e le energie investite sono stati considerevolmente superiori alle aspettative iniziali, ma ritengo che siano stati impiegati in modo proficuo.
+
 Dal punto di vista tecnico, mi sono occupato dell'implementazione delle superfici, della mappa e della buca, nonché della loro integrazione nelle mappe di gioco, coordinando l'interazione tra questi elementi secondo le leggi della fisica.
+
 Le difficoltà maggiori hanno riguardato la comprensione e l'applicazione del pattern architetturale MVC nei suoi tre livelli, in particolare per quanto concerne la comunicazione tra le rispettive classi. A queste si è aggiunta la sfida di approcciare il progetto partendo da un'esperienza di programmazione quasi nulla, il che ha reso la fase iniziale particolarmente impegnativa.
+
 Con il progredire del lavoro e grazie all'aiuto e supporto dei miei compagni, tuttavia, la padronanza degli strumenti e delle pratiche di sviluppo è cresciuta progressivamente, consentendo di scrivere codice con maggiore consapevolezza.
+
+In particolare, sono molto contento della costante comunicazione tra i miei compagni che c'è stata durante tutto il percorso di sviluppo, e del modo in cui siamo riusciti a unire insieme le nostre parti di codice per arrivare alla versione attuale del progetto. 
+
+In futuro, mi piacerebbe continuare ad arricchire il progetto con nuove feature secondarie come l'aggiunta di effetti audio della pallina per rendere ancora piu' personale questo gioco a cui sono ormai piu' che affezionato.
 
 ### 4.1.3 Federico Sparvoli
 Il mio contributo principale riguarda il sistema di input del colpo, la gestione del ciclo di vita dei match e il sistema di salvataggio. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a `@SuppressWarnings`, ottenuta tramite interfacce strette e callback funzionali.
