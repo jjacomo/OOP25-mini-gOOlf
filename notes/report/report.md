@@ -10,7 +10,7 @@ Il software è un gioco di mini-golf in due dimensioni per uno o più giocatori 
 * Il giocatore effettua un colpo trascinando il mouse dalla pallina: la direzione e la potenza sono determinate dalla posizione del cursore rispetto alla pallina, un indicatore visivo mostra in tempo reale direzione e potenza del colpo durante il trascinamento.
 * Il gioco supporta più giocatori in modalità a turni.
 * La pallina interagisce con ostacoli di forme diverse e superfici con proprietà fisiche differenti.
-* Al completamento di ogni mappa viene mostrata una classifica intermedia con i colpi effettuati da ciascun giocatore
+* Al completamento di ogni mappa viene mostrata una classifica intermedia con i colpi effettuati da ciascun giocatore.
 
 ### 1.1.2 Requisiti non funzionali
 * Il gioco prevede superfici e ostacoli con proprietà fisiche avanzate, tra cui terreni e ostacoli che rallentano, velocizzano o modificano la traiettoria.
@@ -19,7 +19,7 @@ Il software è un gioco di mini-golf in due dimensioni per uno o più giocatori 
 
 ## 1.2 Modello del Dominio
 
-Un gioco di mini-golf è composto da una sequenza di mappe, ognuna costituita da una pallina, una buca, una o più superfici ed alcuni ostacoli. La pallina si muove nella mappa interagendo con superfici e ostacoli che ne modificano velocità e direzione secondo leggi fisiche. Una partita coinvolge uno o più giocatori che si alternano a turni per colpire la pallina, indicandone direzione e potenza, e mandandola in buca. Il punteggio di ciascun partecipante su una mappa corrisponde al numero di colpi effettuati.
+Una partita (_Match_) di mini-golf è composto da una sequenza di mappe (_Map_), ognuna costituita da una pallina (_Ball_), una buca (_Hole_), una o più superfici (_Surface_) ed alcuni ostacoli (_Obstacle_). La pallina si muove nella mappa interagendo con superfici e ostacoli che ne modificano velocità e direzione secondo leggi fisiche. Una partita coinvolge uno o più giocatori (_Player_) che si alternano a turni per colpire la pallina, indicandone direzione e potenza, e mandandola in buca. Il punteggio di ciascun partecipante su una mappa corrisponde al numero di colpi effettuati.
 
 ```mermaid
 classDiagram
@@ -78,16 +78,17 @@ classDiagram
     Map *-- Obstacle
 
     Player --> Shot
-    Shot ..> Ball
-    Surface ..> Ball
-    Obstacle ..> Ball
+    Shot --> Ball
+    Obstacle --> Ball
 ```
+*Figura 1: Schema UML dell’analisi del dominio, con rappresentate le entità principali ed i rapporti fra loro.*
+
 # Capitolo 2: Design
 
 ## 2.1 Architettura
 Il software segue il pattern architetturale MVC (Model-View-Controller).
 
-**Model**: contiene lo stato del gioco e le regole, senza alcuna dipendenza dalla view o dal controller. Le entità principali sono GameMap (la mappa corrente, con pallina, buca, superfici e ostacoli), GameState (lo stato del turno: giocatore attivo, contatore colpi, movimento della pallina) e ShotState (lo stato del colpo in corso: direzione, potenza, posizione della pallina).
+**Model**: contiene lo stato del gioco e le regole, senza alcuna dipendenza dalla view o dal controller. Le entità principali sono GameMap (la mappa corrente con pallina, buca, superfici e ostacoli), GameState (lo stato del turno: giocatore attivo, contatore colpi, movimento della pallina) e ShotState (lo stato del colpo in corso: direzione, potenza, posizione della pallina).
 
 **Controller**: coordina model e view senza che i due si conoscano direttamente. La logica di controllo è strutturata gerarchicamente per separare nettamente le responsabilità:
 - MainController: Inizializza i componenti principali e ospita il Game Loop tramite un Timer.
@@ -131,34 +132,23 @@ classDiagram
         +rebuildGamePanel()
     }
     class GamePanel
-    class MapPanel
-    class ShotViewPanel
-
-    class GameMap
-    class GameState
-    class ShotState
-    class MapSequence
+    
 
     MainController <|.. MainControllerImpl
     MainControllerImpl --> MainWindow
     MainControllerImpl --> NavigationController
     MainControllerImpl --> MatchManager
     
-    MatchManager --> MapSequence
     MatchManager --> GameController
     
-    NavigationController ..> MainWindow
+    NavigationController --> MainWindow
     
     MainWindow *-- GamePanel
-    GamePanel *-- MapPanel
-    GamePanel *-- ShotViewPanel
     
-    GamePanel ..> GameController
+    GamePanel --> GameController
     
-    GameController --> GameMap
-    GameController --> GameState
-    GameController --> ShotState
 ```
+*Figura 2: Schema UML del design dell'architettura, con rappresentate le classi principali ed i rapporti fra loro.*
 
 ## 2.2 Design dettagliato
 
@@ -475,7 +465,6 @@ La logica è suddivisa in tre livelli distinti seguendo il pattern MVC:
 - View (ShotViewPanel, ShotListener): ShotListener riceve gli eventi del mouse e li traduce in aggiornamenti sul model. Per disegnare l'indicatore e convertire le coordinate non dipende dalla classe concreta ShotViewPanel, ma da due interfacce: ShotVisualizer (che definisce come mostrare e confermare il colpo) e ShotCoordinateConverter (che definisce come tradurre le coordinate del mouse in coordinate di gioco). Queste due interfacce rappresentano le strategie del pattern Strategy, e ShotViewPanel ne è l'implementazione concreta: in questo modo il modo di disegnare o di convertire le coordinate può essere cambiato fornendo una nuova implementazione, senza toccare ShotListener.
 - Controller (ShotControllerImpl): ogni tick interroga il model e, se un colpo è pronto, lo passa alla logica di turno tramite callback, senza memorizzare riferimenti a oggetti mutabili.
 
-UML:
 ```mermaid
 classDiagram
     class ShotVisualizer {
@@ -767,21 +756,17 @@ Un altro limite risiede nel meccanismo di cooldown temporale dei portali; sebben
 ## Appendice A: Guida Utente
 
 * **Menu Iniziale:** 
-Avviando il gioco viene mostrato il menu principale dal quale è possibile iniziare una nuova partita premendo il tasto `PLAY`; quindi bisognerà scegliere il numero di giocatori, premere il tasto `OK` ed inserirne i nomi. Infine, premere `START MATCH`. Se è presente una partita salvata, il gioco chiederà se la si vuole caricare o iniziarne una nuova. Dal menu è inoltre possibile consultare la classifica finale delle partite precedenti tramite il tasto `LEADERBOARD`.
+Avviando il gioco viene mostrato il menu principale dal quale è possibile iniziare una nuova partita premendo il tasto `PLAY`;  bisognerà poi scegliere il numero di giocatori, premere il tasto `OK` ed inserirne i nomi. Infine, premere `START MATCH`. Se è presente una partita salvata, il gioco chiederà se la si vuole caricare o iniziarne una nuova. Dal menu è inoltre possibile consultare la classifica finale delle partite precedenti tramite il tasto `LEADERBOARD`.
 
 * **Controlli In-Game:** 
-Per effettuare un colpo è necessario cliccare e tenere premuto il mouse sulla pallina, per poi trascinare nella direzione opposta a quella in cui si vuole colpire. Più lungo è il trascinamento, più potente sarà il colpo.
-Rilasciare il mouse per confermare il colpo.
+Per effettuare un colpo è necessario cliccare e tenere premuto il mouse sulla pallina, per poi trascinare nella direzione opposta a quella in cui si vuole colpire. Più lungo è il trascinamento, più potente sarà il colpo. Rilasciare il mouse per confermare il colpo.
 Un indicatore colorato mostra la direzione e la potenza: verde per colpi deboli, giallo per colpi medi, rosso per colpi forti.
 
 * **Regole:**
-Ogni giocatore ha a disposizione al massimo 7 colpi per buca. Se non si entra in buca entro il limite, il turno passa al giocatore successivo (o, in caso di singleplayer, si passa alla mappa successiva).
-Il punteggio di ogni giocatore corrisponde al numero di colpi effettuati su ciascuna mappa e meno colpi si fanno, meglio è.
-Al termine di ogni mappa viene mostrata una classifica intermedia. Premere il tasto per continuare e passare alla mappa successiva.
-Al termine di tutte le mappe il punteggio finale viene salvato nella classifica.
+Ogni giocatore ha a disposizione al massimo 7 colpi per buca. Se non si entra in buca entro il limite, il turno passa al giocatore successivo (o, in caso di singleplayer, si passa alla mappa successiva). Il punteggio di ogni giocatore corrisponde al numero di colpi effettuati su ciascuna mappa e meno colpi si fanno, meglio è. Al termine di ogni mappa viene mostrata una classifica intermedia e una volta completate tutte le mappe, il punteggio finale viene salvato nella classifica globale.
 
 * **Pausa:**
-Durante il gioco è possibile mettere in pausa premendo il tasto ESC, purché la pallina non sia in movimento. Dal menu di pausa è possibile riprendere la partita, salvarla, skippare la mappa attuale o tornare al menu principale.
+Durante il gioco è possibile mettere in pausa premendo il tasto ESC, purché la pallina non sia in movimento. Dal menu di pausa è possibile riprendere la partita, skippare la mappa attuale, consultare il tutorial o tornare al menu principale.
 
 ## Appendice B: Esercitazioni di laboratorio
 
