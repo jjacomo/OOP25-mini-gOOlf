@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Verifies that the factory correctly links all components
  * and that the returned {@link GameController} starts in a valid state.
  * 
- * @author fede
+ * @author fedesparvo1-a11y
  */
 class GameFactoryTest {
 
