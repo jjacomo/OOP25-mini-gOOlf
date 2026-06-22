@@ -2,8 +2,6 @@
   <img src="src/main/resources/title.png" alt="mini-gOOlf logo" width="200"/>
 </p>
 
-<h1 align="center">⛳ minigOOlf</h1>
-
 <p align="center">
   <em>Un simulatore di mini-golf 2D sviluppato con Java e Swing.</em>
 </p>
