@@ -22,7 +22,7 @@ class ObstacleTest {
     private static final Vector2D PORTAL_POS_B = new Vector2D(500.0, 500.0);
     private static final double PORTAL_RADIUS = 30;
     private static final double EXPECTED_PENETRATION_DEPHT = 5.0;
-    private static final int SLEEP_TIME_MS = 501;
+    private static final int SLEEP_TIME_MS = 1000;
 
     @Test
     void testWallObstacleCollision() {
