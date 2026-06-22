@@ -1,0 +1,46 @@
+classDiagram
+    class ObstacleController {
+        <<interface>>
+        +getObstacles() List~Obstacle~
+    }
+
+    class Obstacle {
+        <<interface>>
+        +isColliding(Ball) boolean
+        +getPenetrationDepth(Ball) double
+        +resolveCollision(Ball) void
+        +getBounciness() double
+        +getPosition() Vector2D
+    }
+
+    class AbstractObstacle {
+        <<abstract>>
+    }
+
+    class WallObstacle
+    class RoundObstacle
+    class TriangleObstacle
+
+    class PortalObstacle {
+        +createPair(Vector2D, Vector2D, double)$ List~PortalObstacle~
+    }
+
+    class Vector2D {
+        +add(Vector2D) Vector2D
+        +subtract(Vector2D) Vector2D
+        +scalarMultiply(double) Vector2D
+        +dotProduct(Vector2D) double
+        +normalize() Vector2D
+        +getNorm() double
+        +distance(Vector2D) double
+    }
+
+    ObstacleController --> Obstacle : manages
+    Obstacle <|.. AbstractObstacle
+    AbstractObstacle <|-- WallObstacle
+    AbstractObstacle <|-- RoundObstacle
+    AbstractObstacle <|-- TriangleObstacle
+    AbstractObstacle <|-- PortalObstacle
+    
+    PortalObstacle --> PortalObstacle : linkedPortal
+    AbstractObstacle --> Vector2D : uses
