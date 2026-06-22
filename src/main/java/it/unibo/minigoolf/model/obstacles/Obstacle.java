@@ -27,8 +27,9 @@ public interface Obstacle {
 
     /**
      * Resolves the physical collision between the ball and the obstacle.
-     * This method calculates the bounce (new velocity vector) based on the obstacle's
-     * specific shape and applies the new direction to the ball.
+     * 
+     * <p>This method calculates the bounce (new velocity vector) based on the obstacle's
+     * specific shape and applies the new direction to the ball.</p>
      *
      * @param ball the Ball object that has collided with the obstacle
      */

@@ -735,13 +735,17 @@ Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/save/SaveManager.java#L21
 
 ### 3.2.4 Mattia D'Ambrosio
-Pattern Template Method: Utilizzati nella gerarchia degli ostacoli per massimizzare il riutilizzo del codice (DRY). La classe astratta AbstractObstacle definisce lo scheletro dell'algoritmo di calcolo del rimbalzo e della correzione della posizione (metodo 'reflectVelocity'), lasciando alle classi concrete solo il compito di implementare le specificità geometriche di calcolo della penetrazione e delle normali.
+#### Functional Interface
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd1070ba6f7cdf040f713e59f/src/main/java/it/unibo/minigoolf/controller/obstaclecontroller/ObstacleController.java#L11
 
-Constructor Chaining: Applicato in tutte le classi degli ostacoli per introdurre la 'bounciness', garantendo la compatibilità con il codice già esistente. I costruttori base delegano la creazione a costruttori più completi passando automaticamente il valore di default, evitando ridondanze o controlli duplicati.
+#### Collezioni Immutabili
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd1070ba6f7cdf040f713e59f/src/main/java/it/unibo/minigoolf/controller/obstaclecontroller/ObstacleControllerImpl.java#L23
 
-Pattern Static Factory Method: Utilizzato nella classe PortalObstacle. Avendo reso privato il costruttore, la creazione dei portali è vincolata al metodo statico 'createPair()'. Questo approccio impedisce la configurazione di stati invalidi nel sistema, come la presenza di portali dispari, spaiati o non collegati bidirezionalmente in memoria.
+#### Constructor Chaining
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd1070ba6f7cdf040f713e59f/src/main/java/it/unibo/minigoolf/model/obstacles/AbstractObstacle.java#L50
 
-System Timestamping: Sfruttato all'interno della gestione dei portali tramite 'System.currentTimeMillis()' per implementare un meccanismo di cooldown temporale deterministico. Questo permette di disattivare temporaneamente la fisica di un portale per una finestra temporale fissa, prevenendo loop infiniti di teletrasporto nello stesso frame.
+#### Lambda Expressions
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd1070ba6f7cdf040f713e59f/src/test/java/it/unibo/minigoolf/util/Vector2DTest.java#L29
 
 ---
 
@@ -767,7 +771,7 @@ Per quanto riguarda il cambio delle mappe, al momento ricostruiamo da capo tutto
 Il sistema di salvataggio memorizza la partita in formato JSON usando Gson. Salva solo il numero della mappa, non tutta la geometria. Così i file sono piccoli e il salvataggio non dipende da come sono fatte le mappe dentro. Un limite attuale è che il salvataggio viene cancellato appena lo si carica, quindi non si può riprendere la stessa partita due volte senza salvarla di nuovo.
 
 ### 4.1.4 Mattia D'Ambrosio
-Il mio contributo principale ha riguardato l'architettura geometrico-matematica degli ostacoli, lo sviluppo della classe vettoriale dedicata e l'implementazione della fisica delle collisioni e degli elementi avanzati (ostacoli elastici e portali). Sono pienamente soddisfatto della stabilità raggiunta nel calcolo delle penetrazioni e dell'algoritmo di Normal Blending per la risoluzione deterministica degli angoli interni, che ha rimosso qualsiasi arbitrarietà fisica. Dal punto di vista architetturale, l'introduzione di ObstacleController ha garantito un disaccoppiamento MVC pulito tra modelli fisici e rendering grafico.
+Il mio contributo principale ha riguardato l'architettura geometrico-matematica degli ostacoli, lo sviluppo della classe vettoriale dedicata e l'implementazione della fisica delle collisioni e degli elementi avanzati (ostacoli elastici e portali). Sono pienamente soddisfatto della stabilità raggiunta nel calcolo delle penetrazioni e dell'algoritmo di Normal Blending per la risoluzione deterministica degli angoli interni, che ha rimosso qualsiasi arbitrarietà fisica. Dal punto di vista architetturale, l'introduzione dell'`ObstacleController` unita all'uso del pattern DTO (`ObstacleData`) ha garantito un disaccoppiamento MVC totale, permettendo la realizzazione di una vera e propria Vista Passiva per il rendering grafico.
 
 Un aspetto decisamente migliorabile riguarda il fenomeno del tunneling: se la pallina si muove a una velocità talmente elevata da superare lo spessore di un ostacolo sottile in un singolo frame, il motore manca la collisione attraversando l'oggetto. In futuro, per ovviare a questo problema, si potrebbe implementare un algoritmo di Continuous Collision Detection (CCD) basato sul raycasting o sul campionamento della traiettoria.
 

@@ -85,9 +85,9 @@ public abstract class AbstractObstacle implements Obstacle {
 
     /**
      * Reflects the ball's velocity according to the collision normal.
-     * Uses the elastic reflection formula: v' = v - 2 (v·n) n.
-     * If the impact is very soft, it applies resting contact to let the ball slide
-     *  instead of jittering.
+     * 
+     * <p>Uses the elastic reflection formula: v' = v - 2 (v·n) n. If the impact is 
+     * very soft, it applies resting contact to let the ball slide instead of jittering.</p>
      *
      * @param ball   the ball whose velocity to modify
      * @param normal the collision normal (unit vector pointing outward from the 

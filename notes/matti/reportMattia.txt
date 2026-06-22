@@ -138,7 +138,7 @@ Report 01/06 - 8 ore
 - Fatti vari test sugli ostacoli appiccicosi e rimbalzanti;
 - Corretta la direzione errata della pallina a seguito di un rimbalzo su un ostacolo appiccicoso
 
-Report 02/09 - 1 ore
+Report 02/06 - 1 ore
 - Implementata la classe PortalObstacle e fatti alcuni test elementari
 - Risolti alcuni problemi di CheckStyle
 
@@ -150,8 +150,10 @@ Report 14/06 - 4 ore
 - Completata la relazione
 - Creati Vector2DTest e ObstacleTest
 
+Report 22 e 23/06 - 4 ore
+- Sistemato il report generale
+- Sistemati tutti i problemi di greadlew build e greadlew build JavaDoc
+- Sistemati gli ultimi commenti
+
 TO DO:
-- Vedere come mettere delle texture agli ostacoli
-- Creare le due mappe del gioco
-- Fare file UML
-- Alla fine di tutto, fare un controllo di CheckStyle
+
