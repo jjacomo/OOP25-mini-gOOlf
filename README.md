@@ -33,4 +33,4 @@ Assicurati di avere **Java 17** (o superiore) installato sul tuo sistema.
 
 3. Compila ed esegui il gioco tramite Gradle:
    ```bash
-   ./gradlew run
+   ./java -jar OOP25-mini-gOOlf-all.jar
