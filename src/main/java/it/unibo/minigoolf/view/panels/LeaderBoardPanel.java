@@ -123,7 +123,6 @@ public final class LeaderBoardPanel extends JPanel {
                         nameLabel.setIcon(new ImageIcon(scaledImg));
                         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
                     } else {
-                        // Selettore testo di riserva se non trova l'immagine
                         if (rank == 0) {
                             nameLabel.setText(entry.getKey() + " (1st)");
                         } else if (rank == 1) {
