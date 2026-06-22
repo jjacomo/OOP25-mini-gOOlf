@@ -39,6 +39,15 @@ public interface GameController {
     void setShotView(ShotView shotView);
 
     /**
+     * Sets the view that will render the map elements.
+     * Called by {@link it.unibo.minigoolf.view.mainwindow.MainWindow} after
+     * constructing the {@link it.unibo.minigoolf.view.panels.MapPanel}.
+     *
+     * @param view the map elements view interface
+     */
+    void setMapElementsView(it.unibo.minigoolf.controller.gamemapcontroller.MapElementsView view);
+
+    /**
      * Returns the name of the player whose turn it currently is.
      *
      * @return the current player's name
