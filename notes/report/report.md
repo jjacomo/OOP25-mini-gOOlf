@@ -557,7 +557,7 @@ Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono stat
             AbstractObstacle <|-- TriangleObstacle
             AbstractObstacle --> Vector2D
 ```
-*Figura 10: Schema UML*
+*Figura 10: Schema UML della gerarchia degli ostacoli fisici.*
 ##### Pro e Contro
 Pro:
 - Fisica altamente stabile e realistica 
@@ -579,18 +579,21 @@ Per la gestione dei portali, invece, era fondamentale prevenire la configurazion
 
 ```mermaid
     classDiagram
-    class AbstractObstacle {
-        <<abstract>>
-    }
-    class PortalObstacle {
-        +createPair(Vector2D, Vector2D, double)$ List~PortalObstacle~
-    }
+        class AbstractObstacle {
+            <<abstract>>
+            -double bounciness
+            +AbstractObstacle(Vector2D)
+            +AbstractObstacle(Vector2D, double)
+        }
+        class PortalObstacle {
+            +createPair(Vector2D, Vector2D, double)$ List~PortalObstacle~
+        }
 
-    AbstractObstacle <|-- PortalObstacle
-    PortalObstacle --> PortalObstacle : linkedPortal
+        AbstractObstacle <|-- PortalObstacle
+        PortalObstacle --> PortalObstacle : linkedPortal
 ```
 
-*Figura 11: Schema UML*
+*Figura 11: Schema UML del pattern Static Factory Method per i portali e Chaining Constructor per gli ostacoli avanzati.*
 
 ##### Pro e Contro
 Pro:
@@ -637,7 +640,7 @@ Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`,
         MapPanel --> ObstacleData : stores
         ObstacleController --> Obstacle : manages
 ```
-*Figura 12: Schema UML...*
+*Figura 12: Schema UML del pattern DTO applicato all'architettura MVC.*
 ##### Pro e Contro
 Pro:
 - Separazione totale tra modello e vista: la grafica è completamente passiva, riceve i dati già pronti tramite il DTO e si limita a stamparli a schermo. Questo rende il codice molto più facile da mantenere e da testare.
