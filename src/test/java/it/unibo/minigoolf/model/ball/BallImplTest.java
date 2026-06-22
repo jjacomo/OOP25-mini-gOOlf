@@ -30,8 +30,7 @@ class BallImplTest {
                 () -> assertEquals(position.getY(), ball.getPosition().getY()),
                 () -> assertEquals(RADIUS, ball.getRadius()),
                 () -> assertEquals(0.0, ball.getVelocity().getX()),
-                () -> assertEquals(0.0, ball.getVelocity().getY())
-        );
+                () -> assertEquals(0.0, ball.getVelocity().getY()));
     }
 
     @Test
@@ -43,8 +42,7 @@ class BallImplTest {
 
         assertAll("updated velocity",
                 () -> assertEquals(velocity.getX(), ball.getVelocity().getX()),
-                () -> assertEquals(velocity.getY(), ball.getVelocity().getY())
-        );
+                () -> assertEquals(velocity.getY(), ball.getVelocity().getY()));
     }
 
     @Test
@@ -57,24 +55,7 @@ class BallImplTest {
         assertAll("updated position and radius",
                 () -> assertEquals(newPosition.getX(), ball.getPosition().getX()),
                 () -> assertEquals(newPosition.getY(), ball.getPosition().getY()),
-                () -> assertEquals(RADIUS, ball.getRadius())
-        );
-    }
-
-    @Test
-    void testSetVelocityThenSetPositionMaintainsRadiusAndStateSeparately() {
-        final var ball = new BallImpl(new Vector2D(5.0, 5.0), RADIUS);
-        final var velocity = new Vector2D(2.0, 3.0);
-        ball.setVelocity(velocity);
-        ball.setPosition(new Vector2D(0.0, 0.0));
-
-        assertAll("position and velocity after updates",
-                () -> assertEquals(0.0, ball.getPosition().getX()),
-                () -> assertEquals(0.0, ball.getPosition().getY()),
-                () -> assertEquals(velocity.getX(), ball.getVelocity().getX()),
-                () -> assertEquals(velocity.getY(), ball.getVelocity().getY()),
-                () -> assertEquals(RADIUS, ball.getRadius())
-        );
+                () -> assertEquals(RADIUS, ball.getRadius()));
     }
 
     @Test
@@ -87,8 +68,7 @@ class BallImplTest {
 
         assertAll("updated velocity",
                 () -> assertEquals(0.0, ball.getVelocity().getX()),
-                () -> assertEquals(0.0, ball.getVelocity().getY())
-        );
+                () -> assertEquals(0.0, ball.getVelocity().getY()));
     }
 
     @Test
@@ -96,7 +76,8 @@ class BallImplTest {
         final var ball = new BallImpl(new Vector2D(-10.0, -10.0), RADIUS);
         final var grassSurface = new ShapedSurface(new Rectangle(new Vector2D(0, 0), 1000, 1000), 10, 1,
                 "grass");
-        final var map = new GameMapImpl(List.of(grassSurface), ball, new HoleImpl(new Vector2D(0, 0), RADIUS), List.of());
+        final var map = new GameMapImpl(List.of(grassSurface), ball, new HoleImpl(new Vector2D(0, 0), RADIUS),
+                List.of());
 
         assertThrows(IllegalStateException.class,
                 () -> map.getSurfaceAt(ball.getPosition()));

@@ -43,11 +43,17 @@ public final class MapPanel extends JPanel implements MapElementsView {
     private static final long serialVersionUID = 1L;
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
-
     private transient List<SurfaceData> surfaces = List.of();
     private transient List<ObstacleData> obstacles = List.of();
     private transient HoleData hole;
     private transient BallData ball;
+
+    /**
+     * Constructs a new MapPanel.
+     */
+    public MapPanel() {
+        super();
+    }
 
     @Override
     public void updateGraphics(
@@ -61,6 +67,15 @@ public final class MapPanel extends JPanel implements MapElementsView {
         this.ball = newBall;
     }
 
+    /**
+     * Restores the state of the MapPanel from the input stream during
+     * deserialization.
+     *
+     * @param stream the object input stream
+     * @throws IOException            if an I/O error occurs
+     * @throws ClassNotFoundException if the class of a serialized object cannot be
+     *                                found
+     */
     @Serial
     private void readObject(final ObjectInputStream stream) throws IOException, ClassNotFoundException {
         stream.defaultReadObject();
