@@ -26,7 +26,7 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
  * @see GameMap
  */
 public class MapC implements GameMapFactory {
-        
+
         // GRASS (FILLS THE WHOLE MAP)
         private static final double GRASS1_X = 0;
         private static final double GRASS1_Y = 0;
@@ -35,8 +35,8 @@ public class MapC implements GameMapFactory {
         private static final int GRASS1_Z_INDEX = 0;
 
         // PORTAL
-        private static final Vector2D PORTAL_A_POS = new Vector2D(550,375);
-        private static final Vector2D PORTAL_B_POS = new Vector2D(1800,375);
+        private static final Vector2D PORTAL_A_POS = new Vector2D(550, 375);
+        private static final Vector2D PORTAL_B_POS = new Vector2D(1800, 375);
         private static final double PORTAL_R = 55;
 
         // SAND 
@@ -200,7 +200,7 @@ public class MapC implements GameMapFactory {
                 obstacles.add(new RoundObstacle(new Vector2D(O8_X, O8_Y), O8_RADIUS));
                 obstacles.add(new RoundObstacle(new Vector2D(O12_X, O12_Y), O12_RADIUS, AbstractObstacle.BOUNCY_BOUNCINESS));
                 obstacles.add(new RoundObstacle(new Vector2D(O14_X, O14_Y), O14_RADIUS, AbstractObstacle.BOUNCY_BOUNCINESS));
-                
+
                 obstacles.addAll(
                 PortalObstacle.createPair(
                         PORTAL_A_POS,

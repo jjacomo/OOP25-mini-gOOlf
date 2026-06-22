@@ -4,7 +4,9 @@ import it.unibo.minigoolf.controller.navigationcontroller.NavigationController;
 import it.unibo.minigoolf.view.elements.UserInterfaceFactory;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -12,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
+import java.awt.Image;
 import java.io.Serial;
 
 /**
@@ -83,27 +86,27 @@ public final class PausePanel extends JPanel {
     private void showTutorialPopup() {
         final java.net.URL imgUrl = getClass().getResource(TUTORIAL_IMG_PATH);
         if (imgUrl != null) {
-            
-            final javax.swing.ImageIcon originalIcon = new javax.swing.ImageIcon(imgUrl);
-            
-            final java.awt.Image scaledImg = originalIcon.getImage().getScaledInstance(
-                TUTORIAL_WIDTH, TUTORIAL_HEIGHT, java.awt.Image.SCALE_SMOOTH);
-            
-            final javax.swing.ImageIcon scaledIcon = new javax.swing.ImageIcon(scaledImg);
-            
-            javax.swing.JOptionPane.showMessageDialog(
+
+            final ImageIcon originalIcon = new ImageIcon(imgUrl);
+
+            final Image scaledImg = originalIcon.getImage().getScaledInstance(
+                TUTORIAL_WIDTH, TUTORIAL_HEIGHT, Image.SCALE_SMOOTH);
+
+            final ImageIcon scaledIcon = new ImageIcon(scaledImg);
+
+            JOptionPane.showMessageDialog(
                 this, 
-                new javax.swing.JLabel(scaledIcon), 
+                new JLabel(scaledIcon), 
                 "How to Play", 
-                javax.swing.JOptionPane.PLAIN_MESSAGE
+                JOptionPane.PLAIN_MESSAGE
             );
         } else {
-            
-            javax.swing.JOptionPane.showMessageDialog(
+
+            JOptionPane.showMessageDialog(
                 this, 
                 "Tutorial image not found!\nPlease add it to: " + TUTORIAL_IMG_PATH, 
                 "Missing Resource", 
-                javax.swing.JOptionPane.WARNING_MESSAGE
+                JOptionPane.WARNING_MESSAGE
             );
         }
     }
