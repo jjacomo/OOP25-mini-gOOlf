@@ -19,10 +19,10 @@ Il software è un gioco di mini-golf in due dimensioni per uno o più giocatori 
 
 ## 1.2 Modello del Dominio
 
-Un gioco di mini-golf è composto da una sequenza di mappe, ognuna costituita da una pallina, una buca, una o più superfici ed alcuni ostacoli. La pallina si muove nella mappa interagendo con superfici e ostacoli che ne modificano velocita' e direzione secondo leggi fisiche.
-Una partita coinvolge uno o più giocatori che si alternano a turni per colpire la pallina, indicandone direzione e potenza, e mandandola in buca. Il punteggio di ciascun partecipante su una mappa corrisponde al numero di colpi effettuati.
+Un gioco di mini-golf è composto da una sequenza di mappe, ognuna costituita da una pallina, una buca, una o più superfici ed alcuni ostacoli. La pallina si muove nella mappa interagendo con superfici e ostacoli che ne modificano velocita' e direzione secondo leggi fisiche. Una partita coinvolge uno o più giocatori che si alternano a turni per colpire la pallina, indicandone direzione e potenza, e mandandola in buca. Il punteggio di ciascun partecipante su una mappa corrisponde al numero di colpi effettuati.
 
-UML:
+***DA RIVEDERE: SCRIVERE IN INGLESE E IN CIMA INTERFACE, METTERE LA DIDASCALIA ES: FIG 1 : Schema UML***
+
 ```mermaid
 classDiagram
     class Partita
@@ -58,16 +58,18 @@ classDiagram
 Il software segue il pattern architetturale MVC (Model-View-Controller).
 
 **Model**: contiene lo stato del gioco e le regole, senza alcuna dipendenza dalla view o dal controller. Le entità principali sono GameMap (la mappa corrente, con pallina, buca, superfici e ostacoli), GameState (lo stato del turno: giocatore attivo, contatore colpi, movimento della pallina) e ShotState (lo stato del colpo in corso: direzione, potenza, posizione della pallina).
+
 **Controller**: coordina model e view senza che i due si conoscano direttamente. La logica di controllo è strutturata gerarchicamente per separare nettamente le responsabilità:
-- MainController: funge da entry-point e orchestratore globale. Inizializza i componenti principali e ospita il Game Loop tramite un Timer. Ad ogni tick, calcola il deltaTime (limitando i picchi temporali tramite un cap massimo) per garantire una simulazione fisica deterministica e indipendente dal framerate, delegando poi l'aggiornamento ai controller sottostanti.
-- MatchManager: agisce da supervisore della sessione di gioco. Inizializza le partite, gestisce la progressione tra le mappe (interrogando la MapSequence) e gestisce le transizioni logiche tra una buca e l'altra.
+- MainController: funge da entry-point e orchestratore globale. Inizializza i componenti principali e ospita il Game Loop tramite un Timer.
+- MatchManager: agisce da supervisore della sessione di gioco. Inizializza le partite e  gestisce le transizioni logiche tra una buca e l'altra.
 - GameController: gestisce il ciclo di vita della singola mappa attiva. Ad ogni tick ricevuto dal MainController, aggiorna la simulazione fisica della pallina, verifica le condizioni di vittoria (ingresso in buca) e delega l'avanzamento dei turni.
-- NavigationController: si occupa in via esclusiva del routing dell'interfaccia utente, gestendo lo scambio di pannelli nella MainWindow, l'apertura dei menu di overlay e **fungendo da ponte con il SaveController per la persistenza dei dati.(?)**
+- NavigationController: si occupa di gestire le transizioni tra i vari pannelli della view nella MainWindow.
 
 **View**: MainWindow ospita i pannelli tramite un CardLayout; GamePanel compone la mappa di gioco (MapPanel) e l'overlay di input (ShotViewPanel). 
 
 Il controller non dipende mai dalla view concreta: comunica con essa unicamente tramite interfacce strette e callback funzionali (Runnable, Consumer, Supplier). Ciò implica che sostituire Swing con un'altra libreria grafica (ad esempio JavaFX) non richiederebbe alcuna modifica al controller né al model: sarebbe sufficiente riscrivere i pannelli della view e ricablare i callback al momento della costruzione.
 
+**SICURAMENTE DA RIVEDERE**
 
 ```mermaid
 classDiagram
