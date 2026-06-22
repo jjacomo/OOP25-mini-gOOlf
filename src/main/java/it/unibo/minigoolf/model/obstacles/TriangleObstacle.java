@@ -6,7 +6,7 @@ import it.unibo.minigoolf.model.ball.Ball;
 
 /**
  * Represents a triangular obstacle in the minigolf course.
- * This obstacle is defined by its three vertex and centroid.
+ * This obstacle is defined by its three vertices and centroid.
  * 
  * @author Mattia
  */

@@ -51,7 +51,7 @@ public abstract class AbstractObstacle implements Obstacle {
     }
 
     /**
-     * Constructs an sticky or bouncy obstacle at the given position.
+     * Constructs a sticky or bouncy obstacle at the given position.
      *
      * @param position the 2D vector representing the coordinates of the obstacle
      * @param bounciness the bounciness of the bouncy obstacle

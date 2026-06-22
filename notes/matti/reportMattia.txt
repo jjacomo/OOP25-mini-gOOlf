@@ -1,4 +1,4 @@
-Ore totati: 26
+Ore totali: 74
 
 Report - 25/03 - 3 ore
 - Creato il package obstacles per gestire i vari ostacoli
