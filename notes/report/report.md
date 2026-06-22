@@ -201,6 +201,7 @@ classDiagram
     MainWindow *-- PausePanel
     MainWindow --> MidLeaderBoardPanel
 ```
+*Figura 3: Schema UML dei pannelli e di come sono gestiti.*
 ##### Pro e Contro:
 
 Pro:
@@ -258,6 +259,7 @@ classDiagram
     MatchManager --> NavigationController
     MatchManager ..> MidLeaderBoardPanel
 ```
+*Figura 4: Schema UML di come è stato implementato il sistema della classifica.*
 
 *Pro e Contro*: 
 
@@ -318,6 +320,7 @@ classDiagram
     AbstractSurfaceDecorator <|-- WindySurface
     BasicFrictionStrategy ..> Surface : reads getFriction / getWind
 ```
+*Figura 5: Schema UML...*
 
 ##### Pro e Contro
 **Pro:**
@@ -380,6 +383,7 @@ classDiagram
     PhysicsEngine ..> Ball : uses
     PhysicsControllerImpl ..> BallControllerAdapter : instantiates/uses
 ```
+*Figura 6: Schema UML*
 
 ##### Pro e Contro
 **Pro:**
@@ -424,6 +428,7 @@ classDiagram
     ShapedSurface --> Shape : delegates contains
     MapPanel ..> Shape : instanceof dispatch
 ```
+*Figura 7: Schema UML ...*
 
 ##### Pro e Contro
 **Pro:**
@@ -466,7 +471,7 @@ classDiagram
     ShotViewPanel ..|> ShotVisualizer
     ShotViewPanel ..|> ShotCoordinateConverter
 ```
-*Figura X: Schema UML del pattern Strategy applicato all'input del colpo.*
+*Figura 8: Schema UML del pattern Strategy applicato all'input del colpo.*
 
 ##### Pro e Contro
 Pro: separazione netta tra stato, rendering e coordinamento. Aggiungere un nuovo tipo di indicatore visivo richiede solo una nuova implementazione di `ShotVisualizer`, senza toccare il listener o il controller.
@@ -508,7 +513,7 @@ classDiagram
     GameMapFactory <|.. MapB
     GameMapFactory <|.. MapE
 ```
-*Figura X: Schema UML del pattern Factory Method per la progressione delle mappe.*
+*Figura 9: Schema UML del pattern Factory Method per la progressione delle mappe.*
 
 
 ##### Pro e Contro
@@ -552,7 +557,7 @@ Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono stat
             AbstractObstacle <|-- TriangleObstacle
             AbstractObstacle --> Vector2D
 ```
-
+*Figura 10: Schema UML*
 ##### Pro e Contro
 Pro:
 - Fisica altamente stabile e realistica 
@@ -584,6 +589,8 @@ Per la gestione dei portali, invece, era fondamentale prevenire la configurazion
     AbstractObstacle <|-- PortalObstacle
     PortalObstacle --> PortalObstacle : linkedPortal
 ```
+
+*Figura 11: Schema UML*
 
 ##### Pro e Contro
 Pro:
@@ -630,7 +637,7 @@ Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`,
         MapPanel --> ObstacleData : stores
         ObstacleController --> Obstacle : manages
 ```
-
+*Figura 12: Schema UML...*
 ##### Pro e Contro
 Pro:
 - Separazione totale tra modello e vista: la grafica è completamente passiva, riceve i dati già pronti tramite il DTO e si limita a stamparli a schermo. Questo rende il codice molto più facile da mantenere e da testare.
@@ -682,7 +689,7 @@ I componenti testati riguardano la parte logico-matematica e la gestione degli o
 ### 3.2.1 Daniel Patryk Bak
 #### Factory
 
-Usata nelle classi UserInterfaceFactory per poter creare elementi grafici come bottoni, etichette tutte uniformate.
+Usata nella classe UserInterfaceFactory per poter creare elementi grafici come bottoni, etichette tutte uniformate.
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/view/elements/UserInterfaceFactory.java#L1
 
 #### Lamda Expressions
