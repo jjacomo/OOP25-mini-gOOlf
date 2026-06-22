@@ -587,23 +587,21 @@ Contro:
 
 #### Creazione degli ostacoli avanzati (Appiccicosi, Rimbalzanti e Portali)
 
-##### Problema
-Introdurre dinamiche di gioco avanzate tramite ostacoli che alterano la velocità della pallina (appiccicosi che rallentano, respingenti che accelerano) e portali di teletrasporto. Bisognava evitare di creare una nuova classe per ogni combinazione di forma ed effetto, garantire la creazione sicura dei portali solo in coppia e prevenire loop infiniti di teletrasporto nello stesso frame.
+Per gestire le alterazioni di velocità senza moltiplicare le classi, si è introdotto il parametro `bounciness` in `AbstractObstacle`, il quale scala la velocità della pallina al momento del contatto senza alterarne l'angolo di riflessione. Per evitare di creare una nuova classe per ogni ostacolo avanzato, si è sfruttato il constructor chaining: per gli ostacoli base, il costruttore base richiama un secondo costruttore più completo, passandogli un valore di elasticità di default.
 
-##### Soluzione
-- Constructor Chaining per l'elasticità: Aggiunto il parametro `bounciness` in `AbstractObstacle`, che scala la velocità al contatto con l'ostacolo senza alterare l'angolo di rimbalzo.
-- Aggiunto un secondo costruttore, in ogni classe degli ostacoli, che accetta come parametro 'bounciness' per creare l'ostacolo elastico. In caso di ostacoli con elasticità normale, si utilizza il costruttore base, che chiamerà quello completo impostando 'bounciness' al valore di default.
-- Il costruttore di `PortalObstacle` è privato e la creazione è delegata al metodo statico `createPair()`, che istanzia e collega tra loro due portali in memoria, impedendo la configurazione di elementi dispari o spaiati nella mappa.
-- Al momento del teletrasporto, il portale di destinazione attiva un 'timer di cooldown'; finché è attivo, la sua compenetrazione risulta nulla, nascondendolo temporaneamente al motore fisico per permettere alla pallina di uscire senza re-innescare il trasferimento.
+Per la gestione dei portali, invece, era fondamentale prevenire la configurazione di stati invalidi nella mappa, come l'esistenza di portali spaiati. Per risolvere il problema è stato applicato il pattern `Static Factory Method`. Il costruttore della classe `PortalObstacle` è stato reso privato, delegando l'istanziazione e il collegamento reciproco in memoria al metodo statico `createPair()`, che assicura la creazione di portali sempre e solo a coppie. Infine, per evitare che la pallina rimbalzi all'infinito tra due portali nello stesso frame, è stato implementato un timer di cooldown, che parte al momento dell'uscita della pallina e disattiva momentaneamente il portale ignorando le compenetrazioni.
 
-UML:
 ```mermaid
     classDiagram
-        class AbstractObstacle
-        class PortalObstacle
+    class AbstractObstacle {
+        <<abstract>>
+    }
+    class PortalObstacle {
+        +createPair(Vector2D, Vector2D, double)$ List~PortalObstacle~
+    }
 
-        AbstractObstacle <|-- PortalObstacle
-        PortalObstacle --> PortalObstacle : linkedPortal
+    AbstractObstacle <|-- PortalObstacle
+    PortalObstacle --> PortalObstacle : linkedPortal
 ```
 
 ##### Pro e Contro
@@ -612,7 +610,7 @@ Pro:
 - Sicurezza strutturale nella creazione dei portali, che impedisce stati invalidi come la creazione di portali spaiati.
 
 Contro:
-- Il cooldown temporale fisso (es. 500ms) potrebbe scadere prima che la pallina sia uscita dal portale se questa viaggia a una velocità estremamente ridotta, generando un loop.
+- Il cooldown temporale fisso potrebbe scadere prima che la pallina sia uscita dal portale se questa viaggia a una velocità estremamente ridotta, spostandola nell'altro portale nel tiro successivo.
 
 #### Architettura e separazione Vista‑Logica
 
