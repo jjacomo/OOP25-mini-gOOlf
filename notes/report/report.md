@@ -279,7 +279,7 @@ Contro:
 Il gioco richiede superfici con proprietà fisiche diverse (attrito, accelerazione, vento) che influenzano il moto della pallina. Le 4 superfici base (erba, sabbia, ghiaccio, terra) differiscono solo per il coefficiente di attrito, mentre le superfici avanzate (`BoostSurface`, `WindySurface`) alterano la velocità con modalità diverse. È necessario aggiungere questi comportamenti senza duplicare la logica già presente nelle superfici base.
 
 ##### Soluzione
-È stato adottato il **Decorator Pattern**: l'interfaccia `Surface` è implementata sia da `ShapedSurface` (la superficie base, che delega il test di contenimento a un'istanza di `Shape`) sia da `AbstractSurfaceDecorator` (che avvolge qualsiasi `Surface` e ne delega per default tutti i metodi). `BoostSurface` e `WindySurface` estendono il decoratore astratto sovrascrivendo rispettivamente `getFriction()` e `getWind()`. Il motore fisico (`BasicFrictionStrategy`) interroga la superficie corrente tramite questi metodi, senza conoscere se sia base o decorata.
+È stato adottato il **Decorator Pattern**: l'interfaccia `Surface` è implementata sia da `ShapedSurface` sia da `AbstractSurfaceDecorator` (che incapsula `Surface` e ne delega per default tutti i metodi). `BoostSurface` e `WindySurface` estendono il decoratore astratto sovrascrivendo rispettivamente `getFriction()` e `getWind()`. Il motore fisico (`BasicFrictionStrategy`) interroga la superficie corrente tramite questi metodi, senza conoscere se sia base o decorata.
 
 ```mermaid
 classDiagram
@@ -315,7 +315,7 @@ classDiagram
 
     Surface <|.. ShapedSurface
     Surface <|.. AbstractSurfaceDecorator
-    AbstractSurfaceDecorator --> Surface : wraps
+    AbstractSurfaceDecorator --> Surface : incapsulates
     AbstractSurfaceDecorator <|-- BoostSurface
     AbstractSurfaceDecorator <|-- WindySurface
     BasicFrictionStrategy ..> Surface : reads getFriction / getWind
@@ -326,6 +326,7 @@ classDiagram
 **Pro:**
 * **Componibilità**: è possibile decorare ricorsivamente una stessa superficie con più effetti (es. `BoostSurface` su `WindySurface` su `ShapedSurface`).
 * **DRY**: i decoratori riutilizzano la logica geometrica e di contenimento della superficie base, sovrascrivendo solo il parametro fisico di loro competenza.
+* **Estensibilità**: introdurre un nuovo effetto fisico (es. una superficie che inverte la direzione o applica gravità variabile) richiede solo di creare un nuovo decoratore che estende `AbstractSurfaceDecorator`, senza toccare né `ShapedSurface` né il motore fisico. L'Open/Closed Principle è rispettato per definizione strutturale.
 
 **Contro:**
 * La creazione di superfici composite è verbosa; è necessaria una `SurfaceFactory` per mediare la costruzione.
@@ -340,7 +341,7 @@ classDiagram
 * far dipendere `PhysicsEngine` da `BallController` (viola la separazione MVC).
 
 ##### Soluzione
-Il pattern **Adapter** è implementato dalla classe package-private `BallControllerAdapter`: implementa `Ball` delegando ogni lettura e scrittura direttamente al `BallController` incapsulato. `PhysicsControllerImpl` istanzia l'adapter ad ogni tick e lo passa a `PhysicsEngine`, che opera su un oggetto `Ball` senza sapere nulla del controller.
+Il pattern **Adapter** è implementato dalla classe `BallControllerAdapter`: implementa `Ball` delegando ogni lettura e scrittura direttamente al `BallController` incapsulato. `PhysicsControllerImpl` istanzia l'adapter ad ogni tick e lo passa a `PhysicsEngine`, che opera su un oggetto `Ball` senza sapere nulla del controller.
 
 ```mermaid
 classDiagram
@@ -382,61 +383,18 @@ classDiagram
     BallControllerAdapter --> BallController : controller
     PhysicsEngine ..> Ball : uses
     PhysicsControllerImpl ..> BallControllerAdapter : instantiates/uses
+    PhysicsControllerImpl ..> PhysicsEngine : calls update/setStrategy
 ```
 *Figura 6: Schema UML*
 
 ##### Pro e Contro
 **Pro:**
-* Un'unica istanza della pallina: le modifiche del motore fisico si riflettono immediatamente sul controller, senza sincronizzazione esplicita.
-* `PhysicsEngine` dipende solo da `Ball`; `BallController` non conosce il Model. Entrambe le interfacce restano indipendenti.
+* **Unica istanza della pallina**: le modifiche del motore fisico si riflettono immediatamente sul controller, senza sincronizzazione esplicita.
+* **Indipendenza tra Model e Controller**: `PhysicsEngine` dipende solo da `Ball`; `BallController` non conosce il Model. Entrambe le interfacce restano indipendenti.
+* **Sostituibilità**: se in futuro la pallina venisse gestita da un controller differente, sarà sufficiente creare un nuovo adapter che implementa `Ball` wrappando il nuovo controller, senza alcuna modifica al `PhysicsEngine`.
 
 **Contro:**
 * Aggiunge una classe ponte dedicata, giustificata solo dall'architettura MVC.
-
----
-
-#### Rappresentazione geometrica degli oggetti della mappa
-
-##### Problema
-Superfici e buca devono poter verificare se la pallina è al loro interno. La logica geometrica di contenimento deve risiedere nel Model, senza dipendere da classi grafiche Swing; allo stesso tempo la vista deve poter disegnare ciascuna forma nel modo corretto.
-
-##### Soluzione
-L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite costruttori che eseguono un check sulle dimensioni in ingresso), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` riceve le `Shape` incapsulate nei DTO inviati passivamente dal controller (tramite `MapElementsView`) e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
-
-```mermaid
-classDiagram
-    class Shape {
-        <<interface>>
-        +contains(Vector2D) boolean
-    }
-    class Circle { <<record>> }
-    class Rectangle { <<record>> }
-    class Triangle { <<record>> }
-    class Oval { <<record>> }
-    class ShapedSurface {
-        -Shape shape
-        +contains(Vector2D) boolean
-    }
-    class MapPanel {
-        +drawShape(Shape, Graphics2D)
-    }
-
-    Shape <|.. Circle
-    Shape <|.. Rectangle
-    Shape <|.. Triangle
-    Shape <|.. Oval
-    ShapedSurface --> Shape : delegates contains
-    MapPanel ..> Shape : instanceof dispatch
-```
-*Figura 7: Schema UML ...*
-
-##### Pro e Contro
-**Pro:**
-* Il Model non ha dipendenze da Swing; `Shape` contiene solo logica matematica.
-* I record garantiscono immutabilità e evitano di scrivere manualmente costruttore, getter o `equals`.
-
-**Contro:**
-* L'aggiunta di una nuova forma richiede di modificare anche `MapPanel` (violazione dell'OCP); un approccio alternativo sarebbe delegare il rendering con un visitor o un adapter grafico per forma.
 
 ### 2.2.3 Federico Sparvoli
 
