@@ -82,7 +82,7 @@ public final class MatchManager {
                 String.valueOf(mapSequence.getCurrentIndex())));
         navController.registerRestoreCallback(this::restoreFromSaveData);
         // Prevent pausing while the ball is moving.
-        navController.setpauseChecker(() -> !activeMatch.isBallMoving());
+        navController.setPauseChecker(() -> !activeMatch.isBallMoving());
     }
 
     /**

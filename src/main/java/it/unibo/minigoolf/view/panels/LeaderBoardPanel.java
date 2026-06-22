@@ -23,7 +23,8 @@ import java.io.Serial;
 /**
  * One of the possibile scenes, this is the leaderboard, a table with
  * the scores for each player. 
- * * @author dbakko
+ * 
+ * @author dbakko
  */ 
 public final class LeaderBoardPanel extends JPanel {
 
@@ -34,7 +35,11 @@ public final class LeaderBoardPanel extends JPanel {
     private static final String PATH_MEDALG = "/medals/gold.png";
     private static final String PATH_MEDALS = "/medals/silver.png";
     private static final String PATH_MEDALB = "/medals/bronze.png";
+
+    /** The background image of the leaderboard panel. */
     private transient Image backgroundImage;
+
+    /** The container panel that holds the dynamically generated scores table. */
     private final JPanel tableContainer;
 
     /**

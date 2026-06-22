@@ -39,8 +39,13 @@ public final class GamePanel extends JPanel {
     private static final double ASPECT_W = 16.0;
     private static final double ASPECT_H = 9.0;
 
+    /** The panel responsible for rendering the game map and its entities. */
     private final MapPanel mapPanel;
+
+    /** The label displaying the name of the active player. */
     private final JLabel turnoLabel;
+
+    /** The label displaying the number of shots taken by the active player. */
     private final JLabel shotsLabel;
 
     /** Supplies the current player name — avoids storing GameController directly. */
@@ -50,6 +55,8 @@ public final class GamePanel extends JPanel {
     private final transient IntSupplier playerShotsSupplier;
 
     /**
+     * Constructs the main game panel, setting up the UI and the layered game views.
+     * 
      * @param navController  the navigation controller
      * @param gameController the active match controller
      * @param shotViewPanel  the pre-built shot view panel, created and wired by MainWindow

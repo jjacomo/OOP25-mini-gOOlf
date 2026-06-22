@@ -34,8 +34,13 @@ public final class MainWindow extends JFrame {
     private static final int MIN_WIDTH = 800;
     private static final int MIN_HEIGHT = 600;
 
+    /** Layout manager used to switch between different panels. */
     private final CardLayout cardLayout = new CardLayout();
+
+    /** Main container that holds all the different views. */
     private final JPanel mainContainer = new JPanel(cardLayout);
+
+    /** Panel displaying the global leaderboard. */
     private LeaderBoardPanel leaderboardPanel;
 
     /**

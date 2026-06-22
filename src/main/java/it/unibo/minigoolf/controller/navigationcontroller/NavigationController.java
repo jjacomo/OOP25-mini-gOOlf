@@ -39,6 +39,8 @@ public final class NavigationController {
     private BooleanSupplier pauseChecker = () -> true;
 
     /**
+     * Constructs the navigation controller and extracts panel transition callbacks from the main window.
+     * 
      * @param mainController the main controller
      * @param mainWindow     the main application window
      */
@@ -85,7 +87,7 @@ public final class NavigationController {
      *
      * @param checker returns true if the ball is not moving
      */
-    public void setpauseChecker(final BooleanSupplier checker) {
+    public void setPauseChecker(final BooleanSupplier checker) {
         this.pauseChecker = checker;
     }
 

@@ -35,6 +35,8 @@ public final class PausePanel extends JPanel {
     private static final String TUTORIAL_IMG_PATH = "/tutorial/tutorial_img.jpeg";
 
     /**
+     * Constructs the pause menu panel, displaying the resume, tutorial, skip, and quit options.
+     * 
      * @param navController the navigation controller
      */
     public PausePanel(final NavigationController navController) {
