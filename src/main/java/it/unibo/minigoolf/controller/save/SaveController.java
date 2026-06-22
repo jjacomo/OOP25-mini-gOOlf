@@ -34,6 +34,8 @@ public final class SaveController {
     private final Supplier<Optional<SaveData>> loader;
 
     /**
+     * Builds the save controller with the given save manager.
+     * 
      * @param saveManager handles the actual file 
      */
     public SaveController(final SaveManager saveManager) {

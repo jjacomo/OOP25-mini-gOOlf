@@ -96,6 +96,8 @@ public final class GameControllerImpl implements GameController {
     private ShotController shotController;
 
     /**
+     * Builds the controller extracting behaviors from the given collaborators.
+     * 
      * @param gameState         the central game logic
      * @param gameMapController the map controller 
      * @param shotState         the shot input state

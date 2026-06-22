@@ -80,6 +80,8 @@ public interface GameController {
     SaveData createSaveData(String mapId);
 
     /**
+     * Returns the scores for the current hole.
+     * 
      * @return a map associating each player's name with the shots taken in this hole.
      */
     Map<String, Integer> getHoleScores();

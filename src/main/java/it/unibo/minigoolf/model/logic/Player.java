@@ -12,6 +12,8 @@ public final class Player {
     private int shots;
 
     /**
+     * Builds a player with the given name and zero shots.
+     * 
      * @param name the display name of this player
      */
     public Player(final String name) {

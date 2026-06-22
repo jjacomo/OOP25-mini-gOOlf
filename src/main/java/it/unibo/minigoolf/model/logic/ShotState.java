@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 public final class ShotState {
 
-    // Maximum power of a shot in logical pixels.
+    /** Maximum shot power in logical pixels. */
     public static final double MAX_POWER = 150.0;
 
     // Minimum squared power for a shot to be accepted.
@@ -33,6 +33,13 @@ public final class ShotState {
 
     // Current ball centre in logical coordinates, used to enable input.
     private Vector2D ballPosition;
+
+    /**
+     * Creates an empty shot state with no pending shot and no ball position.
+     */
+    public ShotState() {
+        // initial state: no intent, no ball position, shot not ready
+    }
 
     /**
      * Updates the current drag vector.

@@ -45,6 +45,8 @@ public final class MatchManager {
     private GameController activeMatch;
 
     /**
+     * Builds the match manager and wires save, restore and pause callbacks.
+     * 
      * @param mapSequence    the ordered sequence of maps
      * @param playerNames    the player names for all matches
      * @param stopGame       callback to stop the game loop

@@ -23,6 +23,13 @@ public final class SaveManager {
     private static final String SAVE_FILE = SAVE_DIR + "/savefile.json";
 
     /**
+     * Creates a save manager that reads and writes the save file.
+     */
+    public SaveManager() {
+        // no initialization needed: paths are constant
+    }
+
+    /**
      * Saves the given snapshot to file.
      *
      * @param data the match snapshot to save

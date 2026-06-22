@@ -30,6 +30,8 @@ public final class ShotControllerImpl implements ShotController {
     private final ShotView shotView;
 
     /**
+     * Creates the shot controller wiring the model to the game logic.
+     * 
      * @param shotState            the model holding shot intent and confirmation state
      * @param pendingShotSubmitter callback to submit a pending shot to the turn logic
      * @param shotUpdater          callback to consume the confirmed shot each tick

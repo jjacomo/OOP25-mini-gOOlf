@@ -15,6 +15,8 @@ public final class HoleChecker {
     private final double holeRadius;
 
     /**
+     * Builds a hole checker for the given hole position and radius.
+     * 
      * @param holePosition the centre of the hole in logical coordinates
      * @param holeRadius   the radius of the hole in logical coordinates
      */

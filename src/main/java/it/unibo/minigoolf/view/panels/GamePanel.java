@@ -48,10 +48,10 @@ public final class GamePanel extends JPanel {
     /** The label displaying the number of shots taken by the active player. */
     private final JLabel shotsLabel;
 
-    /** Supplies the current player name — avoids storing GameController directly. */
+    // Supplies the current player name, avoids storing GameController directly. 
     private final transient Supplier<String> playerNameSupplier;
 
-    /** Supplies the current player shots — avoids storing GameController directly. */
+    // Supplies the current player shots, avoids storing GameController directly.
     private final transient IntSupplier playerShotsSupplier;
 
     /**
@@ -67,7 +67,7 @@ public final class GamePanel extends JPanel {
         this.setPreferredSize(new Dimension(START_WIDTH, START_HEIGHT));
         this.setLayout(new BorderLayout());
 
-        // Extract only the needed behaviors from gameController — avoids EI2.
+        // Extract only the needed behaviors from gameController, avoids EI2.
         this.playerNameSupplier = gameController::getCurrentPlayerName;
         this.playerShotsSupplier = gameController::getCurrentPlayerShots;
         // Panel that displays player names and his number of shots
