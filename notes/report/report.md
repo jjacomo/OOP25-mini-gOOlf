@@ -90,8 +90,8 @@ Il software segue il pattern architetturale MVC (Model-View-Controller).
 **Model**: contiene lo stato del gioco e le regole, senza alcuna dipendenza dalla view o dal controller. Le entità principali sono GameMap (la mappa corrente, con pallina, buca, superfici e ostacoli), GameState (lo stato del turno: giocatore attivo, contatore colpi, movimento della pallina) e ShotState (lo stato del colpo in corso: direzione, potenza, posizione della pallina).
 
 **Controller**: coordina model e view senza che i due si conoscano direttamente. La logica di controllo è strutturata gerarchicamente per separare nettamente le responsabilità:
-- MainController: funge da entry-point e orchestratore globale. Inizializza i componenti principali e ospita il Game Loop tramite un Timer.
-- MatchManager: agisce da supervisore della sessione di gioco. Inizializza le partite e  gestisce le transizioni logiche tra una buca e l'altra.
+- MainController: Inizializza i componenti principali e ospita il Game Loop tramite un Timer.
+- MatchManager: agisce da supervisore della sessione di gioco. Inizializza le partite e gestisce le transizioni logiche tra una buca e l'altra.
 - GameController: gestisce il ciclo di vita della singola mappa attiva. Ad ogni tick ricevuto dal MainController, aggiorna la simulazione fisica della pallina, verifica le condizioni di vittoria (ingresso in buca) e delega l'avanzamento dei turni.
 - NavigationController: si occupa di gestire le transizioni tra i vari pannelli della view nella MainWindow.
 
