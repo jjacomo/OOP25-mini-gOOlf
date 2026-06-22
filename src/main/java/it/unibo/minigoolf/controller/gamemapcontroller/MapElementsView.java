@@ -6,6 +6,7 @@ import java.util.List;
  * Interface that {@link it.unibo.minigoolf.view.panels.MapPanel} implements
  * to receive data from the Controller for rendering the map.
  */
+@FunctionalInterface
 public interface MapElementsView {
 
     /**

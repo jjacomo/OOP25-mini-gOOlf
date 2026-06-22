@@ -416,7 +416,7 @@ classDiagram
 Superfici e buca devono poter verificare se la pallina è al loro interno. La logica geometrica di contenimento deve risiedere nel Model, senza dipendere da classi grafiche Swing; allo stesso tempo la vista deve poter disegnare ciascuna forma nel modo corretto.
 
 ##### Soluzione
-L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite costruttori che eseguono un check sulle dimensioni in ingresso), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` recupera le `Shape` tramite il controller e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
+L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite costruttori che eseguono un check sulle dimensioni in ingresso), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` riceve le `Shape` incapsulate nei DTO inviati passivamente dal controller (tramite `MapElementsView`) e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
 
 ```mermaid
 classDiagram
