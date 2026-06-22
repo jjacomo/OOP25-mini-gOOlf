@@ -105,7 +105,6 @@ public final class MapPanel extends JPanel implements MapElementsView {
                     }
                 });
 
-        g2d.setColor(Color.DARK_GRAY);
         for (final ObstacleData obstacleData : obstacles) {
             final Color obstacleColor;
 
