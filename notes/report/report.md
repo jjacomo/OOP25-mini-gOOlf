@@ -320,7 +320,7 @@ classDiagram
     AbstractSurfaceDecorator <|-- WindySurface
     BasicFrictionStrategy ..> Surface : reads getFriction / getWind
 ```
-*Figura 5: Schema UML...*
+*Figura 5: Schema UML del pattern Decorator applicato per l'implementazione delle superfici avanzate.*
 
 ##### Pro e Contro
 **Pro:**
@@ -385,7 +385,7 @@ classDiagram
     PhysicsControllerImpl ..> BallControllerAdapter : instantiates/uses
     PhysicsControllerImpl ..> PhysicsEngine : calls update/setStrategy
 ```
-*Figura 6: Schema UML*
+*Figura 6: Schema UML del pattern Adapter utilizzato per integrare il motore fisico con la pallina gestita dal controller.*
 
 ##### Pro e Contro
 **Pro:**
@@ -429,7 +429,7 @@ classDiagram
     ShotViewPanel ..|> ShotVisualizer
     ShotViewPanel ..|> ShotCoordinateConverter
 ```
-*Figura 8: Schema UML del pattern Strategy applicato all'input del colpo.*
+*Figura 7: Schema UML del pattern Strategy applicato all'input del colpo.*
 
 ##### Pro e Contro
 Pro: separazione netta tra stato, rendering e coordinamento. Aggiungere un nuovo tipo di indicatore visivo richiede solo una nuova implementazione di `ShotVisualizer`, senza toccare il listener o il controller.
@@ -471,7 +471,7 @@ classDiagram
     GameMapFactory <|.. MapB
     GameMapFactory <|.. MapE
 ```
-*Figura 9: Schema UML del pattern Factory Method per la progressione delle mappe.*
+*Figura 8: Schema UML del pattern Factory Method per la progressione delle mappe.*
 
 
 ##### Pro e Contro
@@ -515,7 +515,7 @@ Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono stat
             AbstractObstacle <|-- TriangleObstacle
             AbstractObstacle --> Vector2D
 ```
-*Figura 10: Schema UML della gerarchia degli ostacoli fisici.*
+*Figura 9: Schema UML della gerarchia degli ostacoli fisici.*
 ##### Pro e Contro
 Pro:
 - Fisica altamente stabile e realistica 
@@ -551,7 +551,7 @@ Per la gestione dei portali, invece, era fondamentale prevenire la configurazion
         PortalObstacle --> PortalObstacle : linkedPortal
 ```
 
-*Figura 11: Schema UML del pattern Static Factory Method per i portali e Chaining Constructor per gli ostacoli avanzati.*
+*Figura 10: Schema UML del pattern Static Factory Method per i portali e Chaining Constructor per gli ostacoli avanzati.*
 
 ##### Pro e Contro
 Pro:
@@ -598,7 +598,7 @@ Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`,
         MapPanel --> ObstacleData : stores
         ObstacleController --> Obstacle : manages
 ```
-*Figura 12: Schema UML del pattern DTO applicato all'architettura MVC.*
+*Figura 11: Schema UML del pattern DTO applicato all'architettura MVC.*
 ##### Pro e Contro
 Pro:
 - Separazione totale tra modello e vista: la grafica è completamente passiva, riceve i dati già pronti tramite il DTO e si limita a stamparli a schermo. Questo rende il codice molto più facile da mantenere e da testare.
@@ -718,7 +718,7 @@ Ne ho già parlato con i miei colleghi e spero che in futuro aggiorneremo il gio
 Sono molto soddisfatto del contributo fornito al progetto, non soltanto per il lavoro realizzato, ma soprattutto per l'esperienza maturata durante l'intero percorso di sviluppo. Il tempo e le energie investite sono stati considerevolmente superiori alle aspettative iniziali, ma ritengo che siano stati impiegati in modo proficuo.
 Dal punto di vista tecnico, mi sono occupato dell'implementazione delle superfici, della mappa e della buca, nonché della loro integrazione nelle mappe di gioco, coordinando l'interazione tra questi elementi secondo le leggi della fisica.
 Le difficoltà maggiori hanno riguardato la comprensione e l'applicazione del pattern architetturale MVC nei suoi tre livelli, in particolare per quanto concerne la comunicazione tra le rispettive classi. A queste si è aggiunta la sfida di approcciare il progetto partendo da un'esperienza di programmazione quasi nulla, il che ha reso la fase iniziale particolarmente impegnativa.
-Con il progredire del lavoro, tuttavia, la padronanza degli strumenti e delle pratiche di sviluppo è cresciuta progressivamente, consentendo di scrivere codice con maggiore consapevolezza. Il risultato finale e le soluzioni adottate riflettono l'impegno costante nel rispettare i principi della buona programmazione orientata agli oggetti.
+Con il progredire del lavoro e grazie all'aiuto e supporto dei miei compagni, tuttavia, la padronanza degli strumenti e delle pratiche di sviluppo è cresciuta progressivamente, consentendo di scrivere codice con maggiore consapevolezza.
 
 ### 4.1.3 Federico Sparvoli
 Il mio contributo principale riguarda il sistema di input del colpo, la gestione del ciclo di vita dei match e il sistema di salvataggio. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a `@SuppressWarnings`, ottenuta tramite interfacce strette e callback funzionali.
