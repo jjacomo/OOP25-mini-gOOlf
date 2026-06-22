@@ -18,10 +18,8 @@
       - [Ciclo di vita del match e progressione delle mappe](#ciclo-di-vita-del-match-e-progressione-delle-mappe)
     - [2.2.4 Mattia D'Ambrosio](#224-mattia-dambrosio)
       - [Fisica, geometria degli ostacoli e gestione vettoriale](#fisica-geometria-degli-ostacoli-e-gestione-vettoriale)
-        - [Pro e Contro](#pro-e-contro)
       - [Creazione degli ostacoli avanzati (Appiccicosi, Rimbalzanti e Portali)](#creazione-degli-ostacoli-avanzati-appiccicosi-rimbalzanti-e-portali)
       - [Architettura e separazione Vista‑Logica](#architettura-e-separazione-vistalogica)
-        - [Pro e Contro](#pro-e-contro-1)
 - [Capitolo 3: Sviluppo](#capitolo-3-sviluppo)
   - [3.1 Testing automatizzato](#31-testing-automatizzato)
     - [3.1.1 Daniel Patryk Bak](#311-daniel-patryk-bak)
@@ -44,8 +42,6 @@
     - [Guida Utente](#guida-utente)
 - [Appendice B](#appendice-b)
     - [Esercitazioni di laboratorio](#esercitazioni-di-laboratorio)
-
-
 
 
 # Capitolo 1:  Analisi
@@ -148,7 +144,6 @@ Il software segue il pattern architetturale MVC (Model-View-Controller).
 
 Il controller non dipende mai dalla view concreta: comunica con essa unicamente tramite interfacce strette e callback funzionali (Runnable, Consumer, Supplier). Ciò implica che sostituire Swing con un'altra libreria grafica (ad esempio JavaFX) non richiederebbe alcuna modifica al controller né al model: sarebbe sufficiente riscrivere i pannelli della view e ricablare i callback al momento della costruzione.
 
-
 ```mermaid
 classDiagram
     class MainController {
@@ -196,6 +191,7 @@ classDiagram
     GamePanel --> GameController
     
 ```
+
 *Figura 2: Schema UML del design dell'architettura, con rappresentate le classi principali ed i rapporti fra loro.*
 
 ## 2.2 Design dettagliato
@@ -492,7 +488,7 @@ La soglia di click sulla pallina è una costante fissa in pixel logici, e non si
 
 #### Ciclo di vita del match e progressione delle mappe
 
-##### Problema
+**Problema**
 Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva, se non ce ne sono, si torna al menù. Tutta questa logica non deve stare nel controller principale, che deve rimanere semplice.
 
 **Soluzione**
@@ -568,7 +564,7 @@ Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono stat
             AbstractObstacle --> Vector2D
 ```
 *Figura 9: Schema UML della gerarchia degli ostacoli fisici.*
-##### Pro e Contro
+**Pro e Contro**
 Pro:
 - Fisica altamente stabile e realistica 
 - Le normali precalcolate riducono drasticamente i calcoli ripetitivi nel game loop (specialmente nei rettangoli).
@@ -651,7 +647,7 @@ Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`,
         ObstacleController --> Obstacle : manages
 ```
 *Figura 11: Schema UML del pattern DTO applicato all'architettura MVC.*
-##### Pro e Contro
+**Pro e Contro**
 Pro:
 - Separazione totale tra modello e vista: la grafica è completamente passiva, riceve i dati già pronti tramite il DTO e si limita a stamparli a schermo. Questo rende il codice molto più facile da mantenere e da testare.
 - Tutta la logica decisionale (ad esempio, capire come colorare un ostacolo o se si tratta di un portale) rimane chiusa in modo sicuro nel controller, sollevando la vista dal dover fare ragionamenti sui tipi di oggetti.
