@@ -21,36 +21,66 @@ Il software è un gioco di mini-golf in due dimensioni per uno o più giocatori 
 
 Un gioco di mini-golf è composto da una sequenza di mappe, ognuna costituita da una pallina, una buca, una o più superfici ed alcuni ostacoli. La pallina si muove nella mappa interagendo con superfici e ostacoli che ne modificano velocita' e direzione secondo leggi fisiche. Una partita coinvolge uno o più giocatori che si alternano a turni per colpire la pallina, indicandone direzione e potenza, e mandandola in buca. Il punteggio di ciascun partecipante su una mappa corrisponde al numero di colpi effettuati.
 
-***DA RIVEDERE: SCRIVERE IN INGLESE E IN CIMA INTERFACE, METTERE LA DIDASCALIA ES: FIG 1 : Schema UML***
-
 ```mermaid
 classDiagram
-    class Partita
-    class Mappa
-    class Giocatore {
-        nome
-        punteggio
+    class Match {
+        <<interface>>
+        +getCurrentPlayer() : Player
+        +getActiveMap() : Map
     }
-    class Pallina {
-        posizione
+    
+    class Map {
+        <<interface>>
+        +getBall() : Ball
+        +getHole() : Hole
     }
-    class Buca
-    class Superficie {
-        attrito
+    
+    class Player {
+        <<interface>>
+        +getName() : String
+        +getScore() : int
     }
-    class Ostacolo
-    class Colpo {
-        direzione
-        potenza
+    
+    class Ball {
+        <<interface>>
+        +getPosition() : Vector2D
+        +applyForce(direction: Vector2D, power: double) : void
+    }
+    
+    class Hole {
+        <<interface>>
+        +isBallInside(ball: Ball) : boolean
+    }
+    
+    class Surface {
+        <<interface>>
+        +getFriction() : double
+    }
+    
+    class Obstacle {
+        <<interface>>
+        +checkCollision(ball: Ball) : boolean
+    }
+    
+    class Shot {
+        <<interface>>
+        +getDirection() : Vector2D
+        +getPower() : double
     }
 
-    Partita --> "1..*" Giocatore
-    Partita --> "1..*" Mappa
-    Mappa --> "1" Pallina
-    Mappa --> "1" Buca
-    Mappa --> "1..*" Superficie
-    Mappa --> "0..*" Ostacolo
-    Giocatore --> "0..*" Colpo
+    %% Relazioni essenziali
+    Match *-- Player
+    Match *-- Map
+    
+    Map *-- Ball
+    Map *-- Hole
+    Map *-- Surface
+    Map *-- Obstacle
+
+    Player --> Shot
+    Shot ..> Ball
+    Surface ..> Ball
+    Obstacle ..> Ball
 ```
 # Capitolo 2: Design
 
@@ -69,11 +99,9 @@ Il software segue il pattern architetturale MVC (Model-View-Controller).
 
 Il controller non dipende mai dalla view concreta: comunica con essa unicamente tramite interfacce strette e callback funzionali (Runnable, Consumer, Supplier). Ciò implica che sostituire Swing con un'altra libreria grafica (ad esempio JavaFX) non richiederebbe alcuna modifica al controller né al model: sarebbe sufficiente riscrivere i pannelli della view e ricablare i callback al momento della costruzione.
 
-**SICURAMENTE DA RIVEDERE**
 
 ```mermaid
 classDiagram
-    %% --- Livello Controller ---
     class MainController {
         <<interface>>
         +startNewMatch(playerNames)
@@ -98,7 +126,6 @@ classDiagram
         <<interface>>
     }
 
-    %% --- Livello View ---
     class MainWindow {
         +initPanels()
         +rebuildGamePanel()
@@ -107,35 +134,30 @@ classDiagram
     class MapPanel
     class ShotViewPanel
 
-    %% --- Livello Model ---
     class GameMap
     class GameState
     class ShotState
     class MapSequence
 
-    %% Relazioni Controller
     MainController <|.. MainControllerImpl
-    MainControllerImpl --> MainWindow : crea
-    MainControllerImpl --> NavigationController : crea
-    MainControllerImpl --> MatchManager : crea e orchestra
+    MainControllerImpl --> MainWindow
+    MainControllerImpl --> NavigationController
+    MainControllerImpl --> MatchManager
     
-    MatchManager --> MapSequence : interroga
-    MatchManager --> GameController : gestisce
+    MatchManager --> MapSequence
+    MatchManager --> GameController
     
-    NavigationController ..> MainWindow : pilota via callback (Runnable)
+    NavigationController ..> MainWindow
     
-    %% Relazioni View
-    MainWindow *-- GamePanel : ospita (CardLayout)
-    GamePanel *-- MapPanel : compone
-    GamePanel *-- ShotViewPanel : compone (Overlay)
+    MainWindow *-- GamePanel
+    GamePanel *-- MapPanel
+    GamePanel *-- ShotViewPanel
     
-    %% Relazioni MVC (Disaccoppiamento)
-    GamePanel ..> GameController : legge via Supplier / Consumer
+    GamePanel ..> GameController
     
-    %% Relazioni Model
-    GameController --> GameMap : gestisce
-    GameController --> GameState : gestisce
-    GameController --> ShotState : gestisce
+    GameController --> GameMap
+    GameController --> GameState
+    GameController --> ShotState
 ```
 
 ## 2.2 Design dettagliato
@@ -143,31 +165,139 @@ classDiagram
 ### 2.2.1 Daniel Patryk Bak
 #### Gestione dei pannelli
 ##### Problema
-Come ogni gioco, anche minigolf necessita di un menu principale da cui poter transitare tra diverse "scene", in questo caso i pannelli. é fondamentale rispettare il pattern MVC, assegnando ad un controller la gestione delle transizioni dei pannelli (view).
+Come ogni gioco, anche mini-gOOlf necessita di un menu principale da cui poter transitare tra diverse "scene", in questo caso i pannelli. È fondamentale rispettare il pattern MVC, assegnando ad un controller la gestione delle transizioni dei pannelli (view).
 
 ##### Soluzione
-Per poter rendere questa transizione il più semplice e fluida possibile,
-si è scelto il cardlayout, mentre per pannelli che devono appararire soltanto in sovraimpressione (quali {PausePanel} e {MidLeaderBoardPanel}) si è scelto il metodo Glasspane della libreria Swing. I pannelli vengono illustrati all'interno della {MainWindow} ovvero la finestra dell'intera applicazione.
+Per poter rendere questa transizione il più semplice e fluida possibile, si è scelto il CardLayout, mentre per pannelli che devono appararire soltanto in sovraimpressione (quali `PausePanel` e `MidLeaderBoardPanel`) si è scelto il metodo Glasspane della libreria Swing. I pannelli vengono illustrati all'interno della `MainWindow` ovvero la finestra dell'intera applicazione.
 
-Pro e Contro:
+```mermaid
+classDiagram
+    class NavigationController {
+        -Runnable showMenuCallback
+        -Runnable showGameCallback
+        -Runnable pauseWindowCallback
+        -Runnable resumeWindowCallback
+        +goToMainMenu()
+        +goToNewGameMenu()
+        +showGameScene()
+        +pauseGame()
+        +resumeGame()
+    }
+
+    class MainWindow {
+        -CardLayout cardLayout
+        -JPanel mainContainer
+        +initPanels(NavigationController)
+        +showScene(String name)
+        +rebuildGamePanel(GameController)
+        +showMidLeaderBoard(...)
+    }
+
+    class MenuPanel
+    class NewGamePanel
+    class GamePanel
+    class LeaderBoardPanel
+
+    class PausePanel
+    class MidLeaderBoardPanel
+
+    NavigationController ..> MainWindow : triggers callbacks
+
+    MainWindow *-- MenuPanel
+    MainWindow *-- NewGamePanel
+    MainWindow *-- LeaderBoardPanel
+    MainWindow *-- GamePanel
+    
+    MainWindow *-- PausePanel
+    MainWindow ..> MidLeaderBoardPanel
+```
+##### Pro e Contro:
 
 Pro:
-
+- Disaccoppiamento netto (Zero EI2): Il NavigationController gestisce la logica di routing senza mai possedere un riferimento diretto alla MainWindow o ai pannelli. La comunicazione avviene esclusivamente tramite callback funzionali (Runnable e Consumer), garantendo che il controller non possa manipolare impropriamente lo stato interno della View.
+- Efficienza del CardLayout: I pannelli statici (Menu, New Game, Leaderboard) vengono istanziati una sola volta e mantenuti in memoria. Il CardLayout si limita a nasconderli o mostrarli, rendendo le transizioni di scena istantanee senza sovraccaricare il Garbage Collector.
+- Gestione nativa degli Overlay: L'utilizzo del GlassPane per il PausePanel e il MidLeaderBoardPanel permette di sovrapporre interfacce trasparenti al gioco in esecuzione senza dover alterare la gerarchia dei componenti del GamePanel o gestire complessi Z-index. Inoltre, il GlassPane intercetta nativamente gli eventi del mouse, bloccando in automatico le interazioni accidentali con il gioco sottostante in pausa.
 
 Contro:
 
+- Limitazione strutturale del GlassPane: La libreria Swing consente a un JFrame di avere un solo GlassPane attivo per volta. Questo costringe ad implementare una logica di salvataggio e ripristino manuale (come visibile nel metodo showMidLeaderBoard) nel caso in cui più overlay debbano susseguirsi o sovrapporsi.
+- Prolissità del costruttore: L'estrazione di tutti i comportamenti della finestra sotto forma di callback rende il costruttore del NavigationController leggermente prolisso e dipendente dal corretto "cablaggio" iniziale.
 
 #### Multiplayer
 ##### Problema
+Il gioco ha la possibilità di avviare una partita singleplayer indicando un solo giocatore nel numero dei giocatori quando richiesto, la partita multiplayer parte quando questi sono 2 o più. 
+
+
+
+
+
 
 ##### Soluzione
 
 #### Leaderboard
+
+
 ##### Problema
+In un gioco competitivo a turni, è essenziale fornire ai giocatori un feedback continuo sul loro andamento relativo (durante la partita) e un senso di progressione e sfida a lungo termine (a partita conclusa). Il problema progettuale risiede nel separare la logica di calcolo e persistenza dei punteggi dalla loro rappresentazione visiva, garantendo al contempo due visualizzazioni distinte: un riepilogo temporaneo alla fine di ogni singola buca e una classifica globale, persistente su file, accessibile dal menu principale.
 
 ##### Soluzione
+Si è deciso di suddividere la responsabilità in tre componenti chiave, mantenendo un rigido disaccoppiamento:
+
+- Model (Gestione dei dati): La classe LeaderBoardManager gestisce la persistenza dei dati su un file di testo locale (leaderboard.txt). Implementa la logica di dominio per l'aggiornamento dei record, assicurandosi di sovrascrivere il punteggio di un giocatore storico solo se il nuovo punteggio ottenuto è inferiore (migliore) del precedente.
+
+- View (Feedback a fine buca): Il MidLeaderBoardPanel funge da overlay transitorio (tramite GlassPane). Al termine di ogni buca, riceve una mappa non persistente con i colpi attuali della partita in corso, li ordina dinamicamente in memoria e li mostra a schermo, inibendo i clic sul gioco sottostante tramite un MouseAdapter vuoto.
+
+- View (Classifica Globale): Il LeaderBoardPanel è una scena dedicata all'interno del CardLayout. Riceve i dati storici dal Controller (che a sua volta interroga il LeaderBoardManager), li ordina in base al punteggio e li rappresenta in una griglia, arricchendo visivamente la Top 3 tramite icone specifiche (medaglie).
+
+
+```mermaid
+classDiagram
+    %% --- Model ---
+    class LeaderBoardManager {
+        -String FILE_PATH
+        +loadBestScores() Map~String, Integer~
+        +updateAndSaveScores(Map~String, Integer~)
+    }
+
+    %% --- View (Pannelli) ---
+    class LeaderBoardPanel {
+        -Image backgroundImage
+        -JPanel tableContainer
+        +updateScores(Map~String, Integer~)
+    }
+
+    class MidLeaderBoardPanel {
+        +MidLeaderBoardPanel(Map~String, Integer~, Runnable)
+    }
+
+    %% --- Controllers (Solo concettuale per routing dati) ---
+    class NavigationController {
+        +goToLeaderBoard()
+    }
+    
+    class MatchManager {
+        +advanceToNextHole()
+    }
+
+    %% --- Relazioni ---
+    NavigationController ..> LeaderBoardManager : crea e interroga per storico
+    NavigationController ..> LeaderBoardPanel : invia dati per rendering
+    
+    MatchManager ..> MidLeaderBoardPanel : istanzia a fine buca
+```
 
 *Pro e Contro*: 
+
+Pro:
+- Resilienza e Semplicità: L'utilizzo di un file di testo semplice (.txt) con codifica Chiave:Valore per il salvataggio rende il sistema di I/O rapido, robusto e facilmente ispezionabile senza la necessità di includere librerie di database esterne.
+
+- Riutilizzo del layout: Entrambi i pannelli grafici (LeaderBoardPanel e MidLeaderBoardPanel) si affidano a un GridLayout dinamico che scala automaticamente le righe in base al numero di giocatori in mappa o registrati nel file, garantendo consistenza visiva.
+
+Contro: 
+- Manipolazione esterna: Essendo i punteggi globali salvati in chiaro in un semplice file di testo, un utente malevolo potrebbe facilmente aprire il file leaderboard.txt e modificare i record manualmente.
+
+- Ordinamento ripetuto: Attualmente, l'ordinamento della mappa (conversione in List<Map.Entry> e successiva sort) viene delegato alla View (LeaderBoardPanel e MidLeaderBoardPanel) al momento del rendering. A livello architetturale "purista", sarebbe stato preferibile che il Model restituisse una struttura dati già ordinata (es. una lista di Record), sollevando l'interfaccia grafica da calcoli di manipolazione dati.
+
 
 ### 2.2.2 Giacomo Mengozzi
 
@@ -521,10 +651,11 @@ Contro:
 ## 3.1 Testing automatizzato
 ### 3.1.1 Daniel Patryk Bak
 
-I componenti testati riguardano: 
-- La UserInterfaceFactory
-- la presenza delle risorse tramite resoursepresencetest
-- test sulla leaderboard (corretto aggiornamento/salvataggio dei dati)
+I componenti testati riguardano la fabbricazione dell'interfaccia utente, l'integrità delle risorse multimediali e la persistenza dei dati:
+
+* **UserInterfaceFactoryTest**: Verifica che tutti i componenti Swing (JButton, JLabel, JTextField) generati dalla factory rispettino rigorosamente le specifiche di design imposte dal gioco, garantendo l'assegnazione corretta dei font personalizzati, delle dimensioni predefinite, dei colori e dei bordi.
+* **ResourcePresenceTest**: Assicura l'integrità del pacchetto software, verificando che tutte le risorse statiche vitali per il funzionamento dell'interfaccia (font, soundtrack, texture delle superfici, immagini di sfondo e di tutorial) siano presenti e caricabili correttamente all'interno del Classpath.
+* **LeaderBoardManagerTest**: Controlla la logica di aggiornamento e scrittura su file della classifica globale. Tramite un ambiente pulito (creazione e cancellazione del file ad ogni test), verifica la regola di dominio fondamentale: il punteggio storico di un giocatore viene sovrascritto solo se il nuovo punteggio ottenuto è strettamente inferiore (migliore) del precedente.
 
 ### 3.1.2 Giacomo Mengozzi
 I componenti testati riguardano la pallina, la mappa e le superfici speciali:
@@ -624,7 +755,7 @@ Un altro limite risiede nel meccanismo di cooldown temporale dei portali; sebben
 ## Appendice A: Guida Utente
 
 * **Menu Iniziale:** 
-Avviando il gioco viene mostrato il menu principale dal quale è possibile iniziare una nuova partita premendo il tasto [PLAY]; quindi bisognerà scegliere il numero di giocatori, premere il tasto [OK] ed inserirne i nomi. Infine, premere [START MATCH]. Se è presente una partita salvata, il gioco chiederà se la si vuole caricare o iniziarne una nuova. Dal menu è inoltre possibile consultare la classifica finale delle partite precedenti tramite il tasto [LEADERBOARD].
+Avviando il gioco viene mostrato il menu principale dal quale è possibile iniziare una nuova partita premendo il tasto `PLAY`; quindi bisognerà scegliere il numero di giocatori, premere il tasto `OK` ed inserirne i nomi. Infine, premere `START MATCH`. Se è presente una partita salvata, il gioco chiederà se la si vuole caricare o iniziarne una nuova. Dal menu è inoltre possibile consultare la classifica finale delle partite precedenti tramite il tasto `LEADERBOARD`.
 
 * **Controlli In-Game:** 
 Per effettuare un colpo è necessario cliccare e tenere premuto il mouse sulla pallina, per poi trascinare nella direzione opposta a quella in cui si vuole colpire. Più lungo è il trascinamento, più potente sarà il colpo.
