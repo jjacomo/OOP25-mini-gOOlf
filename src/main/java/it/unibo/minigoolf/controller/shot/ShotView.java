@@ -7,7 +7,7 @@ import java.awt.Point;
  * communicates with the shot-input view.
  * Created to respetc the mvc pattern.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 @FunctionalInterface
 public interface ShotView {

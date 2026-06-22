@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * Implementation of {@link ShotController}.
  * Uses functional callbacks to avoid EI2 warnings while keeping coupling minimal.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class ShotControllerImpl implements ShotController {
 

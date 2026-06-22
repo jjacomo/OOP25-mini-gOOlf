@@ -13,28 +13,28 @@ import java.util.logging.Logger;
 /**
  * Manages persistence of the match state independently from the match lifecycle.
  * Created once at application startup so save/load is available before any match
- * is started.
+ * get started.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class SaveController {
 
     private static final Logger LOGGER = Logger.getLogger(SaveController.class.getName());
 
-    /** Supplies the snapshot. */
+    // Supplies the snapshot. 
     private Supplier<SaveData> snapshotSupplier = () -> null;
 
-    /** Called after a successful load to start the restored match. */
+    /// Called after a successful load to start the restored match. 
     private Consumer<SaveData> restoreCallback = data -> { };
 
-    /** Saves, loads, checks and deletes save files, stored only as behavior callbacks. */
+    // Saves, loads, checks and deletes save files, stored only as behavior callbacks. 
     private final Runnable saver;
     private final Runnable deleter;
     private final Supplier<Boolean> existsChecker;
     private final Supplier<Optional<SaveData>> loader;
 
     /**
-     * @param saveManager handles the actual file I/O
+     * @param saveManager handles the actual file 
      */
     public SaveController(final SaveManager saveManager) {
         // Extract only behaviors from saveManager.

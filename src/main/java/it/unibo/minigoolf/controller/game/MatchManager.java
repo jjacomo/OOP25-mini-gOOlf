@@ -17,29 +17,29 @@ import java.util.LinkedHashMap;
  * Uses functional callbacks instead of storing collaborators directly,
  * (to avoid EI2 warnings).
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class MatchManager {
 
     private final MapSequence mapSequence;
     private final List<String> playerNames;
 
-    /** Stops the game loop. */
+    // Stops the game loop. 
     private final Runnable stopGame;
 
-    /** Starts the game loop and shows the game scene. */
+    // Starts the game loop and shows the game scene. 
     private final Runnable startGame;
 
-    /** Returns to the main menu. */
+    // Returns to the main menu. 
     private final Runnable goToMenu;
 
-    /** Rebuilds the game panel for a new match. */
+    // Rebuilds the game panel for a new match.
     private final Consumer<GameController> rebuildPanel;
 
-    /** Stores the scores, used in the leaderboard. */
+    // Stores the scores, used in the leaderboard. 
     private final Map<String, Integer> globalScores = new LinkedHashMap<>();
 
-    /** Callback to show the summary-leaderboard after a map is completed. */
+    // Callback to show the summary-leaderboard after a map is completed.
     private final Consumer<Map<String, Integer>> showSummaryPanel;
 
     private GameController activeMatch;
@@ -95,7 +95,7 @@ public final class MatchManager {
     }
 
     /**
-     * Resets the sequence to the first map and builds a fresh match.
+     * Resets the sequence to the first map and builds a new match.
      * Called when the player starts a new game from the main menu.
      */
     public void reset() {

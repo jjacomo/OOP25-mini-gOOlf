@@ -17,11 +17,11 @@ import java.util.function.Supplier;
  * Also owns the {@link SaveController} since it lives for the full
  * application lifetime, allowing save/load before any match is started.
  * 
- * @author dbakko
+ * @author dbakko, fedesparvo1-a11y
  */
 public final class NavigationController {
 
-    /** Stored as a callback to avoid EI2. */
+    // Stored as a callback to avoid EI2. 
     private final Runnable showMenuCallback;
     private final Runnable showGameCallback;
     private final Runnable showNewGameCallback;
@@ -35,7 +35,7 @@ public final class NavigationController {
 
     private final AudioManager audioManager;
 
-    /** Returns true if the ball is not moving and the game can be paused. */
+    // Returns true if the ball is not moving and the game can be paused. 
     private BooleanSupplier pauseChecker = () -> true;
 
     /**
