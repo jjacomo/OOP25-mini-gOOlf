@@ -8,6 +8,7 @@ import java.util.List;
  * 
  * @author Mattia
  */
+@FunctionalInterface
 public interface ObstacleController {
     /**
      * Returns an unmodifiable list of all obstacles currently managed.
@@ -15,11 +16,4 @@ public interface ObstacleController {
      * @return a list of obstacles
      */
     List<Obstacle> getObstacles();
-
-    /**
-     * Gets the visual data of all obstacles for rendering.
-     * 
-     * @return an immutable list of ObstacleData 
-     */
-    List<ObstacleData> getObstaclesData();
 }

@@ -538,8 +538,8 @@ Contro: ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe
 
 ### 2.2.4 Mattia D'Ambrosio
 #### Fisica, geometria degli ostacoli e gestione vettoriale
-##### Problema
 
+##### Problema
 Gestire le collisioni fisiche tra la pallina e gli ostacoli di forme diverse (rettangoli, cerchi, triangoli) in modo realistico, anche in situazioni critiche come angoli interni tra ostacoli adiacenti o sotto l’effetto di forze esterne, evitando compenetrazioni, vibrazioni della pallina a riposo e rimbalzi innaturali o con direzioni arbitrarie.
 Implementare il calcolo vettoriale senza importare librerie esterne pesanti.
 
@@ -549,8 +549,6 @@ Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono stat
 - Le normali di collisione degli ostacoli sono precalcolate per ogni lato (`WallObstacle`, `TriangleObstacle`) o derivabili geometricamente (`RoundObstacle`). 
 - Viene sfruttata la profondità di penetrazione per riposizionare la pallina, o parte di essa, fuori dall'ostacolo, prima di calcolare il rimbalzo; in caso di collisioni multiple, si applica la strategia deepest penetration first, individuando l'ostacolo con la compenetrazione maggiore, estraendone la pallina e ripetendo il controllo iterativamente finché la pallina non risulta completamente fuori da ogni ostacolo.
 
-
-UML:
 ```mermaid
     classDiagram
             class Obstacle {
@@ -587,8 +585,10 @@ Contro:
 
 #### Creazione degli ostacoli avanzati (Appiccicosi, Rimbalzanti e Portali)
 
+##### Problema
 Per gestire le alterazioni di velocità senza moltiplicare le classi, si è introdotto il parametro `bounciness` in `AbstractObstacle`, il quale scala la velocità della pallina al momento del contatto senza alterarne l'angolo di riflessione. Per evitare di creare una nuova classe per ogni ostacolo avanzato, si è sfruttato il constructor chaining: per gli ostacoli base, il costruttore base richiama un secondo costruttore più completo, passandogli un valore di elasticità di default.
 
+##### Soluzione
 Per la gestione dei portali, invece, era fondamentale prevenire la configurazione di stati invalidi nella mappa, come l'esistenza di portali spaiati. Per risolvere il problema è stato applicato il pattern `Static Factory Method`. Il costruttore della classe `PortalObstacle` è stato reso privato, delegando l'istanziazione e il collegamento reciproco in memoria al metodo statico `createPair()`, che assicura la creazione di portali sempre e solo a coppie. Infine, per evitare che la pallina rimbalzi all'infinito tra due portali nello stesso frame, è stato implementato un timer di cooldown, che parte al momento dell'uscita della pallina e disattiva momentaneamente il portale ignorando le compenetrazioni.
 
 ```mermaid
@@ -618,17 +618,21 @@ Contro:
 La logica di gestione degli ostacoli (collisioni, calcoli fisici, accesso ai dati) deve essere separata dalla rappresentazione grafica e dal resto del gioco, per mantenere un’architettura MVC pulita ed evitare che la vista dipenda direttamente dalle classi o dalle interfacce del modello.
 
 ##### Soluzione
-Per garantire una separazione netta tra i dati fisici e la loro rappresentazione visiva, nel pieno rispetto del pattern architetturale `Model-View-Controller (MVC)`, è stato introdotto l'`ObstacleController`. Agendo da intermediario, questo componente smista le informazioni a seconda del chiamante.
-Il motore fisico (`PhysicsEngine`) interroga il controller tramite il metodo `getObstacles()` per ottenere esclusivamente i modelli matematici necessari a calcolare le collisioni.
-Per disaccoppiare totalmente la vista dal modello, è stato implementato il pattern `Data Transfer Object (DTO)`. Il controller espone il metodo `getObstaclesData()`, che mappa le entità del modello in una lista immutabile di record `ObstacleData`. Questo DTO contiene solo le informazioni strettamente visive (la forma geometrica, il valore di elasticità e un flag booleano per i portali). Così facendo, la vista (`MapPanel`) decide autonomamente i colori ed esegue il rendering senza importare o conoscere le classi interne del modello.
+Per mantenere un'architettura MVC pulita e separare nettamente la fisica dalla grafica, il sistema è stato diviso in livelli. L'`ObstacleController` si occupa esclusivamente del modello: gestisce i dati fisici degli `Obstacle` e li passa al motore fisico per risolvere le collisioni.
+Per dividere del tutto la vista dal modello, è stato applicato il pattern `Data Transfer Object (DTO)`: il `GameController` fa da mediatore interrogando l'`ObstacleController` e traduce i modelli interni in `ObstacleData`, un record immutabile che contiene solo le informazioni utili per il rendering.
+Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`, implementata da `MapPanel`
 
 ```mermaid
     classDiagram
+        class MapElementsView {
+            <<interface>>
+            +updateGraphics(...) void
+        }
         class MapPanel
+        class GameControllerImpl
         class ObstacleController {
             <<interface>>
             +getObstacles() List~Obstacle~
-            +getObstaclesData() List~ObstacleData~
         }
         class ObstacleData {
             <<record>>
@@ -637,20 +641,23 @@ Per disaccoppiare totalmente la vista dal modello, è stato implementato il patt
             <<interface>>
         }
 
-        MapPanel --> ObstacleController
-        MapPanel --> ObstacleData
-        ObstacleController --> Obstacle
-        ObstacleController --> ObstacleData
+        MapElementsView <|.. MapPanel
+        GameControllerImpl --> MapElementsView : pushes to
+        GameControllerImpl ..> ObstacleData : creates
+        GameControllerImpl ..> ObstacleController : reads
+        MapElementsView ..> ObstacleData : requires
+        MapPanel --> ObstacleData : stores
+        ObstacleController --> Obstacle : manages
 ```
 
 ##### Pro e Contro
 Pro:
-- Separazione netta e totale tra modello e vista garantita dal DTO, che assicura un'ottima manutenibilità, massima facilità di test automatizzati e l'azzeramento delle dipendenze cicliche.
-- Modificare l'aspetto estetico o i colori di un ostacolo richiede interventi circoscritti alla sola vista, eliminando il rischio di alterare inavvertitamente i calcoli fisici del modello.
+- Separazione totale tra modello e vista: la grafica è completamente passiva, riceve i dati già pronti tramite il DTO e si limita a stamparli a schermo. Questo rende il codice molto più facile da mantenere e da testare.
+- Tutta la logica decisionale (ad esempio, capire come colorare un ostacolo o se si tratta di un portale) rimane chiusa in modo sicuro nel controller, sollevando la vista dal dover fare ragionamenti sui tipi di oggetti.
 
 Contro:
-- L'aggiunta di un controllore dedicato e di un record per il trasferimento dati aumenta il numero di interfacce e file, rendendo l'architettura iniziale leggermente più complessa da configurare.
-- La generazione di una nuova lista di oggetti ObstacleData a ogni singolo frame per il rendering introduce un inevitabile overhead computazionale per l'allocazione in memoria e il successivo smaltimento da parte del Garbage Collector.
+- Avere tutti questi strati intermedi aumenta parecchio il numero di interfacce, record e file nel progetto, rendendo l'architettura iniziale un po' pesante da configurare.
+- Creare una lista nuova di record ObstacleData a ogni singolo frame per il rendering significa allocare e scartare continuamente oggetti in memoria, causando un overhead prestazionale inevitabile per il Garbage Collector.
 
 ---
 
@@ -682,13 +689,13 @@ I componenti testati sono `ShotState`, `GameState` e `GameFactory`.
 * **GameFactoryTest**: controlla che la partita creata dalla factory parta sempre in uno stato iniziale corretto su entrambe le mappe: tutti i controller devono essere presenti, il primo giocatore è quello giusto, e lo stato del tiro è vuoto.
 
 ### 3.1.4 Mattia D'Ambrosio
-I componenti testati riguardano la geometria computazionale e la fisica delle collisioni: Vector2D, Obstacle (con le sue classi concrete) e ObstacleController.
+I componenti testati riguardano la parte logico-matematica e la gestione degli ostacoli all'interno del sistema.
 
-Vector2DTest: Controlla la correttezza di tutte le operazioni algebriche fondamentali sui vettori custom (somma, sottrazione, normalizzazione, prodotto scalare, distanza euclidea e gestione dei limiti della precisione floating-point tramite EPSILON).
+* **Vector2DTest**: Verifica la correttezza di tutte le operazioni algebriche fondamentali sui vettori custom (somma, sottrazione, prodotto scalare, normalizzazione e distanza), controllando la corretta gestione dei limiti di precisione nei calcoli floating-point tramite la tolleranza `EPSILON`.
 
-ObstacleCollisionTest: Verifica l'accuratezza del calcolo delle collisioni e della profondità di penetrazione per WallObstacle, RoundObstacle e TriangleObstacle. Testa i casi limite, come l'allineamento perfetto dei centri, l'impatto sugli spigoli vivi e l'espulsione fisica della pallina quando si trova sia all'esterno che completamente all'interno dei solidi.
+* **ObstacleCollisionTest**: Verifica l'accuratezza del calcolo delle collisioni e della profondità di penetrazione per `WallObstacle`, `RoundObstacle` e `TriangleObstacle`. Testa i casi limite, come l'impatto sugli spigoli vivi e l'espulsione fisica della pallina quando si trova sia all'esterno che completamente all'interno dei solidi.
 
-ObstacleControllerTest: Assicura il corretto funzionamento del controller come intermediario. Verifica che la lista dei modelli matematici (Obstacle) e delle forme grafiche (Shape) siano popolate coerentemente e che il motore fisico riceva i dati corretti per la risoluzione dei contatti in ogni frame.
+* **ObstacleControllerTest**: Assicura il corretto funzionamento del controller come intermediario. Verifica che la lista dei modelli matematici (`Obstacle`) e delle forme grafiche (`Shape`) siano popolate coerentemente e che il motore fisico riceva i dati corretti per la risoluzione dei contatti in ogni frame.
 
 ## 3.2 Note di sviluppo
 ### 3.2.1 Daniel Patryk Bak

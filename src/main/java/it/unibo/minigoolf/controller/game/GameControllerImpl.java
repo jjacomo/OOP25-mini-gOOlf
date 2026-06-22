@@ -178,10 +178,10 @@ public final class GameControllerImpl implements GameController {
         final List<SurfaceData> surfaces = gameMapController.getSurfaceControllers().stream()
                 .map(sc -> new SurfaceData(sc.getZIndex(), sc.getTypeIds(), sc.getShape(), sc.getWind()))
                 .toList();
-        final List<ObstacleData> obstacles = gameMapController.getObstacleController().getObstacles().stream()
-                .map(o -> new ObstacleData(o.getShape(), o.getBounciness(),
-                        o instanceof it.unibo.minigoolf.model.obstacles.PortalObstacle))
-                .toList();
+        final List<ObstacleData> obstacles = gameMapController.getObstacleController()
+                .getObstacles().stream().map(o -> new ObstacleData(o.getShape(), 
+                o.getBounciness(), o instanceof it.unibo.minigoolf.model.obstacles
+                .PortalObstacle)).toList();
         final HoleData hole = new HoleData(
                 gameMapController.getHoleController().getShape(),
                 gameMapController.getHoleController().getPosition(),
