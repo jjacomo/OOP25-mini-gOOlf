@@ -21,7 +21,7 @@ public final class PortalObstacle extends AbstractObstacle {
     private final Circle shape;
 
     /**
-     * PRIVATE Constructor. 
+     * Private Constructor. 
      * Portals can only be created in pairs using the createPair() factory method.
      * 
      * @param position the position of the portal
