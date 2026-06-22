@@ -274,7 +274,7 @@ Si è deciso di suddividere la responsabilità in cinque componenti chiave, defi
 - `LeaderBoardManager` (Model): Gestisce la persistenza dei dati su un file di testo locale (leaderboard.txt). Custodisce la logica di dominio per l'aggiornamento dei record storici, assicurandosi di sovrascrivere il punteggio di un giocatore solo se il nuovo risultato è strettamente inferiore (migliore) del precedente.
 - `MatchManager` (Controller): Orchestra il flusso della partita attiva. Al termine di ogni singola buca, è lui a raccogliere la mappa non persistente con i punteggi parziali dei giocatori e a coordinare l'apertura del riepilogo grafico temporaneo.
 - `MidLeaderBoardPanel`(View): Funge da pannello in sovraimpressione (overlay). Riceve i dati temporanei dal MatchManager, li ordina dinamicamente in memoria e li mostra a schermo per dare un feedback immediato, mettendo in pausa il gioco in attesa del passaggio alla mappa successiva.
-- `NavigationController` (Controller): Gestisce il routing dell'intera applicazione e fa da "ponte" per la classifica globale. Quando l'utente richiede di visualizzare i punteggi dal menu, questo controller interroga il LeaderBoardManager per estrarre lo storico e inietta i dati pronti per la lettura nella scena grafica.
+- `NavigationController` (Controller): Gestisce il routing dell'intera applicazione e fa da "ponte" per la classifica globale. Quando l'utente richiede di visualizzare i punteggi dal menù, questo controller interroga il LeaderBoardManager per estrarre lo storico e inietta i dati pronti per la lettura nella scena grafica.
 - `LeaderBoardPanel` (View): È una scena dedicata ospitata all'interno del CardLayout. Riceve i dati storici dal NavigationController, si occupa del loro ordinamento finale e li rappresenta visivamente in una griglia, mettendo in risalto le prime posizioni.
 
 
@@ -492,13 +492,8 @@ La soglia di click sulla pallina è una costante fissa in pixel logici, e non si
 
 #### Ciclo di vita del match e progressione delle mappe
 
-<<<<<<< HEAD
 ##### Problema
 Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva, se non ce ne sono, si torna al menù. Tutta questa logica non deve stare nel controller principale, che deve rimanere semplice.
-=======
-**Problema**
-Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva, se non ce ne sono, si torna al menu. Tutta questa logica non deve stare nel controller principale, che deve rimanere semplice.
->>>>>>> 2c27838a568f5a7215a4401c20d89cf2850b1f13
 
 **Soluzione**
 La progressione di gioco è gestita da più componenti distinte:
@@ -531,7 +526,7 @@ classDiagram
 *Figura 8: Schema UML del pattern Factory Method per la progressione delle mappe.*
 
 
-Aggiungere una nuova mappa richiede solo di creare una nuova classe e aggiungerla alla sequenza. Il reset al ritorno al menu è automatico.
+Aggiungere una nuova mappa richiede solo di creare una nuova classe e aggiungerla alla sequenza. Il reset al ritorno al menù è automatico.
 
 Contro: 
 
@@ -818,8 +813,8 @@ Tutto sommato però, per quanto appunto faticoso dal punto di vista del tempo im
 # Appendice A
 ### Guida Utente
 
-* **Menu Iniziale:** 
-Avviando il gioco viene mostrato il menu principale dal quale è possibile iniziare una nuova partita premendo il tasto `PLAY`;  bisognerà poi scegliere il numero di giocatori, premere il tasto `OK` ed inserirne i nomi. Infine, premere `START MATCH`. Se è presente una partita salvata, il gioco chiederà se la si vuole caricare o iniziarne una nuova. Dal menu è inoltre possibile consultare la classifica finale delle partite precedenti tramite il tasto `LEADERBOARD`.
+* **Menù Iniziale:** 
+Avviando il gioco viene mostrato il menù principale dal quale è possibile iniziare una nuova partita premendo il tasto `PLAY`;  bisognerà poi scegliere il numero di giocatori, premere il tasto `OK` ed inserirne i nomi. Infine, premere `START MATCH`. Se è presente una partita salvata, il gioco chiederà se la si vuole caricare o iniziarne una nuova. Dal menù è inoltre possibile consultare la classifica finale delle partite precedenti tramite il tasto `LEADERBOARD`.
 
 * **Controlli In-Game:** 
 Per effettuare un colpo è necessario cliccare e tenere premuto il mouse sulla pallina, per poi trascinare nella direzione opposta a quella in cui si vuole colpire. Più lungo è il trascinamento, più potente sarà il colpo. Rilasciare il mouse per confermare il colpo.
@@ -829,7 +824,7 @@ Un indicatore colorato mostra la direzione e la potenza: verde per colpi deboli,
 Ogni giocatore ha a disposizione al massimo 7 colpi per buca. Se non si entra in buca entro il limite, il turno passa al giocatore successivo (o, in caso di singleplayer, si passa alla mappa successiva). Il punteggio di ogni giocatore corrisponde al numero di colpi effettuati su ciascuna mappa e meno colpi si fanno, meglio è. Al termine di ogni mappa viene mostrata una classifica intermedia e una volta completate tutte le mappe, il punteggio finale viene salvato nella classifica globale.
 
 * **Pausa:**
-Durante il gioco è possibile mettere in pausa premendo il tasto ESC, purché la pallina non sia in movimento. Dal menu di pausa è possibile riprendere la partita, skippare la mappa attuale, consultare il tutorial o tornare al menu principale.
+Durante il gioco è possibile mettere in pausa premendo il tasto ESC, purché la pallina non sia in movimento. Dal menù di pausa è possibile riprendere la partita, skippare la mappa attuale, consultare il tutorial o tornare al menù principale.
 
 # Appendice B
 ### Esercitazioni di laboratorio
