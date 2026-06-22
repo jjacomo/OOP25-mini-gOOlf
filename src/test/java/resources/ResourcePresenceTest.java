@@ -51,6 +51,12 @@ class ResourcePresenceTest {
     }
 
     @Test
+    void testTutorialImageIsPresent() {
+        final URL tutUrl = getClass().getResource("/tutorial/tutorial_img.jpeg");
+        assertNotNull(tutUrl, "The background image '/tutorial/tutorial_img.jpeg' is missing!");
+    }
+
+    @Test
     void testMedalIconsArePresent() {
         final URL goldUrl = getClass().getResource("/medals/gold.png");
         assertNotNull(goldUrl, "The gold medal icon '/medals/gold.png' is missing!");
