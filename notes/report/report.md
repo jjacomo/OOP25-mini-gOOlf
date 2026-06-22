@@ -441,7 +441,7 @@ Contro: la soglia di click sulla pallina è una costante fissa in pixel logici, 
 #### Ciclo di vita del match e progressione delle mappe
 
 ##### Problema
-Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva, se non ce ne sono, si torna al menu. Tutta questa logica non deve stare nel controller principale, che deve rimanere semplice.
+Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva, se non ce ne sono, si torna al menù. Tutta questa logica non deve stare nel controller principale, che deve rimanere semplice.
 
 ##### Soluzione
 La progressione di gioco è gestita da più componenti distinte:
