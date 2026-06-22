@@ -26,3 +26,11 @@ Assicurati di avere **Java 17** (o superiore) installato sul tuo sistema.
 1. Clona la repository:
    ```bash
    git clone [https://github.com/jjacomo/OOP25-mini-gOOlf.git](https://github.com/jjacomo/OOP25-mini-gOOlf.git)
+
+2. Spostati nella directory del progetto:
+   ```bash
+   cd OOP25-mini-gOOlf
+
+3. Compila ed esegui il gioco tramite Gradle:
+   ```bash
+   ./gradlew run
