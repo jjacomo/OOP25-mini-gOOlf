@@ -18,6 +18,13 @@ public final class SurfaceFactoryImpl implements SurfaceFactory {
     private static final double DIRT_FRICTION = 7.75;
     private static final double ICE_FRICTION = 0.25;
 
+    /**
+     * Default constructor.
+     */
+    public SurfaceFactoryImpl() {
+        // No initialization needed
+    }
+
     @Override
     public Surface createGrass(final Shape shape, final int zIndex) {
         return new ShapedSurface(shape, GRASS_FRICTION, zIndex, "grass");
