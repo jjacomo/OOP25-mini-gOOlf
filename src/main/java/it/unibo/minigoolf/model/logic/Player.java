@@ -4,7 +4,7 @@ package it.unibo.minigoolf.model.logic;
  * Rapresents a single player in the minigolf game.
  * Tracks the player's name and how many shots they have taken on the current map.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class Player {
 

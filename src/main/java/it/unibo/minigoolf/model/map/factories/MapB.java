@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * My first map.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 
 public final class MapB implements GameMapFactory { 

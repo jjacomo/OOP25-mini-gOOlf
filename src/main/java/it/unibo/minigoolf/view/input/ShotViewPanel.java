@@ -23,7 +23,7 @@ import java.util.Optional;
  * Implements {@link ShotView} so the controller can enable input
  * without depending on this concrete class.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotView, ShotCoordinateConverter {
 
@@ -179,7 +179,7 @@ public final class ShotViewPanel extends JPanel implements ShotVisualizer, ShotV
     }
 
     /**
-     * Draws an arrowhead at the tip of the indicator line.
+     * Draws an arrowhead at the top of the indicator line.
      *
      * @param g2d        the graphics context (already scaled to logical space)
      * @param displayDir the clamped display vector

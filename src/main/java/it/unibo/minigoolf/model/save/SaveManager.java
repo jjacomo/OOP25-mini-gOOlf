@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Saves and loads a minigolf match in a JSON file using Gson.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class SaveManager {
 
@@ -51,7 +51,7 @@ public final class SaveManager {
     }
 
     /**
-     * Returns {@code true} if a save file exists on disk.
+     * Returns true if a save file exists on disk.
      *
      * @return true if a save is available to load
      */
