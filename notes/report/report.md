@@ -397,7 +397,7 @@ classDiagram
 Superfici e buca devono poter verificare se la pallina è al loro interno. La logica geometrica di contenimento deve risiedere nel Model, senza dipendere da classi grafiche Swing; allo stesso tempo la vista deve poter disegnare ciascuna forma nel modo corretto.
 
 ##### Soluzione
-L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite costruttori che eseguono un check sulle dimensioni in ingresso), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` recupera le `Shape` tramite il controller e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
+L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite costruttori che eseguono un check sulle dimensioni in ingresso), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` riceve le `Shape` incapsulate nei DTO inviati passivamente dal controller (tramite `MapElementsView`) e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
 
 ```mermaid
 classDiagram
@@ -466,6 +466,7 @@ classDiagram
     ShotViewPanel ..|> ShotVisualizer
     ShotViewPanel ..|> ShotCoordinateConverter
 ```
+*Figura X: Schema UML del pattern Strategy applicato all'input del colpo.*
 
 ##### Pro e Contro
 Pro: separazione netta tra stato, rendering e coordinamento. Aggiungere un nuovo tipo di indicatore visivo richiede solo una nuova implementazione di `ShotVisualizer`, senza toccare il listener o il controller.
@@ -507,6 +508,8 @@ classDiagram
     GameMapFactory <|.. MapB
     GameMapFactory <|.. MapE
 ```
+*Figura X: Schema UML del pattern Factory Method per la progressione delle mappe.*
+
 
 ##### Pro e Contro
 
@@ -516,8 +519,8 @@ Contro: ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe
 
 ### 2.2.4 Mattia D'Ambrosio
 #### Fisica, geometria degli ostacoli e gestione vettoriale
-##### Problema
 
+##### Problema
 Gestire le collisioni fisiche tra la pallina e gli ostacoli di forme diverse (rettangoli, cerchi, triangoli) in modo realistico, anche in situazioni critiche come angoli interni tra ostacoli adiacenti o sotto l’effetto di forze esterne, evitando compenetrazioni, vibrazioni della pallina a riposo e rimbalzi innaturali o con direzioni arbitrarie.
 Implementare il calcolo vettoriale senza importare librerie esterne pesanti.
 
@@ -527,8 +530,6 @@ Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono stat
 - Le normali di collisione degli ostacoli sono precalcolate per ogni lato (`WallObstacle`, `TriangleObstacle`) o derivabili geometricamente (`RoundObstacle`). 
 - Viene sfruttata la profondità di penetrazione per riposizionare la pallina, o parte di essa, fuori dall'ostacolo, prima di calcolare il rimbalzo; in caso di collisioni multiple, si applica la strategia deepest penetration first, individuando l'ostacolo con la compenetrazione maggiore, estraendone la pallina e ripetendo il controllo iterativamente finché la pallina non risulta completamente fuori da ogni ostacolo.
 
-
-UML:
 ```mermaid
     classDiagram
             class Obstacle {
@@ -565,8 +566,10 @@ Contro:
 
 #### Creazione degli ostacoli avanzati (Appiccicosi, Rimbalzanti e Portali)
 
+##### Problema
 Per gestire le alterazioni di velocità senza moltiplicare le classi, si è introdotto il parametro `bounciness` in `AbstractObstacle`, il quale scala la velocità della pallina al momento del contatto senza alterarne l'angolo di riflessione. Per evitare di creare una nuova classe per ogni ostacolo avanzato, si è sfruttato il constructor chaining: per gli ostacoli base, il costruttore base richiama un secondo costruttore più completo, passandogli un valore di elasticità di default.
 
+##### Soluzione
 Per la gestione dei portali, invece, era fondamentale prevenire la configurazione di stati invalidi nella mappa, come l'esistenza di portali spaiati. Per risolvere il problema è stato applicato il pattern `Static Factory Method`. Il costruttore della classe `PortalObstacle` è stato reso privato, delegando l'istanziazione e il collegamento reciproco in memoria al metodo statico `createPair()`, che assicura la creazione di portali sempre e solo a coppie. Infine, per evitare che la pallina rimbalzi all'infinito tra due portali nello stesso frame, è stato implementato un timer di cooldown, che parte al momento dell'uscita della pallina e disattiva momentaneamente il portale ignorando le compenetrazioni.
 
 ```mermaid
@@ -593,33 +596,49 @@ Contro:
 #### Architettura e separazione Vista‑Logica
 
 ##### Problema
-La logica di gestione degli ostacoli (collisioni, calcoli fisici, accesso ai dati) deve essere separata dalla rappresentazione grafica e dal resto del gioco, per mantenere un’architettura MVC pulita ed evitare che la vista dipenda direttamente dalle classi del modello.
+La logica di gestione degli ostacoli (collisioni, calcoli fisici, accesso ai dati) deve essere separata dalla rappresentazione grafica e dal resto del gioco, per mantenere un’architettura MVC pulita ed evitare che la vista dipenda direttamente dalle classi o dalle interfacce del modello.
 
 ##### Soluzione
-- Introdotto `ObstacleController` che agisce da intermediario isolando i dati fisici da quelli visivi. Espone i metodi `getObstacles()` (per i modelli) e `getObstacleShapes()` (per il rendering).
-- Il motore fisico (`PhysicsEngine`) interroga il controller tramite `getObstacles()` per ottenere esclusivamente i modelli matematici necessari a risolvere le collisioni in ogni frame.
-- La vista (`MapPanel`) chiede le forme geometriche da disegnare senza conoscere i dettagli interni del modello. Leggendo le proprietà fisiche degli ostacoli (come la `bounciness` o il tipo `PortalObstacle`), la vista decide autonomamente il colore di rendering (verde, rosso, blu o grigio di default) prima di delegare il disegno della forma.
+Per mantenere un'architettura MVC pulita e separare nettamente la fisica dalla grafica, il sistema è stato diviso in livelli. L'`ObstacleController` si occupa esclusivamente del modello: gestisce i dati fisici degli `Obstacle` e li passa al motore fisico per risolvere le collisioni.
+Per dividere del tutto la vista dal modello, è stato applicato il pattern `Data Transfer Object (DTO)`: il `GameController` fa da mediatore interrogando l'`ObstacleController` e traduce i modelli interni in `ObstacleData`, un record immutabile che contiene solo le informazioni utili per il rendering.
+Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`, implementata da `MapPanel`
 
-    ```mermaid
+```mermaid
     classDiagram
+        class MapElementsView {
+            <<interface>>
+            +updateGraphics(...) void
+        }
         class MapPanel
-        <<interface>> ObstacleController
-        <<interface>> Obstacle
-        <<interface>> Shape
+        class GameControllerImpl
+        class ObstacleController {
+            <<interface>>
+            +getObstacles() List~Obstacle~
+        }
+        class ObstacleData {
+            <<record>>
+        }
+        class Obstacle {
+            <<interface>>
+        }
 
-        MapPanel --> ObstacleController
-        ObstacleController --> Obstacle
-        Obstacle --> Shape
-    ```
+        MapElementsView <|.. MapPanel
+        GameControllerImpl --> MapElementsView : pushes to
+        GameControllerImpl ..> ObstacleData : creates
+        GameControllerImpl ..> ObstacleController : reads
+        MapElementsView ..> ObstacleData : requires
+        MapPanel --> ObstacleData : stores
+        ObstacleController --> Obstacle : manages
+```
 
 ##### Pro e Contro
 Pro:
-- Separazione netta tra modello e vista, che garantisce un'ottima manutenibilità e facilità di test automatizzati.
-- Modificare l'aspetto estetico o i colori di un ostacolo richiede modifiche circoscritte alla sola vista, senza rischiare di alterare i calcoli fisici del modello.
+- Separazione totale tra modello e vista: la grafica è completamente passiva, riceve i dati già pronti tramite il DTO e si limita a stamparli a schermo. Questo rende il codice molto più facile da mantenere e da testare.
+- Tutta la logica decisionale (ad esempio, capire come colorare un ostacolo o se si tratta di un portale) rimane chiusa in modo sicuro nel controller, sollevando la vista dal dover fare ragionamenti sui tipi di oggetti.
 
 Contro:
-- L'aggiunta di un controllore dedicato aumenta il numero di interfacce e di file da gestire nel progetto, rendendo l'architettura iniziale più complessa da configurare.
-- La vista ('MapPanel') deve comunque guardare dentro le proprietà del modello (usando controlli come 'instanceof' o leggendo la 'bounciness') per decidere il colore da associare, creando un legame tra l'aspetto grafico e la logica interna degli ostacoli.
+- Avere tutti questi strati intermedi aumenta parecchio il numero di interfacce, record e file nel progetto, rendendo l'architettura iniziale un po' pesante da configurare.
+- Creare una lista nuova di record ObstacleData a ogni singolo frame per il rendering significa allocare e scartare continuamente oggetti in memoria, causando un overhead prestazionale inevitabile per il Garbage Collector.
 
 ---
 
@@ -642,21 +661,22 @@ I componenti testati riguardano la pallina, la mappa e le superfici speciali:
 * **WindySurfaceTest**: Validazione del costruttore, correttezza del vettore di vento per direzione, delega delle proprietà e composizione con `BoostSurface` (decorator su decorator).
 
 ### 3.1.3 Federico Sparvoli
-I componenti testati sono ShotState, GameState e GameFactory.
-ShotStateTest: controlla che lo stato del tiro funzioni bene: all'inizio è vuoto, c'è una potenza minima, la potenza massima non si può superare, si può consumare un colpo e si può resettare tutto.
+I componenti testati sono `ShotState`, `GameState` e `GameFactory`.
 
-GameStateTest: controlla la logica dei turni: come si crea, come si passa al turno successivo (e si ricomincia da capo dopo l'ultimo), quanti colpi sono stati fatti, e che i colpi troppo deboli o fatti mentre la pallina si muove vengano ignorati.
+* **ShotStateTest**: controlla che lo stato del tiro funzioni bene: all'inizio è vuoto, c'è una potenza minima, la potenza massima non si può superare, si può consumare un colpo e si può resettare tutto.
 
-GameFactoryTest: controlla che la partita creata dalla factory parta sempre in uno stato iniziale corretto su entrambe le mappe: tutti i controller devono essere presenti, il primo giocatore è quello giusto, e lo stato del tiro è vuoto.
+* **GameStateTest**: controlla la logica dei turni: come si crea, come si passa al turno successivo (e si ricomincia da capo dopo l'ultimo), quanti colpi sono stati fatti, e che i colpi troppo deboli o fatti mentre la pallina si muove vengano ignorati.
+
+* **GameFactoryTest**: controlla che la partita creata dalla factory parta sempre in uno stato iniziale corretto su entrambe le mappe: tutti i controller devono essere presenti, il primo giocatore è quello giusto, e lo stato del tiro è vuoto.
 
 ### 3.1.4 Mattia D'Ambrosio
-I componenti testati riguardano la geometria computazionale e la fisica delle collisioni: Vector2D, Obstacle (con le sue classi concrete) e ObstacleController.
+I componenti testati riguardano la parte logico-matematica e la gestione degli ostacoli all'interno del sistema.
 
-Vector2DTest: Controlla la correttezza di tutte le operazioni algebriche fondamentali sui vettori custom (somma, sottrazione, normalizzazione, prodotto scalare, distanza euclidea e gestione dei limiti della precisione floating-point tramite EPSILON).
+* **Vector2DTest**: Verifica la correttezza di tutte le operazioni algebriche fondamentali sui vettori custom (somma, sottrazione, prodotto scalare, normalizzazione e distanza), controllando la corretta gestione dei limiti di precisione nei calcoli floating-point tramite la tolleranza `EPSILON`.
 
-ObstacleCollisionTest: Verifica l'accuratezza del calcolo delle collisioni e della profondità di penetrazione per WallObstacle, RoundObstacle e TriangleObstacle. Testa i casi limite, come l'allineamento perfetto dei centri, l'impatto sugli spigoli vivi e l'espulsione fisica della pallina quando si trova sia all'esterno che completamente all'interno dei solidi.
+* **ObstacleCollisionTest**: Verifica l'accuratezza del calcolo delle collisioni e della profondità di penetrazione per `WallObstacle`, `RoundObstacle` e `TriangleObstacle`. Testa i casi limite, come l'impatto sugli spigoli vivi e l'espulsione fisica della pallina quando si trova sia all'esterno che completamente all'interno dei solidi.
 
-ObstacleControllerTest: Assicura il corretto funzionamento del controller come intermediario. Verifica che la lista dei modelli matematici (Obstacle) e delle forme grafiche (Shape) siano popolate coerentemente e che il motore fisico riceva i dati corretti per la risoluzione dei contatti in ogni frame.
+* **ObstacleControllerTest**: Assicura il corretto funzionamento del controller come intermediario. Verifica che la lista dei modelli matematici (`Obstacle`) e delle forme grafiche (`Shape`) siano popolate coerentemente e che il motore fisico riceva i dati corretti per la risoluzione dei contatti in ogni frame.
 
 ## 3.2 Note di sviluppo
 ### 3.2.1 Daniel Patryk Bak
@@ -687,25 +707,19 @@ Ad esempio in https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74
 ### 3.2.3 Federico Sparvoli
 
 #### Lambda expressions e method reference
-Utilizzate per passare comportamenti e dipendenze in modo semplice e flessibile. GameControllerImpl non memorizza né GameState né PhysicsController direttamente, ma ne estrae i comportamenti come BooleanSupplier, Runnable, Consumer<Vector2D> e Supplier<Optional<Vector2D>>, eliminando i warning SpotBugs EI_EXPOSE_REP2 senza fare uso di alcun @SuppressWarnings.
-Permalink:  https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L104
-    https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/controller/game/MatchManager.java#L78
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/f616e830c3ba78c84ab7d850d5690ee1ea46ccb0/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L132
 
 #### Java Records
-SaveData e PlayerSaveData sono record utilizzati per rappresentare dati in modo semplice e immutabile.
-Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/save/SaveData.java#L21
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/save/SaveData.java#L21
 
 #### Stream API
-Usata in GameState per costruire la lista dei giocatori nel costruttore, in GameControllerImpl per produrre gli snapshot dei giocatori in createSaveData, e in MatchManager per avanzare la sequenza di mappe al caricamento di un salvataggio.
-Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/logic/GameState.java#L43 //T    ODO
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/logic/GameState.java#L43
 
 #### Optional
-Usato in ShotState per indicare se c'è o meno un'intenzione di tiro, posizione della palla e colpo pronto, rendendo esplicito il ciclo di vita del colpo ed evitando controlli su null.
-Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/logic/ShotState.java#L68
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/logic/ShotState.java#L72
 
-#### Libreria Gson (com.google.code.gson) 
-Usata in SaveManager per serializzare e deserializzare lo stato della partita in JSON con GsonBuilder.setPrettyPrinting().
-Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/87cc252b172c4386b3ddc03454383d9d96ed44cf/src/main/java/it/unibo/minigoolf/model/save/SaveManager.java#L21
+#### Libreria Gson (com.google.code.gson)
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/save/SaveManager.java#L21
 
 ### 3.2.4 Mattia D'Ambrosio
 Pattern Template Method: Utilizzati nella gerarchia degli ostacoli per massimizzare il riutilizzo del codice (DRY). La classe astratta AbstractObstacle definisce lo scheletro dell'algoritmo di calcolo del rimbalzo e della correzione della posizione (metodo 'reflectVelocity'), lasciando alle classi concrete solo il compito di implementare le specificità geometriche di calcolo della penetrazione e delle normali.
@@ -735,11 +749,15 @@ Le difficoltà maggiori hanno riguardato la comprensione e l'applicazione del pa
 Con il progredire del lavoro, tuttavia, la padronanza degli strumenti e delle pratiche di sviluppo è cresciuta progressivamente, consentendo di scrivere codice con maggiore consapevolezza. Il risultato finale e le soluzioni adottate riflettono l'impegno costante nel rispettare i principi della buona programmazione orientata agli oggetti.
 
 ### 4.1.3 Federico Sparvoli
-Il mio contributo principale riguarda il sistema di input del colpo, la gestione del ciclo di vita dei match e il sistema di salvataggio. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a @SuppressWarnings, ottenuta tramite interfacce strette e callback funzionali.
-Una scelta progettuale che ho fatto è stata quella di rendere synchronized i metodi pubblici di ShotState e di marcare volatile il campo che segnala se la pallina è in movimento in GameState. Attualmente gli aggiornamenti del gioco e la gestione dell'input avvengono in modo sequenziale, all'interno dello stesso gameloop, quindi queste precauzioni non sono necessarie, ma le ho comunque inserite per rendere le classi più robuste, qualora in futuro il gioco venisse esteso con thread.
-Un aspetto migliorabile è la soglia di click sulla pallina (CLICK_RADIUS), che al momento è un numero fisso di pixel e non cambia se la pallina viene ingrandita o rimpicciolita. In futuro sarebbe meglio calcolarlo in base al raggio vero della pallina.
+Il mio contributo principale riguarda il sistema di input del colpo, la gestione del ciclo di vita dei match e il sistema di salvataggio. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a `@SuppressWarnings`, ottenuta tramite interfacce strette e callback funzionali.
+
+Una scelta progettuale che ho fatto è stata quella di rendere synchronized i metodi pubblici di `ShotState` e di dichiarare volatile il campo che segnala se la pallina è in movimento in `GameState`. Attualmente, gli aggiornamenti del gioco e la gestione dell'input, avvengono in modo sequenziale, all'interno dello stesso gameloop, quindi queste precauzioni non sono necessarie, ma le ho comunque inserite per rendere le classi più robuste, qualora in futuro il gioco venisse esteso con i thread.
+
+Un aspetto migliorabile è la soglia di click sulla pallina (`CLICK_RADIUS`), che al momento è un numero fisso di pixel e non cambia se la pallina viene ingrandita o rimpicciolita. In futuro sarebbe meglio calcolarlo in base al raggio vero della pallina.
+
 Per quanto riguarda il cambio delle mappe, al momento ricostruiamo da capo tutto il controller del gioco ad ogni nuova mappa. Con mappe molto grandi questo potrebbe rallentare il gioco. Il prossimo passo sarebbe caricare le mappe in anticipo, senza bloccare il gioco.
-Il sistema di salvataggio (SaveManager, SaveData) memorizza la partita in formato JSON usando Gson. Salva solo il numero della mappa, non tutta la geometria. Così i file sono piccoli e il salvataggio non dipende da come sono fatte le mappe dentro. Un limite attuale è che il salvataggio viene cancellato appena lo si carica, quindi non si può riprendere la stessa partita due volte senza salvarla di nuovo.
+
+Il sistema di salvataggio memorizza la partita in formato JSON usando Gson. Salva solo il numero della mappa, non tutta la geometria. Così i file sono piccoli e il salvataggio non dipende da come sono fatte le mappe dentro. Un limite attuale è che il salvataggio viene cancellato appena lo si carica, quindi non si può riprendere la stessa partita due volte senza salvarla di nuovo.
 
 ### 4.1.4 Mattia D'Ambrosio
 Il mio contributo principale ha riguardato l'architettura geometrico-matematica degli ostacoli, lo sviluppo della classe vettoriale dedicata e l'implementazione della fisica delle collisioni e degli elementi avanzati (ostacoli elastici e portali). Sono pienamente soddisfatto della stabilità raggiunta nel calcolo delle penetrazioni e dell'algoritmo di Normal Blending per la risoluzione deterministica degli angoli interni, che ha rimosso qualsiasi arbitrarietà fisica. Dal punto di vista architetturale, l'introduzione di ObstacleController ha garantito un disaccoppiamento MVC pulito tra modelli fisici e rendering grafico.
@@ -782,4 +800,3 @@ Durante il gioco è possibile mettere in pausa premendo il tasto ESC, purché la
 
 **B.0.1** federico.sparvoli@studio.unibo.it
 * Laboratorio 06: https://github.com/fedesparvo1-a11y/lab06
-* Laboratorio 07: https://github.com/fedesparvo1-a11y/lab07

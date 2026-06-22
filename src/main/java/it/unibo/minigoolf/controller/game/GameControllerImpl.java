@@ -9,6 +9,11 @@ import it.unibo.minigoolf.model.logic.GameState;
 import it.unibo.minigoolf.model.logic.HoleChecker;
 import it.unibo.minigoolf.model.logic.ShotState;
 import it.unibo.minigoolf.model.physics.velocity.BasicFrictionStrategy;
+import it.unibo.minigoolf.controller.gamemapcontroller.BallData;
+import it.unibo.minigoolf.controller.gamemapcontroller.HoleData;
+import it.unibo.minigoolf.controller.gamemapcontroller.MapElementsView;
+import it.unibo.minigoolf.controller.gamemapcontroller.ObstacleData;
+import it.unibo.minigoolf.controller.gamemapcontroller.SurfaceData;
 import it.unibo.minigoolf.model.save.PlayerSaveData;
 import it.unibo.minigoolf.model.save.SaveData;
 import it.unibo.minigoolf.util.Vector2D;
@@ -31,12 +36,13 @@ import java.util.LinkedHashMap;
 public final class GameControllerImpl implements GameController {
 
     /**
-     * Maximum squared speed at which the ball can enter the hole while still moving.
+     * Maximum squared speed at which the ball can enter the hole while still
+     * moving.
      * Set to (MAX_POWER * SHOT_SCALE / 2)² = (1500 / 2)² = 750² = 562_500.
      */
     private static final double HOLE_ENTRY_MAX_SPEED_SQ = 562_500.0;
 
-    // Maximum shots a player can take before their turn ends automatically. 
+    // Maximum shots a player can take before their turn ends automatically.
     private static final int MAX_SHOTS = 7;
 
     private final GameMapController gameMapController;
@@ -54,52 +60,65 @@ public final class GameControllerImpl implements GameController {
     /** {@code gameState::update} — passed to ShotControllerImpl. */
     private final Supplier<Optional<Vector2D>> shotUpdater;
 
-    /** {@code physicsController::update} — avoids storing PhysicsController directly. */
+    /**
+     * {@code physicsController::update} — avoids storing PhysicsController
+     * directly.
+     */
     private final Consumer<Double> physicsUpdater;
 
-    /** {@code () -> gameState.getCurrentPlayer().getName()} — avoids storing GameState. */
+    /**
+     * {@code () -> gameState.getCurrentPlayer().getName()} — avoids storing
+     * GameState.
+     */
     private final Supplier<String> currentPlayerNameSupplier;
 
     /** {@code gameState::getCurrentPlayerIndex} — used for save/load. */
     private final IntSupplier currentPlayerIndexSupplier;
 
-    /** {@code () -> gameState.getCurrentPlayer().getShots()} — used for HUD and turn limit. */
+    /**
+     * {@code () -> gameState.getCurrentPlayer().getShots()} — used for HUD and turn
+     * limit.
+     */
     private final IntSupplier currentShotsSupplier;
 
     /** {@code gameState::nextTurn} — advances to the next player. */
     private final Runnable nextTurnTrigger;
 
-    // Checks whether the current player is the last in the list. 
+    // Checks whether the current player is the last in the list.
     private final BooleanSupplier lastPlayerChecker;
 
-    // Ball start position for the current map — used to reset position on next turn. 
+    // Ball start position for the current map — used to reset position on next
+    // turn.
     private final Vector2D initialBallPosition;
 
-    // Supplies player save snapshots without storing GameState directly. 
+    // Supplies player save snapshots without storing GameState directly.
     private final Supplier<List<PlayerSaveData>> playerSaveDataSupplier;
 
-    // Supplies current ball X in logical coordinates. 
+    // Supplies current ball X in logical coordinates.
     private final Supplier<Double> ballXSupplier;
 
-    // Supplies current ball Y in logical coordinates. 
+    // Supplies current ball Y in logical coordinates.
     private final Supplier<Double> ballYSupplier;
 
-    /// Checks whether the ball has reached the hole. 
+    /// Checks whether the ball has reached the hole.
     private final HoleChecker holeChecker;
 
-    // Called when all players have completed the hole. By default it does nothing (no-op). 
-    private Runnable onHoleCompleted = () -> { };
+    // Called when all players have completed the hole. By default it does nothing
+    // (no-op).
+    private Runnable onHoleCompleted = () -> {
+    };
 
     /** {@code () -> { ... }} estrae tutti i giocatori e i loro tiri */
     private final Supplier<Map<String, Integer>> allScoresSupplier;
 
     private ShotController shotController;
+    private MapElementsView mapElementsView;
 
     /**
      * Builds the controller extracting behaviors from the given collaborators.
      * 
      * @param gameState         the central game logic
-     * @param gameMapController the map controller 
+     * @param gameMapController the map controller
      * @param shotState         the shot input state
      * @param physicsController the physics engine
      */
@@ -118,24 +137,20 @@ public final class GameControllerImpl implements GameController {
         this.currentPlayerIndexSupplier = gameState::getCurrentPlayerIndex;
         this.currentShotsSupplier = () -> gameState.getCurrentPlayer().getShots();
         this.nextTurnTrigger = gameState::nextTurn;
-        this.lastPlayerChecker = () ->
-            gameState.getCurrentPlayerIndex() == gameState.getPlayers().size() - 1;
+        this.lastPlayerChecker = () -> gameState.getCurrentPlayerIndex() == gameState.getPlayers().size() - 1;
         this.playerSaveDataSupplier = () -> gameState.getPlayers().stream()
-            .map(p -> new PlayerSaveData(p.getName(), p.getShots()))
-            .toList();
-        this.ballXSupplier =
-            () -> gameMapController.getBallController().getPosition().getX();
-        this.ballYSupplier =
-            () -> gameMapController.getBallController().getPosition().getY();
+                .map(p -> new PlayerSaveData(p.getName(), p.getShots()))
+                .toList();
+        this.ballXSupplier = () -> gameMapController.getBallController().getPosition().getX();
+        this.ballYSupplier = () -> gameMapController.getBallController().getPosition().getY();
         physicsController.setVelocityStrategy(new BasicFrictionStrategy());
         this.physicsUpdater = physicsController::update;
         this.holeChecker = new HoleChecker(
-            gameMapController.getHoleController().getPosition(),
-            gameMapController.getHoleController().getRadius());
-        this.initialBallPosition =
-            gameMapController.getBallController().getPosition();
-            //Scores supplier to get the scores of each player from a particular map
-            this.allScoresSupplier = () -> {
+                gameMapController.getHoleController().getPosition(),
+                gameMapController.getHoleController().getRadius());
+        this.initialBallPosition = gameMapController.getBallController().getPosition();
+        // Scores supplier to get the scores of each player from a particular map
+        this.allScoresSupplier = () -> {
             final Map<String, Integer> scores = new LinkedHashMap<>();
             for (final var p : gameState.getPlayers()) {
                 scores.put(p.getName(), p.getShots());
@@ -150,22 +165,48 @@ public final class GameControllerImpl implements GameController {
         this.onHoleCompleted = onHoleCompleted;
     }
 
+    @Override
+    public void setMapElementsView(final MapElementsView view) {
+        this.mapElementsView = view;
+        pushMapElementsData();
+    }
+
+    private void pushMapElementsData() {
+        if (mapElementsView == null) {
+            return;
+        }
+        final List<SurfaceData> surfaces = gameMapController.getSurfaceControllers().stream()
+                .map(sc -> new SurfaceData(sc.getZIndex(), sc.getTypeIds(), sc.getShape(), sc.getWind()))
+                .toList();
+        final List<ObstacleData> obstacles = gameMapController.getObstacleController()
+                .getObstacles().stream().map(o -> new ObstacleData(o.getShape(), 
+                o.getBounciness(), o instanceof it.unibo.minigoolf.model.obstacles
+                .PortalObstacle)).toList();
+        final HoleData hole = new HoleData(
+                gameMapController.getHoleController().getShape(),
+                gameMapController.getHoleController().getPosition(),
+                gameMapController.getHoleController().getRadius());
+        final BallData ball = new BallData(gameMapController.getBallController().getBallShape());
+        mapElementsView.updateGraphics(surfaces, obstacles, hole, ball);
+    }
+
     /** {@inheritDoc} */
     @Override
     public void setShotView(final ShotView shotView) {
         this.shotController = new ShotControllerImpl(
-            shotState,
-            pendingShotSubmitter,
-            shotUpdater,
-            gameMapController,
-            shotView);
+                shotState,
+                pendingShotSubmitter,
+                shotUpdater,
+                gameMapController,
+                shotView);
         shotController.onBallStopped(
-            gameMapController.getBallController().getPosition());
+                gameMapController.getBallController().getPosition());
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTick(final double deltaTime) {
+        pushMapElementsData();
         if (shotController == null) {
             return;
         }
@@ -180,7 +221,7 @@ public final class GameControllerImpl implements GameController {
         if (!gameMapController.getBallController().isBallMoving()) {
             ballStoppedNotifier.run();
             final boolean turnOver = holeChecker.isBallInHole(ballPos)
-                || currentShotsSupplier.getAsInt() >= MAX_SHOTS;
+                    || currentShotsSupplier.getAsInt() >= MAX_SHOTS;
             handleTurnEnd(ballPos, turnOver);
         } else if (isSlowEnoughForHole() && holeChecker.isBallInHole(ballPos)) {
             ballStoppedNotifier.run();
@@ -195,7 +236,7 @@ public final class GameControllerImpl implements GameController {
      */
     private boolean isSlowEnoughForHole() {
         return gameMapController.getBallController()
-            .getVelocity().getNormSquared() <= HOLE_ENTRY_MAX_SPEED_SQ;
+                .getVelocity().getNormSquared() <= HOLE_ENTRY_MAX_SPEED_SQ;
     }
 
     /**
@@ -214,9 +255,9 @@ public final class GameControllerImpl implements GameController {
             } else {
                 nextTurnTrigger.run();
                 gameMapController.getBallController()
-                    .updatePosition(initialBallPosition);
+                        .updatePosition(initialBallPosition);
                 gameMapController.getBallController()
-                    .updateVelocity(Vector2D.ZERO);
+                        .updateVelocity(Vector2D.ZERO);
                 if (shotController != null) {
                     shotController.onBallStopped(initialBallPosition);
                 }
@@ -254,12 +295,11 @@ public final class GameControllerImpl implements GameController {
     @Override
     public SaveData createSaveData(final String mapId) {
         return new SaveData(
-            currentPlayerIndexSupplier.getAsInt(),
-            mapId,
-            playerSaveDataSupplier.get(),
-            ballXSupplier.get(),
-            ballYSupplier.get()
-        );
+                currentPlayerIndexSupplier.getAsInt(),
+                mapId,
+                playerSaveDataSupplier.get(),
+                ballXSupplier.get(),
+                ballYSupplier.get());
     }
 
     /** {@inheritDoc} */

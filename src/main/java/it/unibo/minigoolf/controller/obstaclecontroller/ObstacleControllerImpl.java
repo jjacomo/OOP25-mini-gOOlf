@@ -1,6 +1,7 @@
 package it.unibo.minigoolf.controller.obstaclecontroller;
 
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+
 import java.util.List;
 
 /**

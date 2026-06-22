@@ -6,14 +6,19 @@ import java.awt.Graphics2D;
 import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
+import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JPanel;
 
-import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
-import it.unibo.minigoolf.model.obstacles.Obstacle;
-import it.unibo.minigoolf.model.obstacles.PortalObstacle;
+import it.unibo.minigoolf.controller.gamemapcontroller.MapElementsView;
+import it.unibo.minigoolf.controller.gamemapcontroller.ObstacleData;
+import it.unibo.minigoolf.controller.gamemapcontroller.SurfaceData;
+import it.unibo.minigoolf.controller.gamemapcontroller.BallData;
+import it.unibo.minigoolf.controller.gamemapcontroller.HoleData;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Oval;
@@ -25,30 +30,42 @@ import it.unibo.minigoolf.view.texturemanager.TextureManager;
 
 /**
  * Panel responsible for rendering the game map, including surfaces, obstacles,
- * hole
- * and the ball.
+ * hole and the ball.
  * This panel uses a logical coordinate system (1920×1080) that scales to the
  * actual panel size for consistent on-screen positioning across different
  * resolutions.
  *
- * @author jack
+ * @author jack e mattia
  */
-public class MapPanel extends JPanel {
+public final class MapPanel extends JPanel implements MapElementsView {
 
     @Serial
     private static final long serialVersionUID = 1L;
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
-    private final transient GameMapController mapController;
+    private transient List<SurfaceData> surfaces = List.of();
+    private transient List<ObstacleData> obstacles = List.of();
+    private transient HoleData hole;
+    private transient BallData ball;
 
-    /**
-     * Constructs a MapPanel with the specified game map controller.
-     *
-     * @param mapController the controller managing the game map data
-     */
-    public MapPanel(final GameMapController mapController) {
-        this.mapController = mapController;
+    @Override
+    public void updateGraphics(
+            final List<SurfaceData> newSurfaces,
+            final List<ObstacleData> newObstacles,
+            final HoleData newHole,
+            final BallData newBall) {
+        this.surfaces = List.copyOf(newSurfaces);
+        this.obstacles = List.copyOf(newObstacles);
+        this.hole = newHole;
+        this.ball = newBall;
+    }
+
+    @Serial
+    private void readObject(final ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+        this.surfaces = List.of();
+        this.obstacles = List.of();
     }
 
     /**
@@ -67,55 +84,67 @@ public class MapPanel extends JPanel {
         // physical pixel on screen as the shot-indicator overlay.
         g2d.scale((double) getWidth() / LOGICAL_WIDTH, (double) getHeight() / LOGICAL_HEIGHT);
 
-        mapController.getSurfaceControllers().stream()
-                .sorted((s1, s2) -> Integer.compare(s1.getZIndex(), s2.getZIndex()))
-                .forEach(surfaceController -> {
-                    for (final String typeId : surfaceController.getTypeIds()) {
+        surfaces.stream()
+                .sorted((s1, s2) -> Integer.compare(s1.zIndex(), s2.zIndex()))
+                .forEach(surfaceData -> {
+                    for (final String typeId : surfaceData.typeIds()) {
                         final String texturePath = SurfaceTextureMapper.getTexturePath(typeId);
                         final BufferedImage texture = TextureManager.loadTexture(texturePath);
                         if (texture != null) {
-                            drawShape(surfaceController.getShape(), g2d, texture);
+                            drawShape(surfaceData.shape(), g2d, texture);
                         } else {
                             throw new IllegalStateException(
                                     "Texture not found for surface type: " + typeId);
                         }
                     }
                     final String windOverlay = SurfaceTextureMapper
-                            .getWindOverlayTexturePath(surfaceController.getWind());
+                            .getWindOverlayTexturePath(surfaceData.wind());
                     if (windOverlay != null) {
                         final BufferedImage windTexture = TextureManager.loadTexture(windOverlay);
-                        drawShape(surfaceController.getShape(), g2d, windTexture);
+                        drawShape(surfaceData.shape(), g2d, windTexture);
                     }
                 });
 
-        g2d.setColor(Color.DARK_GRAY);
-        for (final Obstacle obstacle : mapController.getObstacleController().getObstacles()) {
+        for (final ObstacleData obstacleData : obstacles) {
             final Color obstacleColor;
 
-            if (obstacle instanceof PortalObstacle) {
+            if (obstacleData.isPortal()) {
                 obstacleColor = Color.BLUE;
-            } else if (obstacle.getBounciness() > 1.0) {
+            } else if (obstacleData.bounciness() > 1.0) {
                 obstacleColor = Color.RED;
-            } else if (obstacle.getBounciness() < 1.0) {
+            } else if (obstacleData.bounciness() < 1.0) {
                 obstacleColor = Color.GREEN;
             } else {
                 obstacleColor = Color.DARK_GRAY;
             }
 
             g2d.setColor(obstacleColor);
-            drawShape(obstacle.getShape(), g2d, null);
+            drawShape(obstacleData.shape(), g2d, null);
         }
 
         g2d.setColor(Color.BLACK);
-        drawShape(mapController.getHoleController().getShape(), g2d, null);
-        g2d.setColor(Color.WHITE);
-        drawShape(mapController.getBallController().getBallShape(), g2d, null);
+        if (hole.shape() != null) {
+            drawShape(hole.shape(), g2d, null);
+        }
 
-        drawFlag(g2d,
-                new Vector2D(
-                        mapController.getHoleController().getPosition().getX()
-                                + mapController.getHoleController().getRadius(),
-                        mapController.getHoleController().getPosition().getY()));
+        g2d.setColor(Color.WHITE);
+        if (ball.shape() != null) {
+            drawShape(ball.shape(), g2d, null);
+        }
+
+        if (hole != null && hole.position() != null) {
+            // we assume holeShape is a circle and we can get its radius. Wait, in original
+            // code it was holeController.getRadius().
+            // We only have holeShape and holePosition here.
+            // In original code: mapController.getHoleController().getPosition().getX() +
+            // mapController.getHoleController().getRadius()
+            // We can check if holeShape is a Circle to get the radius.
+            double radius = 0;
+            if (hole.shape() instanceof Circle c) {
+                radius = c.radius();
+            }
+            drawFlag(g2d, new Vector2D(hole.position().getX() + radius, hole.position().getY()));
+        }
     }
 
     private void drawFlag(final Graphics2D g2d, final Vector2D position) {
