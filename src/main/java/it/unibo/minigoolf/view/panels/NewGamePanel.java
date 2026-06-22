@@ -42,8 +42,13 @@ public final class NewGamePanel extends JPanel {
 
     private transient Image backgroundImage;
 
+    /** List of text fields used to input the names of the players. */
     private final List<JTextField> nameFields = new ArrayList<>();
+
+    /** Container panel that holds the generated player name input fields. */
     private final JPanel namesContainer;
+
+    /** Text field used to input the desired number of players. */
     private final JTextField numInput;
 
     /**

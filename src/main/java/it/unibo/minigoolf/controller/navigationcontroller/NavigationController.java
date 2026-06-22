@@ -17,11 +17,11 @@ import java.util.function.Supplier;
  * Also owns the {@link SaveController} since it lives for the full
  * application lifetime, allowing save/load before any match is started.
  * 
- * @author dbakko
+ * @author dbakko, fedesparvo1-a11y
  */
 public final class NavigationController {
 
-    /** Stored as a callback to avoid EI2. */
+    // Stored as a callback to avoid EI2. 
     private final Runnable showMenuCallback;
     private final Runnable showGameCallback;
     private final Runnable showNewGameCallback;
@@ -35,10 +35,12 @@ public final class NavigationController {
 
     private final AudioManager audioManager;
 
-    /** Returns true if the ball is not moving and the game can be paused. */
+    // Returns true if the ball is not moving and the game can be paused. 
     private BooleanSupplier pauseChecker = () -> true;
 
     /**
+     * Constructs the navigation controller and extracts panel transition callbacks from the main window.
+     * 
      * @param mainController the main controller
      * @param mainWindow     the main application window
      */
@@ -85,7 +87,7 @@ public final class NavigationController {
      *
      * @param checker returns true if the ball is not moving
      */
-    public void setpauseChecker(final BooleanSupplier checker) {
+    public void setPauseChecker(final BooleanSupplier checker) {
         this.pauseChecker = checker;
     }
 
@@ -189,7 +191,7 @@ public final class NavigationController {
      * Closes the pause menu and skips to the next map.
      */
     public void skipCurrentMap() {
-        this.resumeWindowCallback.run(); // Toglie lo schermo oscurato
-        this.mainController.skipMap();   // Manda il comando al gioco
+        this.resumeWindowCallback.run();
+        this.mainController.skipMap();
     }
 }

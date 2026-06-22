@@ -1,0 +1,22 @@
+Report - 06/22 - 74 ore
+
+FATTO:
+
+- mettere nei test la musica ambient DONE!
+
+- Mappa C DONE!
+
+- Mappa T (tutorial) DONE!
+
+- ricontrollare codice e javadoc DONE!
+
+- scrivere parti in comune report 1/2
+
+DA FARE:
+
+- report parte personale + condivisa
+
+EXTRA:
+
+AGENDA:
+

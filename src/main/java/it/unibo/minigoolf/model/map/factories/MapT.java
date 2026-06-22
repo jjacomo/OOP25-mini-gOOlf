@@ -21,25 +21,23 @@ import it.unibo.minigoolf.util.shapes.Rectangle;
 
 /**
  * Tutorial map.
+ * 
  * @author dbakko
  * @see GameMapFactory
  * @see GameMap
  */
-public class MapT implements GameMapFactory {
+public final class MapT implements GameMapFactory {
 
-    // --- BASE BACKGROUND ---
     private static final double GRASS_X = 0;
     private static final double GRASS_Y = 0;
     private static final double LOGICAL_WIDTH = 1920;
     private static final double LOGICAL_HEIGHT = 1080;
     private static final int GRASS_Z_INDEX = 0;
 
-    // --- ROW 1: SURFACES (Squares 200x200 positioned at Y=150) ---
     private static final double SURF_Y = 150;
     private static final double SURF_SIZE = 200;
     private static final int SURF_Z = 1;
-    
-    // Calculated X positions for 5 perfect columns
+
     private static final double DIRT_X = 60;
     private static final double SAND_X = 460;
     private static final double ICE_X = 860;
@@ -49,59 +47,42 @@ public class MapT implements GameMapFactory {
     private static final double WIND_STR = 10.0;
     private static final double BOOST_INT = 1.5;
 
-    // --- ROW 2: OBSTACLES (Centered at Y=600) ---
-    
-    // Column 1: Wall
     private static final double WALL_X = 60;
     private static final double WALL_Y = 550;
     private static final double WALL_W = 200;
     private static final double WALL_H = 100;
-
-    // Column 2: Triangle (Points upwards)
     private static final Vector2D TRI_V1 = new Vector2D(460, 650);
     private static final Vector2D TRI_V2 = new Vector2D(660, 650);
     private static final Vector2D TRI_V3 = new Vector2D(560, 500);
-
-    // Column 3: Normal Round Obstacle
     private static final double ROUND_NORM_X = 960;
     private static final double ROUND_NORM_Y = 600;
     private static final double ROUND_R = 80;
-
-    // Column 4: Bouncy Round Obstacle
     private static final double ROUND_BOUNCY_X = 1360;
     private static final double ROUND_BOUNCY_Y = 600;
     private static final double BOUNCINESS = AbstractObstacle.BOUNCY_BOUNCINESS;
-
-    // Column 5: Portal Pair (Stacked vertically in the column)
     private static final Vector2D PORTAL_A = new Vector2D(1760, 520);
     private static final Vector2D PORTAL_B = new Vector2D(1760, 680);
     private static final double PORTAL_R = 50;
-
-    // --- ROW 3: BALL AND HOLE (Centered at Y=900) ---
-    
-    // Aligned under Column 2
     private static final Vector2D BALL_POS = new Vector2D(560, 900);
     private static final double BALL_R = 30;
-
-    // Aligned under Column 4
     private static final Vector2D HOLE_POS = new Vector2D(1360, 900);
     private static final double HOLE_R = 40;
 
-    // --- BORDER WALLS ---
     private static final double BORDER_THICKNESS = 31;
 
     private final SurfaceFactory surfaceFactory;
 
     /**
-     * Constructs the Showroom Map using a default SurfaceFactory implementation.
+     * Constructs the map using a default SurfaceFactory implementation.
      */
     public MapT() {
         this(new SurfaceFactoryImpl());
     }
 
     /**
-     * Constructs the Showroom Map using the provided SurfaceFactory.
-     * * @param surfaceFactory the factory used to build surfaces
+     * Constructs the map using the provided SurfaceFactory.
+     * 
+     * @param surfaceFactory the factory used to build surfaces
      */
     public MapT(final SurfaceFactory surfaceFactory) {
         this.surfaceFactory = surfaceFactory;
@@ -112,45 +93,40 @@ public class MapT implements GameMapFactory {
         final List<Surface> surfaces = new ArrayList<>();
         final List<Obstacle> obstacles = new ArrayList<>();
 
-        // 1. BASE BACKGROUND
         surfaces.add(surfaceFactory.createGrass(
                 new Rectangle(new Vector2D(GRASS_X, GRASS_Y), LOGICAL_WIDTH, LOGICAL_HEIGHT), 
                 GRASS_Z_INDEX));
 
-        // 2. SURFACES SHOWCASE (Row 1)
         surfaces.add(surfaceFactory.createDirt(
                 new Rectangle(new Vector2D(DIRT_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z));
-        
+
         surfaces.add(surfaceFactory.createSand(
                 new Rectangle(new Vector2D(SAND_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z));
-        
+
         surfaces.add(surfaceFactory.createIce(
                 new Rectangle(new Vector2D(ICE_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z));
-        
+
         surfaces.add(surfaceFactory.createWindy(
                 surfaceFactory.createGrass(
                     new Rectangle(new Vector2D(WINDY_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z), 
                 WindDirection.UP, WIND_STR));
-        
+
         surfaces.add(surfaceFactory.createBoost(
                 surfaceFactory.createSand(
                     new Rectangle(new Vector2D(BOOST_X, SURF_Y), SURF_SIZE, SURF_SIZE), SURF_Z), 
                 BOOST_INT));
 
-        // 3. OBSTACLES SHOWCASE (Row 2)
         obstacles.add(new WallObstacle(new Vector2D(WALL_X, WALL_Y), WALL_W, WALL_H));
         obstacles.add(new TriangleObstacle(TRI_V1, TRI_V2, TRI_V3));
         obstacles.add(new RoundObstacle(new Vector2D(ROUND_NORM_X, ROUND_NORM_Y), ROUND_R));
         obstacles.add(new RoundObstacle(new Vector2D(ROUND_BOUNCY_X, ROUND_BOUNCY_Y), ROUND_R, BOUNCINESS));
         obstacles.addAll(PortalObstacle.createPair(PORTAL_A, PORTAL_B, PORTAL_R));
 
-        // 4. BORDERS (To prevent the ball from escaping during testing)
         obstacles.add(new WallObstacle(new Vector2D(0, 0), BORDER_THICKNESS, LOGICAL_HEIGHT));
         obstacles.add(new WallObstacle(new Vector2D(0, 0), LOGICAL_WIDTH, BORDER_THICKNESS));
         obstacles.add(new WallObstacle(new Vector2D(LOGICAL_WIDTH - BORDER_THICKNESS, 0), BORDER_THICKNESS, LOGICAL_HEIGHT));
         obstacles.add(new WallObstacle(new Vector2D(0, LOGICAL_HEIGHT - BORDER_THICKNESS), LOGICAL_WIDTH, BORDER_THICKNESS));
 
-        // 5. CORE ENTITIES (Row 3)
         return new GameMapImpl(
                 surfaces, 
                 new BallImpl(BALL_POS, BALL_R),

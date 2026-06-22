@@ -5,7 +5,7 @@ import it.unibo.minigoolf.util.Vector2D;
 /**
  * Controller that coordinates shot input between the view and the game logic.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public interface ShotController {
 

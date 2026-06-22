@@ -8,7 +8,7 @@ import java.util.List;
  * Manages an ordered sequence of {@link GameMapFactory} instances.
  * Tracks the current map index and provides the next map when available.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class MapSequence {
 
@@ -61,7 +61,7 @@ public final class MapSequence {
     }
 
     /**
-     * Returns the current map index (zero-based).
+     * Returns the current map index (zero based).
      *
      * @return the current index
      */

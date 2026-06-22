@@ -22,7 +22,7 @@ import java.util.function.Function;
  * The main application window.
  * Hosts the panel that is currently active.
  * The {@link NavigationController} is passed once via {@link #initPanels}
- * and captured in a lambda factory — never stored as a field — avoiding EI2.
+ * and captured in a lambda factory, never stored as a field, avoiding EI2.
  *
  * @author dbakko and fedesparvo1-a11y
  */
@@ -34,14 +34,19 @@ public final class MainWindow extends JFrame {
     private static final int MIN_WIDTH = 800;
     private static final int MIN_HEIGHT = 600;
 
+    /** Layout manager used to switch between different panels. */
     private final CardLayout cardLayout = new CardLayout();
+
+    /** Main container that holds all the different views. */
     private final JPanel mainContainer = new JPanel(cardLayout);
+
+    /** Panel displaying the global leaderboard. */
     private LeaderBoardPanel leaderboardPanel;
 
     /**
      * Lambda that builds a {@link GamePanel} from a {@link GameController}.
      * Captures {@link NavigationController} at {@link #initPanels} time
-     * so it is never stored as a field — avoids EI2.
+     * so it is never stored as a field, avoids EI2.
      */
     private transient Function<GameController, GamePanel> gamePanelFactory = gc -> null;
 
@@ -49,7 +54,7 @@ public final class MainWindow extends JFrame {
      * Creates and displays the main application window.
      * Call {@link #initPanels} once the navigation controller is available.
      *
-     * @param controller the main controller (unused directly; present for wiring context)
+     * @param controller the main controller (unused directly, present just for wiring context)
      */
     public MainWindow(final MainController controller) {
         this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
@@ -73,7 +78,7 @@ public final class MainWindow extends JFrame {
         mainContainer.add(this.leaderboardPanel, "LEADERBOARD");
         cardLayout.show(mainContainer, "MENU");
         this.setGlassPane(new PausePanel(navController));
-        // Capture navController in the factory lambda — avoids storing it as a field.
+        // Capture navController in the factory lambda, avoids storing it as a field.
         this.gamePanelFactory = gc -> {
             final ShotViewPanel svp = new ShotViewPanel(gc.getShotState());
             gc.setShotView(svp);

@@ -5,7 +5,7 @@ import it.unibo.minigoolf.util.Vector2D;
 /**
  * Interface implemented by the panel that draws the shot-intent indicator.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public interface ShotVisualizer {
  

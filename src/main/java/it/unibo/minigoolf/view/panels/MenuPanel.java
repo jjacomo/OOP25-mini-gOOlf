@@ -36,6 +36,8 @@ public final class MenuPanel extends JPanel {
     private transient Image backgroundImage;
 
     /**
+     * Constructs the main menu panel and initializes its UI components.
+     * 
      * @param navigationController the navigation controller
      */
     public MenuPanel(final NavigationController navigationController) {

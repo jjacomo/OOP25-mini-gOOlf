@@ -29,6 +29,13 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
     private static final double MAX_BOOST_SPEED = 1500.0;
 
     /**
+     * Default constructor.
+     */
+    public BasicFrictionStrategy() {
+        // No initialization needed
+    }
+
+    /**
      * Updates the velocity of the ball based on the surface it is currently on and
      * the time elapsed since the last update.
      * This method applies a friction force to the ball's velocity, which is
@@ -93,4 +100,3 @@ public final class BasicFrictionStrategy implements BallVelocityStrategy {
     }
 
 }
-

@@ -14,13 +14,20 @@ import java.nio.charset.StandardCharsets;
 /**
  * Saves and loads a minigolf match in a JSON file using Gson.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class SaveManager {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String SAVE_DIR = "saves";
     private static final String SAVE_FILE = SAVE_DIR + "/savefile.json";
+
+    /**
+     * Creates a save manager that reads and writes the save file.
+     */
+    public SaveManager() {
+        // no initialization needed: paths are constant
+    }
 
     /**
      * Saves the given snapshot to file.
@@ -51,7 +58,7 @@ public final class SaveManager {
     }
 
     /**
-     * Returns {@code true} if a save file exists on disk.
+     * Returns true if a save file exists on disk.
      *
      * @return true if a save is available to load
      */

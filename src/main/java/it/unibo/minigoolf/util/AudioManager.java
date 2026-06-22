@@ -22,6 +22,13 @@ public final class AudioManager {
     private String currentPath;
 
     /**
+     * Constructs a new AudioManager.
+     */
+    public AudioManager() {
+        // Default constructor
+    }
+
+    /**
      * Plays an audio file in a continuous loop.
      * If the same audio is already playing, it does nothing to avoid restarting it.
      *

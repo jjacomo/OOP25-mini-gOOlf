@@ -14,20 +14,20 @@ import java.util.stream.IntStream;
  * Implements {@link TurnState} so controllers can depend on the narrow
  * interface rather than this full class, avoiding EI2 warnings.
  *
- * @author fede and dani
+ * @author fedesparvo1-a11y, dbakko
  */
 public final class GameState implements TurnState {
 
-    /** Minimum squared length a shot vector must have to be considered valid. */
+    // Minimum squared length a shot vector must have to be considered valid.
     private static final double MIN_SQUARE_POWER = 100.0;
 
     private final List<Player> players;
     private int currentPlayerIndex;
 
-    /** The shot queued by ShotController; null if no shot is waiting. */
+    // The shot queued by ShotController, null if no shot is waiting.
     private Vector2D pendingShot;
 
-    /** Whether the ball is still rolling. */
+    // Whether the ball is still rolling.
     private volatile boolean ballMoving;
 
     /**

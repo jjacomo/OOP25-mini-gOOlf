@@ -3,12 +3,14 @@ package it.unibo.minigoolf.controller.game;
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
 import it.unibo.minigoolf.controller.shot.ShotView;
 import it.unibo.minigoolf.model.logic.ShotState;
+import it.unibo.minigoolf.model.save.SaveData;
+import java.util.Map;
 
 /**
  * Controller responsible for the lifecycle of a single match.
  * Manages shot input, physics, turn logic and ball-stop detection.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public interface GameController {
 
@@ -37,9 +39,9 @@ public interface GameController {
     void setShotView(ShotView shotView);
 
     /**
-     * Returns the display name of the player whose turn it currently is.
+     * Returns the name of the player whose turn it currently is.
      *
-     * @return the current player's display name
+     * @return the current player's name
      */
     String getCurrentPlayerName();
 
@@ -68,19 +70,21 @@ public interface GameController {
     GameMapController getGameMapController();
 
     /**
-     * Builds a {@link it.unibo.minigoolf.model.save.SaveData} snapshot of the
-     * current match state, ready to be persisted by
+     * Catch a snapshot of the current
+     * match state, ready to be used by
      * {@link it.unibo.minigoolf.model.save.SaveManager}.
      *
      * @param mapId the string identifier of the current map
      * @return an immutable snapshot of the match
      */
-    it.unibo.minigoolf.model.save.SaveData createSaveData(String mapId);
+    SaveData createSaveData(String mapId);
 
     /**
+     * Returns the scores for the current hole.
+     * 
      * @return a map associating each player's name with the shots taken in this hole.
      */
-    java.util.Map<String, Integer> getHoleScores();
+    Map<String, Integer> getHoleScores();
 
     /**
      * Returns true if the ball is currently moving.

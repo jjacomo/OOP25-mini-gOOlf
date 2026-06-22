@@ -11,7 +11,7 @@ import java.util.List;
  * This makes the save file smaller and avoids saving
  * complicated geometry objects.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  * @param currentPlayerIndex index into {@code players} of whose turn it is
  * @param mapId              identifier used by GameMapFactory to rebuild the map
  * @param players            ordered list of player snapshots

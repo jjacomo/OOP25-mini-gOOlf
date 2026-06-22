@@ -18,7 +18,7 @@ import java.util.Optional;
  * Factory that builds a {@link GameController} from a {@link MapSequence}.
  * Accepts an optional {@link SaveData} to restore a previously saved match.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class GameFactory {
 

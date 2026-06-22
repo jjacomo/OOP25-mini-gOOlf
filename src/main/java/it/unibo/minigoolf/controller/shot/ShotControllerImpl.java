@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * Implementation of {@link ShotController}.
  * Uses functional callbacks to avoid EI2 warnings while keeping coupling minimal.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class ShotControllerImpl implements ShotController {
 
@@ -30,6 +30,8 @@ public final class ShotControllerImpl implements ShotController {
     private final ShotView shotView;
 
     /**
+     * Creates the shot controller wiring the model to the game logic.
+     * 
      * @param shotState            the model holding shot intent and confirmation state
      * @param pendingShotSubmitter callback to submit a pending shot to the turn logic
      * @param shotUpdater          callback to consume the confirmed shot each tick

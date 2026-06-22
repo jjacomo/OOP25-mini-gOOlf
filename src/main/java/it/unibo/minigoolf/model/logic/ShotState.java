@@ -7,25 +7,22 @@ import java.util.Optional;
 /**
  * Model class that holds the state of the current shot input.
  * Decouples shot management from {@link GameState} and from the view layer.
- *
- * <p>The flow is:
- * <ol>
- *   <li>The view calls {@link #updateIntent(Vector2D)} while the user drags.</li>
- *   <li>The view calls {@link #confirmShot()} on mouse release.</li>
- *   <li>The controller calls {@link #consume()} each tick to retrieve the shot.</li>
- * </ol>
- *
- * @author fede
+ * The flow is:
+ * The view calls {@link #updateIntent(Vector2D)} while the user drags.
+ * The view calls {@link #confirmShot()} on mouse release.
+ * The controller calls {@link #consume()} each tick to retrieve the shot.
+ * 
+ * @author fedesparvo1-a11y
  */
 public final class ShotState {
 
-    /** Maximum power of a shot in logical pixels. */
+    /** Maximum shot power in logical pixels. */
     public static final double MAX_POWER = 150.0;
 
-    /** Minimum squared power for a shot to be accepted. */
+    // Minimum squared power for a shot to be accepted.
     private static final double MIN_SQUARE_POWER = 100.0;
 
-    /** Current drag vector set by the view while the user is dragging. */
+    // Current drag vector set by the view while the user is dragging.
     private Vector2D intent;
 
     /**
@@ -34,8 +31,15 @@ public final class ShotState {
      */
     private boolean shotReady;
 
-    /** Current ball centre in logical coordinates, used to enable input. */
+    // Current ball centre in logical coordinates, used to enable input.
     private Vector2D ballPosition;
+
+    /**
+     * Creates an empty shot state with no pending shot and no ball position.
+     */
+    public ShotState() {
+        // initial state: no intent, no ball position, shot not ready
+    }
 
     /**
      * Updates the current drag vector.

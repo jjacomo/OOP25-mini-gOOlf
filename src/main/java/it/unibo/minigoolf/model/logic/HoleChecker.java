@@ -7,7 +7,7 @@ import it.unibo.minigoolf.util.Vector2D;
  * The ball is considered "in the hole" when the distance between its centre
  * and the hole centre is less than or equal to the hole radius.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class HoleChecker {
 
@@ -15,6 +15,8 @@ public final class HoleChecker {
     private final double holeRadius;
 
     /**
+     * Builds a hole checker for the given hole position and radius.
+     * 
      * @param holePosition the centre of the hole in logical coordinates
      * @param holeRadius   the radius of the hole in logical coordinates
      */

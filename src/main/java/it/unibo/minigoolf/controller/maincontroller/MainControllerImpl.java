@@ -64,7 +64,6 @@ public final class MainControllerImpl implements MainController, ActionListener 
     @Override
     public void skipMap() {
         if (this.matchManager != null) {
-            // Usa lo stesso identico metodo che usiamo a fine buca!
             this.matchManager.advanceToNextHole(); 
         }
     }

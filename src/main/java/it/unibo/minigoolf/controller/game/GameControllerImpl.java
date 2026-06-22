@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
  * Implementation of {@link GameController}.
  * Uses functional callbacks instead of storing stateful collaborators directly.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class GameControllerImpl implements GameController {
 
@@ -36,7 +36,7 @@ public final class GameControllerImpl implements GameController {
      */
     private static final double HOLE_ENTRY_MAX_SPEED_SQ = 562_500.0;
 
-    /** Maximum shots a player can take before their turn ends automatically. */
+    // Maximum shots a player can take before their turn ends automatically. 
     private static final int MAX_SHOTS = 7;
 
     private final GameMapController gameMapController;
@@ -69,25 +69,25 @@ public final class GameControllerImpl implements GameController {
     /** {@code gameState::nextTurn} — advances to the next player. */
     private final Runnable nextTurnTrigger;
 
-    /** Checks whether the current player is the last in the list. */
+    // Checks whether the current player is the last in the list. 
     private final BooleanSupplier lastPlayerChecker;
 
-    /** Ball start position for the current map — used to reset position on next turn. */
+    // Ball start position for the current map — used to reset position on next turn. 
     private final Vector2D initialBallPosition;
 
-    /** Supplies player save snapshots without storing GameState directly. */
+    // Supplies player save snapshots without storing GameState directly. 
     private final Supplier<List<PlayerSaveData>> playerSaveDataSupplier;
 
-    /** Supplies current ball X in logical coordinates. */
+    // Supplies current ball X in logical coordinates. 
     private final Supplier<Double> ballXSupplier;
 
-    /** Supplies current ball Y in logical coordinates. */
+    // Supplies current ball Y in logical coordinates. 
     private final Supplier<Double> ballYSupplier;
 
-    /** Checks whether the ball has reached the hole. */
+    /// Checks whether the ball has reached the hole. 
     private final HoleChecker holeChecker;
 
-    /** Called when all players have completed the hole. By default it does nothing (no-op). */
+    // Called when all players have completed the hole. By default it does nothing (no-op). 
     private Runnable onHoleCompleted = () -> { };
 
     /** {@code () -> { ... }} estrae tutti i giocatori e i loro tiri */
@@ -96,6 +96,8 @@ public final class GameControllerImpl implements GameController {
     private ShotController shotController;
 
     /**
+     * Builds the controller extracting behaviors from the given collaborators.
+     * 
      * @param gameState         the central game logic
      * @param gameMapController the map controller 
      * @param shotState         the shot input state
@@ -199,7 +201,7 @@ public final class GameControllerImpl implements GameController {
     /**
      * Handles the end of a player's turn.
      * If the turn condition is met (hole scored or max shots reached), advances
-     * to the next player or fires {@code onHoleCompleted} if it was the last.
+     * to the next player or runs {@code onHoleCompleted} if it was the last.
      * Otherwise simply re-enables input for the current player.
      *
      * @param ballPos      current ball position
