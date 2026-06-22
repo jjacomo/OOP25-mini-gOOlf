@@ -79,7 +79,8 @@ public final class GamePanel extends JPanel {
         uiPanel.add(shotsLabel);
         this.add(uiPanel, BorderLayout.NORTH);
 
-        this.mapPanel = new MapPanel(gameController.getGameMapController());
+        this.mapPanel = new MapPanel();
+        gameController.setMapElementsView(this.mapPanel);
         final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(Color.WHITE);
 
