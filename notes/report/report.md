@@ -711,7 +711,7 @@ Ad esempio in https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74
 ### 3.2.3 Federico Sparvoli
 
 #### Lambda expressions e method reference
-Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L113
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/f616e830c3ba78c84ab7d850d5690ee1ea46ccb0/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L132
 
 https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/controller/game/MatchManager.java#L82
 
