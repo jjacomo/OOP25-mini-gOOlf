@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author Mattia
  */
 public final class PortalObstacle extends AbstractObstacle {
-        private static final long COOLDOWN_MS = 500;
+        private static final long COOLDOWN_MS = 1000;
 
     private PortalObstacle linkedPortal;
     private long cooldownUntil;

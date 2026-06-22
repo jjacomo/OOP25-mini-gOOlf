@@ -413,21 +413,28 @@ Contro: ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe
 #### Fisica, geometria degli ostacoli e gestione vettoriale
 ##### Problema
 
-Gestire le collisioni fisiche tra la pallina e gli ostacoli di forme diverse (rettangoli, cerchi, triangoli) in modo realistico, anche in situazioni critiche come angoli interni tra ostacoli adiacenti o sotto l’effetto di forze esterne, evitando compenetrazioni, vibrazioni della pallina a riposo (jittering) e rimbalzi innaturali o con direzioni arbitrarie.
-Inoltre era necessario implementare il calcolo vettoriale senza importare librerie esterne pesanti.
+Gestire le collisioni fisiche tra la pallina e gli ostacoli di forme diverse (rettangoli, cerchi, triangoli) in modo realistico, anche in situazioni critiche come angoli interni tra ostacoli adiacenti o sotto l’effetto di forze esterne, evitando compenetrazioni, vibrazioni della pallina a riposo e rimbalzi innaturali o con direzioni arbitrarie.
+Implementare il calcolo vettoriale senza importare librerie esterne pesanti.
 
 ##### Soluzione
-- Le normali di collisione sono pre calcolate per ogni lato (rettangolo, triangolo) o derivabili geometricamente (cerchio).
-- Negli angoli dei triangoli, le normali dei lati vengono sommate per ottenere la bisettrice perfetta, rendendo il rimbalzo deterministico ed eliminando scelte arbitrarie.
-- La profondità di penetrazione viene sfruttata per riposizionare la pallina fuori dall'ostacolo, prima di calcolare il rimbalzo. Nelle collisioni multiple, tramite "deepest penetration first", si individua l'ostacolo con compenetrazione maggiore (quello effettivamente impattato per primo).
-- 'AbstractObstacle' (model): Centralizza la logica di calcolo del rimbalzo e del resting contact, evitando ripetizioni di codice nelle sottoclassi.
-- 'Vector2D': classe personalizzata che fornisce solo i metodi necessari a creare e fare calcoli coi vettori, alleggerendo il gioco.
+La classe `AbstractObstacle` centralizza la logica di calcolo del rimbalzo e del contatto a riposo, evitando ripetizioni di codice nelle sottoclassi. Per i calcoli vettoriali viene utilizzata una classe personalizzata `Vector2D`, ispirata all'omonima classe della libreria Apache Commons Math 3, che fornisce solo i metodi essenziali ai calcoli di gioco, mantenendo l'architettura leggera e priva di dipendenze esterne superflue.
+Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono state applicate due strategie: 
+- Le normali di collisione degli ostacoli sono precalcolate per ogni lato (`WallObstacle`, `TriangleObstacle`) o derivabili geometricamente (`RoundObstacle`). 
+- Viene sfruttata la profondità di penetrazione per riposizionare la pallina, o parte di essa, fuori dall'ostacolo, prima di calcolare il rimbalzo; in caso di collisioni multiple, si applica la strategia deepest penetration first, individuando l'ostacolo con la compenetrazione maggiore, estraendone la pallina e ripetendo il controllo iterativamente finché la pallina non risulta completamente fuori da ogni ostacolo.
+
 
 UML:
 ```mermaid
     classDiagram
-            <<interface>> Obstacle
-            class AbstractObstacle
+            class Obstacle {
+                <<interface>>
+                +isColliding(Ball) boolean
+                +resolveCollision(Ball) void
+                +getPenetrationDepth(Ball) double
+            }
+            class AbstractObstacle {
+                <<abstract>>
+            }
             class WallObstacle
             class RoundObstacle
             class TriangleObstacle

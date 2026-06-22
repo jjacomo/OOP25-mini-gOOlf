@@ -191,14 +191,4 @@ public class Vector2D {
     public Point translate(final Point origin) {
         return new Point((int) (origin.x + this.x), (int) (origin.y + this.y));
     }
-
-    /**
-     * Returns a string representation of this vector.
-     *
-     * @return a string in the format "Vector2D(x, y)"
-     */
-    @Override
-    public String toString() {
-        return "Vector2D(" + this.x + ", " + this.y + ")";
-    }
 }

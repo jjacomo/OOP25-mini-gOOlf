@@ -93,7 +93,7 @@ public final class PhysicsEngine {
 
     /**
      * For every obstacle, checks if it's colliding with the ball. Them have to be
-     * checked multiple times to avoid potioning errors in double collision at the
+     * checked multiple times to avoid positioning errors in double collision at the
      * same time.
      *
      * @param ball      the ball to be checked
