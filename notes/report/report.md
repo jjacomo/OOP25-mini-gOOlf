@@ -612,34 +612,42 @@ Contro:
 #### Architettura e separazione Vista‑Logica
 
 ##### Problema
-La logica di gestione degli ostacoli (collisioni, calcoli fisici, accesso ai dati) deve essere separata dalla rappresentazione grafica e dal resto del gioco, per mantenere un’architettura MVC pulita ed evitare che la vista dipenda direttamente dalle classi del modello.
+La logica di gestione degli ostacoli (collisioni, calcoli fisici, accesso ai dati) deve essere separata dalla rappresentazione grafica e dal resto del gioco, per mantenere un’architettura MVC pulita ed evitare che la vista dipenda direttamente dalle classi o dalle interfacce del modello.
 
 ##### Soluzione
-- Introdotto `ObstacleController` che agisce da intermediario isolando i dati fisici da quelli visivi. Espone i metodi `getObstacles()` (per i modelli) e `getObstacleShapes()` (per il rendering).
-- Il motore fisico (`PhysicsEngine`) interroga il controller tramite `getObstacles()` per ottenere esclusivamente i modelli matematici necessari a risolvere le collisioni in ogni frame.
-- La vista (`MapPanel`) chiede le forme geometriche da disegnare senza conoscere i dettagli interni del modello. Leggendo le proprietà fisiche degli ostacoli (come la `bounciness` o il tipo `PortalObstacle`), la vista decide autonomamente il colore di rendering (verde, rosso, blu o grigio di default) prima di delegare il disegno della forma.
+Per garantire una separazione netta tra i dati fisici e la loro rappresentazione visiva, nel pieno rispetto del pattern architetturale `Model-View-Controller (MVC)`, è stato introdotto l'`ObstacleController`. Agendo da intermediario, questo componente smista le informazioni a seconda del chiamante.
+Il motore fisico (`PhysicsEngine`) interroga il controller tramite il metodo `getObstacles()` per ottenere esclusivamente i modelli matematici necessari a calcolare le collisioni.
+Per disaccoppiare totalmente la vista dal modello, è stato implementato il pattern `Data Transfer Object (DTO)`. Il controller espone il metodo `getObstaclesData()`, che mappa le entità del modello in una lista immutabile di record `ObstacleData`. Questo DTO contiene solo le informazioni strettamente visive (la forma geometrica, il valore di elasticità e un flag booleano per i portali). Così facendo, la vista (`MapPanel`) decide autonomamente i colori ed esegue il rendering senza importare o conoscere le classi interne del modello.
 
-UML:
 ```mermaid
     classDiagram
         class MapPanel
-        <<interface>> ObstacleController
-        <<interface>> Obstacle
-        <<interface>> Shape
+        class ObstacleController {
+            <<interface>>
+            +getObstacles() List~Obstacle~
+            +getObstaclesData() List~ObstacleData~
+        }
+        class ObstacleData {
+            <<record>>
+        }
+        class Obstacle {
+            <<interface>>
+        }
 
         MapPanel --> ObstacleController
+        MapPanel --> ObstacleData
         ObstacleController --> Obstacle
-        Obstacle --> Shape
+        ObstacleController --> ObstacleData
 ```
 
 ##### Pro e Contro
 Pro:
-- Separazione netta tra modello e vista, che garantisce un'ottima manutenibilità e facilità di test automatizzati.
-- Modificare l'aspetto estetico o i colori di un ostacolo richiede modifiche circoscritte alla sola vista, senza rischiare di alterare i calcoli fisici del modello.
+- Separazione netta e totale tra modello e vista garantita dal DTO, che assicura un'ottima manutenibilità, massima facilità di test automatizzati e l'azzeramento delle dipendenze cicliche.
+- Modificare l'aspetto estetico o i colori di un ostacolo richiede interventi circoscritti alla sola vista, eliminando il rischio di alterare inavvertitamente i calcoli fisici del modello.
 
 Contro:
-- L'aggiunta di un controllore dedicato aumenta il numero di interfacce e di file da gestire nel progetto, rendendo l'architettura iniziale più complessa da configurare.
-- La vista ('MapPanel') deve comunque guardare dentro le proprietà del modello (usando controlli come 'instanceof' o leggendo la 'bounciness') per decidere il colore da associare, creando un legame tra l'aspetto grafico e la logica interna degli ostacoli.
+- L'aggiunta di un controllore dedicato e di un record per il trasferimento dati aumenta il numero di interfacce e file, rendendo l'architettura iniziale leggermente più complessa da configurare.
+- La generazione di una nuova lista di oggetti ObstacleData a ogni singolo frame per il rendering introduce un inevitabile overhead computazionale per l'allocazione in memoria e il successivo smaltimento da parte del Garbage Collector.
 
 ---
 
