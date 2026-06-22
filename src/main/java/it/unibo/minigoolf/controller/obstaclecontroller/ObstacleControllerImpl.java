@@ -1,6 +1,9 @@
 package it.unibo.minigoolf.controller.obstaclecontroller;
 
 import it.unibo.minigoolf.model.obstacles.Obstacle;
+import it.unibo.minigoolf.model.obstacles.PortalObstacle;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,5 +29,23 @@ public final class ObstacleControllerImpl implements ObstacleController {
     @Override
     public List<Obstacle> getObstacles() {
         return this.obstacles;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<ObstacleData> getObstaclesData() {
+        final List<ObstacleData> dataList = new ArrayList<>();
+
+        for (final Obstacle obs : this.obstacles) {
+            final boolean isPortal = obs instanceof PortalObstacle;
+            final ObstacleData data = new ObstacleData(
+                    obs.getShape(), 
+                    obs.getBounciness(), 
+                    isPortal
+            );
+            dataList.add(data);
+        }
+
+        return List.copyOf(dataList); 
     }
 }

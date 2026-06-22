@@ -12,8 +12,6 @@ import java.util.Objects;
 import javax.swing.JPanel;
 
 import it.unibo.minigoolf.controller.gamemapcontroller.GameMapController;
-import it.unibo.minigoolf.model.obstacles.Obstacle;
-import it.unibo.minigoolf.model.obstacles.PortalObstacle;
 import it.unibo.minigoolf.util.Vector2D;
 import it.unibo.minigoolf.util.shapes.Circle;
 import it.unibo.minigoolf.util.shapes.Oval;
@@ -89,21 +87,21 @@ public class MapPanel extends JPanel {
                 });
 
         g2d.setColor(Color.DARK_GRAY);
-        for (final Obstacle obstacle : mapController.getObstacleController().getObstacles()) {
+        for (final var obstacleData : mapController.getObstacleController().getObstaclesData()) {
             final Color obstacleColor;
 
-            if (obstacle instanceof PortalObstacle) {
+            if (obstacleData.isPortal()) {
                 obstacleColor = Color.BLUE;
-            } else if (obstacle.getBounciness() > 1.0) {
+            } else if (obstacleData.bounciness() > 1.0) {
                 obstacleColor = Color.RED;
-            } else if (obstacle.getBounciness() < 1.0) {
+            } else if (obstacleData.bounciness() < 1.0) {
                 obstacleColor = Color.GREEN;
             } else {
                 obstacleColor = Color.DARK_GRAY;
             }
 
             g2d.setColor(obstacleColor);
-            drawShape(obstacle.getShape(), g2d, null);
+            drawShape(obstacleData.shape(), g2d, null);
         }
 
         g2d.setColor(Color.BLACK);
