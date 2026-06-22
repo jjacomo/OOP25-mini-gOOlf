@@ -19,7 +19,7 @@ Il software è un gioco di mini-golf in due dimensioni per uno o più giocatori 
 
 ## 1.2 Modello del Dominio
 
-Un gioco di mini-golf è composto da una sequenza di mappe, ognuna costituita da una pallina, una buca, una o più superfici ed alcuni ostacoli. La pallina si muove nella mappa interagendo con superfici e ostacoli che ne modificano velocita' e direzione secondo leggi fisiche. Una partita coinvolge uno o più giocatori che si alternano a turni per colpire la pallina, indicandone direzione e potenza, e mandandola in buca. Il punteggio di ciascun partecipante su una mappa corrisponde al numero di colpi effettuati.
+Un gioco di mini-golf è composto da una sequenza di mappe, ognuna costituita da una pallina, una buca, una o più superfici ed alcuni ostacoli. La pallina si muove nella mappa interagendo con superfici e ostacoli che ne modificano velocità e direzione secondo leggi fisiche. Una partita coinvolge uno o più giocatori che si alternano a turni per colpire la pallina, indicandone direzione e potenza, e mandandola in buca. Il punteggio di ciascun partecipante su una mappa corrisponde al numero di colpi effettuati.
 
 ***DA RIVEDERE: SCRIVERE IN INGLESE E IN CIMA INTERFACE, METTERE LA DIDASCALIA ES: FIG 1 : Schema UML***
 
@@ -333,6 +333,7 @@ classDiagram
 * L'aggiunta di una nuova forma richiede di modificare anche `MapPanel` (violazione dell'OCP); un approccio alternativo sarebbe delegare il rendering con un visitor o un adapter grafico per forma.
 
 ### 2.2.3 Federico Sparvoli
+
 #### Input del colpo
 ##### Problema
 
@@ -340,8 +341,8 @@ Il gioco richiede che il giocatore indichi direzione e potenza del colpo trascin
 
 ##### Soluzione
 La logica è suddivisa in tre livelli distinti seguendo il pattern MVC:
-- Model (ShotState): tiene traccia dello stato del colpo in corso. Espone lo stato tramite interfacce strette invece che come oggetto diretto, evitando dipendenze indesiderate.
-- View (ShotViewPanel, ShotListener): ShotListener riceve gli eventi del mouse e li traduce in aggiornamenti sul model, dipendendo solo da due interfacce strette (ShotVisualizer e ShotCoordinateConverter) invece che dalla classe concreta. Questo applica il pattern Strategy: il comportamento di disegno e conversione delle coordinate è intercambiabile senza modificare il listener.
+- Model (ShotState): tiene traccia dello stato del colpo in corso. Espone lo stato tramite interfacce strette invece che come oggetto diretto, evitando dipendenze scomode.
+- View (ShotViewPanel, ShotListener): ShotListener riceve gli eventi del mouse e li traduce in aggiornamenti sul model. Per disegnare l'indicatore e convertire le coordinate non dipende dalla classe concreta ShotViewPanel, ma da due interfacce: ShotVisualizer (che definisce come mostrare e confermare il colpo) e ShotCoordinateConverter (che definisce come tradurre le coordinate del mouse in coordinate di gioco). Queste due interfacce rappresentano le strategie del pattern Strategy, e ShotViewPanel ne è l'implementazione concreta: in questo modo il modo di disegnare o di convertire le coordinate può essere cambiato fornendo una nuova implementazione, senza toccare ShotListener.
 - Controller (ShotControllerImpl): ogni tick interroga il model e, se un colpo è pronto, lo passa alla logica di turno tramite callback, senza memorizzare riferimenti a oggetti mutabili.
 
 UML:
@@ -371,16 +372,19 @@ Pro: separazione netta tra stato, rendering e coordinamento. Aggiungere un nuovo
 
 Contro: la soglia di click sulla pallina è una costante fissa in pixel logici, e non si adatta automaticamente se la pallina cambia dimensione.
 
+---
+
 #### Ciclo di vita del match e progressione delle mappe
 
 ##### Problema
-Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva; se non ce ne sono, si torna al menu. Tutta questa logica non deve stare nel controller principale, che deve restare semplice.
+Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva, se non ce ne sono, si torna al menu. Tutta questa logica non deve stare nel controller principale, che deve rimanere semplice.
 
 ##### Soluzione
-La progressione di gioco è gestita da tre componenti distinte:
--MapSequence (model): tiene la lista ordinata delle mappe e sa qual è la corrente. Applica il pattern Factory Method: ogni mappa è prodotta da una GameMapFactory, rendendo semplice aggiungerne di nuove.
--Gamefactory: costruisce il match per la mappa corrente, collegando tutti i componenti necessari.
--MatchManager (controller): usa GameFactory per costruire ogni match e gestisce le transizioni tra una mappa e l'altra. Comunica con il resto del sistema solo tramite callback, senza memorizzare oggetti mutabili.
+La progressione di gioco è gestita da più componenti distinte:
+- MapSequence (model): tiene la lista delle mappe e sa qual è la corrente. Applica il pattern Factory Method: ogni mappa è prodotta da una GameMapFactory, rendendo semplice aggiungerne di nuove.
+- GameMapSequenceFactory: costruisce la sequenza di mappe tramite un metodo statico (Static Factory Method) che mette sempre la mappa tutorial come prima e mescola le restanti in ordine casuale, così ogni partita è diversa.
+- GameFactory: costruisce il match per la mappa corrente, collegando tutti i componenti necessari.
+- MatchManager (controller): usa GameFactory per costruire ogni match e gestisce le transizioni tra una mappa e l'altra. Comunica con il resto del sistema solo tramite callback, senza memorizzare oggetti mutabili.
 
 UML:
 ```mermaid
@@ -396,13 +400,13 @@ classDiagram
         +hasNext() boolean
         +advance()
     }
-    class FirstMap
-    class SecondMap
+    class MapB
+    class MapE
 
     MatchManager --> MapSequence
     MapSequence --> GameMapFactory
-    GameMapFactory <|.. FirstMap
-    GameMapFactory <|.. SecondMap
+    GameMapFactory <|.. MapB
+    GameMapFactory <|.. MapE
 ```
 
 ##### Pro e Contro
@@ -608,6 +612,7 @@ Con il progredire del lavoro, tuttavia, la padronanza degli strumenti e delle pr
 
 ### 4.1.3 Federico Sparvoli
 Il mio contributo principale riguarda il sistema di input del colpo, la gestione del ciclo di vita dei match e il sistema di salvataggio. Sono soddisfatto della separazione raggiunta tra model, view e controller, in particolare dell'eliminazione di tutti i warning SpotBugs senza ricorrere a @SuppressWarnings, ottenuta tramite interfacce strette e callback funzionali.
+Una scelta progettuale che rifarei è stata quella di rendere synchronized i metodi pubblici di ShotState: sebbene il game loop e gli eventi del mouse girino entrambi sullo stesso thread (l'EDT di Swing) e quindi la sincronizzazione non sia strettamente necessaria nel contesto attuale, ho preferito proteggere comunque l'accesso allo stato del colpo. Questo rende la classe più robusta nel caso futuro in cui la fisica venisse spostata su un thread separato, una decisione difensiva che documenta esplicitamente l'invariante di accesso concorrente.
 Un aspetto migliorabile è la soglia di click sulla pallina (CLICK_RADIUS), che al momento è un numero fisso di pixel e non cambia se la pallina viene ingrandita o rimpicciolita. In futuro sarebbe meglio calcolarlo in base al raggio vero della pallina.
 Per quanto riguarda il cambio delle mappe, al momento ricostruiamo da capo tutto il controller del gioco ad ogni nuova mappa. Con mappe molto grandi questo potrebbe rallentare il gioco. Il prossimo passo sarebbe caricare le mappe in anticipo, senza bloccare il gioco.
 Il sistema di salvataggio (SaveManager, SaveData) memorizza la partita in formato JSON usando Gson. Salva solo il numero della mappa, non tutta la geometria. Così i file sono piccoli e il salvataggio non dipende da come sono fatte le mappe dentro. Un limite attuale è che il salvataggio viene cancellato appena lo si carica, quindi non si può riprendere la stessa partita due volte senza salvarla di nuovo.
