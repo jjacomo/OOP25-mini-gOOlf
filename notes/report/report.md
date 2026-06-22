@@ -1,4 +1,50 @@
 ## Indice
+- [Capitolo 1:  Analisi](#capitolo-1--analisi)
+  - [1.1 Descrizione e requisiti](#11-descrizione-e-requisiti)
+    - [1.1.1 Requisiti funzionali](#111-requisiti-funzionali)
+    - [1.1.2 Requisiti non funzionali](#112-requisiti-non-funzionali)
+  - [1.2 Modello del Dominio](#12-modello-del-dominio)
+- [Capitolo 2: Design](#capitolo-2-design)
+  - [2.1 Architettura](#21-architettura)
+  - [2.2 Design dettagliato](#22-design-dettagliato)
+    - [2.2.1 Daniel Patryk Bak](#221-daniel-patryk-bak)
+      - [Gestione dei pannelli](#gestione-dei-pannelli)
+      - [Leaderboard](#leaderboard)
+    - [2.2.2 Giacomo Mengozzi](#222-giacomo-mengozzi)
+      - [Superfici avanzate](#superfici-avanzate)
+      - [Fisica della pallina e integrazione Model–Controller](#fisica-della-pallina-e-integrazione-modelcontroller)
+    - [2.2.3 Federico Sparvoli](#223-federico-sparvoli)
+      - [Input del colpo](#input-del-colpo)
+      - [Ciclo di vita del match e progressione delle mappe](#ciclo-di-vita-del-match-e-progressione-delle-mappe)
+    - [2.2.4 Mattia D'Ambrosio](#224-mattia-dambrosio)
+      - [Fisica, geometria degli ostacoli e gestione vettoriale](#fisica-geometria-degli-ostacoli-e-gestione-vettoriale)
+      - [Creazione degli ostacoli avanzati (Appiccicosi, Rimbalzanti e Portali)](#creazione-degli-ostacoli-avanzati-appiccicosi-rimbalzanti-e-portali)
+      - [Architettura e separazione Vista‑Logica](#architettura-e-separazione-vistalogica)
+- [Capitolo 3: Sviluppo](#capitolo-3-sviluppo)
+  - [3.1 Testing automatizzato](#31-testing-automatizzato)
+    - [3.1.1 Daniel Patryk Bak](#311-daniel-patryk-bak)
+    - [3.1.2 Giacomo Mengozzi](#312-giacomo-mengozzi)
+    - [3.1.3 Federico Sparvoli](#313-federico-sparvoli)
+    - [3.1.4 Mattia D'Ambrosio](#314-mattia-dambrosio)
+  - [3.2 Note di sviluppo](#32-note-di-sviluppo)
+    - [3.2.1 Daniel Patryk Bak](#321-daniel-patryk-bak)
+    - [3.2.2 Giacomo Mengozzi](#322-giacomo-mengozzi)
+    - [3.2.3 Federico Sparvoli](#323-federico-sparvoli)
+    - [3.2.4 Mattia D'Ambrosio](#324-mattia-dambrosio)
+- [Capitolo 4: Commenti finali](#capitolo-4-commenti-finali)
+  - [4.1 Autovalutazione e lavori futuri](#41-autovalutazione-e-lavori-futuri)
+    - [4.1.1 Daniel Patryk Bak](#411-daniel-patryk-bak)
+    - [4.1.2 Giacomo Mengozzi](#412-giacomo-mengozzi)
+    - [4.1.3 Federico Sparvoli](#413-federico-sparvoli)
+    - [4.1.4 Mattia D'Ambrosio](#414-mattia-dambrosio)
+  - [4.2 Difficoltà incontrate e commenti per i docenti](#42-difficoltà-incontrate-e-commenti-per-i-docenti)
+- [Appendice A](#appendice-a)
+    - [Guida Utente](#guida-utente)
+- [Appendice B](#appendice-b)
+    - [Esercitazioni di laboratorio](#esercitazioni-di-laboratorio)
+
+
+
 
 # Capitolo 1:  Analisi
 
@@ -154,10 +200,10 @@ classDiagram
 
 ### 2.2.1 Daniel Patryk Bak
 #### Gestione dei pannelli
-##### Problema
+**Problema**
 Come ogni gioco, anche mini-gOOlf necessita di un menu principale da cui poter transitare tra diverse "scene", in questo caso i pannelli. È fondamentale rispettare il pattern MVC, assegnando ad un controller la gestione delle transizioni dei pannelli (view).
 
-##### Soluzione
+**Soluzione**
 Per poter rendere questa transizione il più semplice e fluida possibile, si è scelto il CardLayout, mentre per pannelli che devono apparire soltanto in sovraimpressione (quali `PausePanel` e `MidLeaderBoardPanel`) si è scelto il metodo Glasspane della libreria Swing. I pannelli vengono illustrati all'interno della `MainWindow` ovvero la finestra dell'intera applicazione.
 
 ```mermaid
@@ -202,7 +248,7 @@ classDiagram
     MainWindow --> MidLeaderBoardPanel
 ```
 *Figura 3: Schema UML dei pannelli e di come sono gestiti.*
-##### Pro e Contro:
+**Pro e Contro**
 
 Pro:
 - Disaccoppiamento netto: Il `NavigationController` gestisce la logica di transizione senza mai possedere un riferimento diretto alla `MainWindow` o ai pannelli. La comunicazione avviene esclusivamente tramite callback funzionali (Runnable e Consumer), garantendo che il controller non possa manipolare impropriamente lo stato interno della View.
@@ -218,10 +264,10 @@ Contro:
 #### Leaderboard
 
 
-##### Problema
+**Problema**
 Per poter misurare le proprie abilità in modo tangibile, un sistema di classifica è quello più efficace. Il problema, dal punto di vista progettuale, risiede nel separare la logica di calcolo e persistenza dei punteggi dalla loro rappresentazione visiva, garantendo al contempo due visualizzazioni distinte: un riepilogo temporaneo alla fine di ogni singola buca e una classifica globale, persistente su file, accessibile dal menu principale.
 
-##### Soluzione
+**Soluzione**
 Si è deciso di suddividere la responsabilità in cinque componenti chiave, definendo confini netti per rispettare il pattern MVC e il principio di singola responsabilità:
 - `LeaderBoardManager` (Model): Gestisce la persistenza dei dati su un file di testo locale (leaderboard.txt). Custodisce la logica di dominio per l'aggiornamento dei record storici, assicurandosi di sovrascrivere il punteggio di un giocatore solo se il nuovo risultato è strettamente inferiore (migliore) del precedente.
 - `MatchManager` (Controller): Orchestra il flusso della partita attiva. Al termine di ogni singola buca, è lui a raccogliere la mappa non persistente con i punteggi parziali dei giocatori e a coordinare l'apertura del riepilogo grafico temporaneo.
@@ -261,7 +307,7 @@ classDiagram
 ```
 *Figura 4: Schema UML di come è stato implementato il sistema della classifica.*
 
-*Pro e Contro*: 
+**Pro e Contro**
 
 Pro:
 - Resilienza e Semplicità: L'utilizzo di un file di testo semplice (.txt) con codifica Chiave:Valore per il salvataggio rende il sistema di I/O rapido, robusto e facilmente ispezionabile senza la necessità di includere librerie di database esterne.
@@ -275,10 +321,10 @@ Contro:
 ### 2.2.2 Giacomo Mengozzi
 
 #### Superfici avanzate
-##### Problema
+**Problema**
 Il gioco richiede superfici con proprietà fisiche diverse (attrito, accelerazione, vento) che influenzano il moto della pallina. Le 4 superfici base (erba, sabbia, ghiaccio, terra) differiscono solo per il coefficiente di attrito, mentre le superfici avanzate (`BoostSurface`, `WindySurface`) alterano la velocità con modalità diverse. È necessario aggiungere questi comportamenti senza duplicare la logica già presente nelle superfici base.
 
-##### Soluzione
+**Soluzione**
 È stato adottato il **Decorator Pattern**: l'interfaccia `Surface` è implementata sia da `ShapedSurface` sia da `AbstractSurfaceDecorator` (che incapsula `Surface` e ne delega per default tutti i metodi). `BoostSurface` e `WindySurface` estendono il decoratore astratto sovrascrivendo rispettivamente `getFriction()` e `getWind()`. Il motore fisico (`BasicFrictionStrategy`) interroga la superficie corrente tramite questi metodi, senza conoscere se sia base o decorata.
 
 ```mermaid
@@ -322,25 +368,25 @@ classDiagram
 ```
 *Figura 5: Schema UML...*
 
-##### Pro e Contro
-**Pro:**
+**Pro e Contro**
+Pro:
 * **Componibilità**: è possibile decorare ricorsivamente una stessa superficie con più effetti (es. `BoostSurface` su `WindySurface` su `ShapedSurface`).
 * **DRY**: i decoratori riutilizzano la logica geometrica e di contenimento della superficie base, sovrascrivendo solo il parametro fisico di loro competenza.
 * **Estensibilità**: introdurre un nuovo effetto fisico (es. una superficie che inverte la direzione o applica gravità variabile) richiede solo di creare un nuovo decoratore che estende `AbstractSurfaceDecorator`, senza toccare né `ShapedSurface` né il motore fisico. L'Open/Closed Principle è rispettato per definizione strutturale.
 
-**Contro:**
+Contro:
 * La creazione di superfici composite è verbosa; è necessaria una `SurfaceFactory` per mediare la costruzione.
 
 ---
 
 #### Fisica della pallina e integrazione Model–Controller
 
-##### Problema
+**Problema**
 `PhysicsEngine` (Model) richiede un oggetto `Ball` per leggere posizione/velocità e aggiornarne lo stato ad ogni tick. Lo stato reale della pallina è però custodito nel Controller tramite `BallController`. Esistono due approcci immediati ma chiaramente architetturalmente inesatti:
 * duplicare lo stato creando un oggetto `Ball` separato nel Model (rischio di disallineamento);
 * far dipendere `PhysicsEngine` da `BallController` (viola la separazione MVC).
 
-##### Soluzione
+**Soluzione**
 Il pattern **Adapter** è implementato dalla classe `BallControllerAdapter`: implementa `Ball` delegando ogni lettura e scrittura direttamente al `BallController` incapsulato. `PhysicsControllerImpl` istanzia l'adapter ad ogni tick e lo passa a `PhysicsEngine`, che opera su un oggetto `Ball` senza sapere nulla del controller.
 
 ```mermaid
@@ -387,23 +433,23 @@ classDiagram
 ```
 *Figura 6: Schema UML*
 
-##### Pro e Contro
-**Pro:**
+**Pro e Contro**
+Pro:
 * **Unica istanza della pallina**: le modifiche del motore fisico si riflettono immediatamente sul controller, senza sincronizzazione esplicita.
 * **Indipendenza tra Model e Controller**: `PhysicsEngine` dipende solo da `Ball`; `BallController` non conosce il Model. Entrambe le interfacce restano indipendenti.
 * **Sostituibilità**: se in futuro la pallina venisse gestita da un controller differente, sarà sufficiente creare un nuovo adapter che implementa `Ball` wrappando il nuovo controller, senza alcuna modifica al `PhysicsEngine`.
 
-**Contro:**
+Contro:
 * Aggiunge una classe ponte dedicata, giustificata solo dall'architettura MVC.
 
 ### 2.2.3 Federico Sparvoli
 
 #### Input del colpo
-##### Problema
+**Problema**
 
 Il gioco richiede che il giocatore indichi direzione e potenza del colpo trascinando il mouse dalla pallina. Il sistema deve riconoscere dove inizia il trascinamento, calcolare la direzione e la potenza, mostrare un indicatore visivo, e confermare il colpo solo al rilascio del mouse.
 
-##### Soluzione
+**Soluzione**
 La logica è suddivisa in tre livelli distinti seguendo il pattern MVC:
 - Model (`ShotState`): tiene traccia dello stato del colpo in corso. Espone lo stato tramite interfacce strette invece che come oggetto diretto, evitando dipendenze scomode.
 - View (`ShotViewPanel`, `ShotListener`): `ShotListener` riceve gli eventi del mouse e li traduce in aggiornamenti sul model. Per disegnare l'indicatore e convertire le coordinate non dipende dalla classe concreta `ShotViewPanel`, ma da due interfacce: `ShotVisualizer` (che definisce come mostrare e confermare il colpo) e `ShotCoordinateConverter` (che definisce come tradurre le coordinate del mouse in coordinate di gioco). Queste due interfacce rappresentano le strategie del pattern Strategy, e `ShotViewPanel` ne è l'implementazione concreta: in questo modo il modo di disegnare o di convertire le coordinate può essere cambiato fornendo una nuova implementazione, senza toccare `ShotListener`.
@@ -431,19 +477,23 @@ classDiagram
 ```
 *Figura 8: Schema UML del pattern Strategy applicato all'input del colpo.*
 
-##### Pro e Contro
-Pro: separazione netta tra stato, rendering e coordinamento. Aggiungere un nuovo tipo di indicatore visivo richiede solo una nuova implementazione di `ShotVisualizer`, senza toccare il listener o il controller.
+**Pro e Contro**
+Pro: 
 
-Contro: la soglia di click sulla pallina è una costante fissa in pixel logici, e non si adatta automaticamente se la pallina cambia dimensione.
+Separazione netta tra stato, rendering e coordinamento. Aggiungere un nuovo tipo di indicatore visivo richiede solo una nuova implementazione di `ShotVisualizer`, senza toccare il listener o il controller.
+
+Contro: 
+
+La soglia di click sulla pallina è una costante fissa in pixel logici, e non si adatta automaticamente se la pallina cambia dimensione.
 
 ---
 
 #### Ciclo di vita del match e progressione delle mappe
 
-##### Problema
+**Problema**
 Il gioco deve supportare più mappe in sequenza. Quando la pallina entra in buca si avanza alla mappa successiva, se non ce ne sono, si torna al menu. Tutta questa logica non deve stare nel controller principale, che deve rimanere semplice.
 
-##### Soluzione
+**Soluzione**
 La progressione di gioco è gestita da più componenti distinte:
 - `MapSequence` (model): tiene la lista delle mappe e sa qual è la corrente. Applica il pattern Factory Method: ogni mappa è prodotta da una `GameMapFactory`, rendendo semplice aggiungerne di nuove.
 - `GameMapSequenceFactory`: costruisce la sequenza di mappe tramite un metodo statico (Static Factory Method) che mette sempre la mappa tutorial come prima e mescola le restanti in ordine casuale, così ogni partita è diversa.
@@ -473,21 +523,24 @@ classDiagram
 ```
 *Figura 9: Schema UML del pattern Factory Method per la progressione delle mappe.*
 
+**Pro e Contro**
 
-##### Pro e Contro
+Pro:
 
-Pro: aggiungere una nuova mappa richiede solo di creare una nuova classe e aggiungerla alla sequenza. Il reset al ritorno al menu è automatico.
+Aggiungere una nuova mappa richiede solo di creare una nuova classe e aggiungerla alla sequenza. Il reset al ritorno al menu è automatico.
 
-Contro: ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe rallentare il gioco se le mappe fossero molto complesse.
+Contro: 
+
+Ad ogni cambio mappa il match viene ricostruito da zero, il che potrebbe rallentare il gioco se le mappe fossero molto complesse.
 
 ### 2.2.4 Mattia D'Ambrosio
 #### Fisica, geometria degli ostacoli e gestione vettoriale
 
-##### Problema
+**Problema**
 Gestire le collisioni fisiche tra la pallina e gli ostacoli di forme diverse (rettangoli, cerchi, triangoli) in modo realistico, anche in situazioni critiche come angoli interni tra ostacoli adiacenti o sotto l’effetto di forze esterne, evitando compenetrazioni, vibrazioni della pallina a riposo e rimbalzi innaturali o con direzioni arbitrarie.
 Implementare il calcolo vettoriale senza importare librerie esterne pesanti.
 
-##### Soluzione
+**Soluzione**
 La classe `AbstractObstacle` centralizza la logica di calcolo del rimbalzo e del contatto a riposo, evitando ripetizioni di codice nelle sottoclassi. Per i calcoli vettoriali viene utilizzata una classe personalizzata `Vector2D`, ispirata all'omonima classe della libreria Apache Commons Math 3, che fornisce solo i metodi essenziali ai calcoli di gioco, mantenendo l'architettura leggera e priva di dipendenze esterne superflue.
 Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono state applicate due strategie: 
 - Le normali di collisione degli ostacoli sono precalcolate per ogni lato (`WallObstacle`, `TriangleObstacle`) o derivabili geometricamente (`RoundObstacle`). 
@@ -516,7 +569,7 @@ Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono stat
             AbstractObstacle --> Vector2D
 ```
 *Figura 10: Schema UML*
-##### Pro e Contro
+**Pro e Contro**
 Pro:
 - Fisica altamente stabile e realistica 
 - Le normali precalcolate riducono drasticamente i calcoli ripetitivi nel game loop (specialmente nei rettangoli).
@@ -529,10 +582,10 @@ Contro:
 
 #### Creazione degli ostacoli avanzati (Appiccicosi, Rimbalzanti e Portali)
 
-##### Problema
+**Problema**
 Per gestire le alterazioni di velocità senza moltiplicare le classi, si è introdotto il parametro `bounciness` in `AbstractObstacle`, il quale scala la velocità della pallina al momento del contatto senza alterarne l'angolo di riflessione. Per evitare di creare una nuova classe per ogni ostacolo avanzato, si è sfruttato il constructor chaining: per gli ostacoli base, il costruttore base richiama un secondo costruttore più completo, passandogli un valore di elasticità di default.
 
-##### Soluzione
+**Soluzione**
 Per la gestione dei portali, invece, era fondamentale prevenire la configurazione di stati invalidi nella mappa, come l'esistenza di portali spaiati. Per risolvere il problema è stato applicato il pattern `Static Factory Method`. Il costruttore della classe `PortalObstacle` è stato reso privato, delegando l'istanziazione e il collegamento reciproco in memoria al metodo statico `createPair()`, che assicura la creazione di portali sempre e solo a coppie. Infine, per evitare che la pallina rimbalzi all'infinito tra due portali nello stesso frame, è stato implementato un timer di cooldown, che parte al momento dell'uscita della pallina e disattiva momentaneamente il portale ignorando le compenetrazioni.
 
 ```mermaid
@@ -550,7 +603,7 @@ Per la gestione dei portali, invece, era fondamentale prevenire la configurazion
 
 *Figura 11: Schema UML*
 
-##### Pro e Contro
+**Pro e Contro**
 Pro:
 - Architettura estremamente flessibile: gli effetti di accelerazione e decelerazione possono essere applicati a qualsiasi forma geometrica tramite un semplice parametro.
 - Sicurezza strutturale nella creazione dei portali, che impedisce stati invalidi come la creazione di portali spaiati.
@@ -560,10 +613,10 @@ Contro:
 
 #### Architettura e separazione Vista‑Logica
 
-##### Problema
+**Problema**
 La logica di gestione degli ostacoli (collisioni, calcoli fisici, accesso ai dati) deve essere separata dalla rappresentazione grafica e dal resto del gioco, per mantenere un’architettura MVC pulita ed evitare che la vista dipenda direttamente dalle classi o dalle interfacce del modello.
 
-##### Soluzione
+**Soluzione**
 Per mantenere un'architettura MVC pulita e separare nettamente la fisica dalla grafica, il sistema è stato diviso in livelli. L'`ObstacleController` si occupa esclusivamente del modello: gestisce i dati fisici degli `Obstacle` e li passa al motore fisico per risolvere le collisioni.
 Per dividere del tutto la vista dal modello, è stato applicato il pattern `Data Transfer Object (DTO)`: il `GameController` fa da mediatore interrogando l'`ObstacleController` e traduce i modelli interni in `ObstacleData`, un record immutabile che contiene solo le informazioni utili per il rendering.
 Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`, implementata da `MapPanel`
@@ -596,7 +649,7 @@ Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`,
         ObstacleController --> Obstacle : manages
 ```
 *Figura 12: Schema UML...*
-##### Pro e Contro
+**Pro e Contro**
 Pro:
 - Separazione totale tra modello e vista: la grafica è completamente passiva, riceve i dati già pronti tramite il DTO e si limita a stamparli a schermo. Questo rende il codice molto più facile da mantenere e da testare.
 - Tutta la logica decisionale (ad esempio, capire come colorare un ostacolo o se si tratta di un portale) rimane chiusa in modo sicuro nel controller, sollevando la vista dal dover fare ragionamenti sui tipi di oggetti.
@@ -645,58 +698,58 @@ I componenti testati riguardano la parte logico-matematica e la gestione degli o
 
 ## 3.2 Note di sviluppo
 ### 3.2.1 Daniel Patryk Bak
-#### Factory
+**Factory**
 
 Usata nella classe UserInterfaceFactory per poter creare elementi grafici come bottoni, etichette tutte uniformate.
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/view/elements/UserInterfaceFactory.java#L1
 
-#### Lamda Expressions
+**Lamda Expressions**
 
 Utilizzate in vari punti un esempio al permalink.
 Permalink:https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/view/panels/NewGamePanel.java#L96
 
 ...
 ### 3.2.2 Giacomo Mengozzi
-#### Java Records
+**Java Records**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/util/shapes/Circle.java#L17
-#### Java Reflection API
+**Java Reflection API**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/5f753c229d34960fe24214219c043168836aa14d/src/main/java/it/unibo/minigoolf/view/panels/MapPanel.java#L154
-#### Stream API e lambda expressions
+**Stream API e lambda expressions**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/model/map/GameMapImpl.java#L54
-#### Optional
+**Optional**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/model/surfaces/Surface.java#L60
 https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/model/physics/velocity/BasicFrictionStrategy.java#L67
-#### Utilizzo della libreria SLF4J
+**Utilizzo della libreria SLF4J**
 Ad esempio in https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/model/physics/PhysicsEngine.java#L62
 
 ### 3.2.3 Federico Sparvoli
 
-#### Lambda expressions e method reference
+**Lambda expressions e method reference**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/f616e830c3ba78c84ab7d850d5690ee1ea46ccb0/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L132
 
-#### Java Records
+**Java Records**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/save/SaveData.java#L21
 
-#### Stream API
+**Stream API**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/logic/GameState.java#L43
 
-#### Optional
+**Optional**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/logic/ShotState.java#L72
 
-#### Libreria Gson (com.google.code.gson)
+**Libreria Gson (com.google.code.gson)**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/save/SaveManager.java#L21
 
 ### 3.2.4 Mattia D'Ambrosio
-#### Functional Interface
+**Functional Interface**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd1070ba6f7cdf040f713e59f/src/main/java/it/unibo/minigoolf/controller/obstaclecontroller/ObstacleController.java#L11
 
-#### Collezioni Immutabili
+**Collezioni Immutabili**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd1070ba6f7cdf040f713e59f/src/main/java/it/unibo/minigoolf/controller/obstaclecontroller/ObstacleControllerImpl.java#L23
 
-#### Constructor Chaining
+**Constructor Chaining**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd1070ba6f7cdf040f713e59f/src/main/java/it/unibo/minigoolf/model/obstacles/AbstractObstacle.java#L50
 
-#### Lambda Expressions
+**Lambda Expressions**
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd1070ba6f7cdf040f713e59f/src/test/java/it/unibo/minigoolf/util/Vector2DTest.java#L29
 
 ---
@@ -735,7 +788,7 @@ Un aspetto decisamente migliorabile riguarda il fenomeno del tunneling: se la pa
 
 Un altro limite risiede nel meccanismo di cooldown temporale dei portali; sebbene la soglia fissa a 500ms sia efficace nella maggior parte dei contesti, se la pallina entra in un portale a velocità quasi nulla rischia di rimanere ferma sulla destinazione oltre la scadenza del timer, riattivando un loop infinito. Un'evoluzione futura prevedrebbe un'immunità basata sulla geometria, disattivando il cooldown solo quando la pallina ha fisicamente interrotto la collisione con la bounding box del portale di arrivo.
 
-## Difficoltà incontrate e commenti per i docenti
+## 4.2 Difficoltà incontrate e commenti per i docenti
 
 **Daniel Patryk Bak**: Per quanto abbia veramente apprezzato questo progetto, (vedere nascere da zero un videogioco è uno dei miei piccoli sogni che porto sin da bambino) credo che come esame porti via veramente tanto (troppo) tempo. Capisco anche che per un progetto del genere è necessario,(se avessimo voluto aggiungere qualche aspetto accessorio anche banale sicuramente avremmo raggiunto le 100 ore), infatti ad un certo punto abbiamo dovuto frenare l'entusiasmo e cercare di fare soltanto ciò che era veramente necessario _(in realtà lo voluto anche come un aspetto interessante per progetti veri e propri che hanno scadenze da rispettare e quindi inevitabili "cut content")_. 
 
