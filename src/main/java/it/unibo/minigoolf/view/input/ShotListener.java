@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
  * Depends on the narrow {@link ShotVisualizer} and {@link ShotCoordinateConverter}
  * interfaces instead of the full {@link ShotViewPanel}, avoiding EI2 warnings.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public final class ShotListener extends MouseAdapter {
 
@@ -24,10 +24,10 @@ public final class ShotListener extends MouseAdapter {
     private final ShotVisualizer visualizer;
     private final ShotCoordinateConverter converter;
 
-    /** Where the drag started in logical coordinates (null when no drag is in progress). */
+    // Where the drag started in logical coordinates (null when no drag is in progress).
     private transient Point startingPoint;
 
-    /** Whether this listener is accepting input. */
+    // True if this listener is accepting input.
     private boolean enable;
 
     /**

@@ -7,7 +7,7 @@ import java.awt.Point;
  * Keeping this separate from {@link ShotVisualizer} allows {@link ShotListener}
  * to depend only on the narrow interface it needs, avoiding EI2 warnings.
  *
- * @author fede
+ * @author fedesparvo1-a11y
  */
 public interface ShotCoordinateConverter {
 
