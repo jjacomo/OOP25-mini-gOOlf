@@ -416,7 +416,7 @@ classDiagram
 Superfici e buca devono poter verificare se la pallina è al loro interno. La logica geometrica di contenimento deve risiedere nel Model, senza dipendere da classi grafiche Swing; allo stesso tempo la vista deve poter disegnare ciascuna forma nel modo corretto.
 
 ##### Soluzione
-L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite costruttori che eseguono un check sulle dimensioni in ingresso), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` recupera le `Shape` tramite il controller e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
+L'interfaccia `Shape` espone un unico metodo `contains(Vector2D)`. Le implementazioni concrete (`Circle`, `Rectangle`, `Triangle`, `Oval`) sono **Java record** immutabili: garantiscono costruzione valida (tramite costruttori che eseguono un check sulle dimensioni in ingresso), uguaglianza strutturale e assenza di stato mutabile. `ShapedSurface` delega il test di contenimento alla propria `Shape` interna. La vista `MapPanel` riceve le `Shape` incapsulate nei DTO inviati passivamente dal controller (tramite `MapElementsView`) e, mediante **pattern matching per `instanceof`** (es. `shape instanceof Circle circ`), determina la geometria concreta ed esegue il disegno specifico senza cast espliciti.
 
 ```mermaid
 classDiagram
@@ -718,7 +718,7 @@ Ad esempio in https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74
 ### 3.2.3 Federico Sparvoli
 
 #### Lambda expressions e method reference
-Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L113
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/f616e830c3ba78c84ab7d850d5690ee1ea46ccb0/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L132
 
 https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/controller/game/MatchManager.java#L82
 
@@ -796,4 +796,3 @@ Durante il gioco è possibile mettere in pausa premendo il tasto ESC, purché la
 
 **B.0.1** federico.sparvoli@studio.unibo.it
 * Laboratorio 06: https://github.com/fedesparvo1-a11y/lab06
-* Laboratorio 07: https://github.com/fedesparvo1-a11y/lab07

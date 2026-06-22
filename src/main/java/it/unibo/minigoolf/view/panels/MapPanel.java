@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
@@ -35,34 +37,35 @@ import it.unibo.minigoolf.view.texturemanager.TextureManager;
  *
  * @author jack e mattia
  */
-public class MapPanel extends JPanel implements MapElementsView {
+public final class MapPanel extends JPanel implements MapElementsView {
 
     @Serial
     private static final long serialVersionUID = 1L;
     private static final int LOGICAL_WIDTH = 1920;
     private static final int LOGICAL_HEIGHT = 1080;
 
-    private List<SurfaceData> surfaces = List.of();
-    private List<ObstacleData> obstacles = List.of();
-    private HoleData hole;
-    private BallData ball;
-
-    /**
-     * Constructs an empty MapPanel. Data is injected via updateGraphics.
-     */
-    public MapPanel() {
-    }
+    private transient List<SurfaceData> surfaces = List.of();
+    private transient List<ObstacleData> obstacles = List.of();
+    private transient HoleData hole;
+    private transient BallData ball;
 
     @Override
     public void updateGraphics(
-            final List<SurfaceData> surfaces,
-            final List<ObstacleData> obstacles,
-            final HoleData hole,
-            final BallData ball) {
-        this.surfaces = surfaces;
-        this.obstacles = obstacles;
-        this.hole = hole;
-        this.ball = ball;
+            final List<SurfaceData> newSurfaces,
+            final List<ObstacleData> newObstacles,
+            final HoleData newHole,
+            final BallData newBall) {
+        this.surfaces = List.copyOf(newSurfaces);
+        this.obstacles = List.copyOf(newObstacles);
+        this.hole = newHole;
+        this.ball = newBall;
+    }
+
+    @Serial
+    private void readObject(final ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+        this.surfaces = List.of();
+        this.obstacles = List.of();
     }
 
     /**
