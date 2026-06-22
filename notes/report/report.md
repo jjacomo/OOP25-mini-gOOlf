@@ -88,15 +88,15 @@ classDiagram
 ## 2.1 Architettura
 Il software segue il pattern architetturale MVC (Model-View-Controller).
 
-**Model**: contiene lo stato del gioco e le regole, senza alcuna dipendenza dalla view o dal controller. Le entità principali sono GameMap (la mappa corrente con pallina, buca, superfici e ostacoli), GameState (lo stato del turno: giocatore attivo, contatore colpi, movimento della pallina) e ShotState (lo stato del colpo in corso: direzione, potenza, posizione della pallina).
+**Model**: contiene lo stato del gioco e le regole, senza alcuna dipendenza dalla view o dal controller. Le entità principali sono `GameMap` (la mappa corrente con pallina, buca, superfici e ostacoli), `GameState` (lo stato del turno: giocatore attivo, contatore colpi, movimento della pallina) e `ShotState` (lo stato del colpo in corso: direzione, potenza, posizione della pallina).
 
 **Controller**: coordina model e view senza che i due si conoscano direttamente. La logica di controllo è strutturata gerarchicamente per separare nettamente le responsabilità:
-- MainController: Inizializza i componenti principali e ospita il Game Loop tramite un Timer.
-- MatchManager: agisce da supervisore della sessione di gioco. Inizializza le partite e gestisce le transizioni logiche tra una buca e l'altra.
-- GameController: gestisce il ciclo di vita della singola mappa attiva. Ad ogni tick ricevuto dal MainController, aggiorna la simulazione fisica della pallina, verifica le condizioni di vittoria (ingresso in buca) e delega l'avanzamento dei turni.
-- NavigationController: si occupa di gestire le transizioni tra i vari pannelli della view nella MainWindow.
+- `MainController`: Inizializza i componenti principali e ospita il Game Loop tramite un Timer.
+- `MatchManager`: agisce da supervisore della sessione di gioco. Inizializza le partite e gestisce le transizioni logiche tra una buca e l'altra.
+- `GameController`: gestisce il ciclo di vita della singola mappa attiva. Ad ogni tick ricevuto dal MainController, aggiorna la simulazione fisica della pallina, verifica le condizioni di vittoria (ingresso in buca) e delega l'avanzamento dei turni.
+- `NavigationController`: si occupa di gestire le transizioni tra i vari pannelli della view nella `MainWindow`.
 
-**View**: MainWindow ospita i pannelli tramite un CardLayout; GamePanel compone la mappa di gioco (MapPanel) e l'overlay di input (ShotViewPanel). 
+**View**: `MainWindow` ospita i pannelli tramite un CardLayout; `GamePanel` compone la mappa di gioco (`MapPanel`) e l'overlay di input (`ShotViewPanel`). 
 
 Il controller non dipende mai dalla view concreta: comunica con essa unicamente tramite interfacce strette e callback funzionali (Runnable, Consumer, Supplier). Ciò implica che sostituire Swing con un'altra libreria grafica (ad esempio JavaFX) non richiederebbe alcuna modifica al controller né al model: sarebbe sufficiente riscrivere i pannelli della view e ricablare i callback al momento della costruzione.
 
@@ -158,7 +158,7 @@ classDiagram
 Come ogni gioco, anche mini-gOOlf necessita di un menu principale da cui poter transitare tra diverse "scene", in questo caso i pannelli. È fondamentale rispettare il pattern MVC, assegnando ad un controller la gestione delle transizioni dei pannelli (view).
 
 ##### Soluzione
-Per poter rendere questa transizione il più semplice e fluida possibile, si è scelto il CardLayout, mentre per pannelli che devono appararire soltanto in sovraimpressione (quali `PausePanel` e `MidLeaderBoardPanel`) si è scelto il metodo Glasspane della libreria Swing. I pannelli vengono illustrati all'interno della `MainWindow` ovvero la finestra dell'intera applicazione.
+Per poter rendere questa transizione il più semplice e fluida possibile, si è scelto il CardLayout, mentre per pannelli che devono apparire soltanto in sovraimpressione (quali `PausePanel` e `MidLeaderBoardPanel`) si è scelto il metodo Glasspane della libreria Swing. I pannelli vengono illustrati all'interno della `MainWindow` ovvero la finestra dell'intera applicazione.
 
 ```mermaid
 classDiagram
@@ -199,68 +199,51 @@ classDiagram
     MainWindow *-- GamePanel
     
     MainWindow *-- PausePanel
-    MainWindow ..> MidLeaderBoardPanel
+    MainWindow --> MidLeaderBoardPanel
 ```
+*Figura 3: Schema UML dei pannelli e di come sono gestiti.*
 ##### Pro e Contro:
 
 Pro:
-- Disaccoppiamento netto (Zero EI2): Il NavigationController gestisce la logica di routing senza mai possedere un riferimento diretto alla MainWindow o ai pannelli. La comunicazione avviene esclusivamente tramite callback funzionali (Runnable e Consumer), garantendo che il controller non possa manipolare impropriamente lo stato interno della View.
-- Efficienza del CardLayout: I pannelli statici (Menu, New Game, Leaderboard) vengono istanziati una sola volta e mantenuti in memoria. Il CardLayout si limita a nasconderli o mostrarli, rendendo le transizioni di scena istantanee senza sovraccaricare il Garbage Collector.
-- Gestione nativa degli Overlay: L'utilizzo del GlassPane per il PausePanel e il MidLeaderBoardPanel permette di sovrapporre interfacce trasparenti al gioco in esecuzione senza dover alterare la gerarchia dei componenti del GamePanel o gestire complessi Z-index. Inoltre, il GlassPane intercetta nativamente gli eventi del mouse, bloccando in automatico le interazioni accidentali con il gioco sottostante in pausa.
+- Disaccoppiamento netto: Il `NavigationController` gestisce la logica di transizione senza mai possedere un riferimento diretto alla `MainWindow` o ai pannelli. La comunicazione avviene esclusivamente tramite callback funzionali (Runnable e Consumer), garantendo che il controller non possa manipolare impropriamente lo stato interno della View.
+- Efficienza del CardLayout: I pannelli statici (Menu, New Game, Leaderboard) vengono istanziati una sola volta e mantenuti in memoria. Il CardLayout si limita a nasconderli o mostrarli, rendendo le transizioni di scena istantanee.
+- Gestione nativa degli Overlay: L'utilizzo del GlassPane per il `PausePanel` e il `MidLeaderBoardPanel` permette di sovrapporre interfacce trasparenti al gioco in esecuzione senza dover alterare la gerarchia dei componenti del `GamePanel`.
 
 Contro:
 
-- Limitazione strutturale del GlassPane: La libreria Swing consente a un JFrame di avere un solo GlassPane attivo per volta. Questo costringe ad implementare una logica di salvataggio e ripristino manuale (come visibile nel metodo showMidLeaderBoard) nel caso in cui più overlay debbano susseguirsi o sovrapporsi.
+- Limitazione strutturale del GlassPane: La libreria Swing consente a un JFrame di avere un solo GlassPane attivo per volta. Questo costringe ad implementare una logica di salvataggio e ripristino manuale (come visibile nel metodo `showMidLeaderBoard`) nel caso in cui più overlay debbano susseguirsi o sovrapporsi.
 - Prolissità del costruttore: L'estrazione di tutti i comportamenti della finestra sotto forma di callback rende il costruttore del NavigationController leggermente prolisso e dipendente dal corretto "cablaggio" iniziale.
 
-#### Multiplayer
-##### Problema
-Il gioco ha la possibilità di avviare una partita singleplayer indicando un solo giocatore nel numero dei giocatori quando richiesto, la partita multiplayer parte quando questi sono 2 o più. 
-
-
-
-
-
-
-##### Soluzione
 
 #### Leaderboard
 
 
 ##### Problema
-In un gioco competitivo a turni, è essenziale fornire ai giocatori un feedback continuo sul loro andamento relativo (durante la partita) e un senso di progressione e sfida a lungo termine (a partita conclusa). Il problema progettuale risiede nel separare la logica di calcolo e persistenza dei punteggi dalla loro rappresentazione visiva, garantendo al contempo due visualizzazioni distinte: un riepilogo temporaneo alla fine di ogni singola buca e una classifica globale, persistente su file, accessibile dal menu principale.
+Per poter misurare le proprie abilità in modo tangibile, un sistema di classifica è quello più efficace. Il problema, dal punto di vista progettuale, risiede nel separare la logica di calcolo e persistenza dei punteggi dalla loro rappresentazione visiva, garantendo al contempo due visualizzazioni distinte: un riepilogo temporaneo alla fine di ogni singola buca e una classifica globale, persistente su file, accessibile dal menu principale.
 
 ##### Soluzione
-Si è deciso di suddividere la responsabilità in tre componenti chiave, mantenendo un rigido disaccoppiamento:
-
-- Model (Gestione dei dati): La classe LeaderBoardManager gestisce la persistenza dei dati su un file di testo locale (leaderboard.txt). Implementa la logica di dominio per l'aggiornamento dei record, assicurandosi di sovrascrivere il punteggio di un giocatore storico solo se il nuovo punteggio ottenuto è inferiore (migliore) del precedente.
-
-- View (Feedback a fine buca): Il MidLeaderBoardPanel funge da overlay transitorio (tramite GlassPane). Al termine di ogni buca, riceve una mappa non persistente con i colpi attuali della partita in corso, li ordina dinamicamente in memoria e li mostra a schermo, inibendo i clic sul gioco sottostante tramite un MouseAdapter vuoto.
-
-- View (Classifica Globale): Il LeaderBoardPanel è una scena dedicata all'interno del CardLayout. Riceve i dati storici dal Controller (che a sua volta interroga il LeaderBoardManager), li ordina in base al punteggio e li rappresenta in una griglia, arricchendo visivamente la Top 3 tramite icone specifiche (medaglie).
+Si è deciso di suddividere la responsabilità in cinque componenti chiave, definendo confini netti per rispettare il pattern MVC e il principio di singola responsabilità:
+- `LeaderBoardManager` (Model): Gestisce la persistenza dei dati su un file di testo locale (leaderboard.txt). Custodisce la logica di dominio per l'aggiornamento dei record storici, assicurandosi di sovrascrivere il punteggio di un giocatore solo se il nuovo risultato è strettamente inferiore (migliore) del precedente.
+- `MatchManager` (Controller): Orchestra il flusso della partita attiva. Al termine di ogni singola buca, è lui a raccogliere la mappa non persistente con i punteggi parziali dei giocatori e a coordinare l'apertura del riepilogo grafico temporaneo.
+- `MidLeaderBoardPanel`(View): Funge da pannello in sovraimpressione (overlay). Riceve i dati temporanei dal MatchManager, li ordina dinamicamente in memoria e li mostra a schermo per dare un feedback immediato, mettendo in pausa il gioco in attesa del passaggio alla mappa successiva.
+- `NavigationController` (Controller): Gestisce il routing dell'intera applicazione e fa da "ponte" per la classifica globale. Quando l'utente richiede di visualizzare i punteggi dal menu, questo controller interroga il LeaderBoardManager per estrarre lo storico e inietta i dati pronti per la lettura nella scena grafica.
+- `LeaderBoardPanel` (View): È una scena dedicata ospitata all'interno del CardLayout. Riceve i dati storici dal NavigationController, si occupa del loro ordinamento finale e li rappresenta visivamente in una griglia, mettendo in risalto le prime posizioni.
 
 
 ```mermaid
 classDiagram
-    %% --- Model ---
     class LeaderBoardManager {
-        -String FILE_PATH
-        +loadBestScores() Map~String, Integer~
-        +updateAndSaveScores(Map~String, Integer~)
+        +loadBestScores() Map
+        +updateAndSaveScores(Map)
     }
 
-    %% --- View (Pannelli) ---
     class LeaderBoardPanel {
-        -Image backgroundImage
-        -JPanel tableContainer
-        +updateScores(Map~String, Integer~)
+        +updateScores(Map)
     }
 
     class MidLeaderBoardPanel {
-        +MidLeaderBoardPanel(Map~String, Integer~, Runnable)
     }
 
-    %% --- Controllers (Solo concettuale per routing dati) ---
     class NavigationController {
         +goToLeaderBoard()
     }
@@ -269,25 +252,25 @@ classDiagram
         +advanceToNextHole()
     }
 
-    %% --- Relazioni ---
-    NavigationController ..> LeaderBoardManager : crea e interroga per storico
-    NavigationController ..> LeaderBoardPanel : invia dati per rendering
+    %% Relazioni corrette e pulite
+    NavigationController ..> LeaderBoardManager
+    NavigationController ..> LeaderBoardPanel
     
-    MatchManager ..> MidLeaderBoardPanel : istanzia a fine buca
+    MatchManager --> NavigationController
+    MatchManager ..> MidLeaderBoardPanel
 ```
+*Figura 4: Schema UML di come è stato implementato il sistema della classifica.*
 
 *Pro e Contro*: 
 
 Pro:
 - Resilienza e Semplicità: L'utilizzo di un file di testo semplice (.txt) con codifica Chiave:Valore per il salvataggio rende il sistema di I/O rapido, robusto e facilmente ispezionabile senza la necessità di includere librerie di database esterne.
 
-- Riutilizzo del layout: Entrambi i pannelli grafici (LeaderBoardPanel e MidLeaderBoardPanel) si affidano a un GridLayout dinamico che scala automaticamente le righe in base al numero di giocatori in mappa o registrati nel file, garantendo consistenza visiva.
+- Riutilizzo del layout: Entrambi i pannelli grafici (`LeaderBoardPanel` e `MidLeaderBoardPanel`) si affidano a un GridLayout dinamico che scala automaticamente le righe in base al numero di giocatori in mappa o registrati nel file, garantendo consistenza visiva.
 
 Contro: 
-- Manipolazione esterna: Essendo i punteggi globali salvati in chiaro in un semplice file di testo, un utente malevolo potrebbe facilmente aprire il file leaderboard.txt e modificare i record manualmente.
 
-- Ordinamento ripetuto: Attualmente, l'ordinamento della mappa (conversione in List<Map.Entry> e successiva sort) viene delegato alla View (LeaderBoardPanel e MidLeaderBoardPanel) al momento del rendering. A livello architetturale "purista", sarebbe stato preferibile che il Model restituisse una struttura dati già ordinata (es. una lista di Record), sollevando l'interfaccia grafica da calcoli di manipolazione dati.
-
+- Ordinamento ripetuto: Attualmente, l'ordinamento della mappa (conversione in List<Map.Entry> e successiva sort) viene delegato alla View (`LeaderBoardPanel` e `MidLeaderBoardPanel`) al momento del rendering. A livello architetturale "purista", sarebbe stato preferibile che il Model restituisse una struttura dati già ordinata (es. una lista di Record), sollevando l'interfaccia grafica da calcoli di manipolazione dati.
 
 ### 2.2.2 Giacomo Mengozzi
 
@@ -337,6 +320,7 @@ classDiagram
     AbstractSurfaceDecorator <|-- WindySurface
     BasicFrictionStrategy ..> Surface : reads getFriction / getWind
 ```
+*Figura 5: Schema UML...*
 
 ##### Pro e Contro
 **Pro:**
@@ -399,6 +383,7 @@ classDiagram
     PhysicsEngine ..> Ball : uses
     PhysicsControllerImpl ..> BallControllerAdapter : instantiates/uses
 ```
+*Figura 6: Schema UML*
 
 ##### Pro e Contro
 **Pro:**
@@ -443,6 +428,7 @@ classDiagram
     ShapedSurface --> Shape : delegates contains
     MapPanel ..> Shape : instanceof dispatch
 ```
+*Figura 7: Schema UML ...*
 
 ##### Pro e Contro
 **Pro:**
@@ -485,7 +471,7 @@ classDiagram
     ShotViewPanel ..|> ShotVisualizer
     ShotViewPanel ..|> ShotCoordinateConverter
 ```
-*Figura X: Schema UML del pattern Strategy applicato all'input del colpo.*
+*Figura 8: Schema UML del pattern Strategy applicato all'input del colpo.*
 
 ##### Pro e Contro
 Pro: separazione netta tra stato, rendering e coordinamento. Aggiungere un nuovo tipo di indicatore visivo richiede solo una nuova implementazione di `ShotVisualizer`, senza toccare il listener o il controller.
@@ -527,7 +513,7 @@ classDiagram
     GameMapFactory <|.. MapB
     GameMapFactory <|.. MapE
 ```
-*Figura X: Schema UML del pattern Factory Method per la progressione delle mappe.*
+*Figura 9: Schema UML del pattern Factory Method per la progressione delle mappe.*
 
 
 ##### Pro e Contro
@@ -571,7 +557,7 @@ Per rendere i rimbalzi deterministici e privi di direzioni arbitrarie, sono stat
             AbstractObstacle <|-- TriangleObstacle
             AbstractObstacle --> Vector2D
 ```
-
+*Figura 10: Schema UML*
 ##### Pro e Contro
 Pro:
 - Fisica altamente stabile e realistica 
@@ -603,6 +589,8 @@ Per la gestione dei portali, invece, era fondamentale prevenire la configurazion
     AbstractObstacle <|-- PortalObstacle
     PortalObstacle --> PortalObstacle : linkedPortal
 ```
+
+*Figura 11: Schema UML*
 
 ##### Pro e Contro
 Pro:
@@ -649,7 +637,7 @@ Infine, il `GameController` invia questi dati all'interfaccia `MapElementsView`,
         MapPanel --> ObstacleData : stores
         ObstacleController --> Obstacle : manages
 ```
-
+*Figura 12: Schema UML...*
 ##### Pro e Contro
 Pro:
 - Separazione totale tra modello e vista: la grafica è completamente passiva, riceve i dati già pronti tramite il DTO e si limita a stamparli a schermo. Questo rende il codice molto più facile da mantenere e da testare.
@@ -668,8 +656,8 @@ Contro:
 
 I componenti testati riguardano la fabbricazione dell'interfaccia utente, l'integrità delle risorse multimediali e la persistenza dei dati:
 
-* **UserInterfaceFactoryTest**: Verifica che tutti i componenti Swing (JButton, JLabel, JTextField) generati dalla factory rispettino rigorosamente le specifiche di design imposte dal gioco, garantendo l'assegnazione corretta dei font personalizzati, delle dimensioni predefinite, dei colori e dei bordi.
-* **ResourcePresenceTest**: Assicura l'integrità del pacchetto software, verificando che tutte le risorse statiche vitali per il funzionamento dell'interfaccia (font, soundtrack, texture delle superfici, immagini di sfondo e di tutorial) siano presenti e caricabili correttamente all'interno del Classpath.
+* **UserInterfaceFactoryTest**: Verifica che tutti i componenti Swing (JButton, JLabel, JTextField) generati dalla factory rispettino le specifiche di design imposte dal gioco, garantendo l'assegnazione corretta dei font personalizzati, delle dimensioni predefinite, dei colori e dei bordi.
+* **ResourcePresenceTest**: Assicura l'integrità dell'applicativo, verificando che tutte le risorse statiche vitali per il funzionamento dell'interfaccia (font, soundtrack, texture delle superfici,...) siano presenti e caricabili correttamente.
 * **LeaderBoardManagerTest**: Controlla la logica di aggiornamento e scrittura su file della classifica globale. Tramite un ambiente pulito (creazione e cancellazione del file ad ogni test), verifica la regola di dominio fondamentale: il punteggio storico di un giocatore viene sovrascritto solo se il nuovo punteggio ottenuto è strettamente inferiore (migliore) del precedente.
 
 ### 3.1.2 Giacomo Mengozzi
@@ -699,8 +687,16 @@ I componenti testati riguardano la parte logico-matematica e la gestione degli o
 
 ## 3.2 Note di sviluppo
 ### 3.2.1 Daniel Patryk Bak
-- Factory
-- lambda expression
+#### Factory
+
+Usata nella classe UserInterfaceFactory per poter creare elementi grafici come bottoni, etichette tutte uniformate.
+Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/view/elements/UserInterfaceFactory.java#L1
+
+#### Lamda Expressions
+
+Utilizzate in vari punti un esempio al permalink.
+Permalink:https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74b8574f68c74972313d66720/src/main/java/it/unibo/minigoolf/view/panels/NewGamePanel.java#L96
+
 ...
 ### 3.2.2 Giacomo Mengozzi
 #### Java Records
@@ -719,8 +715,6 @@ Ad esempio in https://github.com/jjacomo/OOP25-mini-gOOlf/blob/a03bd528fdd870c74
 
 #### Lambda expressions e method reference
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/f616e830c3ba78c84ab7d850d5690ee1ea46ccb0/src/main/java/it/unibo/minigoolf/controller/game/GameControllerImpl.java#L132
-
-https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/controller/game/MatchManager.java#L82
 
 #### Java Records
 Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/e5ae0bf0fd17ad5844e7f8de9e0d114436baf99f/src/main/java/it/unibo/minigoolf/model/save/SaveData.java#L21
@@ -753,6 +747,12 @@ Permalink: https://github.com/jjacomo/OOP25-mini-gOOlf/blob/4ca2f5efea4af39cd107
 
 ## 4.1 Autovalutazione e lavori futuri
 ### 4.1.1 Daniel Patryk Bak
+Questa esperienza è stata molto interessante poiché tocca non solo aspetti di pura scrittura di codice, ma bensì richiede le capacità di potersi relazionare in un gruppo, aiutarsi a vicenda e soprattutto organizzare cosa fare e in che tempi. Per questo sono molto contento di aver lavorato con piacere con i miei colleghi, perchè tutto questo è stato rispettato. Per poter raggiungere questi "principi", abbiamo deciso di scrivere (oltre a importanti informazioni contenute nei commit) delle note ogni volta che si metteva mano al progetto, oltre a fare delle piccole riunioni periodiche. Abbiamo inoltre dedicato molto tempo alla fase di progettazione, prima ancora di fare la proposta ufficiale, e questo ha aiutato poi a realizzare senza troppi problemi il progetto concreto.
+
+Per quanto riguarda l'aspetto più pratico/tecnico del progetto, sono contento di aver individuato correttamente, e poi implementato, il metodo di transizione tra i vari panneli, e aver adibito ad ognuno un compito specifico. La leaderboard, per quanto semplice, è molto soddisfacente da vedere. La partita multiplayer invece non è stata particolarmente difficile da realizzare, grazie ad una già buona base fornita dal mio collega Federico, per quanto riguarda la logica di una partita.
+
+Ne ho già parlato con i miei colleghi e spero che in futuro aggiorneremo il gioco (con tempi molto più "rilassati") qualche feature che non è per niente funzionale, ma che aggiunge quel tocco in più, come altre feature audio, aspetti grafici avanzati, ostacoli e superfici nuove, mappe disegnate in modo migliore. Le idee sono tante, e sono contento che le basi siano abbastanza solide da poterci ancora lavorare su.
+
 ### 4.1.2 Giacomo Mengozzi
 Sono molto soddisfatto del contributo fornito al progetto, non soltanto per il lavoro realizzato, ma soprattutto per l'esperienza maturata durante l'intero percorso di sviluppo. Il tempo e le energie investite sono stati considerevolmente superiori alle aspettative iniziali, ma ritengo che siano stati impiegati in modo proficuo.
 Dal punto di vista tecnico, mi sono occupato dell'implementazione delle superfici, della mappa e della buca, nonché della loro integrazione nelle mappe di gioco, coordinando l'interazione tra questi elementi secondo le leggi della fisica.
@@ -776,6 +776,17 @@ Il mio contributo principale ha riguardato l'architettura geometrico-matematica 
 Un aspetto decisamente migliorabile riguarda il fenomeno del tunneling: se la pallina si muove a una velocità talmente elevata da superare lo spessore di un ostacolo sottile in un singolo frame, il motore manca la collisione attraversando l'oggetto. In futuro, per ovviare a questo problema, si potrebbe implementare un algoritmo di Continuous Collision Detection (CCD) basato sul raycasting o sul campionamento della traiettoria.
 
 Un altro limite risiede nel meccanismo di cooldown temporale dei portali; sebbene la soglia fissa a 500ms sia efficace nella maggior parte dei contesti, se la pallina entra in un portale a velocità quasi nulla rischia di rimanere ferma sulla destinazione oltre la scadenza del timer, riattivando un loop infinito. Un'evoluzione futura prevedrebbe un'immunità basata sulla geometria, disattivando il cooldown solo quando la pallina ha fisicamente interrotto la collisione con la bounding box del portale di arrivo.
+
+## Difficoltà incontrate e commenti per i docenti
+
+**Daniel Patryk Bak**: Per quanto abbia veramente apprezzato questo progetto, (vedere nascere da zero un videogioco è uno dei miei piccoli sogni che porto sin da bambino) credo che come esame porti via veramente tanto (troppo) tempo. Capisco anche che per un progetto del genere è necessario,(se avessimo voluto aggiungere qualche aspetto accessorio anche banale sicuramente avremmo raggiunto le 100 ore), infatti ad un certo punto abbiamo dovuto frenare l'entusiasmo e cercare di fare soltanto ciò che era veramente necessario _(in realtà lo voluto anche come un aspetto interessante per progetti veri e propri che hanno scadenze da rispettare e quindi inevitabili "cut content")_. 
+
+Questo corso, per la complessità che presenta dal punto di vista teorico e poi pratico, credo debba essere scorporato in due: uno da 6 CFU, dove fare una introduzione al linguaggio e la sua evoluzione, quindi un altro da 12 CFU dove poter parlare esclusivamente dell'aspetto di progettazione e dell'utilizzo dei pattern, con quindi il progetto, che ridimensionerei a circa 50 ore a testa. è inevitabile che questo progetto porti via del tempo agli altri esami, poi, è vero che è in mano allo studente la capacità di sapersi organizzare, però ho percepito parecchio il fatto di aver quel "qualcosa in più" da fare durante la settimana. Come gruppo sono abbastanza certo che abbiamo praticamente lavorato ogni settina, almeno 5 ore, quindi è stato come avere un corso in più a cui porre attenzione. Per quanto poi non nascondo che a volte è stato veramente piacevole, ma come ogni progetto ha anche aspetti inevitabilemente noiosi e certi imprevisti posso risultare spiacevoli.
+
+Tutto sommato però, per quanto appunto faticoso dal punto di vista del tempo impiegato, credo sia un'esperienza molto positiva, e che preannuncia un possibile vero lavoro futuro.
+
+
+
 
 ---
 
